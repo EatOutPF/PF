@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
-import repositories from '../data/repositories.js'
+import repositories from '../../data/repositories.js'
 
 
 // const data = [
