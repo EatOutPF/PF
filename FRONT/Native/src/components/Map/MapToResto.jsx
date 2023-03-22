@@ -4,7 +4,6 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as Location from "expo-location"
 import { Marker } from 'react-native-maps';
 import { mapStyle } from './mapStyle';
-import restorantsJson from '../../../data/restaurants'
 import { StyleSheet, View, Dimensions, Text, Emoji } from 'react-native';
 
 // function initMap() {
@@ -52,11 +51,6 @@ export default function App() {
         setOrigen(current)
     }
 
-    // const mark = [{ id: 1, title: 'Marker 1', coordinate: { latitude: -38.011193, longitude: -57.554361 } },
-    // { id: 2, title: 'Marker 2', coordinate: { latitude: -38.011273, longitude: -57.554571 } },
-    // { id: 3, title: 'Marker 3', coordinate: { latitude: -38.011583, longitude: -57.554991 } },]
-
-
 return (
     <View style={styles.container}>
       {/* <MapView style={styles.map} /> */}
@@ -65,32 +59,14 @@ return (
             // provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
-                latitude: -38.011083,
-                longitude: -57.554361,
+                latitude: -33.745326,
+                longitude: -61.968774,
                 latitudeDelta: 0.045,
                 longitudeDelta: 0.045,
             }}
             mapType="standard"
         >
-
-        {
-            restorantsJson.map(item => (
-                <Marker 
-                    key={item._id} 
-                    coordinate={{
-                        latitude: item.address.coordinates.latitud,
-                        longitude: item.address.coordinates.longitud
-                    }}
-                    title={item.name}
-                />
-                )
-            )
-        }
-
-    
-
-
-        {/* <Marker
+        <Marker
             key="ClaudioCasa"
             coordinate={ origin }
             title="Casa de claudio"
@@ -110,22 +86,21 @@ return (
 
             draggable  // ESTA OPCION NOS PEMITE DRAGEAR UN MARKER Y POSICIONARLO EN OTRO LADO
             onDragEnd={(direction) => setDestination(direction.nativeEvent.coordinate)}
-    /> */}
+        />
 
-        {/* <MapViewDirections 
+        <MapViewDirections 
             origin={origin}
             destination={destination}
             apikey={"AIzaSyA8wHVl7x6tJiALwmMYUL5h_l14X74f_A8"} // apikey de googlemaps de santi
             strokeColor="blue"
             strokeWidth={5}
-        /> */}
+        />
 
-        {/* <Polyline // crea una poligono
+        <Polyline // crea una poligono
             coordinates={[origin, destination, {latitude : -33.744689,longitude : -61.986766}, {latitude : -33.744589,longitude : -61.985766}]}
             strokeColor="orange"
             strokeWidth={5}
-        /> */}
-
+        />
       </MapView>
     </View>
 

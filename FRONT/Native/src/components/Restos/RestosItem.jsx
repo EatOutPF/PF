@@ -10,16 +10,16 @@ let imageWidth = 0.5 * width;
 let screenwidth = "100%"
 if (width >= 1000) {imageWidth = width * 0.3; screenwidth = "50%";}
 
-const RepositoryItemHeader = ({ ownerAvatarUrl, fullName, description, language }) => (
+const RepositoryItemHeader = ({ images, name, menu, atmosphere, contact }) => (
   <View style={{ flexDirection: 'row', paddingBottom: 2 }}>
     <View style={{ paddingRight: 10 }}>
-      <Image style={styles.image} source={{ uri: ownerAvatarUrl }} />
+      <Image style={styles.image} source={{ uri: images }} />
     </View>
     <View style={{ flex: 1 }}>
-      <StyledText fontWeight='bold'>{fullName}</StyledText>
-      <StyledText color='secondary'>{description}</StyledText>
-      <StyledText style={styles.language}>{language}</StyledText>
-      <StyledText color="claudioElMejor">Soy claudio</StyledText>
+      <StyledText fontWeight='bold'>{name}</StyledText>
+      <StyledText color='secondary'>Menu: {menu}</StyledText>
+      <StyledText style={styles.language}>Atmosphere: {atmosphere}</StyledText>
+      <StyledText color="claudioElMejor">{contact.email}</StyledText>
 
       {/* <Button title='Claudio' accessibilityLabel='Claudio' disabled="false"/> */}
     </View>
@@ -27,7 +27,7 @@ const RepositoryItemHeader = ({ ownerAvatarUrl, fullName, description, language 
 )
 
 const RepositoryItem = (props) => (
-  <View key={props.id} style={styles.container}>
+  <View key={props._id} style={styles.container}>
     <RepositoryItemHeader {...props} />
     <RepositoryStats {...props} />
   </View>
