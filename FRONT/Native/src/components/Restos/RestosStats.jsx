@@ -12,20 +12,20 @@ const RepositoryStats = props => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around', width:'70%' }}>
       <View>
-        <StyledText align='center' fontWeight='bold'>{parseThousands(props.stargazersCount)}</StyledText>
-        <StyledText align='center'>Stars</StyledText>
+        <StyledText align='center' fontWeight='bold'>{parseThousands(props.diets)}</StyledText>
+        <StyledText align='center'>Diets</StyledText>
       </View>
       <View>
-        <StyledText align='center' fontWeight='bold'>{parseThousands(props.forksCount)}</StyledText>
-        <StyledText align='center'>Forks</StyledText>
+        <StyledText align='center' fontWeight='bold'>{parseThousands(props.tables)}</StyledText>
+        <StyledText align='center'>Tables</StyledText>
       </View>
       <View>
-        <StyledText align='center' fontWeight='bold'>{props.reviewCount}</StyledText>
-        <StyledText align='center'>Review</StyledText>
+        <StyledText align='center' fontWeight='bold'>{props.room}</StyledText>
+        <StyledText align='center'>Room</StyledText>
       </View>
       <View>
-        <StyledText align='center' fontWeight='bold'>{props.ratingAverage}</StyledText>
-        <StyledText align='center'>Rating</StyledText>
+        <StyledText align='center' fontWeight='bold'>{props.extras.name}</StyledText>
+        <StyledText align='center'>Extras</StyledText>
       </View>
     </View>
   )
