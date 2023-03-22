@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import RepositoryList from './RepositoryList.jsx'
+import RepositoryList from '../Restos/RestosList.jsx'
 // import CarouselComponent from "./CarouselComponent.jsx"
 // import CarouselAux from "./CarouselAux.jsx"
 // import CarouselPagerView from "./CarouselPagerView"
@@ -10,7 +10,7 @@ import RepositoryList from './RepositoryList.jsx'
 
 
 
-import AppBar from './AppBar.jsx'
+import AppBar from '../NavBar/AppBar.jsx'
 import { Redirect, Route, Routes } from 'react-router-native'
 
 const Main = () => {

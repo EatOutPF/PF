@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeRouter, } from 'react-router-native'
-import Main from './src/components/Main.jsx'
+import Main from './src/components/Home/Home.jsx'
 
 
 export default function App() {

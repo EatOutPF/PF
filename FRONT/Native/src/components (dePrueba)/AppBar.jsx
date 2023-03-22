@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native'
-import StyledText from './StyledText.jsx'
+import StyledText from './StyledText.jsx.js'
 import Constants from 'expo-constants'
 import theme from '../../theme.js'
 import { Link, useLocation } from 'react-router-native'

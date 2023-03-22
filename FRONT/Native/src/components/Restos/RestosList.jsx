@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, Text } from 'react-native'
-import repositories from '../../data/repositories.js'
-import RepositoryItem from '../components/RepositoryItem.jsx'
+import repositories from '../../../data/repositories'
+import RepositoryItem from './RestosItem.jsx'
 
 const RepositoryList = () => {
   return (
