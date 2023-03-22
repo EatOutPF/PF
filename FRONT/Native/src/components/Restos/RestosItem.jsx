@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, View, StyleSheet, Dimensions, Button } from 'react-native'
-import StyledText from './StyledText.jsx'
-import RepositoryStats from './RepositoryStats.jsx'
-import theme from '../theme.js'
+import StyledText from '../../styles/StyledText/StyledText.jsx'
+import RepositoryStats from './RestosStats.jsx'
+import theme from '../../styles/theme.js'
 
 const { width } = Dimensions.get('window');
 console.log("width screen", width);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import StyledText from './StyledText.jsx'
+import StyledText from '../../styles/StyledText/StyledText'
 
 const parseThousands = value => {
   return value >= 1000
