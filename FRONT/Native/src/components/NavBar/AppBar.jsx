@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native'
-import StyledText from './StyledText.jsx'
+import StyledText from '../../styles/StyledText/StyledText'
 import Constants from 'expo-constants'
-import theme from '../../theme.js'
+import theme from '../../styles/theme.js'
 import { Link, useLocation } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.appBar.primary,
     flexDirection: 'row',
+    alignItems: "flex-end",
     paddingTop: Constants.statusBarHeight + 10,
     width: '100%',
     // flex: 1
@@ -48,10 +49,10 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.scroll}>
         <AppBarTab to='/'>Restos</AppBarTab>
-        <AppBarTab to='/signin'>Aux</AppBarTab>
-        <AppBarTab to='/claudio'>Ccomponent</AppBarTab>
-        <AppBarTab to='/pagerview'>Pager View</AppBarTab>
-        <AppBarTab to='/mapview'>Map View</AppBarTab>
+        <AppBarTab to='/signin'>Aaaa</AppBarTab>
+        <AppBarTab to='/claudio'>Bbbb</AppBarTab>
+        <AppBarTab to='/pagerview'>Cccc</AppBarTab>
+        <AppBarTab to='/mapview'>Dddd</AppBarTab>
 
 
 
