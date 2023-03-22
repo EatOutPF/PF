@@ -4,23 +4,29 @@ const { Schema } = mongoose
 
 const userSchema = new Schema({
   name: {type: String,  lowercase: true, trim: true, required: true, index: true, unique: true, minLength: 5, maxLength: 255},
-  contact: Object,
+  phone: Number,
   email: String,
   password: String,
   favorite: [{
     type: String,
     ref: 'Favorite'
   }],
-  role: String,
   reserve: [{
     type: String,
     ref: 'Reserve'
   }],
+  role: { 
+    type: String,
+    default: 'client'
+  },
   restaurant: [{
     type: String,
     ref: 'Restaurant'
   }],
-  active: Boolean,
+  active: {
+    type: Boolean,
+    default: true,
+  },
 
 })
 

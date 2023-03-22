@@ -3,7 +3,6 @@ const { Schema } = mongoose
 
 
 const favoriteSchema = new Schema({
-  active: Boolean,
   user: [{
     type: String,
     ref: 'User'

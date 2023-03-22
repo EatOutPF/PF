@@ -3,7 +3,6 @@ const { Schema } = mongoose
 
 
 const reserveSchema = new Schema({
-  active: Boolean,
   user: [{
     type: String,
     ref: 'User'
@@ -14,11 +13,12 @@ const reserveSchema = new Schema({
   }],
   date: {
     type: Date,
-    default: Date.now
   },
   time: {
-    type: Date,
-  }
+    type: String,
+  },
+  payment: Number,
+  table: Number,
 
 })
 
