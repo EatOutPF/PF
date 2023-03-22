@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.appBar.primary,
     flexDirection: 'row',
+    alignItems: "flex-end",
     paddingTop: Constants.statusBarHeight + 10,
     width: '100%',
     // flex: 1
