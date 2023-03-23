@@ -2,7 +2,9 @@ import { LOGOUT_USER, SET_USER } from "./Actions";
 
 const initialState = {
   allRestaurants: [],
-  user: null
+  user: null,
+  detailRestaurant: {},
+  currentListRestaurants: [],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
