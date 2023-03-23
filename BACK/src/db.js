@@ -7,7 +7,7 @@ const Menu = require("./models/Menu");
 const PaymentMethods = require("./models/PaymentMethods");
 const Reserve = require("./models/Reserve");
 const Restaurant = require("./models/Restaurant");
-const Room = require("./models/Room");
+const Section = require("./models/Section");
 const User = require("./models/User");
 const { ATLAS_URI } = process.env;
 const mongoose = require("mongoose");
@@ -32,7 +32,7 @@ module.exports = {
   PaymentMethods,
   Reserve,
   Restaurant,
-  Room,
+  Section,
   User,
 };
 
