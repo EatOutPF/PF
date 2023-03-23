@@ -17,6 +17,7 @@ const Cards = () => {
         <div>No se encontraron resultados</div>
       ) : (
         <table>
+          <thead>
           <tr>
             <th>Restaurante</th>
             <th>Comida</th>
@@ -44,6 +45,7 @@ const Cards = () => {
               />
             );
           })}
+            </thead>
         </table>
       )}
     </div>
