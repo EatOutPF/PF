@@ -61,7 +61,7 @@ return (
     <View style={styles.container}>
       {/* <MapView style={styles.map} /> */}
         <MapView
-            customMapStyle={mapStyle}
+            // customMapStyle={mapStyle}            // habilitar esto para poner los colores del mapa
             // provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
@@ -73,21 +73,31 @@ return (
             mapType="standard"
         >
 
+       
+
         {
             restorantsJson.map(item => (
                 <Marker 
                     key={item._id} 
-                    coordinate={{
-                        latitude: item.address.coordinates.latitud,
-                        longitude: item.address.coordinates.longitud
-                    }}
+                    coordinate={item.address.coordinate}
                     title={item.name}
+                    pinColor='pink'
                 />
                 )
             )
         }
 
-    
+        <Marker
+            key="userUbication"
+            coordinate={ origin }
+            title="Ubicacion actual."
+            description="Este eres tu."
+            pinColor='green'
+            draggable
+            onDragEnd={(direction) => setOrigen(direction.nativeEvent.coordinate)}
+        >
+            {/* <Text style={{fontSize:30}}>🏠</Text> */}
+        </Marker>
 
 
         {/* <Marker

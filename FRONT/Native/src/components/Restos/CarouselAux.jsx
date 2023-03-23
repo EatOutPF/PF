@@ -35,12 +35,11 @@ const CarouselAux = (props) => {
   };
 
   const renderItem = ({ item, index }) => {
- 
-    if(item.extra.name === props.title)
+
     {
       const isActive = index === activeIndex;
-      const ownerAvatarUrl = item.images;
-      // console.log("img: ", item.name)
+      const ownerAvatarUrl = item.images[0];
+
       return (
         <View style={[styles.itemContainer, isActive && styles.activeItemContainer]}>
           
@@ -56,20 +55,22 @@ const CarouselAux = (props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.arrowButton} onPress={handlePrev}>
+
+      {/* <TouchableOpacity style={styles.arrowButton} onPress={handlePrev}>
         <Text style={styles.arrowButtonText}>{'<'}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      
       <FlatList
-        data={repositories}
+        data={props.data}
         renderItem={renderItem}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         snapToInterval={200}
         snapToAlignment="center"
       />
-      <TouchableOpacity style={styles.arrowButton} onPress={handleNext}>
+      {/* <TouchableOpacity style={styles.arrowButton} onPress={handleNext}>
         <Text style={styles.arrowButtonText}>{'>'}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
 
     </View>
@@ -86,14 +87,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginHorizontal: 10,
-    backgroundColor: 'gray',
+    backgroundColor: '#FA6B6B',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activeItemContainer: {
-    backgroundColor: 'orange',
-  },
+  // activeItemContainer: {
+  //   backgroundColor: 'orange',
+  // },
   itemTitle: {
     fontSize: 20,
     color: 'white',
