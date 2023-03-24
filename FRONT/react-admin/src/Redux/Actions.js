@@ -5,13 +5,15 @@ const baseUrl = "http://localhost:3001/restaurant";
 
 export const GET_ALL_RESTAURANTS = "GET_ALL_RESTAURANTS";
 export const SET_USER = "SET_USER";
-export const LOGOUT_USER = "LOGOUT_USER";
+export const LOGOUT_USER = "LOGOUT_USER"
+export const FILTER_BY_DIETS= "FILTER_BY_DIETS"
 
 export const getAllRestaurants = () => {
   return {
     type: GET_ALL_RESTAURANTS,
     payload: restaurants,
   };
+
 
   /* async (dispatch) => {
     const response = await axios.get(baseUrl);
@@ -30,3 +32,12 @@ export const setUser = (user) => ({
 export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
+
+
+export const getFilterByDiets=(diet) =>{
+ 
+  return {
+    type: FILTER_BY_DIETS,
+    payload: diet,
+  };
+}
