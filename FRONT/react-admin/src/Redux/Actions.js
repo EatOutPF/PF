@@ -8,6 +8,7 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
+export const FILTER_BY_DIETS= "FILTER_BY_DIETS"
 
 export const getAllRestaurants = () => {
   return async (dispatch) => {
@@ -37,6 +38,14 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
+
+export const getFilterByDiets=(comida) =>{
+ 
+  return {
+    type: FILTER_BY_DIETS,
+    payload: comida,
+  };
+}
 export const findDetailRestaurant = (id) => {
   return async (dispatch) => {
     const result = await axios(`${baseUrl}/restaurant${id}`);
