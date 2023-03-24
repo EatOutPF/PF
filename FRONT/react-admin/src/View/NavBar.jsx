@@ -4,8 +4,7 @@ import Logout from "../Components/Logout";
 const NavBar = () => {
   return (
     <div>
-      <Logout/>  
-      
+      <Logout />
     </div>
   );
 };
