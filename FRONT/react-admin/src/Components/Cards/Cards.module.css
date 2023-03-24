@@ -1,0 +1,15 @@
+.containerCards {
+  display: flex;
+  padding: 1rem;
+  background-size: cover;
+  white-space: nowrap;
+}
+
+.containerCards button {
+  background-color: #464646;
+}
+
+.containerTitle {
+  background-color: #fa6b6b;
+  color: #ffffff;
+}

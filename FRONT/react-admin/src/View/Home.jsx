@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Cards from "../Components/Cards";
+import Cards from "../Components/Cards/Cards.jsx";
 import { getAllRestaurants } from "../Redux/Actions";
 import Filter from "../Components/Filter";
 import Paginate from "../Components/Paginado/Paginado";
+import "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();

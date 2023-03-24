@@ -3,12 +3,14 @@ const { Router } = require("express");
 const router = Router();
 
 const restaurantRouter = require("./Restaurant")
-// const menuRouter = require("./menu");
-// const paymentRouter = require("./payment");
+const sectionRouter = require("./Section")
+const paymentMethodsRouter = require("./PaymentMethods")
+
 
 
 router.use("/restaurant", restaurantRouter)
-// router.use("/restaurant/menu", menuRouter);
-// router.use("/payment", paymentRouter);
+router.use("/section", sectionRouter)
+router.use("/paymentMethods", paymentMethodsRouter)
+
 
 module.exports = router;

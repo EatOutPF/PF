@@ -7,8 +7,7 @@ const NavBar = () => {
   const [order, setOrder] = useState("");
   return (
     <div>
-      <Logout/>  
-  
+      <Logout />
     </div>
   );
 };

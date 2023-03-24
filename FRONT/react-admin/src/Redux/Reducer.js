@@ -1,4 +1,13 @@
-import { GET_ALL_RESTAURANTS, LOGOUT_USER, SET_USER, FILTER_BY_DIETS } from "./Actions";
+
+import {
+  GET_ALL_RESTAURANTS,
+  LOGOUT_USER,
+  SET_USER,
+  MODIFY_RESTAURANT,
+  DETAIL_RESTAURANT,
+  FILTER_BY_DIETS,
+} from "./Actions";
+import { modifyRestaurantController } from "./utils";
 
 const initialState = {
   allRestaurants: [],
@@ -15,6 +24,12 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, currentListRestaurants: payload };
    
       case SET_USER:
+      return {
+        ...state,
+        currentListRestaurants: payload,
+        allRestaurants: payload,
+      };
+    case SET_USER:
       return { ...state, user: payload.user };
     
       case LOGOUT_USER:
@@ -26,6 +41,13 @@ const Reducer = (state = initialState, { type, payload }) => {
         );
         return { ...state, currentListRestaurants: filterByDiets };
       
+    case DETAIL_RESTAURANT:
+      return {
+        ...state,
+        detailRestaurant: payload,
+      };
+    case MODIFY_RESTAURANT:
+      return { ...state, allRestaurants: modifyRestaurantController(payload) };
     default:
       return { ...state };
   }
