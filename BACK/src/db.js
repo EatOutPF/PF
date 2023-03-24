@@ -2,7 +2,6 @@ require("dotenv").config();
 const Atmosphere = require("./models/Atmosphere");
 const Diet = require("./models/Diet");
 const Extra = require("./models/Extra");
-const Favorite = require("./models/Favorite");
 const Menu = require("./models/Menu");
 const PaymentMethods = require("./models/PaymentMethods");
 const Reserve = require("./models/Reserve");
@@ -27,7 +26,6 @@ module.exports = {
   Atmosphere,
   Diet,
   Extra,
-  Favorite,
   Menu,
   PaymentMethods,
   Reserve,

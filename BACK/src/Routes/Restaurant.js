@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const express = require("express");
+const mongoose = require("mongoose");
 const {
   getRestaurant,
   postRestaurant,
@@ -20,12 +21,23 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  let { name } = req.query;
-  try {
-    let resultado = await getRestaurant(name);
-    res.status(200).json(resultado);
-  } catch (error) {
-    res.status(404).json({ error: error.message });
+  let { id, name } = req.query;
+  if (id !== undefined) {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      res.status(400).json("El id es inválido.");
+    try {
+      let resultado = await getRestaurant(id);
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  } else {
+    try {
+      let resultado = await getRestaurant(name);
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
   }
 });
 

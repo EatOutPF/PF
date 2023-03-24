@@ -26,6 +26,7 @@ function Logout() {
 
     
   const [user, setUser] = useState(null);
+  const [error, setError]= useState(null)
   const dispatch = useDispatch();
   const handleSignOut = async () => {
     try {
