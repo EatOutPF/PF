@@ -59,11 +59,17 @@ async function postRestaurant({
   return `El restaurant ${resultado.name} fue creado`;
 }
 
-async function getRestaurant(name) {
-  let search = name;
-  if (search) {
-    const restaurants = await Restaurant.findOne({ name: { $regex: search } });
-    return restaurants;
+async function getRestaurant(props) {
+  if (props !== undefined) {
+    if (!mongoose.Types.ObjectId.isValid(props)) {
+      const restaurant = await Restaurant.findOne({ name: props });
+      return restaurant;
+    }
+
+    if (mongoose.Types.ObjectId.isValid(props)) {
+      const restaurant = await Restaurant.findById(props);
+      return restaurant;
+    }
   }
 
   const restaurants = await Restaurant.find();
