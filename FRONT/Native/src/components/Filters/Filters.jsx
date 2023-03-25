@@ -4,18 +4,14 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 // import { useFocusEffect } from  'react-navigation';
 import { useCallback } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { useState } from "react";
-
-
-
-// const [ isClose, setIsClose] = useState
 
 
 export default Filters = (props) => {
 
-    function Response(){
-        props.handleBottonSheet(false)
-      }
+    const response = () => {
+        props.handleBottonSheet()
+    }
+
     const buttons = createBottomTabNavigator();
 
     return (
@@ -27,17 +23,14 @@ export default Filters = (props) => {
                 style={styles.closeBottom}
                 name="close-circle-outline"
                 size={22}
-                onPress={Response()}
+                onPress={() => response()}
             />
 
             <View styles={styles.container}>
-
-
                 <TouchableOpacity styles={styles.container} >
-
                     <View>
 
-                    <Text>Calificación</Text>
+                        <Text>Calificación</Text>
 
                     </View>
                 </TouchableOpacity>
@@ -47,7 +40,7 @@ export default Filters = (props) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity>
-                    <Text style= {{color:'red'}}>Mayor Precio</Text>
+                    <Text style={{ color: 'red' }}>Mayor Precio</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity>
@@ -82,13 +75,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
     },
-    orderButtons : {
+    orderButtons: {
 
         alignItems: "",
         color: 'red',
         flexDirection: "column",
 
     }
-    })
+})
 
 
