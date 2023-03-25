@@ -1,3 +1,4 @@
+import axios from "axios";
 import { 
     GET_ALL_RESTORANTS,
     FILTER_CARDS,
@@ -5,12 +6,33 @@ import {
 } from "./type";
 
 
+// esto hay que cambiarlo a la IP que tiene el servidor 
+// ya que es diferente a la IP del Celular
+const DB_HOST = "http://192.168.100.5:5001";  // ip de la pc con el server corriendo
+
 // ACTION CREATORS
-export function getAllRestorants(status) {
-    return {
-        type: GET_ALL_RESTORANTS,
-        payload: status
-    }
+export function getAllRestorants() {
+    return async (dispatch) => {
+        axios
+            .get(`${DB_HOST}/restaurant`)
+            .then((response) => {
+            // console.log("RESPONSE -> ", response);
+                dispatch({
+                    type: GET_ALL_RESTORANTS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_ALL_RESTORANTS,
+                    payload: error.message,
+                });
+            });
+    };
+    // return {
+    //     type: GET_ALL_RESTORANTS,
+    //     payload: status
+    // }
 }
 
 export function filterCards (status){ 
