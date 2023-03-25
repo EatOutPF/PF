@@ -1,11 +1,13 @@
 // home - search - filter - ordenar - crear -  informe(saldo x restaurante – II fase)
-
-import React from "react";
+import { useState } from "react";
+import Logout from "../Components/Logout";
 
 const NavBar = () => {
+
+  const [order, setOrder] = useState("");
   return (
     <div>
-      <h1>Soy el componente Navbar</h1>
+      <Logout />
     </div>
   );
 };

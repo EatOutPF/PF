@@ -1,0 +1,14 @@
+.modal {
+  background-color: rgba(27, 26, 26, 0.295);
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalOpen {
+  display: flex;
+}

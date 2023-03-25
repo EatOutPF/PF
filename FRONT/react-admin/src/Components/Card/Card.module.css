@@ -1,0 +1,26 @@
+td,
+th,
+table {
+  border: 1px solid #242424;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 5px 10px;
+}
+
+table {
+  width: 100%;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rows button {
+  padding: 5px 10px;
+  font-size: small;
+}

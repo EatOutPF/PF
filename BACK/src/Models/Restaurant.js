@@ -8,7 +8,6 @@ const restaurantSchema = new Schema({
     trim: true,
     required: true,
     index: true,
-    unique: true,
     minLength: 1,
     maxLength: 255,
   },
