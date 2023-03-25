@@ -1,36 +1,31 @@
 import React, { useEffect } from "react";
-import Card from "../Card/Card";
+import Card from '../Card/Card'
 import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
-
-const Cards = () => {
-  const currentListRestaurants = useSelector(
-    (state) => state.currentListRestaurants
-  );
-
+const Cards = ({ currentRestaurants }) => {
   useEffect(() => {
-    console.log(currentListRestaurants);
+    console.log(currentRestaurants);
   });
 
   return (
-    <div className={style.containerCards}>
-      {!currentListRestaurants?.length ? (
+    <div  className={style.containerCards}>
+      {!currentRestaurants?.length ? (
         <div>No se encontraron resultados</div>
       ) : (
         <table>
           <thead>
-            <tr className={style.containerTitle}>
+            <tr  className={style.containerTitle}>
               <th>Restaurante</th>
               <th>Comida</th>
               <th>Puntuación</th>
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
-              <th>Acción</th>
+              <th> </th>
             </tr>
           </thead>
           <tbody>
-            {currentListRestaurants.map((r) => {
+            {currentRestaurants.map((r) => {
               return (
                 <Card
                   key={r._id}
