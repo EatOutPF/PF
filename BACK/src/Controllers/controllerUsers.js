@@ -25,7 +25,7 @@ async function postUsers({ name, phone, email, password }) {
     password,
   });
   const resultado = await newUsers.save();
-  return `El usuaario ${resultado.name} fue creado con exito`;
+  return `El usuario ${resultado.name} fue creado con exito`;
 }
 
 async function putUsers(id, { name, phone, email, password }) {
