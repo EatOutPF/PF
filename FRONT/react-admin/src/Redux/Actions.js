@@ -1,5 +1,4 @@
 import axios from "axios";
-import restaurants from "../restaurants.json";
 
 const baseUrl = "http://localhost:5001";
 
@@ -48,17 +47,26 @@ export const getFilterByDiets=(comida) =>{
 }
 export const findDetailRestaurant = (id) => {
   return async (dispatch) => {
-    const result = await axios(`${baseUrl}/restaurant${id}`);
-    dispatch({
-      type: DETAIL_RESTAURANT,
-      payload: result.data,
-    });
+    return await axios
+      .get(`${baseUrl}/restaurant?id=${id}`)
+      .then((result) =>
+        dispatch({
+          type: DETAIL_RESTAURANT,
+          payload: result.data,
+        })
+      )
+      .catch((err) => {
+        dispatch({
+          type: DETAIL_RESTAURANT,
+          payload: err.response.data,
+        });
+      });
   };
 };
 
-export const modifyRestaurant = (dataToUpdate, allRestaurants) => {
+export const modifyRestaurant = (dataToUpdate) => {
   return async (dispatch) => {
-    await fetch(`${baseUrl}/${dataToUpdate._id}`, {
+    await fetch(`${baseUrl}/restaurant/${dataToUpdate._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "aplication/json",
@@ -66,16 +74,16 @@ export const modifyRestaurant = (dataToUpdate, allRestaurants) => {
       body: JSON.stringify(dataToUpdate),
     })
       .then((response) => response.json())
-      .then((modifiedRestaurant) => {
+      .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
-          payload: { dataToUpdate, modifiedRestaurant, allRestaurants },
+          payload: { dataToUpdate, result },
         });
       })
       .catch((error) => {
         return dispatch({
           type: MODIFY_RESTAURANT,
-          payload: error,
+          payload: error.response.data,
         });
       });
   };

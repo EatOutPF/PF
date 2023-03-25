@@ -7,7 +7,6 @@ import {
   DETAIL_RESTAURANT,
   FILTER_BY_DIETS,
 } from "./Actions";
-import { modifyRestaurantController } from "./utils";
 
 const initialState = {
   allRestaurants: [],
@@ -47,7 +46,14 @@ const Reducer = (state = initialState, { type, payload }) => {
         detailRestaurant: payload,
       };
     case MODIFY_RESTAURANT:
-      return { ...state, allRestaurants: modifyRestaurantController(payload) };
+      return {
+        ...state,
+        allRestaurants: state.allRestaurants.map((r) => {
+          return +r._id === +payload.dataToUpdate._id
+            ? payload.dataToUpdate
+            : r;
+        }),
+      };
     default:
       return { ...state };
   }

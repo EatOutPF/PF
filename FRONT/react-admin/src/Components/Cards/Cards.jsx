@@ -29,6 +29,7 @@ const Cards = ({ currentRestaurants }) => {
               return (
                 <Card
                   key={r._id}
+                  id={r._id}
                   name={r.name}
                   address={r.address}
                   contact={r.contact}
