@@ -7,6 +7,7 @@ const sectionRouter = require("./Section")
 const paymentMethodsRouter = require("./PaymentMethods")
 const usersRouter = require("./Users")
 const menuRouter = require("./Menu")
+const dietRouter  =require("./Diet")
 
 
 
@@ -16,6 +17,7 @@ router.use("/section", sectionRouter)
 router.use("/paymentMethods", paymentMethodsRouter)
 router.use("/users", usersRouter)
 router.use("/menu", menuRouter)
+router.use("/diet", dietRouter)
 
 
 module.exports = router;
