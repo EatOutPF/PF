@@ -36,7 +36,6 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { active } = req.body;
-  console.log(active)
   if (active !== undefined) {
     try {
       let resultado = await activeUsers(id, active)
@@ -44,8 +43,10 @@ router.put("/:id", async (req, res) => {
     } catch (error) {
       res.status(400).json({error: error.message})
     }
+
   } else {
     try {
+      
       let resultado = await putUsers(id, req.body);
       res.status(200).json(resultado);
     } catch (error) {
