@@ -1,37 +1,35 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Text, View } from 'react-native'
 import RepositoryList from '../Restos/RestosList.jsx'
 import Map from '../Map/Map.jsx'
-
-// import CarouselComponent from "./CarouselComponent.jsx"
-// import CarouselAux from "./CarouselAux.jsx"
-// import CarouselPagerView from "./CarouselPagerView"
-
-// import Map from "./Map.jsx"
-// import Mapita from "./Mapita.jsx"
-
+import RepositoryList1 from '../Cards/RepositoryList.jsx'
+import SelectComponent from '../filtradoaux/filtradoaux.jsx'
 
 
 import AppBar from '../NavBar/AppBar.jsx'
 import { Redirect, Route, Routes } from 'react-router-native'
+import { useSelector, useDispatch,  } from 'react-redux';
+import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 const Main = () => {
+  const restorantes = useSelector(state => state.allRestorants);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllRestorants())
+
+  }, []);
+
   return (
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
       {/* <RepositoryList /> */}
       <AppBar />       
         <Routes>
           <Route path='/' element= {<RepositoryList />} />
-          <Route path='/claudio' element= {<Text>Working on it</Text>} />
+          <Route path='/claudio' element= {<RepositoryList1/>} />
           <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
-          <Route path='/pagerview' element={<Text>Working on it</Text>} />
-          <Route path='/signin' element= 
-          {
-            // <Carousel/>
-            // <CarouselAux/>
-            <Text>Working on it</Text>
-            // <Text>Working on it</Text>
-          } 
+          <Route path='/pagerview' element={<SelectComponent/>} />
+          <Route path='/signin' element= { <Text>Working on it</Text> } 
           />
          {/* <Redirect to='/' /> */}
         </Routes> 
