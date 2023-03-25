@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     paddingTop: Constants.statusBarHeight + 10,
     width: '100%',
-    // flex: 1
   },
   scroll: {
     paddingBottom: 15
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
 const AppBarTab = ({ children, to }) => {
   const { pathname } = useLocation()
   const active = pathname === to
-
   const textStyles = [
     styles.text,
     active && styles.active
@@ -53,9 +51,6 @@ const AppBar = () => {
         <AppBarTab to='/claudio'>Bbbb</AppBarTab>
         <AppBarTab to='/pagerview'>Cccc</AppBarTab>
         <AppBarTab to='/mapview'>Dddd</AppBarTab>
-
-
-
       </ScrollView>
     </View>
   )
