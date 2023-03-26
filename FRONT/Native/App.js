@@ -59,8 +59,8 @@ export default function App() {
               <View style={styles.contentContainer}>
                 <Filters
                   array={isOpen}
-                  handleBottonSheet={handleBottonSheet} 
-                  />
+                  handleBottonSheet={handleBottonSheet}
+                />
               </View>
             </BottomSheetModal>
           </NativeRouter>

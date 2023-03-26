@@ -1,86 +1,96 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Button } from "react-native-elements"
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-// import { useFocusEffect } from  'react-navigation';
-import { useCallback } from "react";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { Picker } from '@react-native-picker/picker'
+import { useState } from "react";
 
 export default Filters = (props) => {
-
     const response = () => {
         props.handleBottonSheet()
     }
-
-    const buttons = createBottomTabNavigator();
-
+    const [selectedValue, setSelectedValue] = useState(null);
+    const options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+        { label: 'Option 3', value: 'option3' },
+    ];
     return (
-        <View>
-
+        <View style={styles.container}>
             <Text styles={styles.title}>Ordenar por</Text>
-
             <IonicIcon
                 style={styles.closeBottom}
                 name="close-circle-outline"
                 size={22}
                 onPress={() => response()}
             />
-
-            <View styles={styles.container}>
-                <TouchableOpacity styles={styles.container} >
-                    <View>
-
-                        <Text>Calificación</Text>
-
-                    </View>
+            <ScrollView
+                showsHorizontalScrollIndicator={false}
+                horizontal
+            // style={styles.orderButtons}
+            >
+                <TouchableOpacity style={styles.orderButton}>
+                    <Text style={styles.orderButtonText}>Calificación</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text>Distancia</Text>
+                <TouchableOpacity style={styles.orderButton}>
+                    <Text style={styles.orderButtonText}>Distancia</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={{ color: 'red' }}>Mayor Precio</Text>
+                <TouchableOpacity style={styles.orderButton}>
+                    <Text style={styles.orderButtonText}>MayorPrecio</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text>Menor Precio</Text>
+                <TouchableOpacity style={styles.orderButton}>
+                    <Text style={styles.orderButtonText}>MenorPrecio</Text>
                 </TouchableOpacity>
-
+            </ScrollView>
+            <View>
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => setSelectedValue(value)}
+                >
+                    <Picker.Item label="Select an option" value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
             </View>
-
         </View>
+
     )
 }
-
-
 const styles = StyleSheet.create({
-
-
+    container: {
+        flex: 1,
+        // justifyContent: "center",
+        // paddingVertical: 15,
+    },
     title: {
         fontWeight: '900',
         letterSpacing: 1,
-        fontFamily: 'Pass througt',
-        fontSize: 50,
-        right: 100
+        fontSize: 80,
+        right: 100,
     },
     closeBottom: {
-        position: "absolute",
+        flexDirection: 'row',
+        alignItems: "flex-end",
+        justifyContent: 'flex-start',
         fontSize: 40,
-        top: -5,
         alignSelf: "flex-end",
-        left: 170,
-    },
-    container: {
-        flex: 1,
-        justifyContent: "center",
+        margin: 10, 
     },
     orderButtons: {
-
-        alignItems: "",
-        color: 'red',
-        flexDirection: "column",
-
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    orderButton: {
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+        backgroundColor: '#FA6B6B',
+        height: 30,
+        borderRadius: 10,
+        marginLeft: 2,
+        marginRight: 2,
+    },
+    orderButtonText: {
+        fontSize: 14,
+        color: "white"
     }
 })
 
