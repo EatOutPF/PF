@@ -80,7 +80,6 @@ export const modifyRestaurant = (dataToUpdate) => {
         });
       })
       .catch((error) => {
-        console.log("error back", error);
         return dispatch({
           type: MODIFY_RESTAURANT,
           payload: error.response?.data?.error,
