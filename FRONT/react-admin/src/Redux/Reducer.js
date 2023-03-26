@@ -1,4 +1,3 @@
-
 import {
   GET_ALL_RESTAURANTS,
   LOGOUT_USER,
@@ -6,6 +5,8 @@ import {
   MODIFY_RESTAURANT,
   DETAIL_RESTAURANT,
   FILTER_BY_DIETS,
+  ERROR_MSSG,
+  GET_RESTAURAN_NAME,
 } from "./Actions";
 
 const initialState = {
@@ -13,33 +14,22 @@ const initialState = {
   user: null,
   detailRestaurant: {},
   currentListRestaurants: [],
-  stateToFilters: [], 
+  stateToFilters: [],
+  msg: "",
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    
     case GET_ALL_RESTAURANTS:
       return { ...state, currentListRestaurants: payload };
-   
-      case SET_USER:
+    case SET_USER:
       return {
         ...state,
         currentListRestaurants: payload,
         allRestaurants: payload,
       };
-    case SET_USER:
-      return { ...state, user: payload.user };
-    
-      case LOGOUT_USER:
+    case LOGOUT_USER:
       return { ...state, user: payload };
-
-      case FILTER_BY_DIETS:
-        const filterByDiets = state.currentListRestaurants.filter((restaurant) =>
-          restaurant.diets.includes(payload)
-        );
-        return { ...state, currentListRestaurants: filterByDiets };
-      
     case DETAIL_RESTAURANT:
       return {
         ...state,
@@ -53,7 +43,20 @@ const Reducer = (state = initialState, { type, payload }) => {
             ? payload.dataToUpdate
             : r;
         }),
+      };      
+    case FILTER_BY_DIETS:
+      const filterByDiets = state.currentListRestaurants.filter((restaurant) =>
+        restaurant.diets.includes(payload)
+      );
+      return { ...state, currentListRestaurants: filterByDiets };
+    case ERROR_MSSG:
+      return {
+        ...state,
+        msg: action.payload,
+        allRestaurants: [],
       };
+    case GET_RESTAURAN_NAME:
+      return { ...state, currentListRestaurants: payload }
     default:
       return { ...state };
   }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import style from "./NavBar.modules.css";
 
+
 const NavBar = () => {
   const [order, setOrder] = useState("");
   return (
@@ -14,6 +15,7 @@ const NavBar = () => {
         </NavLink>
         <NavLink to="/">
           <Logout />
+        
         </NavLink>
         {/* <NavLink to="/create">Crear nuevo Restaurante</NavLink> */}
       </div>
