@@ -50,8 +50,8 @@ export default function rootReducer(state = initialState, action) {
         case GET_RESTORANT_BY_ID:  {
             // console.log(restorantsJson);
             return{ ...state, 
-                allRestorants: action.payload, 
-                restorantsFound: sortAsc(action.payload) 
+                restorantById: action.payload, 
+                // restorantsFound: sortAsc(action.payload) 
             }
         }
   //------------------------------------------------------------------------- 
