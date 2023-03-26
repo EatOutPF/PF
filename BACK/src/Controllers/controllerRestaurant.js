@@ -117,7 +117,7 @@ async function putRestaurant(
     atmosphere: atmosphere,
     extras: extras,
     section: section,
-  });
+  },  {new:true});
 
   if (!restaurant)
     throw new Error(`No se encuentra restaurant con el id ${id}`);
