@@ -25,7 +25,6 @@ export default Filters = (props) => {
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal
-            // style={styles.orderButtons}
             >
                 <TouchableOpacity style={styles.orderButton}>
                     <Text style={styles.orderButtonText}>Calificación</Text>
@@ -45,12 +44,69 @@ export default Filters = (props) => {
                     selectedValue={selectedValue}
                     onValueChange={(value) => setSelectedValue(value)}
                 >
-                    <Picker.Item label="Select an option" value="" />
+                    <Picker.Item label="Tipo de comida" value="" />
                     {options.map((option) => (
                         <Picker.Item key={option.value} label={option.label} value={option.value} />
                     ))}
                 </Picker>
             </View>
+
+            <View>
+
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => setSelectedValue(value)}
+                >
+                    <Picker.Item label="Ambiente" value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
+
+            </View>
+
+            <View>
+
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => setSelectedValue(value)}
+                >
+                    <Picker.Item label="Espacios" value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
+
+            </View>
+
+            <View>
+
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => setSelectedValue(value)}
+                >
+                    <Picker.Item label="Cuenta con" value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
+
+            </View>
+
+            <View>
+
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => setSelectedValue(value)}
+                >
+                    <Picker.Item label="Otrosn" value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
+
+            </View>
+
         </View>
 
     )
@@ -58,13 +114,12 @@ export default Filters = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: "center",
-        // paddingVertical: 15,
+
     },
     title: {
         fontWeight: '900',
         letterSpacing: 1,
-        fontSize: 80,
+        fontSize: 20,
         right: 100,
     },
     closeBottom: {
@@ -73,12 +128,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         fontSize: 40,
         alignSelf: "flex-end",
-        margin: 10, 
+        margin: 10,
+        paddingVertical: 15,
     },
-    orderButtons: {
-        justifyContent: 'space-between',
-        marginTop: 10,
-    },
+
     orderButton: {
         paddingHorizontal: 10,
         justifyContent: 'center',
