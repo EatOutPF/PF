@@ -135,7 +135,7 @@ async function activeRestaurant(id, active) {
 
   restaurant.save();
 
-  return `Se ha modificado el estado del restaurant ${restaurant.name}`;
+  return `Se ha dehabilitado el restaurant ${restaurant.name}`;
 }
 
 module.exports = {
