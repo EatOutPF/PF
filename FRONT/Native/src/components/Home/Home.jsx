@@ -26,10 +26,10 @@ const Main = () => {
   const restorantes = useSelector(state => state.allRestorants);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllRestorants())
+  // useEffect(() => {
+  //   // if(restorantes?.length === 0) dispatch(getAllRestorants())
 
-  }, []);
+  // }, []);
 
   return (
 
@@ -38,13 +38,15 @@ const Main = () => {
         <Routes>
           <Route path='/' element= {<RepositoryList />} />
           <Route path='/restorantslist' element= {
-            // <Text>Working on it</Text>
-          <RestorantsList/>
+          <Text>Working on it</Text>
+          // <RestorantsList/>
           } />
           <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
           <Route path='/pagerview' element={<SelectComponent/>} />
           <Route path='/signin' element= { <Text>Working on it</Text> } 
           />
+          {/* <Route path='/detail/:_id' element={<DetailResto />} /> */}
+
         </Routes> 
     </View>
   )
