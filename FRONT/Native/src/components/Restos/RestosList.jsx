@@ -19,12 +19,17 @@ const RepositoryList = () => {
   const restorantes = useSelector(state => state.allRestorants);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if(restorantes?.length !== 0) { setLoading(false) }
-    // await AsyncStorage.setItem()
-    else dispatch(getAllRestorants());
-    // listaRestos = useSelector(state => state.allRestorants);
 
+  useEffect(() => {
+    // if(restorantes?.length !== 0) { setLoading(false) }
+  //   // await AsyncStorage.setItem()
+  //   else if(restorantes?.length === 0)dispatch(getAllRestorants());
+  //   // listaRestos = useSelector(state => state.allRestorants);
+    if(restorantes?.length === 0)dispatch(getAllRestorants());
+    if(restorantes){ setLoading(false) }
+
+    console.log("restos repolist: ", restorantes);
+    // dispatch(getAllRestorants());
   },[restorantes])
   
 
