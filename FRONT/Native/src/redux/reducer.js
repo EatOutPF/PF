@@ -77,7 +77,6 @@ export default function rootReducer(state = initialState, action) {
   //-------------------------------------------------------------------------              
         case ORDER_CARDS:
           // let filtradoOrder = [];
-          console.log("llegue aca: ", action.payload);
             switch(action.payload) {
             
                 case "az":{
@@ -99,10 +98,8 @@ export default function rootReducer(state = initialState, action) {
                         orderState: action.payload,
                         allRestorants: [...state.allRestorants].sort((a, b) => b.ranking - a.ranking),
                         restorantsFound: [...state.restorantsFound].sort((a, b) => b.ranking - a.ranking),
-                      };
-                      console.log("estado order: ", updatedState.orderState);
-                      console.log("soy el All ordenado: ", updatedState.allRestorants);
-                      return updatedState;
+                    };
+                    return updatedState;
                     // state.orderState = action.payload
                     // console.log("estado order: ",state.orderState);
                     // const all = [...state.allRestorants].sort((a, b) => a.ranking - b.ranking)

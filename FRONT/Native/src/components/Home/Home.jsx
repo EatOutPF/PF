@@ -7,8 +7,8 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 
 // import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 // import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
-// import RepositoryList1 from '../Cards/RepositoryList.jsx'
-// import SelectComponent from '../filtradoaux/filtradoaux.jsx'
+import RestorantsList from '../Cards/RepositoryList.jsx'
+import SelectComponent from '../filtradoaux/filtradoaux.jsx'
 
 
 // import Filters from '../Filters/Filters.jsx';
@@ -37,7 +37,10 @@ const Main = () => {
       <AppBar />       
         <Routes>
           <Route path='/' element= {<RepositoryList />} />
-          <Route path='/claudio' element= {<RepositoryList1/>} />
+          <Route path='/restorantslist' element= {
+            // <Text>Working on it</Text>
+          <RestorantsList/>
+          } />
           <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
           <Route path='/pagerview' element={<SelectComponent/>} />
           <Route path='/signin' element= { <Text>Working on it</Text> } 

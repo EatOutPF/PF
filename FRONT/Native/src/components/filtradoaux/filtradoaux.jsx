@@ -9,9 +9,9 @@ import { getAllRestorants } from '../../redux/actions';
 const SelectComponent = () => {
 
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch (getAllRestorants());
-      }, []);
+    // useEffect(() => {
+    //     dispatch (getAllRestorants());
+    //   }, []);
 
   const [value1, setValue1] = useState("All");
   const [value2, setValue2] = useState("All");
@@ -97,7 +97,7 @@ function close() {
                     <Picker.Item label="wi-fi" value="wi-fi" />
                 </Picker>
         </View>
-        <RepositoryList extras={value5}></RepositoryList>
+        {/* <RepositoryList extras={value5}></RepositoryList> */}
     </View>
   );
 };

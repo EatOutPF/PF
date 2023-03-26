@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert, Image, Dimen
 
 // const repositories = restorantsJson;
 const { width } = Dimensions.get('window');
-console.log("width screen", width);
+// console.log("width screen", width);
 let imageWidth = 200;
 let imageHeight = 200;
 

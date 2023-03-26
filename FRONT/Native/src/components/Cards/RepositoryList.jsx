@@ -6,7 +6,7 @@ import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 
-const RepositoryList1 = () => {  
+const RestorantsList = () => {  
   const dispatch = useDispatch();
 
   // let aux = restorantes && restorantes;
@@ -38,4 +38,4 @@ const RepositoryList1 = () => {
   )
 }
 
-export default RepositoryList1
+export default RestorantsList
