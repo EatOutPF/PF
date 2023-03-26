@@ -55,8 +55,8 @@ export default function Form() {
   };
 
   return (
-    <form className={styles.formContainer}>
-      <p className={styles.title}>RESTAURANT REGISTRATION</p>
+    <form /* className={styles.formContainer} */>
+      <p /* className={styles.title} */>RESTAURANT REGISTRATION</p>
 
       <div>
         <label> Name: </label>
@@ -269,7 +269,7 @@ export default function Form() {
         />
       </div>
 
-      <div className={styles.terminos}>
+      <div /* className={styles.terminos} */>
         <label htmlFor="terminos">Acepto términos y condiciones</label>
         <input
           type="checkbox"

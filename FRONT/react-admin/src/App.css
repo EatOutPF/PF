@@ -4,6 +4,7 @@
 
 .containerNavBar {
   position: fixed;
+  top: 0px;
   width: 130px;
   background-color: #282c34;
   height: 100vh;
