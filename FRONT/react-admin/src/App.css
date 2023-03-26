@@ -2,6 +2,20 @@
   text-align: center;
 }
 
+.containerNavBar {
+  position: fixed;
+  top: 0px;
+  width: 130px;
+  background-color: #282c34;
+  height: 100vh;
+}
+
+.containerComponents {
+  margin-left: 130px;
+  min-height: 100vh;
+  text-align: center;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

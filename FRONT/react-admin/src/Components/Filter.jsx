@@ -1,26 +1,24 @@
 import React from "react";
-import { getFilterByDiets,
-getAllRestaurants} from "../Redux/Actions";
+import { getFilterByDiets, getAllRestaurants } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
 
+function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
+  const dispatch = useDispatch();
 
-
-
-
-function Filter ({setOrder, setFilter, resetFilter}){
-  const dispatch= useDispatch()
-
-  function handleSubmit(evt){
-
-    evt.preventDefault()
-    dispatch(getFilterByDiets(evt.target.value))
-    setOrder(`${evt.target.value}`)
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    dispatch(getFilterByDiets(evt.target.value));
+    setOrder(`${evt.target.value}`);
   }
-function handleSubmitReset (evt){
-evt.preventDefault()
-dispatch(getAllRestaurants())
-setFilter('')
-}
+
+  function handleClearFilter(evt) {
+    evt.preventDefault();
+    dispatch(getAllRestaurants());
+    setResetFilter(!resetFilter);
+    setCurrentPage(1);
+    setOrder("");
+  }
+
   return (
     <div>
       <select
@@ -31,25 +29,21 @@ setFilter('')
         <option>Filter by type</option>
         <option key="vegetariano" value="vegetariano">
           vegetariano
-        </option>  
-         <option key="vegano" value="vegano">
+        </option>
+        <option key="vegano" value="vegano">
           vegano
-        </option>   
+        </option>
         <option key="celiaco" value="celiaco">
           celiaco
-        </option>  
-       
+        </option>
         ...
       </select>
-      <button onClick={handleSubmitReset}>
-        Restaurantes
-      </button>
-      
+      <button onClick={handleClearFilter}>Restaurantes</button>
     </div>
   );
 }
-export default Filter
 
+export default Filter;
 
 
 

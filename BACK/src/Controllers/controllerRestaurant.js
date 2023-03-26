@@ -16,6 +16,7 @@ async function postRestaurant({
   contact,
   tables,
   schedule,
+  advance,
   menu,
   diets,
   paymentMethods,
@@ -23,6 +24,8 @@ async function postRestaurant({
   extras,
   section,
 }) {
+
+
   if (!name || !address || !contact || !tables || !schedule)
     throw new Error("Hay datos obligatorios sin completar");
 
@@ -45,6 +48,7 @@ async function postRestaurant({
     contact,
     tables,
     schedule,
+    advance,
     menu: menuOjects,
     diets: dietObjects,
     paymentMethods: paymentMethodObjects,
@@ -60,9 +64,11 @@ async function postRestaurant({
 }
 
 async function getRestaurant(props) {
+  
+  
   if (props !== undefined) {
     if (!mongoose.Types.ObjectId.isValid(props)) {
-      const restaurant = await Restaurant.findOne({ name: props });
+      const restaurant = await Restaurant.findOne({ name: { $regex: new RegExp(props, "i") } });
       return restaurant;
     }
 
@@ -86,6 +92,7 @@ async function putRestaurant(
     contact,
     tables,
     schedule,
+    advance,
     menu,
     diets,
     paymentMethods,
@@ -103,13 +110,14 @@ async function putRestaurant(
     contact: contact,
     tables: tables,
     schedule: schedule,
+    advance: advance,
     menu: menu,
     diets: diets,
     paymentMethods: paymentMethods,
     atmosphere: atmosphere,
     extras: extras,
     section: section,
-  });
+  },  {new:true});
 
   if (!restaurant)
     throw new Error(`No se encuentra restaurant con el id ${id}`);
@@ -127,7 +135,7 @@ async function activeRestaurant(id, active) {
 
   restaurant.save();
 
-  return `Se ha modificado el estado del restaurant ${restaurant.name}`;
+  return `Se ha dehabilitado el restaurant ${restaurant.name}`;
 }
 
 module.exports = {

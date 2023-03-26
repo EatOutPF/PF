@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModifyRestaurant from "../ModifyRestaurant/ModifyRestautant";
+import { NavLink } from "react-router-dom";
 import style from "./Card.module.css";
 
 const Card = (props) => {
@@ -23,13 +23,9 @@ const Card = (props) => {
         <td>{props.address[0].city}</td>
         <td>{props.address[0].country}</td>
         <td className={style.rows}>
-          <button onClick={handlerClick}>editar</button>
-          {/* 
-          <ModifyRestaurant
-            openEdit={openEdit}
-            closeEdit={closeEdit}
-            id={props._id}
-          /> */}
+          <NavLink to={`/modify/${props.id}`}>
+            <button onClick={handlerClick}>editar</button>
+          </NavLink>
           <button>borrar</button>
         </td>
       </tr>

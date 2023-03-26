@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     paddingVertical: 5,
-    // flexDirection: "column"
     width: screenwidth,
   },
   language: {

@@ -1,3 +1,68 @@
+.containerModify {
+  padding: 25px;
+  margin: 50px;
+  /* border: 1px solid hotpink; */
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  box-shadow: 9px 14px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  font-weight: bold;
+}
+
+.containerButton {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.containerModify button {
+  padding: 5px 10px;
+  /* text-decoration-line: none; */
+  font-size: 17px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  background-color: #fa6b6b;
+}
+
+.containerModify button:hover {
+  background-color: #891330;
+}
+
+.containerModify label,
+input,
+select {
+  font-size: 14px;
+  text-align: -webkit-auto;
+  margin: 1.5px;
+}
+
+.containerModify input,
+select {
+  padding: 5px;
+  width: 130px;
+  border-radius: 13px;
+}
+
+.containerCheckBox input {
+  width: auto;
+}
+
+.containerDataSection {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1px 10px;
+}
+
+.containerModify form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 0px;
+  gap: 7px;
+}
+
 .modal {
   background-color: rgba(27, 26, 26, 0.295);
   display: none;
@@ -11,4 +76,46 @@
 
 .modalOpen {
   display: flex;
+}
+
+.containerModifydiv {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.containerSection {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+}
+
+.containerData {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  padding: 7px;
+  border: 1 solid black;
+  display: flex;
+  flex-wrap: wrap;
+  border: solid 1px azure;
+  border-radius: 1rem;
+  width: -webkit-fill-available;
+}
+
+.container .containerCheckBox {
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: solid 1px azure;
+  border-radius: 1rem;
+  width: -webkit-fill-available;
+  align-content: flex-start;
+  gap: 4px;
 }

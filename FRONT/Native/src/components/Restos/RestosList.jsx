@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState} from 'react'
 import { FlatList, Text, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
 import PagerView from 'react-native-pager-view';
 import StyledText from "../../styles/StyledText/StyledText"
@@ -6,35 +6,45 @@ import theme  from '../../styles/theme';
 import { useDispatch, useSelector } from 'react-redux'
 // import AsyncStorage from "@react-native-async-storage/async-storage"
 
-import { getAllRestorants } from '../../redux/actions'
-
+import { getAllRestorants, clearStateResatorantById } from '../../redux/actions'
+import Loading from "../Loading/Loading"
 import CarouselAux from './CarouselAux';
-import restorantsJson from '../../../data/restaurants'
+
 import RepositoryItem from './RestosItem.jsx'
 
-const aux = restorantsJson
-let aux1 = aux.sort((a, b) => b.Ranking - a.Ranking)
 
 const RepositoryList = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    // await AsyncStorage.setItem()
-    // dispatch(getAllRestorants());
-    // listaRestos = useSelector(state => state.allRestorants);
+  const [loading, setLoading] = useState(true)
 
-  },[])
+  const restorantes = useSelector(state => state.allRestorants);
+  const restorantById = useSelector(state => state.restorantById);
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    // if(restorantes?.length !== 0) { setLoading(false) }
+  //   // await AsyncStorage.setItem()
+  //   else if(restorantes?.length === 0)dispatch(getAllRestorants());
+  //   // listaRestos = useSelector(state => state.allRestorants);
+    if(restorantes?.length === 0)dispatch(getAllRestorants());
+    if(restorantes){ setLoading(false) }
+    if(Object.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+    console.log("restos repolist: ", restorantes);
+    // dispatch(getAllRestorants());
+  },[restorantes])
   
 
   return (
     <ScrollView>
-    <View>
+    {loading ? <Loading/> : <View>
       {/* <Text>Rating</Text>
         <CarouselAux type={"ranking"} title={"fumadores"}></CarouselAux> */}
 
       {/* <Text>Los mejorcitos ⭐️</Text> */}
       <StyledText style={styles.language}>Los mejorcitos ⭐️</StyledText>
         <CarouselAux 
-            data={restorantsJson.sort((a, b) => b.Ranking - a.Ranking)} 
+            data={restorantes.sort((a, b) => b.ranking - a.ranking)} 
             type={"extra"} 
             title={"fumadores"}>
         </CarouselAux>
@@ -42,7 +52,7 @@ const RepositoryList = () => {
       {/* <Text>Fumadores 🚬</Text> */}
       <StyledText style={styles.language}>Fumadores 🚬</StyledText>
         <CarouselAux 
-            data={restorantsJson.filter( item => item.extras.includes("fumadores"))} 
+            data={restorantes.filter( item => item.extras.includes("fumadores"))} 
             type={"extra"} 
             title={"fumadores"}>
         </CarouselAux>
@@ -52,7 +62,7 @@ const RepositoryList = () => {
       {/* <Text>Petfriendly 🐶 </Text> */}
       <StyledText style={styles.language}>Petfriendly 🐶</StyledText>
         <CarouselAux 
-            data={restorantsJson.filter( item => item.extras.includes("petFrienly"))} 
+            data={restorantes.filter( item => item.extras.includes("petfriendly"))} 
             type={"extra"} 
             title={"petFrienly"}> 
         </CarouselAux>
@@ -62,7 +72,7 @@ const RepositoryList = () => {
       {/* <Text>Wi-fi Gratis 📡</Text> */}
       <StyledText style={styles.language}>Wi-fi Gratis 📡</StyledText>
         <CarouselAux 
-            data={restorantsJson.filter( item => item.extras.includes("wi-fi"))} 
+            data={restorantes.filter( item => item.extras.includes("wi-fi"))} 
             type={"room"} 
             title={"wi-fi"}>
         </CarouselAux>
@@ -71,14 +81,14 @@ const RepositoryList = () => {
       <Text>Bares 🍻</Text> */}
       <StyledText style={styles.language}>Bares 🍻</StyledText>
         <CarouselAux 
-            data={restorantsJson.filter( item => item.extras.includes("bar"))} 
+            data={restorantes.filter( item => item.extras.includes("bar"))} 
             type={"room"} 
             title={"wi-fi"}>
         </CarouselAux>
       <Text></Text>
 
 
-    </View>
+    </View>}
     </ScrollView>
       // <FlatList 
       //   data={restorantsJson} // de donde saca los datos para hacer la lista
@@ -105,6 +115,7 @@ const styles = StyleSheet.create({
     width: screenwidth,
   },
   language: {
+    fontSize: 16,
     padding: 4,
     color: theme.colors.white,
     backgroundColor: theme.colors.primary,
@@ -120,7 +131,5 @@ const styles = StyleSheet.create({
     borderRadius: 4
   }
 })
-
-
 
 export default RepositoryList

@@ -6,37 +6,53 @@ const restaurantSchema = new Schema({
     type: String,
     lowercase: true,
     trim: true,
-    required: true,
+    required: [true, "El nombre del restaurante es obligatorio"],
     index: true,
-    minLength: 1,
-    maxLength: 255,
+    minLength: [1, "El nombre del restaurante debe tener al menos 1 carácter"],
+    maxLength: [255, "El nombre del restaurante debe tener un máximo de 255 carácteres"],
   },
-  address: [
+  address: 
     {
       streetName: {
         type: String,
-        required: true,
+        required: [true, "El nombre de la calle es obligatorio"],
       },
-      streetNumber: Number,
+      streetNumber: Number, 
       neighborhood: String,
       city: String,
       state: String,
+      country: String,
       coordinate: {
-        latitude: { type: Number, required: true },
-        longitude: { type: Number, required: true },
+        latitude: { type: Number, required: [true, "La latitud es obligatoria. El formato debe ser ##.######"], min: [-89.999999, "La latitud mínima es de -89.999999"], max: [89.999999, "La latitud máxima es de 89.999999"], validate: {
+          validator: function(v) {
+            return /^\s*(-|\+)?\d+\.(\d{6})\s*/.test(v)
+          },
+          message: props  => `${props.value} debe tener el formato ##.######`
+        } },
+        longitude: { type: Number, required: [true, "La longitud es ogligatoria"], min: [-179.999999, "La longitud mínima es de -179.999999"], max: [179.999999, "La longitud máxima es de 179.999999"], validate: {
+          validator: function(v) {
+            return /^\s*(-|\+)?\d+\.(\d{6})\s*/.test(v)
+          },
+          message: props  => `${props.value} debe tener el formato ###.######`
+        } },	
       },
     },
-  ],
   images: [{ type: String}],
-  contact: [
+  contact: 
     {
-      phoneNumber: { type: Number, unique: true },
-      email: { type: String, required: true },
+      phoneNumber: { type: Number, unique: [true, "El número de teléfono ya se encuentra registrado"], validate: {
+        validator: function(v) {
+          return /^[0-9]*$/.test(v)
+        },
+        message: props  => `${props.value} no es un número válido`
+      }
+     },
+      email: { type: String, required: true
+       },
       socialMedia: { instagram: String, facebook: String, wpp: Number },
     },
-  ],
   tables: { type: Number, required: true },
-  schedule: [
+  schedule:
     {
       monday: { open: String, close: String },
       tuesday: { open: String, close: String },
@@ -46,7 +62,6 @@ const restaurantSchema = new Schema({
       saturday: { open: String, close: String },
       sunday: { open: String, close: String },
     },
-  ],
   ranking: Number,
   menu: [
     {

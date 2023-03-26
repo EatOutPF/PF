@@ -1,23 +1,84 @@
-const modifyRestaurantController = ({
-  dataToUpdate,
-  modifiedRestaurant,
-  allRestaurants,
-}) => {
-  const lengthObj = Object.values(!dataToUpdate);
-  if (!lengthObj.length) return alert("No hay cambios para aplicar");
+const updateMapper = (dataToUpdate) => {
+  let mappedData = {
+    name: dataToUpdate.name,
+    address: {
+      coordinate: {
+        latitude: dataToUpdate.latitude,
+        longitude: dataToUpdate.longitude,
+      },
+      streetName: dataToUpdate.streetName,
+      streetNumber: dataToUpdate.streetNumber,
+      neighborhood: dataToUpdate.neighborhood,
+      city: dataToUpdate.city,
+      state: dataToUpdate.state,
+      country: dataToUpdate.country,
+    },
 
-  const indexRestaurant = allRestaurants.findIndex(
-    (r) => +r._id === +dataToUpdate._id
-  );
+    images: dataToUpdate?.images,
+    contact: {
+      socialMedia: {
+        instagram: dataToUpdate.instagram,
+        facebook: dataToUpdate.facebook,
+        wpp: dataToUpdate.wpp + "",
+      },
+      phoneNumber: dataToUpdate.phoneNumber,
+      email: dataToUpdate.email,
+    },
 
-  if (indexRestaurant > 0) return alert("Restaurante no encontrado");
-  else {
-    allRestaurants[indexRestaurant] = {
-      ...allRestaurants[indexRestaurant],
-      ...modifiedRestaurant,
-    };
-  }
-  return allRestaurants;
+    tables: dataToUpdate.tables + "",
+    schedule: [
+      {
+        monday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        tuesday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        wednesday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        thursday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        friday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        saturday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+      {
+        sunday: {
+          open: dataToUpdate?.open,
+          close: dataToUpdate?.close,
+        },
+      },
+    ],
+    menu: dataToUpdate?.menu,
+    diets: dataToUpdate?.diets,
+    paymentMethods: dataToUpdate?.paymentMethods,
+    atmosphere: dataToUpdate?.atmosphere,
+    extras: dataToUpdate?.extras,
+    section: dataToUpdate?.section,
+  };
+
+  return mappedData;
 };
 
-export { modifyRestaurantController };
+export { updateMapper };

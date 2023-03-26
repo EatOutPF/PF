@@ -1,5 +1,5 @@
 import axios from "axios";
-import restaurants from "../restaurants.json";
+import { updateMapper } from "./utils";
 
 const baseUrl = "http://localhost:5001";
 
@@ -8,15 +8,18 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-export const FILTER_BY_DIETS= "FILTER_BY_DIETS"
+
+export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
+export const ERROR_MSSG = "ERROR_MSSG";
+export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 
 export const getAllRestaurants = () => {
-  return async (dispatch) => {
+  return (dispatch) => {
     axios
       .get(`${baseUrl}/restaurant`)
       .then((response) => {
         dispatch({
-          type: GET_ALL_RESTAURANTS,
+          type: "GET_ALL_RESTAURANTS",
           payload: response.data,
         });
       })
@@ -38,45 +41,68 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
-
-export const getFilterByDiets=(comida) =>{
- 
+export const getFilterByDiets = (comida) => {
   return {
     type: FILTER_BY_DIETS,
     payload: comida,
   };
-}
+};
 export const findDetailRestaurant = (id) => {
-  return async (dispatch) => {
-    const result = await axios(`${baseUrl}/restaurant${id}`);
-    dispatch({
-      type: DETAIL_RESTAURANT,
-      payload: result.data,
-    });
+  return (dispatch) => {
+    axios
+      .get(`${baseUrl}/restaurant?id=${id}`)
+      .then((result) =>
+        dispatch({
+          type: DETAIL_RESTAURANT,
+          payload: result.data,
+        })
+      )
+      .catch((err) => {
+        dispatch({
+          type: DETAIL_RESTAURANT,
+          payload: err.response.data,
+        });
+      });
   };
 };
 
-export const modifyRestaurant = (dataToUpdate, allRestaurants) => {
-  return async (dispatch) => {
-    await fetch(`${baseUrl}/${dataToUpdate._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "aplication/json",
-      },
-      body: JSON.stringify(dataToUpdate),
-    })
-      .then((response) => response.json())
-      .then((modifiedRestaurant) => {
+export const modifyRestaurant = (dataToUpdate) => {
+  let restaurant = updateMapper(dataToUpdate);
+  console.log("action", restaurant);
+
+  return (dispatch) => {
+    axios
+      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
+      .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
-          payload: { dataToUpdate, modifiedRestaurant, allRestaurants },
+          payload: result,
         });
       })
       .catch((error) => {
         return dispatch({
           type: MODIFY_RESTAURANT,
-          payload: error,
+          payload: error.response?.data?.error,
         });
       });
+  };
+};
+
+export const getAllRestauranName = (name) => {
+  return async function (dispatch) {
+    if (name === "") {
+      return dispatch({ type: ERROR_MSSG });
+    }
+    try {
+      let RestauranByName = await axios.get(
+        `${baseUrl}/restaurant?name=${name}`
+      );
+      return dispatch({
+        type: GET_RESTAURAN_NAME,
+        payload: [RestauranByName.data],
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
