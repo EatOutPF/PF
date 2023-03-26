@@ -21,6 +21,7 @@ import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
 import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
+import DetailResto from '../DetailResto/DetailResto.jsx';
 
 const Main = () => {
   const restorantes = useSelector(state => state.allRestorants);
@@ -45,6 +46,8 @@ const Main = () => {
           <Route path='/pagerview' element={<SelectComponent/>} />
           <Route path='/signin' element= { <Text>Working on it</Text> } 
           />
+          <Route path='/detail/:_id' element={<DetailResto />} />
+
         </Routes> 
     </View>
   )

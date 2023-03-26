@@ -16,13 +16,14 @@ const RestorantsList = () => {
  
   
   // console.log("ALL : ", Object.keys(restorantes));
+  const restorantes = useSelector(state => state.allRestorants);
 
   useEffect(() => {
     // let allrestos =     dispatch(getAllRestorants())
+    if(restorantes?.length === 0) dispatch(getAllRestorants())
     dispatch(orderCards("rk"))
 
   }, []);
-  const restorantes = useSelector(state => state.allRestorants);
 
   return (
     <View>

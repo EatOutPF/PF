@@ -1,8 +1,10 @@
 import axios from "axios";
 import { 
     GET_ALL_RESTORANTS,
+    GET_RESTORANT_BY_ID,
     FILTER_CARDS,
     ORDER_CARDS,
+    CLEAR_STATE_RESTORANT_BY_ID,
 } from "./type";
 
 
@@ -47,6 +49,33 @@ export function orderCards (status){
         type: ORDER_CARDS,
         payload: status
     }
+};
+
+export function clearStateRestauranteById (state){ 
+    return {
+        type: CLEAR_STATE_RESTORANT_BY_ID,
+        payload: state
+    }
+};
+
+export function searchRestorantById (id){ 
+    return async (dispatch) => {
+        axios
+            .get(`${DB_HOST}/restaurant?id=${id}`)
+            .then((response) => {
+            // console.log("RESPONSE -> ", response);
+                dispatch({
+                    type: GET_RESTORANT_BY_ID,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_RESTORANT_BY_ID,
+                    payload: error.message,
+                });
+            });
+    };
 };
 
 //   export function saveCurrentePage (id){ 
