@@ -20,9 +20,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  let { id, name } = req.query;
-  if (id !== undefined) {
+router.get("/:id?", async (req, res) => {
+  let { id } = req.params;
+  let { name } = req.query;
+
+  if (id) {
     if (!mongoose.Types.ObjectId.isValid(id))
       res.status(400).json("El id es inválido.");
     try {
