@@ -1,8 +1,5 @@
 .containerCards {
-  display: flex;
-  padding: 1rem;
-  background-size: cover;
-  height: 100vh;
+  padding: 1rem 4rem;
 }
 
 .containerCards button {

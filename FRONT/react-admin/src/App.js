@@ -12,7 +12,9 @@ function App() {
 
   return (
     <div className="App">
-      <div className="containerNavBar">{location !== "/" && <NavBar />}</div>
+      <div className={location !== "/" && "containerNavBar"}>
+        {location !== "/" && <NavBar />}
+      </div>
       <div className="containerComponents">
         <Routes>
           <Route exact path="/" element={<Login />}></Route>
