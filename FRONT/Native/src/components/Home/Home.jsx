@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+
+import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import RepositoryList from '../Restos/RestosList.jsx'
 import Map from '../Map/Map.jsx'
@@ -6,26 +7,42 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 
 // import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 // import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
+// import RepositoryList1 from '../Cards/RepositoryList.jsx'
+// import SelectComponent from '../filtradoaux/filtradoaux.jsx'
+
 
 // import Filters from '../Filters/Filters.jsx';
 import { BottomSheet, Button, ListItem } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AppBar from '../NavBar/AppBar.jsx'
-import { Route, Routes } from 'react-router-native'
+
+import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
+import { useSelector, useDispatch,  } from 'react-redux';
+import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 const Main = () => {
+  const restorantes = useSelector(state => state.allRestorants);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllRestorants())
+
+  }, []);
+
   return (
-    <View style={{ flex: 1, width: '100%', backgroundColor: "#c7c8c1" }}>
-      <AppBar />
-      <Routes>
-        <Route path='/' element={<RepositoryList />} />
-        <Route path='/claudio' element={<Text>Working on it</Text>} />
-        <Route path='/mapview' element={<Map data={RepositoryList} />} />
-        <Route path='/pagerview' element={<Text>Working on it</Text>} />
-        <Route path='/signin' element={<Text>Working on it</Text>} />
-      </Routes>
+
+    <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
+      <AppBar />       
+        <Routes>
+          <Route path='/' element= {<RepositoryList />} />
+          <Route path='/claudio' element= {<RepositoryList1/>} />
+          <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
+          <Route path='/pagerview' element={<SelectComponent/>} />
+          <Route path='/signin' element= { <Text>Working on it</Text> } 
+          />
+        </Routes> 
     </View>
   )
 }
