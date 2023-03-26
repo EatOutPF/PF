@@ -1,4 +1,5 @@
 import axios from "axios";
+import { updateMapper } from "./utils";
 
 const baseUrl = "http://localhost:5001";
 
@@ -7,10 +8,10 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-export const FILTER_BY_DIETS= "FILTER_BY_DIETS"
+export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
 
 export const getAllRestaurants = () => {
-  return async (dispatch) => {
+  return (dispatch) => {
     axios
       .get(`${baseUrl}/restaurant`)
       .then((response) => {
@@ -37,17 +38,15 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
-
-export const getFilterByDiets=(comida) =>{
- 
+export const getFilterByDiets = (comida) => {
   return {
     type: FILTER_BY_DIETS,
     payload: comida,
   };
-}
+};
 export const findDetailRestaurant = (id) => {
-  return async (dispatch) => {
-    return await axios
+  return (dispatch) => {
+    axios
       .get(`${baseUrl}/restaurant?id=${id}`)
       .then((result) =>
         dispatch({
@@ -65,25 +64,23 @@ export const findDetailRestaurant = (id) => {
 };
 
 export const modifyRestaurant = (dataToUpdate) => {
-  return async (dispatch) => {
-    await fetch(`${baseUrl}/restaurant/${dataToUpdate._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "aplication/json",
-      },
-      body: JSON.stringify(dataToUpdate),
-    })
-      .then((response) => response.json())
+  let restaurant = updateMapper(dataToUpdate);
+  console.log("action", restaurant);
+
+  return (dispatch) => {
+    axios
+      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
       .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
-          payload: { dataToUpdate, result },
+          payload: result,
         });
       })
       .catch((error) => {
+        console.log("error back", error);
         return dispatch({
           type: MODIFY_RESTAURANT,
-          payload: error.response.data,
+          payload: error.response?.data?.error,
         });
       });
   };
