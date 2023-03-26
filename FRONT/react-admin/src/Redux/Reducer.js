@@ -43,7 +43,7 @@ const Reducer = (state = initialState, { type, payload }) => {
             ? payload.dataToUpdate
             : r;
         }),
-      };      
+      };
     case FILTER_BY_DIETS:
       const filterByDiets = state.currentListRestaurants.filter((restaurant) =>
         restaurant.diets.includes(payload)
@@ -52,11 +52,11 @@ const Reducer = (state = initialState, { type, payload }) => {
     case ERROR_MSSG:
       return {
         ...state,
-        msg: action.payload,
+        msg: payload,
         allRestaurants: [],
       };
     case GET_RESTAURAN_NAME:
-      return { ...state, currentListRestaurants: payload }
+      return { ...state, currentListRestaurants: payload };
     default:
       return { ...state };
   }
