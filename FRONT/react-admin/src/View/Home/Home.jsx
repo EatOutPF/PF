@@ -5,6 +5,7 @@ import { getAllRestaurants } from "../../Redux/Actions";
 import Filter from "../../Components/Filter";
 import Paginate from "../../Components/Paginado/Paginado";
 import style from "./Home.module.css";
+import Searchbar from "../../Components/SearchBar";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,10 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
   const [order, setOrder] = useState("");
-  const [filter, setFilter] = useState("");
+  const [filter, setResetFilter] = useState("");
+  const [resetFilter, setsetFilter] = useState("");
+
+  const [searchResults, setSearchResults] = useState(null);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -26,24 +30,30 @@ const Home = () => {
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
-  const currentRestaurants = restaurants.slice(
+  const currentRestaurants = searchResults || restaurants.slice(
     indexOfFirstRestaurant,
     indexOfLastRestaurant
   );
 
   return (
     <div className={style.containerHome}>
-      <Filter setOrder={setOrder} setFilter={setFilter} />
+      <Filter 
+      setOrder={setOrder} 
+      setResetFilter={setResetFilter}
+      setCurrentPage= {setCurrentPage}
+      resetFilter={resetFilter} />
 
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
-        restaurants={restaurants.length}
+        restaurants={searchResults ? searchResults.length : restaurants.length}
         paginado={paginate}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
 
-      <Cards currentRestaurants={currentRestaurants} />
+      <Searchbar setCurrentPage={setCurrentPage} />
+
+      <Cards restaurants={searchResults || restaurants} currentRestaurants={currentRestaurants} />
     </div>
   );
 };

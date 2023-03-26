@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, View, StyleSheet, Dimensions, Button } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
-import RepositoryStats from './RestosStats.jsx'
+// import RepositoryStats from './RestosStats.jsx'
 import theme from '../../styles/theme.js'
 
 const { width } = Dimensions.get('window');
@@ -29,7 +29,7 @@ const RepositoryItemHeader = ({ images, name, menu, atmosphere, contact }) => (
 const RepositoryItem = (props) => (
   <View key={props._id} style={styles.container}>
     <RepositoryItemHeader {...props} />
-    <RepositoryStats {...props} />
+    {/* <RepositoryStats {...props} /> */}
   </View>
 )
 
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     paddingVertical: 5,
+    // flexDirection: "column"
     width: screenwidth,
   },
   language: {
