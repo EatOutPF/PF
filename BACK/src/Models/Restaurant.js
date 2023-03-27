@@ -63,6 +63,13 @@ const restaurantSchema = new Schema({
       sunday: { open: String, close: String },
     },
   ranking: Number,
+  advance: Number,
+  review: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review"
+    }
+  ],
   menu: [
     {
       type: String,
