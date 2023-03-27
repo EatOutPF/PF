@@ -24,7 +24,8 @@ export default function App() {
   {/*Flor----*/ }
 
   const bottomSheetModalRef = useRef(null)
-  const snapPoints = ['60%']
+  // const snapPoints = ['30%', '50%', '70%']
+  const snapPoints = ['70%']
   const [isOpen, setIsOpen] = useState(false)
   function handlePresentModal() {
     bottomSheetModalRef.current?.present();
@@ -40,7 +41,9 @@ export default function App() {
   {/*-------Flor*/ }
 
   return (
-    <BottomSheetModalProvider>
+    <BottomSheetModalProvider 
+    // onPress={()=> {bottomSheetModalRef.current?.collapse()}}
+    >
       <Provider store={store}>
         <View style={styles.container}>
           {/* <Text>Esta al es de prueba en React Native 12.</Text> */}
