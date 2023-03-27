@@ -30,18 +30,18 @@ const Home = () => {
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
-  const currentRestaurants = searchResults || restaurants.slice(
-    indexOfFirstRestaurant,
-    indexOfLastRestaurant
-  );
+  const currentRestaurants =
+    searchResults ||
+    restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
 
   return (
     <div className={style.containerHome}>
-      <Filter 
-      setOrder={setOrder} 
-      setResetFilter={setResetFilter}
-      setCurrentPage= {setCurrentPage}
-      resetFilter={resetFilter} />
+      <Filter
+        setOrder={setOrder}
+        setResetFilter={setResetFilter}
+        setCurrentPage={setCurrentPage}
+        resetFilter={resetFilter}
+      />
 
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
@@ -53,7 +53,10 @@ const Home = () => {
 
       <Searchbar setCurrentPage={setCurrentPage} />
 
-      <Cards restaurants={searchResults || restaurants} currentRestaurants={currentRestaurants} />
+      <Cards
+        restaurants={searchResults || restaurants}
+        currentRestaurants={currentRestaurants}
+      />
     </div>
   );
 };

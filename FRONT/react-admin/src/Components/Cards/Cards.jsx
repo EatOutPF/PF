@@ -22,6 +22,7 @@ const Cards = ({ currentRestaurants }) => {
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
+              <th>Estado</th>
               <th> </th>
             </tr>
           </thead>

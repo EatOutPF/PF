@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import {
-  findDetailRestaurant,
-  getAllRestaurants,
-  modifyRestaurant,
-} from "../../Redux/Actions";
+import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
 import style from "./ModifyRestaurant.module.css";
 
 const ModifyRestaurant = (props) => {
   const { id } = useParams();
-  console.log();
   const navigate = useNavigate();
   const {
     detailRestaurant,
@@ -27,12 +22,11 @@ const ModifyRestaurant = (props) => {
   const [input, setInput] = useState();
   const [selectedImages, setSelectedImages] = useState();
   const [selectedMenu, setSelectedMenu] = useState();
-  const [checkedDiets, setCheckedDiets] = useState({});
-  const [selectedDiets, setSelectedDiets] = useState();
-  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState();
-  const [selectedAtmosphere, setSelectedAtmosphere] = useState();
-  const [selectedExtras, setSelectedExtras] = useState();
-  const [selectedSection, setSelectedSection] = useState();
+  const [selectedDiets, setSelectedDiets] = useState([]);
+  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState([]);
+  const [selectedAtmosphere, setSelectedAtmosphere] = useState([]);
+  const [selectedExtras, setSelectedExtras] = useState([]);
+  const [selectedSection, setSelectedSection] = useState([]);
 
   const handlerChange = (e) => {
     const { name, value } = e.target;
@@ -43,21 +37,38 @@ const ModifyRestaurant = (props) => {
     setInput({ ...input, [name]: value });
   };
 
-  const handlerClick = (e) => {
-    const { name, value } = e.target;
-
-    /* if (name === "diets") {
-      checkedDiets[name] = !selectedDiets?.find((d) => d === value);
-    } */
+  const handlerCheckBox = (value, array, setArray) => {
+    const newSelect = array.map((d) => {
+      if (d.name === value) return { ...d, checked: !d.checked };
+      else {
+        return d;
+      }
+    });
+    setArray(newSelect);
   };
+
+  useEffect(() => {
+    console.log({ input });
+  });
 
   const handlerSubmit = (e) => {
     e.preventDefault();
     if (input) {
+      input.diets = selectedDiets.filter((d) => d.checked).map((d) => d.name);
+      input.atmosphere = selectedAtmosphere
+        .filter((a) => a.checked)
+        .map((a) => a.name);
+      input.extras = selectedExtras.filter((e) => e.checked).map((e) => e.name);
+      input.section = selectedSection
+        .filter((s) => s.checked)
+        .map((s) => s.name);
+
+      input.paymentMethods = selectedPaymentMethods
+        .filter((p) => p.checked)
+        .map((p) => p.name);
+
       dispatch(modifyRestaurant(input));
-      dispatch(getAllRestaurants);
       let newMessage = message;
-      console.log({ newMessage });
       alert(newMessage);
       navigate("/home");
     }
@@ -67,6 +78,16 @@ const ModifyRestaurant = (props) => {
     dispatch(findDetailRestaurant(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const initCheckbox = (options, name, setSelected) => {
+    if (detailRestaurant && options) {
+      const result = options.map((o) => ({
+        name: o,
+        checked: !!detailRestaurant[name]?.includes(o),
+      }));
+      setSelected(result);
+    }
+  };
 
   useEffect(() => {
     if (detailRestaurant) {
@@ -165,27 +186,18 @@ const ModifyRestaurant = (props) => {
       });
       setSelectedImages(input?.images);
       setSelectedMenu(input?.menu);
-      setSelectedDiets(input?.diets);
-      setSelectedPaymentMethods(input?.paymentMethods);
-      setSelectedAtmosphere(input?.atmosphere);
-      setSelectedExtras(input?.extras);
-      setSelectedSection(input?.section);
     }
-
-    if (detailRestaurant && optionsDiets) {
-      const result = optionsDiets.map((o) => {
-        let checked = detailRestaurant.diets?.find((d) => d === o);
-        return (checkedDiets[o] = checked);
-      });
-      setCheckedDiets(result);
-    }
-
+    initCheckbox(optionsDiets, "diets", setSelectedDiets);
+    initCheckbox(optionsAtmosphere, "atmosphere", setSelectedAtmosphere);
+    initCheckbox(
+      optionpaymentMethods,
+      "paymentMethods",
+      setSelectedPaymentMethods
+    );
+    initCheckbox(optionsExtras, "section", setSelectedSection);
+    initCheckbox(optionsSection, "extras", setSelectedExtras);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detailRestaurant, optionsDiets]);
-
-  useEffect(() => {
-    console.log(1, input, id);
-  }, [id, input]);
+  }, [detailRestaurant]);
 
   return (
     <div className={style.containerModify}>
@@ -529,112 +541,137 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Dietas</div>
               <div className={style.containerDataSection}>
-                {optionsDiets &&
-                  checkedDiets &&
-                  optionsDiets?.map((diet) => {
-                    return (
-                      <div>
-                        <input
-                          type="checkbox"
-                          id="diets"
-                          name="diets"
-                          value={diet}
-                          checked={checkedDiets[diet]}
-                          /* onClick={handlerClick} */
-                        ></input>
-                        <label htmlFor="diets"> {diet} </label>
-                      </div>
-                    );
-                  })}
+                {selectedDiets?.map((diet) => {
+                  return (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="diets"
+                        name="diets"
+                        value={diet.name}
+                        checked={diet.checked}
+                        onChange={(e) =>
+                          handlerCheckBox(
+                            e.target.value,
+                            selectedDiets,
+                            setSelectedDiets
+                          )
+                        }
+                      ></input>
+                      <label htmlFor="diets"> {diet.name} </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Metodos de Pago</div>
               <div className={style.containerDataSection}>
-                {optionpaymentMethods &&
-                  optionpaymentMethods?.map((paymentMethod) => {
-                    return (
-                      <div>
-                        <input
-                          type="checkbox"
-                          id="paymentMethods"
-                          name="paymentMethods"
-                          value={paymentMethod}
-                          checked={input.paymentMethods?.find(
-                            (p) => p === paymentMethod
-                          )}
-                          onClick={handlerClick}
-                        ></input>
-                        <label htmlFor="paymentMethods">{paymentMethod}</label>
-                      </div>
-                    );
-                  })}
+                {selectedPaymentMethods?.map((paymentMethod) => {
+                  return (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="paymentMethods"
+                        name="paymentMethods"
+                        value={paymentMethod.name}
+                        checked={paymentMethod.checked}
+                        onChange={(e) =>
+                          handlerCheckBox(
+                            e.target.value,
+                            selectedPaymentMethods,
+                            setSelectedPaymentMethods
+                          )
+                        }
+                      ></input>
+                      <label htmlFor="paymentMethods">
+                        {paymentMethod.name}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Atmosfera</div>
               <div className={style.containerDataSection}>
-                {optionsAtmosphere &&
-                  optionsAtmosphere?.map((at) => {
-                    return (
-                      <div>
-                        <input
-                          type="checkbox"
-                          id="atmosphere"
-                          name="atmosphere"
-                          value={at}
-                          checked={input.atmosphere?.find((a) => a === at)}
-                          onClick={handlerClick}
-                        ></input>
-                        <label htmlFor="atmosphere"> {at} </label>
-                      </div>
-                    );
-                  })}
+                {selectedAtmosphere?.map((at) => {
+                  return (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="atmosphere"
+                        name="atmosphere"
+                        value={at.name}
+                        checked={at.checked}
+                        onChange={(e) =>
+                          handlerCheckBox(
+                            e.target.value,
+                            selectedAtmosphere,
+                            setSelectedAtmosphere
+                          )
+                        }
+                      ></input>
+                      <label htmlFor="atmosphere"> {at.name} </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Extras</div>
               <div className={style.containerDataSection}>
-                {optionsExtras &&
-                  optionsExtras?.map((extra) => {
-                    return (
-                      <div>
-                        <input
-                          type="checkbox"
-                          id="extras"
-                          name="extras"
-                          value={extra}
-                          checked={input.extra?.find((e) => e === extra)}
-                        ></input>
-                        <label htmlFor="extras"> {extra} </label>
-                      </div>
-                    );
-                  })}
+                {selectedExtras?.map((extra) => {
+                  return (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="extras"
+                        name="extras"
+                        value={extra.name}
+                        checked={extra.checked}
+                        onChange={(e) =>
+                          handlerCheckBox(
+                            e.target.value,
+                            selectedExtras,
+                            setSelectedExtras
+                          )
+                        }
+                      ></input>
+                      <label htmlFor="extras"> {extra.name} </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Sección</div>
               <div className={style.containerDataSection}>
-                {optionsSection &&
-                  optionsSection?.map((sect) => {
-                    return (
-                      <div>
-                        <input
-                          type="checkbox"
-                          id={sect}
-                          name="section"
-                          value={sect}
-                          checked={input.section?.find((s) => s === sect)}
-                          onClick={handlerClick}
-                        ></input>
-                        <label htmlFor={sect}> {sect} </label>
-                      </div>
-                    );
-                  })}
+                {selectedSection?.map((sect) => {
+                  return (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="section"
+                        name="section"
+                        value={sect.name}
+                        checked={sect.checked}
+                        onChange={(e) =>
+                          handlerCheckBox(
+                            e.target.value,
+                            selectedSection,
+                            setSelectedSection
+                          )
+                        }
+                      ></input>
+                      <label htmlFor="section"> {sect.name} </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

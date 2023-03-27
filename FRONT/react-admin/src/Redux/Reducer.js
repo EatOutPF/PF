@@ -7,6 +7,7 @@ import {
   FILTER_BY_DIETS,
   ERROR_MSSG,
   GET_RESTAURAN_NAME,
+  DELETE_RESTAURANT,
 } from "./Actions";
 
 const initialState = {
@@ -15,7 +16,6 @@ const initialState = {
   detailRestaurant: {},
   currentListRestaurants: [],
   stateToFilters: [],
-
   message: "",
   optionsMenu: [
     "italiana",
@@ -39,7 +39,6 @@ const initialState = {
   ],
   optionsExtras: ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"],
   optionsSection: ["salón principal", "terraza", "barra"],
-
   msg: "",
 };
 
@@ -82,6 +81,8 @@ const Reducer = (state = initialState, { type, payload }) => {
       };
     case GET_RESTAURAN_NAME:
       return { ...state, currentListRestaurants: payload };
+    case DELETE_RESTAURANT:
+      return { ...state, message: payload };
     default:
       return { ...state };
   }

@@ -8,10 +8,10 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-
 export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
 export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
+export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -68,8 +68,6 @@ export const findDetailRestaurant = (id) => {
 
 export const modifyRestaurant = (dataToUpdate) => {
   let restaurant = updateMapper(dataToUpdate);
-  console.log("action", restaurant);
-
   return (dispatch) => {
     axios
       .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
@@ -104,5 +102,24 @@ export const getAllRestauranName = (name) => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const deleteRestaurant = (dataToUpdate) => {
+  return (dispatch) => {
+    axios
+      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, {
+        active: dataToUpdate.active,
+      })
+      .then((response) => {
+        dispatch({ type: DELETE_RESTAURANT, payload: response });
+        dispatch(getAllRestaurants());
+      })
+      .catch((error) => {
+        return dispatch({
+          type: DELETE_RESTAURANT,
+          payload: error.response?.data?.error,
+        });
+      });
   };
 };
