@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'

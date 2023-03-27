@@ -21,7 +21,7 @@ import DetailResto from '../DetailResto/DetailResto.jsx';
 import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
 import { useSelector, useDispatch,  } from 'react-redux';
-import { filterCards, getAllRestorants, orderCards, clearStateResatorantById } from '../../redux/actions';
+import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 
 

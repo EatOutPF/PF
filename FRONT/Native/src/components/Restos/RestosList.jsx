@@ -23,6 +23,7 @@ const RepositoryList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+
   // //   // await AsyncStorage.setItem()
     if(resto?.length === 0){
       setLoading(true)
@@ -35,6 +36,7 @@ const RepositoryList = () => {
     if(Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
 
   },[resto])
+
   
 
   return (
