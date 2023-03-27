@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-nati
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
 import { useState } from "react";
+import {UseSelector, useDispatch} from 'react-redux';
+
 
 export default Filters = (props) => {
     const response = () => {

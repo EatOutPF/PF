@@ -1,10 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { NativeRouter, } from 'react-router-native'
-
 import { store } from './src/redux/store'
 import { Provider } from 'react-redux'
-
 import Main, { FilterButton } from './src/components/Home/Home.jsx'
 
 
