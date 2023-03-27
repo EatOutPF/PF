@@ -1,7 +1,7 @@
 // home - search - filter - ordenar - crear -  informe(saldo x restaurante – II fase)
 import Logout from "../../Components/Logout";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import style from "./NavBar.modules.css";
 
 
@@ -17,7 +17,7 @@ const NavBar = () => {
           <Logout />
          
         </NavLink>
-        <NavLink to="/create">Crear nuevo Restaurante</NavLink>
+        <NavLink  to="/create"><button>Crear</button></NavLink>
       </div>
     </div>
   );

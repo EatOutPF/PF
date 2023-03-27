@@ -18,8 +18,7 @@ const Card = (props) => {
   const handlerDelete = () => {
     console.log(props);
     dispatch(deleteRestaurant(props));
-    console.log(message);
-    alert(message);
+    if(message) alert(message);
   };
 
   return (
@@ -29,10 +28,10 @@ const Card = (props) => {
         <td>{props.menu}</td>
         <td>{props.ranking}</td>
         <td>
-          {props.address[0]?.streetName} - {props.address[0]?.streetNumber}
+          {props.address?.streetName} - {props.address?.streetNumber}
         </td>
-        <td>{props.address[0]?.city}</td>
-        <td>{props.address[0]?.country}</td>
+        <td>{props.address?.city}</td>
+        <td>{props.address?.country}</td>
         <td>{props.active ? "Activo" : "Inactivo"}</td>
         <td className={style.rows}>
           <NavLink to={`/modify/${props.id}`}>
