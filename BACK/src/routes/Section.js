@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const express = require("express");
 const {
-  getPaymentMethods,
-  postPaymentMethods,
-  putPaymentMethods,
-  deletePaymentMethods,
-} = require("../Controllers/controllerPaymentMethods");
+  getSection,
+  postSection,
+  putSection,
+  deleteSection,
+} = require("../controllers/controllerSection");
 
 const router = Router();
 router.use(express.json());
@@ -13,7 +13,7 @@ router.use(express.json());
 router.post("/", async (req, res) => {
   let { name } = req.body
   try {
-    let resultado = await postPaymentMethods(name);
+    let resultado = await postSection(name);
     res.status(200).json(resultado);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   let { name } = req.query;
   try {
-    let resultado = await getPaymentMethods(name);
+    let resultado = await getSection(name);
     res.status(200).json(resultado);
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -35,7 +35,7 @@ router.put("/:id", async (req, res) => {
   let { name } = req.body;
 
     try {
-      let resultado = await putPaymentMethods(id, name);
+      let resultado = await putSection(id, name);
       res.status(200).json(resultado);
     } catch (error) {
       res.status(404).json({ error: error.message });
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
     let { id } = req.params;
 
     try {
-      let resultado = await deletePaymentMethods(id)
+      let resultado = await deleteSection(id)
       res.status(200).json(resultado);
     } catch (error) {
       res.status(404).json({ error: error.message });

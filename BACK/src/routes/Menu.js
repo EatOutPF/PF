@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const express = require("express");
 
-const { getMenu, postMenu, putMenu, deleteMenu } = require("../Controllers/controllerMenu");
+const { getMenu, postMenu, putMenu, deleteMenu } = require("../controllers/controllerMenu");
 const router = Router();
 router.use(express.json());
 

@@ -6,7 +6,7 @@ const {
   postRestaurant,
   putRestaurant,
   activeRestaurant,
-} = require("../Controllers/controllerRestaurant");
+} = require("../controllers/controllerRestaurant");
 
 const router = Router();
 router.use(express.json());
