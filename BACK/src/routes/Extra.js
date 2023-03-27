@@ -5,7 +5,7 @@ const {
     postExtra,
     putExtra,
     deleteExtra
-} = require("../Controllers/controllerExtra");
+} = require("../controllers/controllerExtra");
 
 const router = Router();
 router.use(express.json());

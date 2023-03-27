@@ -6,7 +6,7 @@ const {
   postUsers,
   putUsers,
   activeUsers,
-} = require("../Controllers/controllerUsers");
+} = require("../controllers/controllerUsers");
 
 const router = Router();
 router.use(express.json());

@@ -5,7 +5,7 @@ const {
     postDiet,
     putDiet,
     deleteDiet
-} = require("../Controllers/controllerDiet");
+} = require("../controllers/controllerDiet");
 
 const router = Router();
 router.use(express.json());
