@@ -17,12 +17,10 @@ const DetailResto = (props) => {
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch();
-
     useEffect(() => {
 
-
         if(Object?.keys(detail)?.length === 0) { 
-            // console.log("detail if 1: ",detail );
+
             dispatch(searchRestorantById(_id));
             }
         else {

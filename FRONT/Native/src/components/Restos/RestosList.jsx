@@ -32,7 +32,7 @@ const RepositoryList = () => {
     if(resto?.length !== 0) { 
       setRestorantes([...resto])
       setLoading(false) }
-
+    console.log("resto by id: ", Object?.keys(restorantById)?.length);
     if(Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
 
   },[resto])
