@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Card from '../Card/Card'
+import Card from "../Card/Card";
 import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
 
@@ -9,20 +9,20 @@ const Cards = ({ currentRestaurants }) => {
   });
 
   return (
-    <div  className={style.containerCards}>
+    <div className={style.containerCards}>
       {!currentRestaurants?.length ? (
         <div>No se encontraron resultados</div>
       ) : (
         <table>
           <thead>
-            <tr  className={style.containerTitle}>
+            <tr className={style.containerTitle}>
               <th>Restaurante</th>
               <th>Comida</th>
               <th>Puntuación</th>
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
-              <th> </th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>

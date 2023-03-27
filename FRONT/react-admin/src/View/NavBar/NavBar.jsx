@@ -15,9 +15,9 @@ const NavBar = () => {
         </NavLink>
         <NavLink to="/">
           <Logout />
-        
+         
         </NavLink>
-        {/* <NavLink to="/create">Crear nuevo Restaurante</NavLink> */}
+        <NavLink to="/create">Crear nuevo Restaurante</NavLink>
       </div>
     </div>
   );

@@ -1,0 +1,46 @@
+
+
+
+
+.formContainer {
+    margin-top: 15em;
+    padding: 1.3em 3em;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 800;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+.formContainer:hover {
+    background-color: #5c0951;
+    box-shadow: 0px 15px 20px rgba(139, 8, 85, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
+}
+
+.formContainer:active {
+    transform: translateY(-1px);
+}
+
+.title{
+    text-align: center;
+    font-weight: 900;
+}
+
+.terminos{
+    text-align: center;
+}
+
+.titles{
+    font-weight: 1000;
+
+}
+
