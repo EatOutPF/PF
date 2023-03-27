@@ -26,50 +26,42 @@ const updateMapper = (dataToUpdate) => {
     },
 
     tables: dataToUpdate.tables + "",
-    schedule: [
-      {
-        monday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+    schedule: {
+      monday: {
+        open: dataToUpdate?.mondayOpen,
+        close: dataToUpdate?.mondayClose,
       },
-      {
-        tuesday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      tuesday: {
+        open: dataToUpdate?.tuesdayOpen,
+        close: dataToUpdate?.tuesdayClose,
       },
-      {
-        wednesday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      wednesday: {
+        open: dataToUpdate?.wednesdayOpen,
+        close: dataToUpdate?.wednesdayClose,
       },
-      {
-        thursday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      thursday: {
+        open: dataToUpdate?.thursdayOpen,
+        close: dataToUpdate?.thursdayClose,
       },
-      {
-        friday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      friday: {
+        open: dataToUpdate?.fridayOpen,
+        close: dataToUpdate?.frydayClose,
       },
-      {
-        saturday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      saturday: {
+        open: dataToUpdate?.saturdayOpen,
+        close: dataToUpdate?.saturdayClose,
       },
-      {
-        sunday: {
-          open: dataToUpdate?.open,
-          close: dataToUpdate?.close,
-        },
+
+      sunday: {
+        open: dataToUpdate?.sundayOpen,
+        close: dataToUpdate?.sundayClose,
       },
-    ],
+    },
     menu: dataToUpdate?.menu,
     diets: dataToUpdate?.diets,
     paymentMethods: dataToUpdate?.paymentMethods,
