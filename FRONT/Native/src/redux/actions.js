@@ -10,7 +10,7 @@ import {
 
 // esto hay que cambiarlo a la IP que tiene el servidor 
 // ya que es diferente a la IP del Celular
-const DB_HOST = "http://192.168.100.5:5001";  // ip de la pc con el server corriendo
+const DB_HOST = "http://192.168.3.206:5001";  // ip de la pc con el server corriendo
 
 // ACTION CREATORS
 export function getAllRestorants() {
@@ -49,6 +49,34 @@ export function orderCards (status){
         type: ORDER_CARDS,
         payload: status
     }
+};
+
+
+export function clearStateResatorantById (status){ 
+    return {
+        type: CLEAR_STATE_RESTORANT_BY_ID,
+        payload: status
+    }
+};
+
+export function searchRestorantById (id){ 
+    return async (dispatch) => {
+        axios
+            .get(`${DB_HOST}/restaurant/${id}`)
+            .then((response) => {
+            // console.log("RESPONSE -> ", response);
+                dispatch({
+                    type: GET_RESTORANT_BY_ID,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_RESTORANT_BY_ID,
+                    payload: error.message,
+                });
+            });
+    };
 };
 
 //   export function saveCurrentePage (id){ 

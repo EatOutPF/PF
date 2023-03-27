@@ -16,19 +16,27 @@ import RepositoryItem from './RestosItem.jsx'
 const RepositoryList = () => {
   const [loading, setLoading] = useState(true)
 
-  const restorantes = useSelector(state => state.allRestorants);
   const restorantById = useSelector(state => state.restorantById);
-
+  const resto = useSelector(state => state.allRestorants);
+  // const restorantById = useSelector(state => state.restorantById);
+  const [restorantes, setRestorantes] = useState( []);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    if(restorantes?.length !== 0) { setLoading(false) }
-    // await AsyncStorage.setItem()
-    else dispatch(getAllRestorants());
-    // listaRestos = useSelector(state => state.allRestorants);
 
-  },[restorantes])
+  // //   // await AsyncStorage.setItem()
+    if(resto?.length === 0){
+      setLoading(true)
+      dispatch(getAllRestorants());
+    }
+    if(resto?.length !== 0) { 
+      setRestorantes([...resto])
+      setLoading(false) }
+
+    if(Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+
+  },[resto])
+
   
 
   return (
@@ -40,7 +48,10 @@ const RepositoryList = () => {
       {/* <Text>Los mejorcitos ⭐️</Text> */}
       <StyledText style={styles.language}>Los mejorcitos ⭐️</StyledText>
         <CarouselAux 
-            data={restorantes.sort((a, b) => b.ranking - a.ranking)} 
+            data={
+              // restorantes
+              restorantes?.sort((a, b) => b.ranking - a.ranking)
+            } 
             type={"extra"} 
             title={"fumadores"}>
         </CarouselAux>
@@ -48,7 +59,10 @@ const RepositoryList = () => {
       {/* <Text>Fumadores 🚬</Text> */}
       <StyledText style={styles.language}>Fumadores 🚬</StyledText>
         <CarouselAux 
-            data={restorantes.filter( item => item.extras.includes("fumadores"))} 
+            data={
+              // restorantes
+              restorantes?.filter( item => item.extras.includes("fumadores"))
+            } 
             type={"extra"} 
             title={"fumadores"}>
         </CarouselAux>
@@ -58,7 +72,10 @@ const RepositoryList = () => {
       {/* <Text>Petfriendly 🐶 </Text> */}
       <StyledText style={styles.language}>Petfriendly 🐶</StyledText>
         <CarouselAux 
-            data={restorantes.filter( item => item.extras.includes("petfriendly"))} 
+            data={
+              // restorantes
+             restorantes?.filter( item => item.extras.includes("petfriendly"))
+            } 
             type={"extra"} 
             title={"petFrienly"}> 
         </CarouselAux>
@@ -68,7 +85,9 @@ const RepositoryList = () => {
       {/* <Text>Wi-fi Gratis 📡</Text> */}
       <StyledText style={styles.language}>Wi-fi Gratis 📡</StyledText>
         <CarouselAux 
-            data={restorantes.filter( item => item.extras.includes("wi-fi"))} 
+            data={
+              restorantes?.filter( item => item.extras.includes("wi-fi"))
+            } 
             type={"room"} 
             title={"wi-fi"}>
         </CarouselAux>
@@ -77,7 +96,11 @@ const RepositoryList = () => {
       <Text>Bares 🍻</Text> */}
       <StyledText style={styles.language}>Bares 🍻</StyledText>
         <CarouselAux 
-            data={restorantes.filter( item => item.extras.includes("bar"))} 
+            data={
+              // restorantes
+
+              restorantes?.filter( item => item.extras.includes("bar"))
+            } 
             type={"room"} 
             title={"wi-fi"}>
         </CarouselAux>
