@@ -43,7 +43,7 @@ export default function rootReducer(state = initialState, action) {
             // console.log("HOLAA : ", action.payload);
             return{ ...state, 
                 allRestorants: action.payload, 
-                restorantsFound: sortAsc(action.payload) 
+                restorantsFound: (action.payload) 
             }
         }
   //------------------------------------------------------------------------- 
@@ -64,7 +64,7 @@ export default function rootReducer(state = initialState, action) {
         case FILTER_CARDS:{ 
             // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state.allRestorants];
-            state.restorantsFiltered = [...state.allRestorants]
+            // state.restorantsFiltered = [...state.allRestorants]
 
             const filteredRestorants = auxAllRestorants.filter(resto =>
                 (resto.menu.includes(state.filterByMenu) || resto.menu === 'All') &&

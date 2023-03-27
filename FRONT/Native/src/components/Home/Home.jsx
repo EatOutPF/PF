@@ -23,13 +23,25 @@ import { Redirect, Route, Routes } from 'react-router-native'
 import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards, clearStateResatorantById } from '../../redux/actions';
 
+
+
 const Main = () => {
+  const [loading, setLoading] = useState(true)
   const restorantes = useSelector(state => state.allRestorants);
   const dispatch = useDispatch();
   // dispatch(clearStateResatorantById())
   // useEffect(() => {
   //   // if(restorantes?.length === 0) dispatch(getAllRestorants())
 
+  const restorantById = useSelector(state => state.restorantById);
+
+  // useEffect(() => {
+  //   // if(restorantes?.length !== 0) { setLoading(false) }
+  // //   // await AsyncStorage.setItem()
+  // //   else if(restorantes?.length === 0)dispatch(getAllRestorants());
+  // //   // listaRestos = useSelector(state => state.allRestorants);
+   
+  // },[restorantes])
   // }, []);
 
   return (
