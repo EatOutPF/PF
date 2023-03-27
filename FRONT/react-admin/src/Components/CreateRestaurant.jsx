@@ -4,11 +4,11 @@ import styles from "../Components/CreateRestaurant/CreateRestaurant.module.css"
 import { useState } from "react";
 
 export default function Form() {
-  // const [stage, setStage] = useState(1);
+
  
   const [terminos, setTerminos] = useState("false");
 
-
+  
   const [input, setInput] = useState({
     name: "",
   });
