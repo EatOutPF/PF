@@ -5,6 +5,7 @@ import {
     FILTER_CARDS,
     ORDER_CARDS,
     CLEAR_STATE_RESTORANT_BY_ID,
+    CLEAR_STATE_RESTORANT_BY_STRING,
 } from "./type";
 
 
