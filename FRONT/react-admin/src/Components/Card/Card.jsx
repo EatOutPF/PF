@@ -29,10 +29,10 @@ const Card = (props) => {
         <td>{props.menu}</td>
         <td>{props.ranking}</td>
         <td>
-          {props.address[0].streetName} - {props.address[0].streetNumber}
+          {props.address[0]?.streetName} - {props.address[0]?.streetNumber}
         </td>
-        <td>{props.address[0].city}</td>
-        <td>{props.address[0].country}</td>
+        <td>{props.address[0]?.city}</td>
+        <td>{props.address[0]?.country}</td>
         <td>{props.active ? "Activo" : "Inactivo"}</td>
         <td className={style.rows}>
           <NavLink to={`/modify/${props.id}`}>
