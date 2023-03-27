@@ -24,7 +24,6 @@ const RepositoryList = () => {
 
   useEffect(() => {
   // //   // await AsyncStorage.setItem()
-    
     if(resto?.length === 0){
       setLoading(true)
       dispatch(getAllRestorants());
