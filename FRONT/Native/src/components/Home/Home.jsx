@@ -51,8 +51,8 @@ const Main = () => {
         <Routes>
           <Route path='/' element= {<RepositoryList />} />
           <Route path='/restorantslist' element= {
-          <Text>Working on it</Text>
-          // <RestorantsList/>
+          // <Text>Working on it</Text>
+          <RestorantsList/>
           } />
           <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
           <Route path='/pagerview' element={<SelectComponent/>} />
