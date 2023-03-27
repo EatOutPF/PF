@@ -6,12 +6,13 @@ import {
     ORDER_CARDS,
     CLEAR_STATE_RESTORANT_BY_ID,
     CLEAR_STATE_RESTORANT_BY_STRING,
+    GET_TYPES_FOODS,
 } from "./type";
 
 
 // esto hay que cambiarlo a la IP que tiene el servidor 
 // ya que es diferente a la IP del Celular
-const DB_HOST = "http://192.168.3.206:5001";  // ip de la pc con el server corriendo
+const DB_HOST = "http://192.168.0.101:5001";  // ip de la pc con el server corriendo
 
 // ACTION CREATORS
 export function getAllRestorants() {
@@ -79,6 +80,40 @@ export function searchRestorantById (id){
             });
     };
 };
+
+export const getTypesOfFoods = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/menu`);
+            return dispatch ({
+                type: GET_TYPES_FOODS,
+                payload: response.data,
+            });
+        } catch (error) {
+            return {
+                error: 'No se encontraron tipos de comida',
+                originalError: error,
+            }  
+        }
+    }
+};
+
+// export const getAsmosphere = () => {
+//     return async function (dispatch) {
+//         try {
+//             let response = await axios.get(`${DB_HOST}/menu`);
+//             return dispatch ({
+//                 type: GET_TYPES_FOODS,
+//                 payload: response.data,
+//             });
+//         } catch (error) {
+//             return {
+//                 error: 'No se encontraron tipos de comida',
+//                 originalError: error,
+//             }
+//         }
+//     }
+// }
 
 //   export function saveCurrentePage (id){ 
 //       return {

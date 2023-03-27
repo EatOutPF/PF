@@ -1,23 +1,38 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getTypesOfFoods } from '../../redux/actions.js';
+
 
 export default Filters = (props) => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getTypesOfFoods())
+    }, dispatch)
+
+    const typesOfFoods = useSelector((state) => state.typesOfFoods);
+
     const response = () => {
         props.handleBottonSheet()
     }
+
     const [foods, setFoods] = useState(null);
     const [ambiences, setAmbiences] = useState(null);
     const [selectedValue3, setSelectedValue3] = useState(null);
     const [selectedValue4, setSelectedValue4] = useState(null);
     const [selectedValue5, setSelectedValue5] = useState(null);
 
-    const foodOptions = [
-        { label: 'Restaurante', value: 'Restaurante' },
-        { label: 'Gourmet', value: 'Gourmet' },
-        { label: 'Sushi', value: 'Sushi' },
-    ];
+    const foodOptions = typesOfFoods?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
+
     const ambienceOptions = [
         { label: 'Moderno', value: 'Moderno' },
         { label: 'Relajado', value: 'Relajado' },
@@ -40,7 +55,6 @@ export default Filters = (props) => {
     ];
 
     return (
-
         <View>
             <View style={styles.cont}>
                 <View style={styles.containerTitle}>
