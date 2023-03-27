@@ -5,8 +5,6 @@ import {
 
     FILTER_CARDS,
     ORDER_CARDS,
-
-    CLEAR_STATE_RESTORANT_BY_ID,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -43,16 +41,13 @@ export default function rootReducer(state = initialState, action) {
             // console.log("HOLAA : ", action.payload);
             return{ ...state, 
                 allRestorants: action.payload, 
-                restorantsFound: sortAsc(action.payload) 
+                restorantsFound: (action.payload) 
             }
         }
   //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID:  {
             // console.log(restorantsJson);
-            return{ ...state, 
-                restorantById: action.payload, 
-                // restorantsFound: sortAsc(action.payload) 
-            }
+           // return{ ...state, allRestorants: action.payload, restorantsFound: sortAsc(action.payload) }
         }
   //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING:  {
@@ -64,7 +59,7 @@ export default function rootReducer(state = initialState, action) {
         case FILTER_CARDS:{ 
             // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state.allRestorants];
-            state.restorantsFiltered = [...state.allRestorants]
+            // state.restorantsFiltered = [...state.allRestorants]
 
             const filteredRestorants = auxAllRestorants.filter(resto =>
                 (resto.menu.includes(state.filterByMenu) || resto.menu === 'All') &&
@@ -114,10 +109,7 @@ export default function rootReducer(state = initialState, action) {
                 } 
 
             }
-            case CLEAR_STATE_RESTORANT_BY_ID:  {
-                // console.log(restorantsJson);
-                return{ ...state, restorantById: {} }
-            }
+
 
         default:
             return state;

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
@@ -12,21 +13,25 @@ import theme from '../../styles/theme.js'
 
 const DetailResto = (props) => {
     const { _id } = useParams();
-    const detail = useSelector(state => state.restorantById)
+    const detail = useSelector(state => state?.restorantById)
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch();
-    
 
     useEffect(() => {
-        // console.log("detail 1: ", Object.keys(detail)?.length );
 
-        if(Object.keys(detail)?.length === 0) { 
+
+        if(Object?.keys(detail)?.length === 0) { 
             // console.log("detail if 1: ",detail );
             dispatch(searchRestorantById(_id));
-             }
+            }
         else {
             // console.log("soy el detail, ", _id);
+            // console.log("schedule: ", detail?.schedule);
+            // console.log("-------------------------------");
+            // console.log("dia: ", detail?.schedule[0]?.monday?.open);
+            // console.log("keys detail: ", Object?.keys(detail));
+
             setLoading(false)
             // dispatch(searchRestorantById(_id));
         }
@@ -36,15 +41,18 @@ const DetailResto = (props) => {
     return(
         <ScrollView>
             
-            {loading ?
-                <Loading/> :
+            {loading ? <Loading/> :
                 <View>
                     <Image style={styles?.image} source={{ uri: detail?.images[0] }}></Image>
-                    <Text> {detail?.name.toUpperCase()} - (id:{detail?._id})</Text>
-                    <Text> </Text>
+                    <Text> {detail?.name?.toUpperCase()} - (id:{detail?._id})</Text>
 
                     <Text> ACA VA EL VALOR DE LA RESERVA $$$</Text>
-                <Text> ⭐️{detail?.ranking} - 📍{detail?.address[0]?.streetName}, {detail?.address[0]?.streetNumber}</Text>
+                    <Text> ⭐️{detail?.ranking} - 📍{detail?.address?.streetName}, {detail?.address?.streetNumber}</Text>
+                    <Text> </Text>
+
+                    <Text> ---- Facebool: {detail?.contact?.socialMedia?.facebook} </Text>
+                    <Text> ---- Instagram: {detail?.contact?.socialMedia?.instagram} </Text>
+
 
                     <Text> </Text>
                     <Text> RESERVA</Text>
@@ -67,14 +75,15 @@ const DetailResto = (props) => {
                     <Text> -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]} {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]} </Text>
                     <Text> </Text>
                     <Text> HORARIOS</Text>
-                    <Text> ---- {detail?.schedule[0]?._id}</Text>
-                    <Text> ---- {detail?.schedule[1]?._id}</Text>
-                    <Text> ---- {detail?.schedule[2]?._id}</Text>
-                    <Text> ---- {detail?.schedule[3]?._id}</Text>
-                    <Text> ---- {detail?.schedule[4]?._id}</Text>
-                    <Text> ---- {detail?.schedule[5]?._id}</Text>
-                    <Text> ---- {detail?.schedule[6]?._id}</Text>
-                    <Text> ---- {detail?.schedule[4]?._id}</Text>
+                    <Text> ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a {detail?.schedule[0]?.monday?.close}hs</Text>
+                    <Text> ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a {detail?.schedule[0]?.tuesday?.close}hs</Text>
+                    <Text> ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a {detail?.schedule[0]?.wednesday?.close}hs</Text>
+                    <Text> ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a {detail?.schedule[0]?.thursday?.close}hs</Text>
+                    <Text> ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a {detail?.schedule[0]?.friday?.close}hs</Text>
+                    <Text> ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a {detail?.schedule[0]?.saturday?.close}hs</Text>
+                    <Text> ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a {detail?.schedule[0]?.sunday?.close}hs</Text>
+
+
 
 
                     <Text> </Text>
@@ -86,6 +95,8 @@ const DetailResto = (props) => {
 
 
                 </View>
+
+                // :<Loading/>
 
             } 
                 
