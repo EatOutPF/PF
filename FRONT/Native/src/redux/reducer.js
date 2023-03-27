@@ -43,7 +43,7 @@ export default function rootReducer(state = initialState, action) {
             // console.log("HOLAA : ", action.payload);
             return{ ...state, 
                 allRestorants: action.payload, 
-                restorantsFound: (action.payload) 
+                restorantsFound: action.payload
             }
         }
   //------------------------------------------------------------------------- 

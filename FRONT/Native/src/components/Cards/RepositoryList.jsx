@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { FlatList, Text, View } from 'react-native'
 // import repositories from '../../data/repositories.js'
 import RepositoryItem from './RestosItem.jsx'
@@ -16,11 +16,19 @@ const RestorantsList = () => {
  
   
   // console.log("ALL : ", Object.keys(restorantes));
-  const restorantes = useSelector(state => state.allRestorants);
+  const resto = useSelector(state => state.restorantsFound);
+  const [restorantes, setRestorantes] = useState( [] );
+
+  console.log("resto length: ", resto?.length);
+  console.log("restorantes length: ", restorantes?.length);
+
+  // if(restorantes?.length === 0) setRestorantes([...resto]);
 
   useEffect(() => {
     // let allrestos =     dispatch(getAllRestorants())
-    if(restorantes?.length === 0) dispatch(getAllRestorants())
+    console.log("soy el usefecct");
+    if(restorantes?.length === 0) setRestorantes([...resto]);
+    if(restorantes?.length !== resto?.length) setRestorantes([...resto]);
     dispatch(orderCards("rk"))
 
   }, []);
