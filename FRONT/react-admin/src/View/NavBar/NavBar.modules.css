@@ -2,12 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  background-color: #282c34;
-  width: 110px;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 h2 {
