@@ -4,10 +4,6 @@ import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
 
 const Cards = ({ currentRestaurants }) => {
-  useEffect(() => {
-    console.log(currentRestaurants);
-  });
-
   return (
     <div className={style.containerCards}>
       {!currentRestaurants?.length ? (
@@ -22,27 +18,31 @@ const Cards = ({ currentRestaurants }) => {
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {currentRestaurants.map((r) => r && (
-              <Card
-                key={r._id}
-                id={r._id}
-                name={r.name}
-                address={r.address}
-                contact={r.contact}
-                tables={r.tables}
-                schedule={r.schedule}
-                menu={r.menu}
-                diets={r.diets}
-                atmosphere={r.atmosphere}
-                extras={r.extras}
-                ranking={r.ranking}
-                active={r.active}
-              />
-            ))}
+            {currentRestaurants.map(
+              (r) =>
+                r && (
+                  <Card
+                    key={r._id}
+                    id={r._id}
+                    name={r.name}
+                    address={r.address}
+                    contact={r.contact}
+                    tables={r.tables}
+                    schedule={r.schedule}
+                    menu={r.menu}
+                    diets={r.diets}
+                    atmosphere={r.atmosphere}
+                    extras={r.extras}
+                    ranking={r.ranking}
+                    active={r.active}
+                  />
+                )
+            )}
           </tbody>
         </table>
       )}
