@@ -5,9 +5,6 @@ import {
 
     FILTER_CARDS,
     ORDER_CARDS,
-
-    CLEAR_STATE_RESTORANT_BY_ID,
-
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -50,9 +47,7 @@ export default function rootReducer(state = initialState, action) {
   //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID:  {
             // console.log(restorantsJson);
-           return{ ...state, restorantById: action.payload, 
-            // restorantsFound: sortAsc(action.payload) 
-        }
+           // return{ ...state, allRestorants: action.payload, restorantsFound: sortAsc(action.payload) }
         }
   //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING:  {
@@ -115,10 +110,7 @@ export default function rootReducer(state = initialState, action) {
 
             }
 
-        case CLEAR_STATE_RESTORANT_BY_ID:  {
-                // console.log(restorantsJson);
-                return{ ...state, restorantById: null }
-            }
+
         default:
             return state;
     }

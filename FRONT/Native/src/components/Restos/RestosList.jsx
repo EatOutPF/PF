@@ -6,7 +6,7 @@ import theme  from '../../styles/theme';
 import { useDispatch, useSelector } from 'react-redux'
 // import AsyncStorage from "@react-native-async-storage/async-storage"
 
-import { getAllRestorants } from '../../redux/actions'
+import { getAllRestorants, clearStateResatorantById } from '../../redux/actions'
 import Loading from "../Loading/Loading"
 import CarouselAux from './CarouselAux';
 
@@ -17,12 +17,15 @@ const RepositoryList = () => {
   const [loading, setLoading] = useState(true)
 
   const restorantes = useSelector(state => state.allRestorants);
+  const restorantById = useSelector(state => state.restorantById);
+
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     if(restorantes?.length !== 0) { setLoading(false) }
     // await AsyncStorage.setItem()
-    else if(restorantes?.length === 0)dispatch(getAllRestorants());
+    else dispatch(getAllRestorants());
     // listaRestos = useSelector(state => state.allRestorants);
 
   },[restorantes])

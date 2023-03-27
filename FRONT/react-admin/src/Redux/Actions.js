@@ -7,7 +7,9 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-export const FILTER_BY_DIETS= "FILTER_BY_DIETS"
+export const FILTER_BY_DIETS= "FILTER_BY_DIETS";
+export const ERROR_MSSG= "ERROR_MSSG";
+export const GET_RESTAURAN_NAME= "GET_RESTAURAN_NAME"
 
 export const getAllRestaurants = () => {
   return async (dispatch) => {
@@ -15,7 +17,7 @@ export const getAllRestaurants = () => {
       .get(`${baseUrl}/restaurant`)
       .then((response) => {
         dispatch({
-          type: GET_ALL_RESTAURANTS,
+          type: "GET_ALL_RESTAURANTS",
           payload: response.data,
         });
       })
@@ -86,5 +88,19 @@ export const modifyRestaurant = (dataToUpdate) => {
           payload: error.response.data,
         });
       });
+  };
+};
+
+export const getAllRestauranName = (name) => {
+  return async function (dispatch) {
+    if (name === "") {
+      return dispatch({ type: ERROR_MSSG });
+    }
+    try {
+      let RestauranByName = await axios.get(`${baseUrl}/restaurant?name=${name}`);
+      return dispatch({ type: GET_RESTAURAN_NAME, payload:[RestauranByName.data] });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert, Image, Dimensions, ImageBackground  } from 'react-native';
-import { Link, useLocation, Navigate } from 'react-router-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { clearStateRestauranteById } from '../../redux/actions';
-
-
 // import repositories from '../../data/repositories.js'
 // import restorantsJson from '../../../data/restaurants'
 
@@ -28,9 +23,8 @@ const CarouselAux = (props) => {
   // const handleNext = () => {
   //   setActiveIndex(activeIndex === repositories.length - 1 ? 0 : activeIndex + 1);
   // };
-  const handlePress = (value) => {
-    dispatch(clearStateRestauranteById());
-    Navigate(`/detail/${value}`);
+  const handlePress = () => {
+    Alert.alert('Aca va el Detail', 'Con todos los datos del resto.');
   };
 
   const renderItem = ({ item, index }) => {
@@ -42,16 +36,13 @@ const CarouselAux = (props) => {
       return (
         <View style={[styles.itemContainer]}>
             {/* styles.itemContainer, isActive && styles.activeItemContainer */}
-            <TouchableOpacity onPress={handlePress(item._id)}>
-            {/* <Link to={`/detail/${item._id}`} component={TouchableOpacity}> */}
-            {/* <TouchableOpacity onPress={handlePress}> */}
+            <TouchableOpacity onPress={handlePress}>
               <ImageBackground  style={styles.image} source={{ uri: ownerAvatarUrl }}>
                 <Text style={[styles.itemTitle]}>{item.name}</Text> 
                 <Text style={[styles.itemStar]}>⭐{item.ranking}</Text> 
                   {/* styles.itemTitle, isActive && styles.activeItemTitle */}
 
               </ImageBackground >
-            {/* </TouchableOpacity> */}
             </TouchableOpacity>
           
         </View>

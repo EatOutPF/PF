@@ -14,113 +14,167 @@ export default Filters = (props) => {
         { label: 'Option 3', value: 'option3' },
     ];
     return (
+
         <View style={styles.container}>
+
+            <View style={{ backgroundColor: 'yellow' }}>
+            <View>
+                <IonicIcon
+                    style={styles.closeBottom}
+                    name="close-circle-outline"
+                    size={22}
+                    onPress={() => response()}
+                />
             <Text styles={styles.title}>Ordenar por</Text>
-            <IonicIcon
-                style={styles.closeBottom}
-                name="close-circle-outline"
-                size={22}
-                onPress={() => response()}
-            />
-            <ScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal
-            >
-                <TouchableOpacity style={styles.orderButton}>
-                    <Text style={styles.orderButtonText}>Calificación</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.orderButton}>
-                    <Text style={styles.orderButtonText}>Distancia</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.orderButton}>
-                    <Text style={styles.orderButtonText}>MayorPrecio</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.orderButton}>
-                    <Text style={styles.orderButtonText}>MenorPrecio</Text>
-                </TouchableOpacity>
-            </ScrollView>
-            <View>
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={(value) => setSelectedValue(value)}
-                >
-                    <Picker.Item label="Tipo de comida" value="" />
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
-            </View>
-
-            <View>
-
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={(value) => setSelectedValue(value)}
-                >
-                    <Picker.Item label="Ambiente" value="" />
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
 
             </View>
+           </View>
 
-            <View>
 
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={(value) => setSelectedValue(value)}
+
+            <View style={styles.containerOrderButtons}>
+                <ScrollView
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
                 >
-                    <Picker.Item label="Espacios" value="" />
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
-
+                    <TouchableOpacity style={styles.orderButton}>
+                        <Text style={styles.orderButtonText}>Calificación</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.orderButton}>
+                        <Text style={styles.orderButtonText}>Distancia</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.orderButton}>
+                        <Text style={styles.orderButtonText}>MayorPrecio</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.orderButton}>
+                        <Text style={styles.orderButtonText}>MenorPrecio</Text>
+                    </TouchableOpacity>
+                </ScrollView>
             </View>
 
-            <View>
 
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={(value) => setSelectedValue(value)}
-                >
-                    <Picker.Item label="Cuenta con" value="" />
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
 
-            </View>
 
-            <View>
+            <View style={styles.containerP}>
 
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={(value) => setSelectedValue(value)}
-                >
-                    <Picker.Item label="Otrosn" value="" />
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
-                    ))}
-                </Picker>
+                <View style={styles.containerPiker}>
+                    <View style={styles.labelContainer}>
+                        <IonicIcon
+                            name="fast-food-outline"
+                            size={20}
+                        />
+                        <Text style={styles.label}>Tipo de comida</Text>
+                    </View>
+                    <Picker
+                        selectedValue={selectedValue}
+                        onValueChange={(value) => setSelectedValue(value)}
+                    >
+                        <Picker.Item label="Tipo de comida" value="" />
+                        {options.map((option) => (
+                            <Picker.Item key={option.value} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
 
+                <View style={styles.containerPiker}>
+                    <View style={styles.labelContainer}>
+                        <IonicIcon
+                            name="beer-outline"
+                            size={22}
+                        />
+                        <Text style={styles.label}>Ambiente</Text>
+                    </View>
+
+                    <Picker
+                        selectedValue={selectedValue}
+                        onValueChange={(value) => setSelectedValue(value)}
+                    >
+                        <Picker.Item label="Ambiente" value="" />
+                        {options.map((option) => (
+                            <Picker.Item key={option.value} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
+
+                <View style={styles.containerPiker}>
+                    <View style={styles.labelContainer}>
+                        <IonicIcon
+                            name="partly-sunny-outline"
+                            size={22}
+                        />
+                        <Text style={styles.label}>Espacios</Text>
+                    </View>
+                    <Picker
+                        selectedValue={selectedValue}
+                        onValueChange={(value) => setSelectedValue(value)}
+                    >
+                        <Picker.Item label="Espacios" value="" />
+                        {options.map((option) => (
+                            <Picker.Item key={option.value} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
+
+
+                <View style={styles.containerPiker}>
+                    <View style={styles.labelContainer}>
+                        <IonicIcon
+                            name="leaf-outline"
+                            size={22}
+                        />
+                        <Text style={styles.label}>Cuenta con</Text>
+                    </View>
+                    <Picker
+                        selectedValue={selectedValue}
+                        onValueChange={(value) => setSelectedValue(value)}
+                    >
+                        <Picker.Item label="Cuenta con" value="" />
+                        {options.map((option) => (
+                            <Picker.Item key={option.value} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
+
+                <View style={styles.containerPiker}>
+                    <View style={styles.labelContainer}>
+                        <IonicIcon
+                            name="paw-outline"
+                            size={22}
+                        />
+                        <Text style={styles.label}>Otros</Text>
+                    </View>
+                    <Picker
+                        selectedValue={selectedValue}
+                        onValueChange={(value) => setSelectedValue(value)}
+                    >
+                        <Picker.Item label="Otros" value="" />
+                        {options.map((option) => (
+                            <Picker.Item key={option.value} label={option.label} value={option.value} />
+                        ))}
+                    </Picker>
+                </View>
             </View>
 
         </View>
 
     )
 }
+
+
+
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+        backgroundColor: 'blue',
     },
     title: {
         fontWeight: '900',
         letterSpacing: 1,
         fontSize: 20,
         right: 100,
+        backgroundColor: 'orange',
     },
     closeBottom: {
         flexDirection: 'row',
@@ -131,7 +185,13 @@ const styles = StyleSheet.create({
         margin: 10,
         paddingVertical: 15,
     },
+    containerOrderButtons: {
+        flex: 0.1,
+        backgroundColor: 'red',
+        padding: 3,
+        
 
+    },
     orderButton: {
         paddingHorizontal: 10,
         justifyContent: 'center',
@@ -144,7 +204,31 @@ const styles = StyleSheet.create({
     orderButtonText: {
         fontSize: 14,
         color: "white"
-    }
+    },
+    containerP: {
+        flex: 1,
+    },
+    containerPiker: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingVertical: 0.1,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 20,
+        backgroundColor: '#D9D9D9',
+        margin: 8,
+    },
+    labelContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    label: {
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
 })
 
 

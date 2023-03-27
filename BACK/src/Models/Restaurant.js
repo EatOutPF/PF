@@ -21,6 +21,7 @@ const restaurantSchema = new Schema({
       neighborhood: String,
       city: String,
       state: String,
+      country: String,
       coordinate: {
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true },
@@ -47,6 +48,7 @@ const restaurantSchema = new Schema({
       sunday: { open: String, close: String },
     },
   ],
+  advance: Number,
   ranking: Number,
   menu: [
     {
