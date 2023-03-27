@@ -50,13 +50,14 @@ export const getFilterByDiets = (comida) => {
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant?id=${id}`)
-      .then((result) =>
+      .get(`${baseUrl}/restaurant/${id}`)
+      .then((result) => {
+        console.log("action find", result);
         dispatch({
           type: DETAIL_RESTAURANT,
           payload: result.data,
-        })
-      )
+        });
+      })
       .catch((err) => {
         dispatch({
           type: DETAIL_RESTAURANT,

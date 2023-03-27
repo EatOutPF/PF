@@ -4,10 +4,6 @@ import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
 
 const Cards = ({ currentRestaurants }) => {
-  useEffect(() => {
-    console.log(currentRestaurants);
-  });
-
   return (
     <div className={style.containerCards}>
       {!currentRestaurants?.length ? (

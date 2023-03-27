@@ -48,8 +48,8 @@ const ModifyRestaurant = (props) => {
   };
 
   useEffect(() => {
-    console.log({ input });
-  });
+    console.log({ detailRestaurant });
+  }, []);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
@@ -75,6 +75,7 @@ const ModifyRestaurant = (props) => {
   };
 
   useEffect(() => {
+    console.log("id que llega", id);
     dispatch(findDetailRestaurant(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
