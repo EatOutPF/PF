@@ -17,6 +17,7 @@ async function postRestaurant({
   tables,
   schedule,
   advance,
+  // review,
   menu,
   diets,
   paymentMethods,
@@ -29,6 +30,8 @@ async function postRestaurant({
   if (!name || !address || !contact || !tables || !schedule)
     throw new Error("Hay datos obligatorios sin completar");
 
+  
+  // const reviewObjects = await Review.find
   const menuOjects = await Menu.find({ title: { $in: menu } });
   const dietObjects = await Diet.find({ title: { $in: diets } });
   const paymentMethodObjects = await PaymentMethods.find({
@@ -49,6 +52,7 @@ async function postRestaurant({
     tables,
     schedule,
     advance,
+    // review,
     menu: menuOjects,
     diets: dietObjects,
     paymentMethods: paymentMethodObjects,
@@ -93,6 +97,7 @@ async function putRestaurant(
     tables,
     schedule,
     advance,
+    // review,
     menu,
     diets,
     paymentMethods,
@@ -103,20 +108,20 @@ async function putRestaurant(
 ) {
   if (!id) throw new Error("Deberá consignar un id válido");
   const restaurant = await Restaurant.findByIdAndUpdate(id, {
-    _id: id,
-    name: name,
-    address: address,
-    images: images,
-    contact: contact,
-    tables: tables,
-    schedule: schedule,
-    advance: advance,
-    menu: menu,
-    diets: diets,
-    paymentMethods: paymentMethods,
-    atmosphere: atmosphere,
-    extras: extras,
-    section: section,
+    // _id: id,
+    name,
+    address,
+    images,
+    contact,
+    tables,
+    schedule,
+    advance,
+    menu,
+    diets,
+    paymentMethods,
+    atmosphere,
+    extras,
+    section,
   },  {new:true});
 
   if (!restaurant)
