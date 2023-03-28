@@ -22,11 +22,13 @@ export default function Form() {
     city: "",
     state: "",
     country: "",
-    coordinate:{
-      latitude: 0,
-      longitude:0,
-    }
   });
+
+  const[coordinate,setCoordinate] = useState({
+    longitude:0,
+    latitude:0,
+  }
+  )
 
   const [contact, setContact] = useState({
     contact: {
@@ -222,11 +224,20 @@ export default function Form() {
   };
 
   const handleAddress = (event) => {
+    console.log(event)
     setAddress({
       ...setAddress,
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleLongitude = event => {
+    setCoordinate({...coordinate, longitude: event.target.value})
+  }
+
+  const handleLatitude = event => {
+    setCoordinate({...coordinate, latitude: event.target.value})
+  }
 
   const handleSchedule = (day, time, value) => {
     setSchedule((prevSchedule) => {
@@ -386,7 +397,7 @@ useEffect(() => {
             <div>
               <label>
                 Longitude:
-                <input type="number" name="longitude" value={address.longitude} onChange={handleAddress} />
+                <input type="number" name="longitude" value={coordinate.longitude} onChange={handleLongitude} />
               </label>
             </div>
 
@@ -394,7 +405,7 @@ useEffect(() => {
             <div>
               <label>
                 Latitude:
-                <input type="number" name="latitude" value={address.latitude} onChange={handleAddress} />
+                <input type="number" name="latitude" value={coordinate.latitude} onChange={handleLatitude} />
               </label>
             </div>
 
