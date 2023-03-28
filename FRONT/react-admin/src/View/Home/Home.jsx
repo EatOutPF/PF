@@ -53,10 +53,12 @@ const Home = () => {
 
       <Searchbar setCurrentPage={setCurrentPage} />
 
-      <Cards
-        restaurants={searchResults || restaurants}
-        currentRestaurants={currentRestaurants}
-      />
+      {currentRestaurants?.length && (
+        <Cards
+          restaurants={searchResults || restaurants}
+          currentRestaurants={currentRestaurants}
+        />
+      )}
     </div>
   );
 };
