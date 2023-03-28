@@ -125,22 +125,42 @@ export const deleteRestaurant = (dataToUpdate) => {
   };
 };
 
-export function postRestaurant(restaurant) {
-  return async function (dispatch) {
-    axios
-      .post(`${baseUrl}/create`, restaurant)
-      .then((res) => {
-        return dispatch({
-          type: "POST_RESTAURANT",
-          payload: res.data,
-        });
-      })
-      .catch((error) => {
-        dispatch({
-          type: "POST_RESTAURANT",
-          payload: [],
-        });
-        alert(error.response.data);
-      });
-  };
-}
+
+export const postRestaurant = (create) => async (dispatch) => {
+  try {
+    const response = await axios.post(`${baseUrl}/restaurant`, create);
+    const restaurant = response.data;
+    dispatch({
+      type: "POST_RESTAURANT",
+      payload: restaurant
+    });
+  } catch (error) {
+    alert(error.response.data);
+    dispatch({
+      type: "POST_RESTAURANT",
+      payload: []
+    });
+  }
+};
+
+// export function postRestaurant(create){
+//   return async function(dispatch){
+  
+//               axios.post(`${baseUrl}/restaurant`,create).then(res => {
+//                   return dispatch({
+//                     type: "POST_RESTAURANT",
+//                     payload: res.data,
+//                   })
+                  
+
+//               } ).catch(error => {dispatch({
+//                   type: "POST_RESTAURANT",
+//                   payload: [],
+//               }); alert(error.response.data) 
+//           });
+              
+
+    
+//   }
+// }
+

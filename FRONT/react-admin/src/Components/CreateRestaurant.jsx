@@ -24,11 +24,17 @@ export default function Form() {
     country: "",
   });
 
+  const[coordinate,setCoordinate] = useState({
+    longitude:0,
+    latitude:0,
+  }
+  )
+
   const [contact, setContact] = useState({
     contact: {
       phoneNumber: "",
       email: "",
-      socialMedia: { instagram: "", facebook: "", wpp: "" },
+      socialMedia: { instagram: "", facebook: "", wpp: "", },
     }
   })
 
@@ -218,11 +224,20 @@ export default function Form() {
   };
 
   const handleAddress = (event) => {
+    console.log(event)
     setAddress({
       ...setAddress,
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleLongitude = event => {
+    setCoordinate({...coordinate, longitude: event.target.value})
+  }
+
+  const handleLatitude = event => {
+    setCoordinate({...coordinate, latitude: event.target.value})
+  }
 
   const handleSchedule = (day, time, value) => {
     setSchedule((prevSchedule) => {
@@ -377,6 +392,26 @@ useEffect(() => {
                 <input type="file" onChange={(e) => setImages([...images, e.target.files[0]])} />
               </label>
             </div>
+
+            
+            <div>
+              <label>
+                Longitude:
+                <input type="number" name="longitude" value={coordinate.longitude} onChange={handleLongitude} />
+              </label>
+            </div>
+
+            
+            <div>
+              <label>
+                Latitude:
+                <input type="number" name="latitude" value={coordinate.latitude} onChange={handleLatitude} />
+              </label>
+            </div>
+
+           
+
+           
 
 
 
