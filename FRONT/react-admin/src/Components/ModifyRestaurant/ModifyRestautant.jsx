@@ -96,29 +96,27 @@ const ModifyRestaurant = (props) => {
         id: detailRestaurant._id,
         name: detailRestaurant.name,
         latitude: detailRestaurant.address
-          ? detailRestaurant.address[0].coordinate.latitude
+          ? detailRestaurant.address.coordinate.latitude
           : "",
         longitude: detailRestaurant.address
-          ? detailRestaurant.address[0].coordinate.longitude
+          ? detailRestaurant.address.coordinate.longitude
           : "",
         streetName: detailRestaurant.address
-          ? detailRestaurant.address[0].streetName
+          ? detailRestaurant.address.streetName
           : "",
         streetNumber: detailRestaurant.address
-          ? detailRestaurant.address[0].streetNumber
+          ? detailRestaurant.address.streetNumber
           : 0,
         neighborhood: detailRestaurant.address
-          ? detailRestaurant.address[0].neighborhood
+          ? detailRestaurant.address.neighborhood
           : "",
-        city: detailRestaurant.address ? detailRestaurant.address[0].city : "",
-        state: detailRestaurant.address
-          ? detailRestaurant.address[0].state
-          : "",
+        city: detailRestaurant.address ? detailRestaurant.address.city : "",
+        state: detailRestaurant.address ? detailRestaurant.address.state : "",
         country: detailRestaurant.address
-          ? detailRestaurant.address[0].country
+          ? detailRestaurant.address.country
           : "",
         idDirection: detailRestaurant.address
-          ? detailRestaurant.address[0]._id
+          ? detailRestaurant.address._id
           : "",
         images: detailRestaurant.images,
         instagram:
@@ -135,47 +133,40 @@ const ModifyRestaurant = (props) => {
         email: detailRestaurant.contact && detailRestaurant.contact[0]?.email,
         tables: detailRestaurant.tables,
         mondayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.monday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule?.monday?.open,
         mondayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.monday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule?.monday?.close,
         tuesdayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.tuesday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule?.tuesday?.open,
         tuesdayClose:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.tuesday?.close,
+          detailRestaurant.schedule?.tuesday?.close,
         wednesdayOpen:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.wednesday?.open,
+          detailRestaurant.schedule?.wednesday?.open,
         wednesdayClose:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.wednesday?.close,
+          detailRestaurant.schedule?.wednesday?.close,
         thursdayOpen:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.thursday?.open,
+          detailRestaurant.schedule?.thursday?.open,
         thursdayClose:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.thursday?.close,
+          detailRestaurant.schedule?.thursday?.close,
         fridayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.friday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule?.friday?.open,
         fridayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.friday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule?.friday?.close,
         saturdayOpen:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.saturday?.open,
+          detailRestaurant.schedule?.saturday?.open,
         saturdayClose:
           detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.saturday?.close,
+          detailRestaurant.schedule?.saturday?.close,
         sundayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.sunday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule?.sunday?.open,
         sundayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule[0]?.sunday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule?.sunday?.close,
         menu: detailRestaurant.menu,
         diets: detailRestaurant.diets,
         paymentMethods: detailRestaurant.paymentMethods,
@@ -374,7 +365,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="mondayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="mondayOpen"
                           value={input.mondayOpen}
                           onChange={handlerChange}
@@ -383,7 +374,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="mondayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="mondayClose"
                           value={input.mondayClose}
                           onChange={handlerChange}
@@ -398,7 +389,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="tuesdayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="tuesdayOpen"
                           value={input.tuesdayOpen}
                           onChange={handlerChange}
@@ -407,7 +398,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="tuesdayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="tuesdayClose"
                           value={input.tuesdayClose}
                           onChange={handlerChange}
@@ -422,7 +413,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="wednesdayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="wednesdayOpen"
                           value={input.wednesdayOpen}
                           onChange={handlerChange}
@@ -431,7 +422,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="wednesdayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="wednesdayClose"
                           value={input.wednesdayClose}
                           onChange={handlerChange}
@@ -446,7 +437,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="thursdayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="thursdayOpen"
                           value={input.thursdayOpen}
                           onChange={handlerChange}
@@ -455,7 +446,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="thursdayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="thursdayClose"
                           value={input.thursdayClose}
                           onChange={handlerChange}
@@ -470,7 +461,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="fridayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="fridayOpen"
                           value={input.fridayOpen}
                           onChange={handlerChange}
@@ -479,7 +470,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="fridayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="fridayClose"
                           value={input.fridayClose}
                           onChange={handlerChange}
@@ -494,7 +485,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="saturdayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="saturdayOpen"
                           value={input.saturdayOpen}
                           onChange={handlerChange}
@@ -503,7 +494,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="saturdayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="saturdayClose"
                           value={input.saturdayClose}
                           onChange={handlerChange}
@@ -518,7 +509,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="sundayOpen"> Abre </label>
                         <input
-                          type="time"
+                          type="text"
                           name="sundayOpen"
                           value={input.sundayOpen}
                           onChange={handlerChange}
@@ -527,7 +518,7 @@ const ModifyRestaurant = (props) => {
                       <div>
                         <label htmlFor="sundayClose"> Cierra </label>
                         <input
-                          type="time"
+                          type="text"
                           name="sundayClose"
                           value={input.sundayClose}
                           onChange={handlerChange}
