@@ -3,28 +3,24 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTypesOfFoods } from '../../redux/actions.js';
+import { getTypesOfFoods, getAtmosphere, getSections } from '../../redux/actions.js';
 
 
 export default Filters = (props) => {
+    const response = () => {
+        props.handleBottonSheet()
+    }
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getTypesOfFoods())
+        dispatch(getSections())
+        // dispatch(getAtmosphere())
     }, dispatch)
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
-
-    const response = () => {
-        props.handleBottonSheet()
-    }
-
-    const [foods, setFoods] = useState(null);
-    const [ambiences, setAmbiences] = useState(null);
-    const [selectedValue3, setSelectedValue3] = useState(null);
-    const [selectedValue4, setSelectedValue4] = useState(null);
-    const [selectedValue5, setSelectedValue5] = useState(null);
-
+    const typesOfSections = useSelector((state) => state.typesOfSections);
+    // const typesOfAtmosphere= useSelector((state) => state.typesOfAtmosphere);
     const foodOptions = typesOfFoods?.map(e => {
         return {
             label: e.name,
@@ -32,17 +28,33 @@ export default Filters = (props) => {
         }
     })
 
+    const [foods, setFoods] = useState(null);
+    const [ambiences, setAmbiences] = useState(null);
+    const [spaces, setSpaces] = useState(null);
+    const [selectedValue4, setSelectedValue4] = useState(null);
+    const [selectedValue5, setSelectedValue5] = useState(null);
+
+
+    // const atmosphereOptions = typesOfAtmosphere?.map(e => {
+    //     return {
+    //         label: e.atmosphere,
+    //         value: e.atmosphere,
+    //     }
+    // })
+
+    const spaceOptions = typesOfSections?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
 
     const ambienceOptions = [
         { label: 'Moderno', value: 'Moderno' },
         { label: 'Relajado', value: 'Relajado' },
         { label: 'Clasico', value: 'Clasico' },
     ];
-    const spaceOptions = [
-        { label: 'Salon', value: 'Salon' },
-        { label: 'Patio', value: 'Patio' },
-        { label: 'Terraza', value: 'Terraza' },
-    ];
+
     const menuOptions = [
         { label: 'Menu Celíaco', value: 'Menu Celíaco' },
         { label: 'Menu Vegano', value: 'Menu Vegano' },
@@ -141,8 +153,8 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Espacios</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue3}
-                            onValueChange={(value) => setSelectedValue3(value)}
+                            selectedValue={spaces}
+                            onValueChange={(value) => setSpaces(value)}
                         >
                             <Picker.Item label="Espacios" value="" />
                             {spaceOptions.map((option) => (
