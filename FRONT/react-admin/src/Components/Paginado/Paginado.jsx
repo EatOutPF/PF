@@ -31,10 +31,6 @@ function Paginate({
     }
   }
 
-  useEffect(() => {
-    console.log(currentPage);
-  });
-
   return (
     <div className="pagination">
       <button onClick={() => handlePrev()}>Prev</button>
