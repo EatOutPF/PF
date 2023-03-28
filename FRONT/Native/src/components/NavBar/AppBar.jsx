@@ -17,11 +17,17 @@ const styles = StyleSheet.create({
     paddingBottom: 15
   },
   text: {
+    borderRadius: 10,
     color: theme.appBar.textSecondary,
-    paddingHorizontal: 10
+    // backgroundColor: "white",
+    paddingHorizontal: 10,
+    fontSize: 20 ,
   },
   active: {
-    color: theme.appBar.textPrimary
+    color: theme.appBar.textPrimary,
+    backgroundColor: "black",
+    fontSize: 20 ,
+    borderRadius: 10,
   }
 })
 

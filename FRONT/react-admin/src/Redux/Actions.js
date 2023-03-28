@@ -114,12 +114,12 @@ export const deleteRestaurant = (dataToUpdate) => {
       })
       .then((response) => {
         dispatch({ type: DELETE_RESTAURANT, payload: response.data });
-        dispatch(getAllRestaurants());
+        //dispatch(getAllRestaurants());
       })
       .catch((error) => {
         return dispatch({
           type: DELETE_RESTAURANT,
-          payload: error.response?.data?.error,
+          payload: error,
         });
       });
   };

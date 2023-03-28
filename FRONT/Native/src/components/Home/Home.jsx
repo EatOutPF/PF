@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
-import RepositoryList from '../Restos/RestosList.jsx'
+import RestosList from '../Restos/RestosList.jsx'
 import Map from '../Map/Map.jsx'
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 
 // import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 // import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
-import RestorantsList from '../Cards/RepositoryList.jsx'
+import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import SelectComponent from '../filtradoaux/filtradoaux.jsx'
 
 
@@ -49,14 +49,14 @@ const Main = () => {
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
       <AppBar />       
         <Routes>
-          <Route path='/' element= {<RepositoryList />} />
-          <Route path='/restorantslist' element= {
+          <Route path='/' element= {<RestosList />} />          // Restos
+          <Route path='/restorantslist' element= {            // Listado
           // <Text>Working on it</Text>
-          <RestorantsList/>
+          <ListOfFiltered/>
           } />
-          <Route path='/mapview' element= {<Map data={RepositoryList}/>} />
-          <Route path='/pagerview' element={<SelectComponent/>} />
-          <Route path='/signin' element= { <Text>Working on it</Text> } 
+          <Route path='/mapview' element= {<Map data={RestosList}/>} />       // Mapa
+          <Route path='/pagerview' element={<SelectComponent/>} />            // EJ2
+          <Route path='/signin' element= { <Text>Working on it</Text> }       //EJ1
           />
           <Route path='/detail/:_id' element={<DetailResto />} />
 
