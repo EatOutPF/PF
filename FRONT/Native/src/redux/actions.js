@@ -2,17 +2,20 @@ import axios from "axios";
 import { 
     GET_ALL_RESTORANTS,
     GET_RESTORANT_BY_ID,
+    GET_RESTORANT_BY_STRING,
     FILTER_CARDS,
     ORDER_CARDS,
     CLEAR_STATE_RESTORANT_BY_ID,
     CLEAR_STATE_RESTORANT_BY_STRING,
+    CLEAR_SEARCH_TEXT,
+    SET_SEARCH_TEXT,
     GET_TYPES_FOODS,
 } from "./type";
 
 
 // esto hay que cambiarlo a la IP que tiene el servidor 
 // ya que es diferente a la IP del Celular
-const DB_HOST = "http://192.168.0.101:5001";  // ip de la pc con el server corriendo
+const DB_HOST = "http://192.168.3.206:5001";  // ip de la pc con el server corriendo
 
 // ACTION CREATORS
 export function getAllRestorants() {
@@ -61,6 +64,27 @@ export function clearStateResatorantById (status){
     }
 };
 
+export function clearStateResatorantByString (status){ 
+    return {
+        type: CLEAR_STATE_RESTORANT_BY_STRING,
+        payload: status
+    }
+};
+
+export function clearSearchText (status){ 
+    return {
+        type: CLEAR_SEARCH_TEXT,
+        payload: status
+    }
+};
+
+export function setSearchText (status){ 
+    return {
+        type: SET_SEARCH_TEXT,
+        payload: status
+    }
+};
+
 export function searchRestorantById (id){ 
     return async (dispatch) => {
         axios
@@ -75,6 +99,30 @@ export function searchRestorantById (id){
             .catch((error) => {
                 dispatch({
                     type: GET_RESTORANT_BY_ID,
+                    payload: error.message,
+                });
+            });
+    };
+};
+
+
+
+
+export function searchRestorantByString (string){ 
+    // console.log("soy el action:", string);
+    return async (dispatch) => {
+        axios
+            .get(`${DB_HOST}/restaurant?name=${string}`)
+            .then((response) => {
+            // console.log("RESPONSE del action -> ", response);
+                dispatch({
+                    type: GET_RESTORANT_BY_STRING,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_RESTORANT_BY_STRING,
                     payload: error.message,
                 });
             });

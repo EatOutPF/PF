@@ -72,7 +72,7 @@ async function getRestaurant(props) {
   
   if (props !== undefined) {
     if (!mongoose.Types.ObjectId.isValid(props)) {
-      const restaurant = await Restaurant.findOne({ name: { $regex: new RegExp(props, "i") } });
+      const restaurant = await Restaurant.find({ name: { $regex: new RegExp(props, "i") } });
       return restaurant;
     }
 
