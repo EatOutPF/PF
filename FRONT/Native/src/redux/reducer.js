@@ -1,4 +1,4 @@
-import { 
+import {
     GET_ALL_RESTORANTS,
     GET_RESTORANT_BY_ID,
     GET_RESTORANT_BY_STRING,
@@ -7,6 +7,8 @@ import {
 
     FILTER_CARDS,
     ORDER_CARDS,
+
+    GET_TYPES_FOODS,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -22,48 +24,49 @@ const initialState = {
     restorantById: {},
     restorantByString: [],
 
-    filterByMenu:"All",
+    typesOfFoods: [],
     filterByAtmosphere: "All",
     filterBySection: "All",
     filterByDiets: "All",
     filterByExtras: "All",
 
-    orderState:"az",
+    orderState: "az",
 
 }
 
 // REDUCER
 export default function rootReducer(state = initialState, action) {
 
-    
 
-    switch(action.type) {
-  //------------------------------------------------------------------------- 
-        case GET_ALL_RESTORANTS:  {
+
+    switch (action.type) {
+        //------------------------------------------------------------------------- 
+        case GET_ALL_RESTORANTS: {
             // console.log("HOLAA : ", action.payload);
-            return{ ...state, 
-                allRestorants: action.payload, 
+            return {
+                ...state,
+                allRestorants: action.payload,
                 restorantsFound: action.payload
             }
         }
-  //------------------------------------------------------------------------- 
-        case GET_RESTORANT_BY_ID:  {
+        //------------------------------------------------------------------------- 
+        case GET_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
-            return{ ...state, restorantById: action.payload, }
+            return { ...state, restorantById: action.payload, }
         }
-         //------------------------------------------------------------------------- 
-        case CLEAR_STATE_RESTORANT_BY_ID:  {
+        //------------------------------------------------------------------------- 
+        case CLEAR_STATE_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
-            return{ ...state, restorantById: {}, }
+            return { ...state, restorantById: {}, }
         }
-  //------------------------------------------------------------------------- 
-        case GET_RESTORANT_BY_STRING:  {
+        //------------------------------------------------------------------------- 
+        case GET_RESTORANT_BY_STRING: {
             // console.log(restorantsJson);
             //return{ ...state, allRestorants: action.payload, restorantsFound: sortAsc(action.payload) }
         }
 
-  //-------------------------------------------------------------------------    
-        case FILTER_CARDS:{ 
+        //-------------------------------------------------------------------------    
+        case FILTER_CARDS: {
             // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state.allRestorants];
             // state.restorantsFiltered = [...state.allRestorants]
@@ -81,25 +84,25 @@ export default function rootReducer(state = initialState, action) {
 
         }
 
-  //-------------------------------------------------------------------------              
+        //-------------------------------------------------------------------------              
         case ORDER_CARDS:
-          // let filtradoOrder = [];
-            switch(action.payload) {
-            
-                case "az":{
+            // let filtradoOrder = [];
+            switch (action.payload) {
+
+                case "az": {
                     state.orderState = action.payload
                     const all = sortAsc([...state.allRestorants], "name")
                     const found = sortAsc([...state.restorantsFound], "name")
-                    return{ ...state, allRestorants: all, restorantsFound: found }
+                    return { ...state, allRestorants: all, restorantsFound: found }
                 }
-                case "za":{
+                case "za": {
                     state.orderState = action.payload
                     const all = sortDes([...state.allRestorants],)
                     const found = sortDes([...state.restorantsFound],)
-                    return{ ...state, allRestorants: all, restorantsFound: found }
+                    return { ...state, allRestorants: all, restorantsFound: found }
                 }
-                
-                case "rk":{
+
+                case "rk": {
                     const updatedState = {
                         ...state,
                         orderState: action.payload,
@@ -113,16 +116,22 @@ export default function rootReducer(state = initialState, action) {
                     // const found = [...state.restorantsFound].sort((a, b) => a.ranking - b.ranking)
                     // console.log("soy el All ordenado: ", all);
                     // return{ ...state, allRestorants: all, restorantsFound: found }
-                } 
+                }
 
             }
 
-
+        //-----------------------------------------------------------------------------------------
+        case GET_TYPES_FOODS: {
+            return {
+                ...state,
+                typesOfFoods: action.payload,
+            }
+        }
         default:
             return state;
     }
 
-    function sortAsc(aux){
+    function sortAsc(aux) {
         return aux.sort((a, b) => {
             if (a.name > b.name) {
                 return 1;
@@ -146,7 +155,7 @@ export default function rootReducer(state = initialState, action) {
         });
     }
 
-    function sortRankingAsc(aux){
+    function sortRankingAsc(aux) {
         return aux.sort((a, b) => {
             return a.ranking - b.ranking;
         });

@@ -14,15 +14,7 @@ import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet
 import React, { useRef, useState } from 'react'
 import Filters from './src/components/Filters/Filters';
 
-
-
-
-
 export default function App() {
-
-
-  {/*Flor----*/ }
-
   const bottomSheetModalRef = useRef(null)
   // const snapPoints = ['30%', '50%', '70%']
   const snapPoints = ['70%']
@@ -41,10 +33,10 @@ export default function App() {
   {/*-------Flor*/ }
 
   return (
-    <BottomSheetModalProvider 
-    // onPress={()=> {bottomSheetModalRef.current?.collapse()}}
-    >
-      <Provider store={store}>
+    <Provider store={store}>
+      <BottomSheetModalProvider
+      // onPress={()=> {bottomSheetModalRef.current?.collapse()}}
+      >
         <View style={styles.container}>
           {/* <Text>Esta al es de prueba en React Native 12.</Text> */}
           <StatusBar style="auto" />
@@ -68,8 +60,8 @@ export default function App() {
             </BottomSheetModal>
           </NativeRouter>
         </View>
-      </Provider>
-    </BottomSheetModalProvider>
+      </BottomSheetModalProvider>
+    </Provider>
 
   );
 }
