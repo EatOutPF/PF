@@ -8,9 +8,11 @@ import {
   ERROR_MSSG,
   GET_RESTAURAN_NAME,
   DELETE_RESTAURANT,
+  POST_RESTAURANT,
 } from "./Actions";
 
 const initialState = {
+  createRestaurant:[],
   allRestaurants: [],
   user: null,
   detailRestaurant: {},
@@ -85,7 +87,18 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, message: payload };
     default:
       return { ...state };
+
+
+
+    case POST_RESTAURANT:
+      return {
+        ...state,
+        createRestaurant: [...state.createRestaurant, payload]
+      };
+
   }
-};
+
+
+}
 
 export default Reducer;
