@@ -12,6 +12,8 @@ import {
     GET_TYPES_FOODS,
     GET_ATMOSPHERE, 
     GET_SECTIONS,
+    GET_DIET,
+    GET_EXTRA,
 } from "./type";
 
 
@@ -143,7 +145,7 @@ export const getTypesOfFoods = () => {
 export const getAtmosphere = () => {
     return async function (dispatch) {
         try {
-            let response = await axios.get(`${DB_HOST}/restaurant`);
+            let response = await axios.get(`${DB_HOST}/atmosphere`);
             return dispatch({
                 type: GET_ATMOSPHERE,
                 payload: response.data, 
@@ -168,11 +170,47 @@ export const getSections = () => {
             })
         } catch (error) {
             return {
-                error: 'No se encontraron espacios disponibles'
+                error: 'No se encontraron espacios disponibles',
+                originalError: error,
             }
         }
 }
 }
+
+export const getDiet = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/diet`);
+            return dispatch({
+                type: GET_DIET,
+                payload: response.data,
+            })
+        } catch (error) {
+         return {
+            error: 'No se encontraron tipos de dietas',
+            originalErrorMessage: error,
+         }
+    }
+}
+}
+
+export const getExtras = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/extra`);
+            return dispatch({
+                type: GET_EXTRA,
+                payload: response.data,
+            })
+        } catch (error) {
+            return {
+                error: 'No se econtraron opciones extras',
+                originalErrorMessage: error,
+            }
+        }
+}
+}
+
 // export const getAsmosphere = () => {
 //     return async function (dispatch) {
 //         try {

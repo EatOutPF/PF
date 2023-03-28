@@ -11,6 +11,8 @@ import {
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
+    GET_DIET,
+    GET_EXTRA,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -25,9 +27,9 @@ const initialState = {
     searchText: "",
     typesOfFoods: [],
     typesOfSections: [],
-    filterByAtmosphere: "All",
-    filterByDiets: "All",
-    filterByExtras: "All",
+    typesOfAtmosphere: [],
+    typesOfDiet: [],
+    typesOfExtras: [],
     orderState: "az",
 }
 
@@ -153,6 +155,20 @@ export default function rootReducer(state = initialState, action) {
             }
         }
 
+        case GET_DIET: {
+            return {
+                ...state,
+                typesOfDiet: action.payload,
+            }
+        }
+
+        case GET_EXTRA: {
+            return {
+                ...state,
+                typesOfExtras: action.payload,
+            }
+
+        }
 
         default:
             return state;

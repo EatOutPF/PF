@@ -3,7 +3,7 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTypesOfFoods, getAtmosphere, getSections } from '../../redux/actions.js';
+import { getTypesOfFoods, getAtmosphere, getSections, getDiet, getExtras} from '../../redux/actions.js';
 
 
 export default Filters = (props) => {
@@ -15,12 +15,17 @@ export default Filters = (props) => {
     useEffect(() => {
         dispatch(getTypesOfFoods())
         dispatch(getSections())
-        // dispatch(getAtmosphere())
+        dispatch(getAtmosphere())
+        dispatch(getDiet())
+        dispatch(getExtras())
     }, dispatch)
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
     const typesOfSections = useSelector((state) => state.typesOfSections);
-    // const typesOfAtmosphere= useSelector((state) => state.typesOfAtmosphere);
+    const typesOfAtmosphere= useSelector((state) => state.typesOfAtmosphere);
+    const typesOfDiet= useSelector((state) => state.typesOfDiet);
+    const typesOfExtras= useSelector((state) => state.typesOfExtras);
+
     const foodOptions = typesOfFoods?.map(e => {
         return {
             label: e.name,
@@ -31,16 +36,16 @@ export default Filters = (props) => {
     const [foods, setFoods] = useState(null);
     const [ambiences, setAmbiences] = useState(null);
     const [spaces, setSpaces] = useState(null);
-    const [selectedValue4, setSelectedValue4] = useState(null);
-    const [selectedValue5, setSelectedValue5] = useState(null);
+    const [diet, setDiet] = useState(null);
+    const [extra, setExtra] = useState(null);
 
 
-    // const atmosphereOptions = typesOfAtmosphere?.map(e => {
-    //     return {
-    //         label: e.atmosphere,
-    //         value: e.atmosphere,
-    //     }
-    // })
+    const atmosphereOptions = typesOfAtmosphere?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
 
     const spaceOptions = typesOfSections?.map(e => {
         return {
@@ -49,17 +54,20 @@ export default Filters = (props) => {
         }
     })
 
-    const ambienceOptions = [
-        { label: 'Moderno', value: 'Moderno' },
-        { label: 'Relajado', value: 'Relajado' },
-        { label: 'Clasico', value: 'Clasico' },
-    ];
+    const dietOptions = typesOfDiet?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
 
-    const menuOptions = [
-        { label: 'Menu Celíaco', value: 'Menu Celíaco' },
-        { label: 'Menu Vegano', value: 'Menu Vegano' },
-        { label: 'Crypto', value: 'Menu Vegetariano' },
-    ];
+    const extraOptions= typesOfExtras?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
     const otherOptions = [
         { label: 'Sector Fumadores', value: 'Sector Fumadores' },
         { label: 'Pet Friendly', value: 'Pet Friendly' },
@@ -138,7 +146,7 @@ export default Filters = (props) => {
                             onValueChange={(value) => setAmbiences(value)}
                         >
                             <Picker.Item label="Ambiente" value="" />
-                            {ambienceOptions.map((option) => (
+                            {atmosphereOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
@@ -172,11 +180,11 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Cuenta con</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue4}
-                            onValueChange={(value) => setSelectedValue4(value)}
+                            selectedValue={diet}
+                            onValueChange={(value) => setDiet(value)}
                         >
                             <Picker.Item label="Cuenta con" value="" />
-                            {menuOptions.map((option) => (
+                            {dietOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
@@ -191,11 +199,11 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Otros</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue5}
-                            onValueChange={(value) => setSelectedValue5(value)}
+                            selectedValue={extra}
+                            onValueChange={(value) => setExtra(value)}
                         >
                             <Picker.Item label="Otros" value="" />
-                            {otherOptions.map((option) => (
+                            {extraOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
