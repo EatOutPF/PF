@@ -53,7 +53,6 @@ export const findDetailRestaurant = (id) => {
     axios
       .get(`${baseUrl}/restaurant/${id}`)
       .then((result) => {
-        console.log("action find", result);
         dispatch({
           type: DETAIL_RESTAURANT,
           payload: result.data,
@@ -99,7 +98,7 @@ export const getAllRestauranName = (name) => {
       );
       return dispatch({
         type: GET_RESTAURAN_NAME,
-        payload: [RestauranByName.data],
+        payload: RestauranByName.data,
       });
     } catch (error) {
       console.log(error);
@@ -114,37 +113,34 @@ export const deleteRestaurant = (dataToUpdate) => {
         active: dataToUpdate.active,
       })
       .then((response) => {
-        dispatch({ type: DELETE_RESTAURANT, payload: response });
+        dispatch({ type: DELETE_RESTAURANT, payload: response.data });
         dispatch(getAllRestaurants());
       })
       .catch((error) => {
         return dispatch({
           type: DELETE_RESTAURANT,
-          payload: error.response?.data?.error,
+          payload: error,
         });
       });
   };
 };
 
-
-export function postRestaurant(restaurant){
-  return async function(dispatch){
-  
-              axios.post(`${baseUrl}/create`,restaurant).then(res => {
-                  return dispatch({
-                    type: "POST_RESTAURANT",
-                    payload: res.data,
-                  })
-                  
-
-              } ).catch(error => {dispatch({
-                  type: "POST_RESTAURANT",
-                  payload: [],
-              }); alert(error.response.data) 
-          });
-              
-
-    
-  }
+export function postRestaurant(restaurant) {
+  return async function (dispatch) {
+    axios
+      .post(`${baseUrl}/create`, restaurant)
+      .then((res) => {
+        return dispatch({
+          type: "POST_RESTAURANT",
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "POST_RESTAURANT",
+          payload: [],
+        });
+        alert(error.response.data);
+      });
+  };
 }
-
