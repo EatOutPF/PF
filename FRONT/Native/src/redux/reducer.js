@@ -2,8 +2,11 @@ import {
     GET_ALL_RESTORANTS,
     GET_RESTORANT_BY_ID,
     GET_RESTORANT_BY_STRING,
+
     CLEAR_STATE_RESTORANT_BY_ID,
     CLEAR_STATE_RESTORANT_BY_STRING,
+    CLEAR_SEARCH_TEXT,
+    SET_SEARCH_TEXT,
 
     FILTER_CARDS,
     ORDER_CARDS,
@@ -23,6 +26,7 @@ const initialState = {
 
     restorantById: {},
     restorantByString: [],
+    searchText: "",
 
     typesOfFoods: [],
     filterByAtmosphere: "All",
@@ -61,8 +65,23 @@ export default function rootReducer(state = initialState, action) {
         }
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
-            // console.log(restorantsJson);
-            //return{ ...state, allRestorants: action.payload, restorantsFound: sortAsc(action.payload) }
+            //console.log("reducer: ", action.payload);
+            return{ ...state, restorantsFound: action.payload }
+        }
+        //------------------------------------------------------------------------- 
+        case CLEAR_STATE_RESTORANT_BY_STRING: {
+            //console.log("reducer: ", action.payload);
+            return{ ...state, restorantsFound: state.allRestorants, }
+        }
+        //------------------------------------------------------------------------- 
+        case CLEAR_SEARCH_TEXT: {
+            //console.log("reducer: ", action.payload);
+            return{ ...state, searchText: "", }
+        }
+        //------------------------------------------------------------------------- 
+        case SET_SEARCH_TEXT: {
+            //console.log("reducer: ", action.payload);
+            return{ ...state, searchText: action.payload }
         }
 
         //-------------------------------------------------------------------------    
