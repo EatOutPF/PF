@@ -24,14 +24,7 @@ const DetailResto = (props) => {
             dispatch(searchRestorantById(_id));
             }
         else {
-            // console.log("soy el detail, ", _id);
-            // console.log("schedule: ", detail?.schedule);
-            // console.log("-------------------------------");
-            // console.log("dia: ", detail?.schedule[0]?.monday?.open);
-            // console.log("keys detail: ", Object?.keys(detail));
-
             setLoading(false)
-            // dispatch(searchRestorantById(_id));
         }
     
     },[detail])
@@ -42,51 +35,52 @@ const DetailResto = (props) => {
             {loading ? <Loading/> :
                 <View>
                     <Image style={styles?.image} source={{ uri: detail?.images[0] }}></Image>
-                    <Text> {detail?.name?.toUpperCase()} - (id:{detail?._id})</Text>
+                    <Text style={styles.superTitle}> {detail?.name?.toUpperCase()} - </Text>
+                    {/* <Text> (id:{detail?._id})</Text> */}
 
-                    <Text> ACA VA EL VALOR DE LA RESERVA $$$</Text>
-                    <Text> ⭐️{detail?.ranking} - 📍{detail?.address?.streetName}, {detail?.address?.streetNumber}</Text>
+                    <Text style={styles.title}> Valor de la reserva:   $ {detail?.advance}</Text>
+                    <Text style={styles.textBody}>  ⭐️{detail?.ranking} - 📍{detail?.address?.streetName}, {detail?.address?.streetNumber}</Text>
                     <Text> </Text>
 
-                    <Text> ---- Facebool: {detail?.contact?.socialMedia?.facebook} </Text>
-                    <Text> ---- Instagram: {detail?.contact?.socialMedia?.instagram} </Text>
+                    <Text style={styles.textBody}> ---- Facebool: {detail?.contact?.socialMedia?.facebook} </Text>
+                    <Text style={styles.textBody}> ---- Instagram: {detail?.contact?.socialMedia?.instagram} </Text>
 
 
                     <Text> </Text>
                     <Text> RESERVA</Text>
-                    <Text> Cantidad de personas..</Text>
-                    <Text> Calendario ...</Text>
+                    <Text style={styles.textBody}> Cantidad de personas..</Text>
+                    <Text style={styles.textBody}> Calendario ...</Text>
                     <Text> </Text>
 
-                    <Text> Sobre Nosotros</Text>
+                    <Text style={styles.title}> Sobre Nosotros</Text>
                     <Text style={{paddingLeft: 20}}> Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                         Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
                         when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
                         It has survived not only five centuries.</Text>
 
                     <Text> </Text>
-                    <Text> MENU --- Link a la carta</Text>
+                    <Text style={styles.textBody}> MENU --- Link a la carta</Text>
                     <Text> </Text>
 
-                    <Text> Categorias :</Text>
-                    <Text> -- {detail?.menu[0]} {detail?.diets[0]} {detail?.extras[0]} {detail?.extras[1]} {detail?.extras[2]} </Text>
-                    <Text> -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]} {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]} </Text>
+                    <Text style={styles.title}> Categorias :</Text>
+                    <Text style={styles.textBody}> -- {detail?.menu[0]} {detail?.diets[0]} {detail?.extras[0]} {detail?.extras[1]} {detail?.extras[2]} </Text>
+                    <Text style={styles.textBody}> -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]} {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]} </Text>
                     <Text> </Text>
-                    <Text> HORARIOS</Text>
-                    <Text> ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a {detail?.schedule[0]?.monday?.close}hs</Text>
-                    <Text> ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a {detail?.schedule[0]?.tuesday?.close}hs</Text>
-                    <Text> ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a {detail?.schedule[0]?.wednesday?.close}hs</Text>
-                    <Text> ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a {detail?.schedule[0]?.thursday?.close}hs</Text>
-                    <Text> ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a {detail?.schedule[0]?.friday?.close}hs</Text>
-                    <Text> ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a {detail?.schedule[0]?.saturday?.close}hs</Text>
-                    <Text> ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a {detail?.schedule[0]?.sunday?.close}hs</Text>
+                    <Text style={styles.title}> HORARIOS</Text>
+                    <Text style={styles.textBody}> ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a {detail?.schedule[0]?.monday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a {detail?.schedule[0]?.tuesday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a {detail?.schedule[0]?.wednesday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a {detail?.schedule[0]?.thursday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a {detail?.schedule[0]?.friday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a {detail?.schedule[0]?.saturday?.close}hs</Text>
+                    <Text style={styles.textBody}> ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a {detail?.schedule[0]?.sunday?.close}hs</Text>
 
 
 
 
                     <Text> </Text>
-                    <Text> Metodos de Pago </Text>
-                    <Text> -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]}, {detail?.paymentMethods[2]}</Text>
+                    <Text style={styles.title}> Metodos de Pago </Text>
+                    <Text style={styles.textBody}> -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]}, {detail?.paymentMethods[2]}</Text>
                     <Text> </Text>
                     <Text> </Text>
 
@@ -121,6 +115,15 @@ const styles = StyleSheet.create({
     width: 400,
     height: 200,
     borderRadius: 4
+  },
+  superTitle:{
+    fontSize: 30
+  },
+  title:{
+    fontSize: 25,
+  },
+  textBody: {
+    fontSize:20,
   }
 })
 
