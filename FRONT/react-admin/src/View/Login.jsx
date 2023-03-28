@@ -8,33 +8,43 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   fetchSignInMethodsForEmail,
+  GoogleAuthProvider,
+  signInWithPopup
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBXy8ahKPSssP3A1I0M7WVi9zER6uBab2s",
-  authDomain: "prueba-de-funciones-4b9e8.firebaseapp.com",
-  projectId: "prueba-de-funciones-4b9e8",
-  storageBucket: "prueba-de-funciones-4b9e8.appspot.com",
-  messagingSenderId: "589197491000",
-  appId: "1:589197491000:web:34d30b1db2bbb90f631fcd",
+  apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
+  authDomain: "eatout-d06bc.firebaseapp.com",
+  projectId: "eatout-d06bc",
+  storageBucket: "eatout-d06bc.appspot.com",
+  messagingSenderId: "716033457346",
+  appId: "1:716033457346:web:532059ce3be30b1c140f5b",
+ 
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
 function Login() {
+  const dispatch = useDispatch();
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
-  const [user, setUser] = useState(null); //set global state
   const [error, setError] = useState(null);
+  const provider = new GoogleAuthProvider();
 
-  //falta mantener en el estado global en useEffect
-  //falta disparar la action de setUser
-  //falta identificar si es user.admin o es user.superAdmin
-  //falta proteger la rutas
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setUser(user));
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [dispatch]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,18 +55,32 @@ function Login() {
         setError("Email address not registered. Please sign up.");
         return;
       }
+
       const userCredential = await signInWithEmailAndPassword(
         auth,
         emailLogin,
         passwordLogin
       );
 
-      setUser(userCredential.user);
+      dispatch(setUser(userCredential.user));
       window.location.href = "/home";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
     }
+  };
+
+  const handleOnClick = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        dispatch(setUser(user));
+        window.location.href = "/home";
+      })
+      .catch((error) => {
+        console.error("Sign in with Google failed!", error);
+        setError(error.message);
+      });
   };
 
   return (
@@ -75,9 +99,12 @@ function Login() {
         value={passwordLogin}
         onChange={(event) => setPasswordLogin(event.target.value)}
       />
+    <ul>
       <button type="submit">Login</button>
-
-      <span> </span>
+      <button  type="button" onClick={handleOnClick}>
+        Login with Google
+      </button></ul>
+      {error && <p>{error}</p>}
     </form>
   );
 }
