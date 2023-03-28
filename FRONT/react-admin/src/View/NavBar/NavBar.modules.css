@@ -8,3 +8,9 @@ h2 {
   text-decoration: none;
   color: white;
 }
+
+.containerNavbarImg img {
+  width: 80px;
+  border-radius: 80px;
+  padding: 25px;
+}

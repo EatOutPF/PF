@@ -12,9 +12,8 @@ const NavBar = () => {
       <div>
         <NavLink to="/home">
           <>
-            {" "}
             <div title="Home">
-              <img src={home} alt="Home" />
+              <img src={home} alt="Home" className={style.containerNavbarImg} />
             </div>
           </>
         </NavLink>

@@ -49,7 +49,7 @@ const updateMapper = (dataToUpdate) => {
 
       friday: {
         open: dataToUpdate?.fridayOpen,
-        close: dataToUpdate?.frydayClose,
+        close: dataToUpdate?.fridayClose,
       },
 
       saturday: {

@@ -42,7 +42,6 @@ const Home = () => {
         setCurrentPage={setCurrentPage}
         resetFilter={resetFilter}
       />
-
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
         restaurants={searchResults ? searchResults.length : restaurants.length}
@@ -50,15 +49,14 @@ const Home = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-
       <Searchbar setCurrentPage={setCurrentPage} />
-
-      {currentRestaurants?.length && (
+      {currentRestaurants && (
         <Cards
           restaurants={searchResults || restaurants}
           currentRestaurants={currentRestaurants}
         />
       )}
+      )
     </div>
   );
 };
