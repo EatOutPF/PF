@@ -23,11 +23,11 @@ const restaurantSchema = new Schema({
       state: String,
       country: String,
       coordinate: {
-        latitude: { type: Number, required: [true, "La latitud es obligatoria. El formato debe ser ##.######"], min: [-89.999999, "La latitud mínima es de -89.999999"], max: [89.999999, "La latitud máxima es de 89.999999"]}
-      },
+        latitude: { type: Number, required: [true, "La latitud es obligatoria. El formato debe ser ##.######"], min: [-89.999999, "La latitud mínima es de -89.999999"], max: [89.999999, "La latitud máxima es de 89.999999"]},
         longitude: { type: Number, required: [true, "La longitud es ogligatoria"], min: [-179.999999, "La longitud mínima es de -179.999999"], max: [179.999999, "La longitud máxima es de 179.999999"], 	
       },
-    },
+    }
+  },
   images: [{ type: String}],
   contact: 
     {
