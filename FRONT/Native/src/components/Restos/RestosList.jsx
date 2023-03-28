@@ -13,7 +13,7 @@ import CarouselAux from './CarouselAux';
 import RepositoryItem from './RestosItem.jsx'
 
 
-const RepositoryList = () => {
+const RestosList = () => {
   const [loading, setLoading] = useState(true)
 
   const restorantById = useSelector(state => state.restorantById);
@@ -151,4 +151,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default RepositoryList
+export default RestosList
