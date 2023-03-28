@@ -9,6 +9,7 @@ const usersRouter = require("./Users")
 const menuRouter = require("./Menu")
 const dietRouter  =require("./Diet")
 const extraRouter = require("./Extra")
+const atmosphereRouter = require("./Atmosphere")
 
 
 
@@ -20,6 +21,7 @@ router.use("/users", usersRouter)
 router.use("/menu", menuRouter)
 router.use("/diet", dietRouter)
 router.use("/extra", extraRouter)
+router.use("/atmosphere", atmosphereRouter)
 
 
 module.exports = router;
