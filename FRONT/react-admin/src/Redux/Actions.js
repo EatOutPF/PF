@@ -53,7 +53,6 @@ export const findDetailRestaurant = (id) => {
     axios
       .get(`${baseUrl}/restaurant/${id}`)
       .then((result) => {
-        console.log("action find", result);
         dispatch({
           type: DETAIL_RESTAURANT,
           payload: result.data,
@@ -99,7 +98,7 @@ export const getAllRestauranName = (name) => {
       );
       return dispatch({
         type: GET_RESTAURAN_NAME,
-        payload: [RestauranByName.data],
+        payload: RestauranByName.data,
       });
     } catch (error) {
       console.log(error);
@@ -114,13 +113,13 @@ export const deleteRestaurant = (dataToUpdate) => {
         active: dataToUpdate.active,
       })
       .then((response) => {
-        dispatch({ type: DELETE_RESTAURANT, payload: response });
+        dispatch({ type: DELETE_RESTAURANT, payload: response.data });
         dispatch(getAllRestaurants());
       })
       .catch((error) => {
         return dispatch({
           type: DELETE_RESTAURANT,
-          payload: error.response?.data?.error,
+          payload: error,
         });
       });
   };
