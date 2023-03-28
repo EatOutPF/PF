@@ -99,7 +99,7 @@ export const getAllRestauranName = (name) => {
       );
       return dispatch({
         type: GET_RESTAURAN_NAME,
-        payload: [RestauranByName.data],
+        payload: RestauranByName.data,
       });
     } catch (error) {
       console.log(error);
