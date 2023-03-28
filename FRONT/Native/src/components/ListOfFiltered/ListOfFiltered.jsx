@@ -6,7 +6,7 @@ import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 
-const RestorantsList = () => {  
+const ListOfFiltered = () => {  
   const dispatch = useDispatch();
 
   // let aux = restorantes && restorantes;
@@ -47,4 +47,4 @@ const RestorantsList = () => {
   )
 }
 
-export default RestorantsList
+export default ListOfFiltered
