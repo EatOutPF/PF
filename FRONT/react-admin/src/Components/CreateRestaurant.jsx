@@ -1,11 +1,12 @@
 // import "./Componentes/Formulario.jsx"
 import React from "react";
 import styles from "../Components/CreateRestaurant/CreateRestaurant.module.css"
-import { useState } from "react";
+import { useState,  useEffect} from "react";
+import {useDispatch} from "react-redux";
+import { postRestaurant } from "../Redux/Actions";
 
 export default function Form() {
-
- 
+  const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
 
   
@@ -14,7 +15,7 @@ export default function Form() {
   });
 
 
-  const [addres, setAddres] = useState({
+  const [address, setAddress] = useState({
     streetName: "",
     streetNumber: 0,
     neighborhood: "",
@@ -216,9 +217,9 @@ export default function Form() {
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
   };
 
-  const handleAddres = (event) => {
-    setAddres({
-      ...setAddres,
+  const handleAddress = (event) => {
+    setAddress({
+      ...setAddress,
       [event.target.name]: event.target.value,
     });
   };
@@ -241,6 +242,30 @@ export default function Form() {
   //   console.log("Submitted data:", input, addres, contact);
   // };
 
+  const handleCreate = () => {
+  const newRestaurant = {
+    input,
+    address,
+    contact,
+    schedule,
+    images,
+    tables,
+    stage,
+    selectDiets,
+    selectMenu,
+    selectPaymentMethods,
+    selectAtmosphere,
+    selectExtra,
+    selectSection,
+
+  };
+  dispatch(postRestaurant(newRestaurant));
+};
+
+
+useEffect(() => {
+  dispatch(postRestaurant())
+  }, [dispatch])
 
 
   return (
@@ -307,42 +332,42 @@ export default function Form() {
             <div>
               <label>
                 Street Name:
-                <input type="text" name="streetName" value={addres.streetName} onChange={handleAddres} />
+                <input type="text" name="streetName" value={address.streetName} onChange={handleAddress} />
               </label>
             </div>
 
             <div>
               <label>
                 Street Number:
-                <input type="number" name="streetNumber" value={addres.streetNumber} onChange={handleAddres} />
+                <input type="number" name="streetNumber" value={address.streetNumber} onChange={handleAddress} />
               </label>
             </div>
 
             <div>
               <label>
                 Neighborhood:
-                <input type="text" name="neighborhood" value={addres.neighborhood} onChange={handleAddres} />
+                <input type="text" name="neighborhood" value={address.neighborhood} onChange={handleAddress} />
               </label>
             </div>
 
             <div>
               <label>
                 City:
-                <input type="text" name="city" value={addres.city} onChange={handleAddres} />
+                <input type="text" name="city" value={address.city} onChange={handleAddress} />
               </label>
             </div>
 
             <div>
               <label>
                 State:
-                <input type="text" name="state" value={addres.state} onChange={handleAddres} />
+                <input type="text" name="state" value={address.state} onChange={handleAddress} />
               </label>
             </div>
 
             <div>
               <label>
                 Country:
-                <input type="text" name="country" value={addres.country} onChange={handleAddres} />
+                <input type="text" name="country" value={address.country} onChange={handleAddress} />
               </label>
             </div>
 
@@ -400,12 +425,12 @@ export default function Form() {
                 <input
                   placeholder="Open"
                   value={schedule[0].wednesday.open}
-                  onChange={(e) => handleSchedule(e, "wednesday", "open",e.target.value)}
+                  onChange={(e) => handleSchedule("wednesday", "open",e.target.value)}
                 />
                 <input
                   placeholder="Close"
                   value={schedule[0].wednesday.close}
-                  onChange={(e) => handleSchedule(e, "wednesday", "close",e.target.value)}
+                  onChange={(e) => handleSchedule( "wednesday", "close",e.target.value)}
                 />
               </label>
 
@@ -448,12 +473,12 @@ export default function Form() {
                 <input
                   placeholder="Open"
                   value={schedule[0].saturday.open}
-                  onChange={(e) => handleSchedule(e, "saturday", "open", e.target.value)}
+                  onChange={(e) => handleSchedule( "saturday", "open", e.target.value)}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].friday.close}
-                  onChange={(e) => handleSchedule("friday", "close", e.target.value)}
+                  value={schedule[0].saturday.close}
+                  onChange={(e) => handleSchedule("saturday", "close", e.target.value)}
                 />
               </label>
             </div>
@@ -511,7 +536,7 @@ export default function Form() {
         <div>
           <h2>Step 4</h2>
           <h3>Mesas</h3>
-          <form onSubmit={() => setStage(5)}>
+          <form onSubmit={handleCreate}>
             <label>
               <input type="number" min='1' max='41' name="tables" value={tables} onChange={handleTable} />
               <span>(min: 1 - max: 41)</span>
@@ -591,6 +616,11 @@ export default function Form() {
             </div>
 
             <button onClick={handleBack}>Back</button>
+
+            <button type="submit"> Restaurant Created</button>
+
+
+
           </form>
         </div>
       )}
@@ -599,58 +629,3 @@ export default function Form() {
   );
 }
 
-
-/* detailRestaurant: {
-    _id: "",
-    name: "",
-    address: {
-      streetName: "",
-      streetNumber: 0,
-      neighborhood: "",
-      city: "",
-      state: "",
-      country: "",
-    },
-    images: [],
-    contact: {
-      phoneNumber: "",
-      email: "",
-      socialMedia: { instagram: "", facebook: "", wpp: "" },
-    },
-    tables: 41,
-    schedule: [
-      {
-        monday: { open: "", close: "" },
-        tuesday: { open: "", close: "" },
-        wednesday: { open: "", close: "" },
-        thursday: { open: "", close: "" },
-        friday: { open: "", close: "" },
-        saturday: { open: "", close: "" },
-        sunday: { open: "", close: "" },
-      },
-    ],
-    menu: [
-      "italiana",
-      "asiática",
-      "internacional",
-      "hamburguesas",
-      "alta cocina",
-      "bares",
-      "pizzerías",
-      "mediterránea",
-      "gourmet",
-    ],
-    diets: ["vegano", "celiaco", "vegetariano"],
-    paymentMethods: [
-      "credito",
-      "debito",
-      "mercadopago",
-      "efectivo",
-      "transferencia",
-    ],
-    atmosphere: ["musica en vivo", "familiar", "romantico", "formal"],
-    extras: ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"],
-    section: ["terraza", "barra", "salón principal"],
-    ranking: "",
-    active: true,
-  }, */

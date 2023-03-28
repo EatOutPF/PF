@@ -12,6 +12,7 @@ export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
 export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
+export const POST_RESTAURANT = "POST_RESTAURANT";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -124,3 +125,26 @@ export const deleteRestaurant = (dataToUpdate) => {
       });
   };
 };
+
+
+export function postRestaurant(restaurant){
+  return async function(dispatch){
+  
+              axios.post(`${baseUrl}/create`,restaurant).then(res => {
+                  return dispatch({
+                    type: "POST_RESTAURANT",
+                    payload: res.data,
+                  })
+                  
+
+              } ).catch(error => {dispatch({
+                  type: "POST_RESTAURANT",
+                  payload: [],
+              }); alert(error.response.data) 
+          });
+              
+
+    
+  }
+}
+
