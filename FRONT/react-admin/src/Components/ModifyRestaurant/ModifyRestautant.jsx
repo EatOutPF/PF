@@ -69,9 +69,10 @@ const ModifyRestaurant = (props) => {
       console.log(input);
       dispatch(modifyRestaurant(input));
       let newMessage = message;
-      console.log(newMessage);
-      alert(newMessage.error);
-      navigate("/home");
+      if (newMessage) {
+        alert(newMessage.error);
+        navigate("/home");
+      }
     }
   };
 
@@ -113,9 +114,7 @@ const ModifyRestaurant = (props) => {
           ? detailRestaurant.address.neighborhood
           : "",
         city: detailRestaurant.address ? detailRestaurant.address.city : "",
-        state: detailRestaurant.address
-          ? detailRestaurant.address.state
-          : "",
+        state: detailRestaurant.address ? detailRestaurant.address.state : "",
         country: detailRestaurant.address
           ? detailRestaurant.address.country
           : "",
@@ -137,17 +136,13 @@ const ModifyRestaurant = (props) => {
         email: detailRestaurant.contact && detailRestaurant.contact?.email,
         tables: detailRestaurant.tables,
         mondayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.monday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.monday?.open,
         mondayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.monday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule.monday?.close,
         tuesdayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.tuesday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.tuesday?.open,
         tuesdayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.tuesday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule.tuesday?.close,
         wednesdayOpen:
           detailRestaurant.schedule &&
           detailRestaurant.schedule.wednesday?.open,
@@ -155,29 +150,23 @@ const ModifyRestaurant = (props) => {
           detailRestaurant.schedule &&
           detailRestaurant.schedule.wednesday?.close,
         thursdayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.thursday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.thursday?.open,
         thursdayClose:
           detailRestaurant.schedule &&
           detailRestaurant.schedule.thursday?.close,
         fridayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.friday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.friday?.open,
         fridayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.friday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule.friday?.close,
         saturdayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.saturday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.saturday?.open,
         saturdayClose:
           detailRestaurant.schedule &&
           detailRestaurant.schedule.saturday?.close,
         sundayOpen:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.sunday?.open,
+          detailRestaurant.schedule && detailRestaurant.schedule.sunday?.open,
         sundayClose:
-          detailRestaurant.schedule &&
-          detailRestaurant.schedule.sunday?.close,
+          detailRestaurant.schedule && detailRestaurant.schedule.sunday?.close,
         menu: detailRestaurant.menu,
         diets: detailRestaurant.diets,
         paymentMethods: detailRestaurant.paymentMethods,
@@ -268,6 +257,28 @@ const ModifyRestaurant = (props) => {
                       id="country"
                       name="country"
                       value={input.country}
+                      onChange={handlerChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="longitude">Coordenadas -longitud</label>
+                    <input
+                      type="text"
+                      id="longitude"
+                      name="longitude"
+                      value={input.longitude}
+                      onChange={handlerChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="latitude">Coordenadas - latitud</label>
+                    <input
+                      type="text"
+                      id="latitude"
+                      name="latitude"
+                      value={input.latitude}
                       onChange={handlerChange}
                     />
                   </div>

@@ -6,7 +6,7 @@ import style from "./Cards.module.css";
 const Cards = ({ currentRestaurants }) => {
   return (
     <div className={style.containerCards}>
-      {!currentRestaurants?.length ? (
+      {!currentRestaurants?.length > 0 ? (
         <div>No se encontraron resultados</div>
       ) : (
         <table>
@@ -23,7 +23,7 @@ const Cards = ({ currentRestaurants }) => {
             </tr>
           </thead>
           <tbody>
-            {currentRestaurants.map(
+            {currentRestaurants?.map(
               (r) =>
                 r && (
                   <Card
