@@ -22,13 +22,17 @@ export default function Form() {
     city: "",
     state: "",
     country: "",
+    coordinate:{
+      latitude: 0,
+      longitude:0,
+    }
   });
 
   const [contact, setContact] = useState({
     contact: {
       phoneNumber: "",
       email: "",
-      socialMedia: { instagram: "", facebook: "", wpp: "" },
+      socialMedia: { instagram: "", facebook: "", wpp: "", },
     }
   })
 
@@ -377,6 +381,26 @@ useEffect(() => {
                 <input type="file" onChange={(e) => setImages([...images, e.target.files[0]])} />
               </label>
             </div>
+
+            
+            <div>
+              <label>
+                Longitude:
+                <input type="number" name="longitude" value={address.longitude} onChange={handleAddress} />
+              </label>
+            </div>
+
+            
+            <div>
+              <label>
+                Latitude:
+                <input type="number" name="latitude" value={address.latitude} onChange={handleAddress} />
+              </label>
+            </div>
+
+           
+
+           
 
 
 

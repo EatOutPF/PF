@@ -92,8 +92,9 @@ const Reducer = (state = initialState, { type, payload }) => {
 
     case POST_RESTAURANT:
       return {
+       
         ...state,
-        createRestaurant: [...state.createRestaurant, payload]
+      createRestaurant:[...state.createRestaurant,payload]
       };
 
   }
