@@ -19,7 +19,7 @@ import {
 
 // esto hay que cambiarlo a la IP que tiene el servidor 
 // ya que es diferente a la IP del Celular
-const DB_HOST = "http://192.168.0.101:5001"// ip de la pc con el server corriendo
+const DB_HOST = "http://192.168.3.206:5001"// ip de la pc con el server corriendo
 
 // ACTION CREATORS
 export function getAllRestorants() {

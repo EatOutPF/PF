@@ -4,7 +4,6 @@ import { NativeRouter, } from 'react-router-native'
 
 import { store } from './src/redux/store'
 import { Provider } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native';
 
 import Main, { FilterButton } from './src/components/Home/Home.jsx'
 
