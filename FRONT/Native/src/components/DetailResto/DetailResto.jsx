@@ -76,14 +76,11 @@ const DetailResto = (props) => {
                     <Text style={styles.textBody}> ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a {detail?.schedule[0]?.sunday?.close}hs</Text>
 
 
-
-
                     <Text> </Text>
                     <Text style={styles.title}> Metodos de Pago </Text>
                     <Text style={styles.textBody}> -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]}, {detail?.paymentMethods[2]}</Text>
                     <Text> </Text>
                     <Text> </Text>
-
 
 
                 </View>
