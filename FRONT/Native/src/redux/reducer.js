@@ -2,47 +2,39 @@ import {
     GET_ALL_RESTORANTS,
     GET_RESTORANT_BY_ID,
     GET_RESTORANT_BY_STRING,
-
     CLEAR_STATE_RESTORANT_BY_ID,
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
-
     FILTER_CARDS,
     ORDER_CARDS,
-
     GET_TYPES_FOODS,
+    GET_ATMOSPHERE,
+    GET_SECTIONS,
+    GET_DIET,
+    GET_EXTRA,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
 
 const initialState = {
-
     allRestorants: [],
     restorantsFound: [],
     restorantsFiltered: [],
-
     userInfo: {},
-
     restorantById: {},
     restorantByString: [],
     searchText: "",
-
     typesOfFoods: [],
-    filterByAtmosphere: "All",
-    filterBySection: "All",
-    filterByDiets: "All",
-    filterByExtras: "All",
-
+    typesOfSections: [],
+    typesOfAtmosphere: [],
+    typesOfDiet: [],
+    typesOfExtras: [],
     orderState: "az",
-
 }
 
 // REDUCER
 export default function rootReducer(state = initialState, action) {
-
-
-
     switch (action.type) {
         //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
@@ -66,22 +58,22 @@ export default function rootReducer(state = initialState, action) {
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return{ ...state, restorantsFound: action.payload }
+            return { ...state, restorantsFound: action.payload }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return{ ...state, restorantsFound: state.allRestorants, }
+            return { ...state, restorantsFound: state.allRestorants, }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
-            return{ ...state, searchText: "", }
+            return { ...state, searchText: "", }
         }
         //------------------------------------------------------------------------- 
         case SET_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
-            return{ ...state, searchText: action.payload }
+            return { ...state, searchText: action.payload }
         }
 
         //-------------------------------------------------------------------------    
@@ -146,9 +138,43 @@ export default function rootReducer(state = initialState, action) {
                 typesOfFoods: action.payload,
             }
         }
+
+
+        case GET_ATMOSPHERE: {
+            return {
+                ...state, 
+                typesOfAtmosphere: action.payload,
+            }
+
+        }
+        
+        case GET_SECTIONS: {
+            return {
+                ...state,
+                typesOfSections: action.payload,
+            }
+        }
+
+        case GET_DIET: {
+            return {
+                ...state,
+                typesOfDiet: action.payload,
+            }
+        }
+
+        case GET_EXTRA: {
+            return {
+                ...state,
+                typesOfExtras: action.payload,
+            }
+
+        }
+
         default:
             return state;
     }
+
+
 
     function sortAsc(aux) {
         return aux.sort((a, b) => {

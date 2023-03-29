@@ -14,6 +14,6 @@ export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
 
 export const GET_TYPES_FOODS = "GET_TYPES_FOODS";
 export const GET_ATMOSPHERE = "GET_ATMOSPHERE";
-export const GET_SPACES = "GET_SPACES";
-export const GET_HAS_WITH = "GET_HAS_WITH";
-export const GET_OTHERS = "GET_OTHERS";
+export const GET_SECTIONS = "GET_SECTIONS";
+export const GET_DIET = "GET_DIET";
+export const GET_EXTRA = "GET_EXTRA";

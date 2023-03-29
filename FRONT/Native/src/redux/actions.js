@@ -10,17 +10,21 @@ import {
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
     GET_TYPES_FOODS,
+    GET_ATMOSPHERE, 
+    GET_SECTIONS,
+    GET_DIET,
+    GET_EXTRA,
 } from "./type";
 
 
 // esto hay que cambiarlo a la IP que tiene el servidor 
 // ya que es diferente a la IP del Celular
-const DB_HOST = "http://192.168.3.206:5001";  // ip de la pc con el server corriendo
+const DB_HOST = "http://192.168.0.101:5001"// ip de la pc con el server corriendo
 
 // ACTION CREATORS
 export function getAllRestorants() {
     return async (dispatch) => {
-        axios
+        await axios
             .get(`${DB_HOST}/restaurant`)
             .then((response) => {
             // console.log("RESPONSE -> ", response);
@@ -36,10 +40,6 @@ export function getAllRestorants() {
                 });
             });
     };
-    // return {
-    //     type: GET_ALL_RESTORANTS,
-    //     payload: status
-    // }
 }
 
 export function filterCards (status){ 
@@ -55,7 +55,6 @@ export function orderCards (status){
         payload: status
     }
 };
-
 
 export function clearStateResatorantById (status){ 
     return {
@@ -87,7 +86,7 @@ export function setSearchText (status){
 
 export function searchRestorantById (id){ 
     return async (dispatch) => {
-        axios
+        await axios
             .get(`${DB_HOST}/restaurant/${id}`)
             .then((response) => {
             // console.log("RESPONSE -> ", response);
@@ -104,9 +103,6 @@ export function searchRestorantById (id){
             });
     };
 };
-
-
-
 
 export function searchRestorantByString (string){ 
     // console.log("soy el action:", string);
@@ -145,6 +141,75 @@ export const getTypesOfFoods = () => {
         }
     }
 };
+
+export const getAtmosphere = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/atmosphere`);
+            return dispatch({
+                type: GET_ATMOSPHERE,
+                payload: response.data, 
+            })
+            
+        } catch (error) {
+            return {
+                error: 'No se encontraron tipos de ambientes',
+                originalError: error,
+            }
+        }
+}
+}
+
+export const getSections = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/section`)
+            return dispatch({
+                type: GET_SECTIONS,
+                payload: response.data,
+            })
+        } catch (error) {
+            return {
+                error: 'No se encontraron espacios disponibles',
+                originalError: error,
+            }
+        }
+}
+}
+
+export const getDiet = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/diet`);
+            return dispatch({
+                type: GET_DIET,
+                payload: response.data,
+            })
+        } catch (error) {
+         return {
+            error: 'No se encontraron tipos de dietas',
+            originalErrorMessage: error,
+         }
+    }
+}
+}
+
+export const getExtras = () => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/extra`);
+            return dispatch({
+                type: GET_EXTRA,
+                payload: response.data,
+            })
+        } catch (error) {
+            return {
+                error: 'No se econtraron opciones extras',
+                originalErrorMessage: error,
+            }
+        }
+}
+}
 
 // export const getAsmosphere = () => {
 //     return async function (dispatch) {
