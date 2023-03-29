@@ -34,15 +34,11 @@ const restaurantSchema = new Schema({
         min: [-89.999999, "La latitud mínima es de -89.999999"],
         max: [89.999999, "La latitud máxima es de 89.999999"],
       },
-      streetNumber: Number, 
-      neighborhood: String,
-      city: String,
-      state: String,
-      country: String,
-      coordinate: {
-        latitude: { type: Number, required: [true, "La latitud es obligatoria. El formato debe ser ##.######"], min: [-89.999999, "La latitud mínima es de -89.999999"], max: [89.999999, "La latitud máxima es de 89.999999"]}
-      },
-        longitude: { type: Number, required: [true, "La longitud es ogligatoria"], min: [-179.999999, "La longitud mínima es de -179.999999"], max: [179.999999, "La longitud máxima es de 179.999999"], 	
+      longitude: {
+        type: Number,
+        required: [true, "La longitud es ogligatoria"],
+        min: [-179.999999, "La longitud mínima es de -179.999999"],
+        max: [179.999999, "La longitud máxima es de 179.999999"],
       },
     },
   },
@@ -119,6 +115,10 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  review : {
+    type: String,
+    ref: "Review",
+  }
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
