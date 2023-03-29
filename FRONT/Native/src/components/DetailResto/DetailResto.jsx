@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { searchRestorantById,  } from '../../redux/actions.js'
 
 import Loading from "../Loading/Loading"
-
 import theme from '../../styles/theme.js'
-
 
 const DetailResto = (props) => {
     const { _id } = useParams();
@@ -17,16 +15,14 @@ const DetailResto = (props) => {
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch();
+
     useEffect(() => {
-
         if(Object?.keys(detail)?.length === 0) { 
-
             dispatch(searchRestorantById(_id));
             }
         else {
             setLoading(false)
-        }
-    
+        }  
     },[detail])
 
     return(
