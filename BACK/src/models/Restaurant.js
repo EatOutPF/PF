@@ -127,7 +127,7 @@ const restaurantSchema = new Schema({
     ref: "Review",
   },
   user: {
-    type: mongoose.SchemaType.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
   }
 });
