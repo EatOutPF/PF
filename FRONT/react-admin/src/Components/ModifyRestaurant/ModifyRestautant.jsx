@@ -831,7 +831,36 @@ const ModifyRestaurant = (props) => {
               />
             </div>
 
-            <button>Guardar</button>
+            <button
+              type="submit"
+              disabled={
+                errors.name ||
+                errors.streetName ||
+                errors.streetNumber ||
+                errors.city ||
+                errors.country ||
+                errors.longitude ||
+                errors.latitude ||
+                errors.email ||
+                errors.tables ||
+                errors.mondayOpen ||
+                errors.mondayClose ||
+                errors.tuesdayOpen ||
+                errors.tuesdayClose ||
+                errors.wednesdayOpen ||
+                errors.wednesdayClose ||
+                errors.thursdayOpen ||
+                errors.thursdayClose ||
+                errors.fridayOpen ||
+                errors.fridayClose ||
+                errors.saturdayOpen ||
+                errors.saturdayClose ||
+                errors.sundayOpen ||
+                errors.sundayClose
+              }
+            >
+              Guardar
+            </button>
           </form>
         </div>
       )}

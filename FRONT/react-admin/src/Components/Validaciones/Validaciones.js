@@ -1,9 +1,10 @@
 export default function Validation(data) {
   const errors = {};
-  const regexSpecialCharacters = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  /*   const regexSpecialCharacters = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; */
   const regexCoordinate = /^([-?\d\d\d+][0-9]{0,3}[.]{1}[0-9]{6,10})$/g;
   const regexCoordinateLatitude = /^([-?\d\d\d+][0-9]{0,2}[.]{1}[0-9]{6,10})$/g;
   const regexNumber = /^[0-9,$]*$/;
+  const regexPhoneNumber = /^[0-9,$]*$/;
   const regexLetras = /^[a-zA-Z ]*$/;
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const regexHoraMonday = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
@@ -64,6 +65,13 @@ export default function Validation(data) {
 
     if (!regexCoordinateLatitude.test(data.latitude))
       errors.latitude = "la latitud debe tener 6 decimales";
+  }
+
+  !data.phoneNumber &&
+    (errors.phoneNumber = "Diligencie un numero de teléfono");
+  if (data.phoneNumber) {
+    !regexPhoneNumber.test(data.phoneNumber) &&
+      (errors.phoneNumber = "Debe ser un numero");
   }
 
   !data.email && (errors.email = "Diligenciar un email");
