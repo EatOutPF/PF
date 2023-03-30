@@ -13,12 +13,14 @@ import {
     GET_SECTIONS,
     GET_DIET,
     GET_EXTRA,
+    FILTER_RESTORANTS,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
 
 const initialState = {
     allRestorants: [],
+    allRestorantsCopy: [],
     restorantsFound: [],
     restorantsFiltered: [],
     userInfo: {},
@@ -42,7 +44,7 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 allRestorants: action.payload,
-                restorantsFound: action.payload
+                restorantsFound: action.payload,
             }
         }
         //------------------------------------------------------------------------- 
@@ -142,12 +144,12 @@ export default function rootReducer(state = initialState, action) {
 
         case GET_ATMOSPHERE: {
             return {
-                ...state, 
+                ...state,
                 typesOfAtmosphere: action.payload,
             }
 
         }
-        
+
         case GET_SECTIONS: {
             return {
                 ...state,
@@ -169,6 +171,40 @@ export default function rootReducer(state = initialState, action) {
             }
 
         }
+
+        case FILTER_RESTORANTS: {
+            const {
+                menu, // => string
+                ambiences,
+                spaces,
+                diet,
+                extra
+            } = action.payload
+            let arrayFiltered = [...state.restorantsFound];
+
+            if (menu) {
+                arrayFiltered = arrayFiltered.filter(el => el.menu[0] === menu)
+            }
+            if (ambiences) {
+                arrayFiltered = arrayFiltered.filter(el => el.atmosphere[0] === ambiences)
+            }
+            if (spaces) {
+                arrayFiltered = arrayFiltered.filter(el => el.section[0] === spaces)
+            }
+            if (diet) {
+                arrayFiltered = arrayFiltered.filter(el => el.diet[0] === diet)
+            }
+            if (extra) {
+                arrayFiltered = array.arrayFiltered.filter(el => el.extra[0] === extra)
+            }
+
+            return {
+                ...state,
+                restorantsFound: arrayFiltered,
+                allRestorants: arrayFiltered,
+            }
+        }
+
 
         default:
             return state;

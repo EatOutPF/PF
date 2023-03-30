@@ -17,3 +17,5 @@ export const GET_ATMOSPHERE = "GET_ATMOSPHERE";
 export const GET_SECTIONS = "GET_SECTIONS";
 export const GET_DIET = "GET_DIET";
 export const GET_EXTRA = "GET_EXTRA";
+
+export const FILTER_RESTORANTS = "FILTER_RESTORANTS";
