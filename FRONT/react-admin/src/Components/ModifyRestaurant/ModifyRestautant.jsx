@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
+import Validation from "../Validaciones/Validaciones";
 import style from "./ModifyRestaurant.module.css";
 
 const ModifyRestaurant = (props) => {
@@ -27,6 +28,35 @@ const ModifyRestaurant = (props) => {
   const [selectedAtmosphere, setSelectedAtmosphere] = useState([]);
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [selectedSection, setSelectedSection] = useState([]);
+  const [errors, setErrors] = useState({
+    name: "",
+    latitude: "",
+    longitude: "",
+    streetName: "",
+    streetNumber: 0,
+    neighborhood: "",
+    city: "",
+    state: "",
+    country: "",
+    images: "",
+    email: "",
+    phoneNumber: "",
+    tables: "",
+    mondayOpen: "",
+    mondayClose: "",
+    tuesdayOpen: "",
+    tuesdayClose: "",
+    wednesdayOpen: "",
+    wednesdayClose: "",
+    thursdayOpen: "",
+    thursdayClose: "",
+    fridayOpen: "",
+    fridayClose: "",
+    saturdayOpen: "",
+    saturdayClose: "",
+    sundayOpen: "",
+    sundayClose: "",
+  });
 
   const handlerChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +65,7 @@ const ModifyRestaurant = (props) => {
       setSelectedImages(arrImages);
     }
     setInput({ ...input, [name]: value });
+    setErrors(Validation({ ...input, [name]: value }));
   };
 
   const handlerCheckBox = (value, array, setArray) => {
@@ -46,10 +77,6 @@ const ModifyRestaurant = (props) => {
     });
     setArray(newSelect);
   };
-
-  useEffect(() => {
-    console.log({ detailRestaurant });
-  }, []);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +93,6 @@ const ModifyRestaurant = (props) => {
       input.paymentMethods = selectedPaymentMethods
         .filter((p) => p.checked)
         .map((p) => p.name);
-      console.log(input);
       dispatch(modifyRestaurant(input));
       let newMessage = message;
       if (newMessage) {
@@ -77,7 +103,6 @@ const ModifyRestaurant = (props) => {
   };
 
   useEffect(() => {
-    console.log("id que llega", id);
     dispatch(findDetailRestaurant(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -94,7 +119,6 @@ const ModifyRestaurant = (props) => {
 
   useEffect(() => {
     if (detailRestaurant) {
-      console.log(detailRestaurant);
       setInput({
         id: detailRestaurant._id,
         name: detailRestaurant.name,
@@ -212,6 +236,9 @@ const ModifyRestaurant = (props) => {
                 value={input.name}
                 onChange={handlerChange}
               />
+              {errors.name && (
+                <span className={style.danger}>{errors.name}</span>
+              )}
             </div>
 
             <div className={style.container}>
@@ -228,6 +255,9 @@ const ModifyRestaurant = (props) => {
                       value={input.streetName}
                       onChange={handlerChange}
                     />
+                    {errors.streetName && (
+                      <span className={style.danger}>{errors.streetName}</span>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="streetNumber">#</label>
@@ -238,6 +268,11 @@ const ModifyRestaurant = (props) => {
                       value={input.streetNumber}
                       onChange={handlerChange}
                     />
+                    {errors.streetNumber && (
+                      <span className={style.danger}>
+                        {errors.streetNumber}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="city">Ciudad</label>
@@ -248,6 +283,9 @@ const ModifyRestaurant = (props) => {
                       value={input.city}
                       onChange={handlerChange}
                     />
+                    {errors.city && (
+                      <span className={style.danger}>{errors.city}</span>
+                    )}
                   </div>
 
                   <div>
@@ -259,6 +297,9 @@ const ModifyRestaurant = (props) => {
                       value={input.country}
                       onChange={handlerChange}
                     />
+                    {errors.country && (
+                      <span className={style.danger}>{errors.country}</span>
+                    )}
                   </div>
 
                   <div>
@@ -270,6 +311,9 @@ const ModifyRestaurant = (props) => {
                       value={input.longitude}
                       onChange={handlerChange}
                     />
+                    {errors.longitude && (
+                      <span className={style.danger}>{errors.longitude}</span>
+                    )}
                   </div>
 
                   <div>
@@ -281,6 +325,9 @@ const ModifyRestaurant = (props) => {
                       value={input.latitude}
                       onChange={handlerChange}
                     />
+                    {errors.latitude && (
+                      <span className={style.danger}>{errors.latitude}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -326,6 +373,9 @@ const ModifyRestaurant = (props) => {
                       value={input.phoneNumber}
                       onChange={handlerChange}
                     />
+                    {errors.phoneNumber && (
+                      <span className={style.danger}>{errors.phoneNumber}</span>
+                    )}
                   </div>
 
                   <div className={style.containerDataSection}>
@@ -336,6 +386,9 @@ const ModifyRestaurant = (props) => {
                       value={input.email}
                       onChange={handlerChange}
                     />
+                    {errors.email && (
+                      <span className={style.danger}>{errors.email}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -350,6 +403,7 @@ const ModifyRestaurant = (props) => {
                   id="images"
                   value={input?.images?.map((image) => `${image},`)}
                   onChange={handlerChange}
+                  style={{ width: 370 }}
                 />
               </div>
               {/* {errors.images && <p>*{errors.images}</p>} */}
@@ -364,6 +418,9 @@ const ModifyRestaurant = (props) => {
                 value={input.tables}
                 onChange={handlerChange}
               />
+              {errors.tables && (
+                <span className={style.danger}>{errors.tables}</span>
+              )}
             </div>
 
             <div className={style.container}>
@@ -380,6 +437,9 @@ const ModifyRestaurant = (props) => {
             <div className={style.container}>
               <div className={style.containerSection}>
                 <div>Horarios</div>
+                <span style={{ fontSize: 10 }}>
+                  (los días que no atiende al público diligenciar 00:00)
+                </span>
 
                 <div>
                   <div>
@@ -393,6 +453,11 @@ const ModifyRestaurant = (props) => {
                           value={input.mondayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.mondayOpen && (
+                          <span className={style.danger}>
+                            {errors.mondayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="mondayClose"> Cierra </label>
@@ -402,6 +467,11 @@ const ModifyRestaurant = (props) => {
                           value={input.mondayClose}
                           onChange={handlerChange}
                         />
+                        {errors.mondayClose && (
+                          <span className={style.danger}>
+                            {errors.mondayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -417,6 +487,11 @@ const ModifyRestaurant = (props) => {
                           value={input.tuesdayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.tuesdayOpen && (
+                          <span className={style.danger}>
+                            {errors.tuesdayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="tuesdayClose"> Cierra </label>
@@ -426,6 +501,11 @@ const ModifyRestaurant = (props) => {
                           value={input.tuesdayClose}
                           onChange={handlerChange}
                         />
+                        {errors.tuesdayClose && (
+                          <span className={style.danger}>
+                            {errors.tuesdayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -441,6 +521,11 @@ const ModifyRestaurant = (props) => {
                           value={input.wednesdayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.wednesdayOpen && (
+                          <span className={style.danger}>
+                            {errors.wednesdayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="wednesdayClose"> Cierra </label>
@@ -450,6 +535,11 @@ const ModifyRestaurant = (props) => {
                           value={input.wednesdayClose}
                           onChange={handlerChange}
                         />
+                        {errors.wednesdayClose && (
+                          <span className={style.danger}>
+                            {errors.wednesdayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -465,6 +555,11 @@ const ModifyRestaurant = (props) => {
                           value={input.thursdayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.thursdayOpen && (
+                          <span className={style.danger}>
+                            {errors.thursdayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="thursdayClose"> Cierra </label>
@@ -474,6 +569,11 @@ const ModifyRestaurant = (props) => {
                           value={input.thursdayClose}
                           onChange={handlerChange}
                         />
+                        {errors.thursdayClose && (
+                          <span className={style.danger}>
+                            {errors.thursdayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -489,6 +589,11 @@ const ModifyRestaurant = (props) => {
                           value={input.fridayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.fridayOpen && (
+                          <span className={style.danger}>
+                            {errors.fridayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="fridayClose"> Cierra </label>
@@ -498,6 +603,11 @@ const ModifyRestaurant = (props) => {
                           value={input.fridayClose}
                           onChange={handlerChange}
                         />
+                        {errors.fridayClose && (
+                          <span className={style.danger}>
+                            {errors.fridayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -513,6 +623,11 @@ const ModifyRestaurant = (props) => {
                           value={input.saturdayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.saturdayOpen && (
+                          <span className={style.danger}>
+                            {errors.saturdayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="saturdayClose"> Cierra </label>
@@ -522,6 +637,11 @@ const ModifyRestaurant = (props) => {
                           value={input.saturdayClose}
                           onChange={handlerChange}
                         />
+                        {errors.saturdayClose && (
+                          <span className={style.danger}>
+                            {errors.saturdayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -537,6 +657,11 @@ const ModifyRestaurant = (props) => {
                           value={input.sundayOpen}
                           onChange={handlerChange}
                         />
+                        {errors.sundayOpen && (
+                          <span className={style.danger}>
+                            {errors.sundayOpen}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <label htmlFor="sundayClose"> Cierra </label>
@@ -546,6 +671,11 @@ const ModifyRestaurant = (props) => {
                           value={input.sundayClose}
                           onChange={handlerChange}
                         />
+                        {errors.sundayClose && (
+                          <span className={style.danger}>
+                            {errors.sundayClose}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -697,7 +827,7 @@ const ModifyRestaurant = (props) => {
                 id="ranking"
                 name="ranking"
                 value={input.ranking}
-                onChange={handlerChange}
+                style={{ backgroundColor: "#c6c5c5" }}
               />
             </div>
 

@@ -3,7 +3,7 @@ import Logout from "../../Components/Logout";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import style from "./NavBar.modules.css";
-import home from "../../assets/Home.jpeg";
+import home from "../../assets/logo.png";
 
 const NavBar = () => {
   const [order, setOrder] = useState("");
@@ -13,7 +13,11 @@ const NavBar = () => {
         <NavLink to="/home">
           <>
             <div title="Home">
-              <img src={home} alt="Home" className={style.containerNavbarImg} />
+              <img
+                src={home}
+                alt="Home"
+                style={{ width: "-webkit-fill-available", paddingTop: 50 }}
+              />
             </div>
           </>
         </NavLink>

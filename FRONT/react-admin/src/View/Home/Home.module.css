@@ -1,5 +1,11 @@
 .containerHome {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+}
+
+.containerSearchBar {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 35px 0px;
 }
