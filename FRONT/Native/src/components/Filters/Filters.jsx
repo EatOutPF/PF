@@ -1,9 +1,17 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button } from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTypesOfFoods, getAtmosphere, getSections, getDiet, getExtras} from '../../redux/actions.js';
+import {
+    getTypesOfFoods,
+    getAtmosphere,
+    getSections,
+    getDiet,
+    getExtras,
+    filterRestorant
+} from '../../redux/actions.js';
+
 
 
 export default Filters = (props) => {
@@ -22,9 +30,9 @@ export default Filters = (props) => {
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
     const typesOfSections = useSelector((state) => state.typesOfSections);
-    const typesOfAtmosphere= useSelector((state) => state.typesOfAtmosphere);
-    const typesOfDiet= useSelector((state) => state.typesOfDiet);
-    const typesOfExtras= useSelector((state) => state.typesOfExtras);
+    const typesOfAtmosphere = useSelector((state) => state.typesOfAtmosphere);
+    const typesOfDiet = useSelector((state) => state.typesOfDiet);
+    const typesOfExtras = useSelector((state) => state.typesOfExtras);
 
     const foodOptions = typesOfFoods?.map(e => {
         return {
@@ -33,12 +41,19 @@ export default Filters = (props) => {
         }
     })
 
-    const [foods, setFoods] = useState(null);
+    const [menu, setMenu] = useState(null);
     const [ambiences, setAmbiences] = useState(null);
     const [spaces, setSpaces] = useState(null);
     const [diet, setDiet] = useState(null);
     const [extra, setExtra] = useState(null);
 
+    const [filters, setFilters] = useState({
+        menu: null,
+        ambiences: null,
+        spaces: null,
+        diet: null,
+        extra: null,
+    });
 
     const atmosphereOptions = typesOfAtmosphere?.map(e => {
         return {
@@ -61,7 +76,7 @@ export default Filters = (props) => {
         }
     })
 
-    const extraOptions= typesOfExtras?.map(e => {
+    const extraOptions = typesOfExtras?.map(e => {
         return {
             label: e.name,
             value: e.name,
@@ -74,6 +89,13 @@ export default Filters = (props) => {
         { label: 'Crypto', value: 'Crypto' },
     ];
 
+    //HANDLERS:
+
+    const handlerFilters = () => {
+        dispatch(filterRestorant(filters));
+        //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
+    }
+    //Renderizado
     return (
         <View>
             <View style={styles.cont}>
@@ -108,6 +130,14 @@ export default Filters = (props) => {
                     </ScrollView>
                 </View>
 
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}>
+                    <Text style={styles.title}>Filtrar Por</Text>
+                </View>
+
                 <View style={styles.containerP}>
                     <View style={styles.containerPiker}>
                         <View style={styles.labelContainer}>
@@ -116,8 +146,11 @@ export default Filters = (props) => {
                         </View>
                         <View style={styles.picker}>
                             <Picker
-                                selectedValue={foods}
-                                onValueChange={(value) => setFoods(value)}
+                                selectedValue={menu}
+                                onValueChange={(value) => {
+                                    setMenu(value),
+                                        setFilters({ ...filters, menu: value })
+                                }}
                             >
                                 <Picker.Item label="Tipo de comida" value=""
                                 />
@@ -143,7 +176,10 @@ export default Filters = (props) => {
 
                         <Picker
                             selectedValue={ambiences}
-                            onValueChange={(value) => setAmbiences(value)}
+                            onValueChange={(value) => {
+                                setAmbiences(value),
+                                setFilters({ ...filters, ambiences: value })
+                            }}
                         >
                             <Picker.Item label="Ambiente" value="" />
                             {atmosphereOptions.map((option) => (
@@ -211,6 +247,20 @@ export default Filters = (props) => {
                 </View>
 
             </View>
+
+            <View>
+                <Button
+                    onPress={handlerFilters}
+                    title='Aplicar Filtros'
+                >
+                </Button>
+
+                <Button
+                    title='Limpiar Filtros'
+                >
+                </Button>
+
+            </View>
         </View >
     )
 }
@@ -249,6 +299,7 @@ const styles = StyleSheet.create({
     containerOrderButtons: {
         margin: 5,
         paddingVertical: 5,
+
     },
     orderButton: {
         paddingHorizontal: 10,

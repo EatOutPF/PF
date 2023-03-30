@@ -1,11 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import { NativeRouter, } from 'react-router-native'
-
 import { store } from './src/redux/store'
 import { Provider } from 'react-redux'
-
-import Main, { FilterButton } from './src/components/Home/Home.jsx'
+import Main from './src/components/Home/Home.jsx'
 
 
 {/* Importaciones FLOR*/ }
@@ -13,14 +11,16 @@ import 'react-native-gesture-handler';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import React, { useRef, useState } from 'react'
 import Filters from './src/components/Filters/Filters';
+import { HandleModalFilter } from './src/components/Filters/HandleModalFilter.jsx'
 // import LowerNavBar from "../Native/src/components/NavBar/SearchBar"
 
 export default function App() {
   const bottomSheetModalRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(false)
   // const snapPoints = ['30%', '50%', '70%']
   const snapPoints = ['70%']
-  const [isOpen, setIsOpen] = useState(false)
-  function handlePresentModal() {
+
+  const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
     console.log(bottomSheetModalRef.current)
   }
