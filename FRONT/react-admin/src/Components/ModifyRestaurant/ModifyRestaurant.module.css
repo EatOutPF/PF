@@ -15,6 +15,11 @@
   padding: 5px;
 }
 
+.danger {
+  font-size: 0.8rem;
+  color: rgb(206, 34, 34);
+}
+
 .containerModify button {
   padding: 5px 10px;
   /* text-decoration-line: none; */
