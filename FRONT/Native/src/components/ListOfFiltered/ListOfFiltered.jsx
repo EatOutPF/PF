@@ -10,7 +10,7 @@ import { getAllRestorants, clearStateResatorantById } from '../../redux/actions'
 
 const ListOfFiltered = () => {  
   const dispatch = useDispatch();
-  const resto = useSelector(state => state.allRestorants);
+  const resto = useSelector(state => state.restorantsFound);
   const [restorantes, setRestorantes] = useState( [...resto] );
   const restorantById = useSelector(state => state.restorantById);
 

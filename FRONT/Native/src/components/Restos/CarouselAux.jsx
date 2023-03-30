@@ -40,15 +40,15 @@ const CarouselAux = (props) => {
 
     {
       const isActive = index === activeIndex;
-      const ownerAvatarUrl = item.images[0];
+      const restoImg = item?.images[0];
       
       return (
         <View style={[styles.itemContainer]}>
             {/* styles.itemContainer, isActive && styles.activeItemContainer */}
-            <Link to={`/detail/${item._id}`} component={TouchableOpacity} onPress={()=>handlePress} >
-              <ImageBackground  style={styles.image} source={{ uri: ownerAvatarUrl }}>
-                <Text style={[styles.itemTitle]}>{item.name}</Text> 
-                <Text style={[styles.itemStar]}>⭐{item.ranking}</Text> 
+            <Link to={`/detail/${item?._id}`} component={TouchableOpacity} onPress={()=>handlePress} >
+              <ImageBackground  style={styles.image} source={{ uri: restoImg }}>
+                <Text style={[styles.itemTitle]}>{item?.name}</Text> 
+                <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text> 
                   {/* styles.itemTitle, isActive && styles.activeItemTitle */}
 
               </ImageBackground >
@@ -66,9 +66,9 @@ const CarouselAux = (props) => {
       {/* <TouchableOpacity style={styles.arrowButton} onPress={handlePrev}>
         <Text style={styles.arrowButtonText}>{'<'}</Text>
       </TouchableOpacity> */}
-      
+      {/* <Text> HOLA </Text> */}
       <FlatList
-        data={props.data}
+        data={props?.data}
         renderItem={renderItem}
         horizontal={true}
         showsHorizontalScrollIndicator={false}

@@ -11,7 +11,7 @@ import LowerNavBar from "../NavBar/LowerNavBar"
 // import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Login from "../Login/Login"
-
+import LowerNavbar from "../NavBar/LowerNavBar"
 
 // import Filters from '../Filters/Filters.jsx';
 import { BottomSheet, Button, ListItem } from '@rneui/themed';
@@ -41,8 +41,9 @@ const Main = () => {
   // },[restorantes])
 
   return (
-    // <NavigationContainer>
+    <NavigationContainer>
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
+      {/* <LowerNavbar/> //ANDA PERO NO ANDA, usted me entiende */}
       <AppBar />       
         <Routes>
           <Route path='/' element= {<RestosList />} />          // Restos
@@ -60,11 +61,11 @@ const Main = () => {
           <Route path='/detail/:_id' element={<DetailResto />} />
 
         </Routes> 
-    {/* <LowerNavBar/> */}
+    <LowerNavBar/>
         
     </View>
 
-    // </NavigationContainer>
+    </NavigationContainer>
   )
 }
 

@@ -209,29 +209,29 @@ export default function rootReducer(state = initialState, action) {
                 spaces,
                 diet,
                 extra
-            } = action.payload
-            let arrayFiltered = [...state.restorantsFound];
+            } = action?.payload
+            let arrayFiltered = [...state?.restorantsFound];
 
             if (menu) {
-                arrayFiltered = arrayFiltered.filter(el => el.menu[0] === menu)
+                arrayFiltered = arrayFiltered?.filter(el => el?.menu?.[0] === menu)
             }
             if (ambiences) {
-                arrayFiltered = arrayFiltered.filter(el => el.atmosphere[0] === ambiences)
+                arrayFiltered = arrayFiltered?.filter(el => el?.atmosphere?.[0] === ambiences)
             }
             if (spaces) {
-                arrayFiltered = arrayFiltered.filter(el => el.section[0] === spaces)
+                arrayFiltered = arrayFiltered?.filter(el => el?.section?.[0] === spaces)
             }
             if (diet) {
-                arrayFiltered = arrayFiltered.filter(el => el.diet[0] === diet)
+                arrayFiltered = arrayFiltered?.filter(el => el?.diet?.[0] === diet)
             }
             if (extra) {
-                arrayFiltered = array.arrayFiltered.filter(el => el.extra[0] === extra)
+                arrayFiltered = array.arrayFiltered?.filter(el => el?.extra?.[0] === extra)
             }
 
             return {
                 ...state,
                 restorantsFound: arrayFiltered,
-                allRestorants: arrayFiltered,
+                // allRestorants: arrayFiltered,
             }
         }
 

@@ -61,7 +61,7 @@ const RestosList = () => {
         <CarouselAux 
             data={
               // restorantes
-              restorantes?.filter( item => item.extras.includes("fumadores"))
+              restorantes?.filter( item => item?.extras?.includes("fumadores"))
             } 
             type={"extra"} 
             title={"fumadores"}>
@@ -74,7 +74,7 @@ const RestosList = () => {
         <CarouselAux 
             data={
               // restorantes
-             restorantes?.filter( item => item.extras.includes("petfriendly"))
+             restorantes?.filter( item => item?.extras?.includes("petfriendly"))
             } 
             type={"extra"} 
             title={"petFrienly"}> 
@@ -86,7 +86,7 @@ const RestosList = () => {
       <StyledText style={styles.language}>Wi-fi Gratis 📡</StyledText>
         <CarouselAux 
             data={
-              restorantes?.filter( item => item.extras.includes("wi-fi"))
+              restorantes?.filter( item => item?.extras?.includes("wi-fi"))
             } 
             type={"room"} 
             title={"wi-fi"}>
@@ -99,7 +99,7 @@ const RestosList = () => {
             data={
               // restorantes
 
-              restorantes?.filter( item => item.extras.includes("bar"))
+              restorantes?.filter( item => item?.extras?.includes("bar"))
             } 
             type={"room"} 
             title={"wi-fi"}>
