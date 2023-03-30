@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { FlatList, Text, View, Alert } from 'react-native'
 // import repositories from '../../data/repositories.js'
 import SearchBar from '../NavBar/SearchBar.jsx';
-import RepositoryItem from './RestosItem.jsx'
+import RestosItem from './RestosItem.jsx'
 import { useSelector, useDispatch,  } from 'react-redux';
 import { clearStateResatorantByString, clearSearchText } from '../../redux/actions';
 import { getAllRestorants, clearStateResatorantById } from '../../redux/actions'
@@ -43,7 +43,7 @@ const ListOfFiltered = () => {
       data={restorantes} // de donde saca los datos para hacer la lista
       ItemSeparatorComponent={() => <Text> </Text>} // separa cada card con un espacio "Text"
       renderItem={({ item: repo }) => (
-        <RepositoryItem {...repo} />
+        <RestosItem {...repo} />
       )}
     />
     </View>

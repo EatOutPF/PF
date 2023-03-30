@@ -2,13 +2,9 @@ import React from 'react'
 import { Image, View, StyleSheet, Dimensions, TouchableOpacity, Button } from 'react-native'
 import { Link, useLocation, Navigate } from 'react-router-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
-// import RepositoryStats from './RestosStats.jsx'
 import theme from '../../styles/theme.js'
 
-
-
-
-const RepositoryItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) => (
+const RestoItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) => (
   <View style={{ flexDirection: 'row', paddingBottom: 2 }}>
     
       <View style={{ paddingRight: 10 }}>
@@ -26,10 +22,10 @@ const RepositoryItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) 
   </View>
 )
 
-const RepositoryItem = (props) => (
+const RestosItem = (props) => (
   <View key={props?._id} style={styles.container}>
     <Link to={`/detail/${props?._id}`} component={TouchableOpacity} onPress={()=>handlePress} >
-     <RepositoryItemHeader {...props} />
+     <RestoItemHeader {...props} />
      </Link>
     {/* <RepositoryStats {...props} /> */}
   </View>
@@ -40,10 +36,9 @@ function handlePress (value) {
   console.log("quiero entrar al detail, ", value);
   // dispatch(clearStateRestauranteById());
   // Navigate(`/detail/${value}`);
-  console.log("quiero entrar al detail, ", value);
-
 };
 
+//  MODIFICAR ESTE CODIGO; SE HABIA USADO PARA TRATAR DE DIFERNECIA WEB DE CELULAR, PERO YA NO SE HACE WEB
 const { width } = Dimensions.get('window');
 console.log("width screen", width);
 let imageWidth = 0.5 * width;
@@ -73,4 +68,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default RepositoryItem
+export default RestosItem
