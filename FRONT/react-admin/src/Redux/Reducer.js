@@ -94,7 +94,7 @@ const Reducer = (state = initialState, { type, payload }) => {
       return {
        
         ...state,
-      createRestaurant:[...state.createRestaurant,payload]
+        msg: payload,
       };
 
   }

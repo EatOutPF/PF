@@ -130,6 +130,7 @@ export const postRestaurant = (create) => async (dispatch) => {
   try {
     const response = await axios.post(`${baseUrl}/restaurant`, create);
     const restaurant = response.data;
+    console.log(restaurant)
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant

@@ -1,15 +1,14 @@
 // import "./Componentes/Formulario.jsx"
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../Components/CreateRestaurant/CreateRestaurant.module.css"
-import { useState,  useEffect} from "react";
-import {useDispatch} from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { postRestaurant } from "../Redux/Actions";
 
 export default function Form() {
   const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
 
-  
   const [input, setInput] = useState({
     name: "",
   });
@@ -24,56 +23,56 @@ export default function Form() {
     country: "",
   });
 
-  const[coordinate,setCoordinate] = useState({
-    longitude:0,
-    latitude:0,
+  const [coordinate, setCoordinate] = useState({
+    longitude: 0,
+    latitude: 0,
   }
   )
 
   const [contact, setContact] = useState({
-    contact: {
-      phoneNumber: "",
-      email: "",
-      socialMedia: { instagram: "", facebook: "", wpp: "", },
-    }
+    phoneNumber: 0,
+    email: "",
+    socialMedia: { instagram: "", facebook: "", wpp: "", },
   })
 
-  const [schedule, setSchedule] = useState([
-    {
-      monday: { open: "", close: "" },
-      tuesday: { open: "", close: "" },
-      wednesday: { open: "", close: "" },
-      thursday: { open: "", close: "" },
-      friday: { open: "", close: "" },
-      saturday: { open: "", close: "" },
-      sunday: { open: "", close: "" },
-    },
-  ]);
+
+  const [schedule, setSchedule] = useState({
+    monday: { open: "", close: "" },
+    tuesday: { open: "", close: "" },
+    wednesday: { open: "", close: "" },
+    thursday: { open: "", close: "" },
+    friday: { open: "", close: "" },
+    saturday: { open: "", close: "" },
+    sunday: { open: "", close: "" },
+  });
+
+
   const [images, setImages] = useState([]);
 
   const [tables, setTables] = useState(0);
 
   const [stage, setStage] = useState(1);
 
-  const diets = ["vegano", "celiaco", "vegetariano"];
 
-  const paymentMethods = ["credito", "debito", "mercadopago", "efectivo", "transferencia"]
+  const PaymentMethods = ["credito", "debito", "mercadopago", "efectivo", "transferencia"]
 
-  const atmospheres = ["musica en vivo", "familiar", "romantico", "formal"]
+  const Atmospheres = ["musica en vivo", "familiar", "romantico", "formal"]
 
-  const extras = ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"]
+  const Extras = ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"]
 
-  const sections = ["terraza", "barra", "salón principal"]
+  const Sections = ["terraza", "barra", "salón principal"]
 
-  const menus = [ "italiana","asiática","internacional","hamburguesas","alta cocina","bares","pizzerías","mediterránea","gourmet",]
+  const Menus = ["italiana", "asiática", "internacional", "hamburguesas", "alta cocina", "bares", "pizzerías", "mediterránea", "gourmet",]
 
-  const [selectDiets, setSelectDiets] = useState([
+  const [diets, setSelectDiets] = useState([
     "vegano",
     "celiaco",
     "vegetariano"
   ]);
 
-  const [selectMenu, setSelectMenu] = useState([
+
+
+  const [menu, setSelectMenu] = useState([
     "italiana",
     "asiática",
     "internacional",
@@ -87,7 +86,7 @@ export default function Form() {
   ]);
 
 
-  const [selectPaymentMethods, setSelectPaymentMethods] = useState([
+  const [paymentMethods, setSelectPaymentMethods] = useState([
     "credito",
     "debito",
     "mercadopago",
@@ -97,14 +96,14 @@ export default function Form() {
 
   ]);
 
-  const [selectAtmosphere, setSelectAtmosphere] = useState([
+  const [atmosphere, setSelectAtmosphere] = useState([
     "musica en vivo",
     "familiar",
     "romantico",
     "formal",
   ])
 
-  const [selectExtra, setSelectExtra] = useState([
+  const [extra, setSelectExtra] = useState([
     "petfriendly",
     "bar",
     "wi-fi",
@@ -114,23 +113,21 @@ export default function Form() {
   ])
 
 
-  const [selectSection, setSelectSection] = useState([
+  const [section, setSelectSection] = useState([
     "terraza",
     "barra",
     "salón principal",
-
-
   ])
 
-  
+
   const handleMenu = (event) => {
     const value = event.target.value;
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectMenu([...selectMenu, value]);
+      setSelectMenu([...menu, value]);
     } else {
-      setSelectMenu(selectMenu.filter((menu) => menu !== value));
+      setSelectMenu(menu.filter((menues) => menues !== value));
     }
   };
 
@@ -141,9 +138,9 @@ export default function Form() {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectDiets([...selectDiets, value]);
+      setSelectDiets([...diets, value]);
     } else {
-      setSelectDiets(selectDiets.filter((diet) => diet !== value));
+      setSelectDiets(diets.filter((diet) => diet !== value));
     }
   };
 
@@ -152,9 +149,9 @@ export default function Form() {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectPaymentMethods([...selectPaymentMethods, value]);
+      setSelectPaymentMethods([...paymentMethods, value]);
     } else {
-      setSelectPaymentMethods(selectPaymentMethods.filter((paymentMethod) => paymentMethod !== value));
+      setSelectPaymentMethods(paymentMethods.filter((paymentMethod) => paymentMethod !== value));
     }
   };
 
@@ -164,9 +161,9 @@ export default function Form() {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectAtmosphere([...selectAtmosphere, value]);
+      setSelectAtmosphere([...atmosphere, value]);
     } else {
-      setSelectAtmosphere(selectAtmosphere.filter((atmosphere) => atmosphere !== value));
+      setSelectAtmosphere(atmosphere.filter((atmospheres) => atmospheres !== value));
     }
   };
 
@@ -176,9 +173,9 @@ export default function Form() {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectExtra([...selectExtra, value]);
+      setSelectExtra([...extra, value]);
     } else {
-      setSelectExtra(selectExtra.filter((extra) => extra !== value));
+      setSelectExtra(extra.filter((extras) => extras !== value));
     }
   };
 
@@ -187,19 +184,11 @@ export default function Form() {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectSection([...selectSection, value]);
+      setSelectSection([...section, value]);
     } else {
-      setSelectSection(selectSection.filter((section) => section !== value));
+      setSelectSection(section.filter((sections) => sections !== value));
     }
   };
-
-
-
-
-
-
-
-
 
   const handleNext = () => {
     setStage(stage + 1);
@@ -211,7 +200,7 @@ export default function Form() {
 
   const handleContact = (event) => {
     setContact({
-      ...setContact,
+      ...contact,
       [event.target.name]: event.target.value,
     });
   };
@@ -232,19 +221,26 @@ export default function Form() {
   };
 
   const handleLongitude = event => {
-    setCoordinate({...coordinate, longitude: event.target.value})
+    setCoordinate({ ...coordinate, longitude: event.target.value })
   }
 
   const handleLatitude = event => {
-    setCoordinate({...coordinate, latitude: event.target.value})
+    setCoordinate({ ...coordinate, latitude: event.target.value })
   }
 
-  const handleSchedule = (day, time, value) => {
-    setSchedule((prevSchedule) => {
-      const updatedSchedule = [...prevSchedule];
-      updatedSchedule[0][day][time] = value;
-      return updatedSchedule;
-    });
+
+
+  const handleSchedule = (e) => {
+    const { name, value } = e.target;
+    const [day, time] = name.split(" ");
+
+    setSchedule((prevSchedule) => ({
+      ...prevSchedule,
+      [day]: {
+        ...prevSchedule[day],
+        [time]: value,
+      },
+    }));
   };
 
   const handleTable = (event) => {
@@ -254,37 +250,35 @@ export default function Form() {
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
-  //   console.log("Submitted data:", input, addres, contact);
+  //   console.log("Submitted data:", new);
   // };
 
   const handleCreate = () => {
-  const newRestaurant = {
-    input,
-    address,
-    contact,
-    schedule,
-    images,
-    tables,
-    stage,
-    selectDiets,
-    selectMenu,
-    selectPaymentMethods,
-    selectAtmosphere,
-    selectExtra,
-    selectSection,
+    let nombreResto = input.name
+    const newRestaurant = {
+      name: nombreResto,
+      address,
+      coordinate,
+      contact,
+      schedule,
+      images,
+      tables,
+      diets,
+      menu,
+      paymentMethods,
+      atmosphere,
+      extra,
+      section,
 
+    };
+
+    console.log(newRestaurant)
+    dispatch(postRestaurant(newRestaurant));
   };
-  dispatch(postRestaurant(newRestaurant));
-};
-
-
-useEffect(() => {
-  dispatch(postRestaurant())
-  }, [dispatch])
 
 
   return (
-     
+
     <div className={styles.formContainer}>
       <h1 className={styles.title}>REGISTRATION RESTAURANT</h1>
       {stage === 1 && (
@@ -302,36 +296,35 @@ useEffect(() => {
             <div>
               <label>
                 Phone Number:
-                <input type="number" name="phoneNumber" value={contact.name} onChange={handleContact} />
+                <input type="number" name="phoneNumber" value={contact.phoneNumber} onChange={handleContact} />
               </label>
             </div>
             <div>
               <label>
                 Email:
-                <input type="text" name="email" value={contact.name} onChange={handleContact} />
+                <input type="text" name="email" value={contact.email} onChange={handleContact} />
               </label>
             </div>
             <h3>Social Media</h3>
             <div>
               <label>
                 Instagram:
-                <input type="text" name="instagram" value={contact.name} onChange={handleContact} />
+                <input type="text" name="instagram" value={contact.instagram} onChange={handleContact} />
               </label>
             </div>
 
             <div>
               <label>
                 Facebook:
-                <input type="text" name="facebook" value={contact.name} onChange={handleContact} />
+                <input type="text" name="facebook" value={contact.facebook} onChange={handleContact} />
               </label>
             </div>
 
             <div>
               <label>
                 Wpp:
-                <input type="number" name="wpp" value={contact.name} onChange={handleContact} />
+                <input type="number" name="wpp" value={contact.wpp} onChange={handleContact} />
               </label>
-
             </div>
 
 
@@ -393,7 +386,7 @@ useEffect(() => {
               </label>
             </div>
 
-            
+
             <div>
               <label>
                 Longitude:
@@ -401,19 +394,12 @@ useEffect(() => {
               </label>
             </div>
 
-            
             <div>
               <label>
                 Latitude:
                 <input type="number" name="latitude" value={coordinate.latitude} onChange={handleLatitude} />
               </label>
             </div>
-
-           
-
-           
-
-
 
             <button onClick={handleBack}>Back</button>
             <button onClick={handleNext}>Next</button>
@@ -429,43 +415,47 @@ useEffect(() => {
             <label htmlFor="monday"> Monday :
               <input
                 placeholder="Open"
-                value={schedule[0].monday.open}
-                onChange={(e) => handleSchedule("monday", "open", e.target.value)}
+                name="monday open"
+                value={schedule.monday.open}
+                onChange={handleSchedule}
               />
               <input
                 placeholder="Close"
-                value={schedule[0].monday.close}
-                onChange={(e) => handleSchedule( "monday", "close", e.target.value)}
+                name="monday close"
+                value={schedule.monday.close}
+                onChange={handleSchedule}
               />
             </label>
             <div>
               <label htmlFor="Tuesday">  Tuesday
                 <input
                   placeholder="Open"
-                  value={schedule[0].tuesday.open}
-                  onChange={(e) => handleSchedule( "tuesday", "open", e.target.value)}
+                  name="tuesday open"
+                  value={schedule.tuesday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].tuesday.close}
-                  onChange={(e) => handleSchedule( "tuesday", "close", e.target.value)}
+                  name="tuesday close"
+                  value={schedule.tuesday.close}
+                  onChange={handleSchedule}
                 />
               </label>
-
             </div>
 
             <div>
-
               <label htmlFor="Wednesday"> Wednesday
                 <input
                   placeholder="Open"
-                  value={schedule[0].wednesday.open}
-                  onChange={(e) => handleSchedule("wednesday", "open",e.target.value)}
+                  name="wednesday open"
+                  value={schedule.wednesday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].wednesday.close}
-                  onChange={(e) => handleSchedule( "wednesday", "close",e.target.value)}
+                  name="wednesday close"
+                  value={schedule.wednesday.close}
+                  onChange={handleSchedule}
                 />
               </label>
 
@@ -475,45 +465,49 @@ useEffect(() => {
               <label htmlFor="Thursday"> Thursday
                 <input
                   placeholder="Open"
-                  value={schedule[0].thursday.open}
-                  onChange={(e) => handleSchedule( "thursday", "open",e.target.value)}
+                  name="thursday open"
+                  value={schedule.thursday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].thursday.close}
-                  onChange={(e) => handleSchedule( "thursday", "close", e.target.value)}
+                  name="thursday close"
+                  value={schedule.thursday.close}
+                  onChange={handleSchedule}
                 />
               </label>
-
             </div>
 
             <div>
               <label htmlFor="Friday"> Friday
                 <input
                   placeholder="Open"
-                  value={schedule[0].friday.open}
-                  onChange={(e) => handleSchedule( "friday", "open", e.target.value)}
+                  name="friday open"
+                  value={schedule.friday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].friday.close}
-                  onChange={(e) => handleSchedule( "friday", "close",e.target.value)}
+                  name="friday close"
+                  value={schedule.friday.close}
+                  onChange={handleSchedule}
                 />
               </label>
-
             </div>
 
             <div>
               <label htmlFor="Saturday"> Saturday
                 <input
                   placeholder="Open"
-                  value={schedule[0].saturday.open}
-                  onChange={(e) => handleSchedule( "saturday", "open", e.target.value)}
+                  name="saturday open"
+                  value={schedule.saturday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].saturday.close}
-                  onChange={(e) => handleSchedule("saturday", "close", e.target.value)}
+                  name="saturday close"
+                  value={schedule.saturday.close}
+                  onChange={handleSchedule}
                 />
               </label>
             </div>
@@ -523,39 +517,41 @@ useEffect(() => {
               <label htmlFor="sunday"> Sunday
                 <input
                   placeholder="Open"
-                  value={schedule[0].sunday.open}
-                  onChange={(e) => handleSchedule("sunday", "open",e.target.value)}
+                  name="sunday open"
+                  value={schedule.sunday.open}
+                  onChange={handleSchedule}
                 />
                 <input
                   placeholder="Close"
-                  value={schedule[0].sunday.close}
-                  onChange={(e) => handleSchedule("sunday", "close",e.target.value)}
+                  name="sunday close"
+                  value={schedule.sunday.close}
+                  onChange={handleSchedule}
                 />
               </label>
             </div>
 
-               <h3>Select Menu options:</h3>
-        
-            {menus.map((menu) => (
-              <label key={menu}>
+            <h3>Select Menu options:</h3>
+
+            {Menus.map((menues) => (
+              <label key={menues}>
                 <input
                   type="checkbox"
-                  value={menu}
-                  checked={selectMenu.includes(menu)}
+                  value={menues}
+                  checked={menu.includes(menues)}
                   onChange={handleMenu}
                 />
-                {menu}
+                {menues}
               </label>
             ))}
 
 
             <h2>Select your diets:</h2>
-            {diets.map((diet) => (
+            {Diets.map((diet) => (
               <label key={diet}>
                 <input
                   type="checkbox"
                   value={diet}
-                  checked={selectDiets.includes(diet)}
+                  checked={diets.includes(diet)}
                   onChange={handleDiets}
                 />
                 {diet}
@@ -579,12 +575,12 @@ useEffect(() => {
 
 
             <h2>Select your  Payment Method:</h2>
-            {paymentMethods.map((paymentMethod) => (
+            {PaymentMethods.map((paymentMethod) => (
               <label key={paymentMethod}>
                 <input
                   type="checkbox"
                   value={paymentMethod}
-                  checked={selectPaymentMethods.includes(paymentMethod)}
+                  checked={paymentMethods.includes(paymentMethod)}
                   onChange={handlePaymentMethods}
                 />
                 {paymentMethod}
@@ -593,50 +589,47 @@ useEffect(() => {
 
 
             <h2>Select your Atmosphere:</h2>
-            {atmospheres.map((atmosphere) => (
-              <label key={atmosphere}>
+            {Atmospheres.map((atmospheres) => (
+              <label key={atmospheres}>
                 <input
                   type="checkbox"
-                  value={atmosphere}
-                  checked={selectAtmosphere.includes(atmosphere)}
+                  value={atmospheres}
+                  checked={atmosphere.includes(atmospheres)}
                   onChange={handleAtmosphere}
                 />
-                {atmosphere}
+                {atmospheres}
               </label>
             ))}
 
             <h2>Select your Extras:</h2>
-            {extras.map((extra) => (
-              <label key={extra}>
+            {Extras.map((extras) => (
+              <label key={extras}>
                 <input
                   type="checkbox"
-                  value={extra}
-                  checked={selectExtra.includes(extra)}
+                  value={extras}
+                  checked={extra.includes(extras)}
                   onChange={handleExtras}
                 />
-                {extra}
+                {extras}
               </label>
             ))}
 
 
             <h2>Select your Section:</h2>
-            {sections.map((section) => (
-              <label key={section}>
+            {Sections.map((sections) => (
+              <label key={sections}>
                 <input
                   type="checkbox"
-                  value={section}
-                  checked={selectSection.includes(section)}
+                  value={sections}
+                  checked={section.includes(sections)}
                   onChange={handleSection}
                 />
-                {section}
+                {sections}
               </label>
             ))}
 
-
             <div>
               <div />
-
-
               <div className={styles.terminos}>
                 <label htmlFor="terminos">Acepto términos y condiciones</label>
                 <input
@@ -647,15 +640,9 @@ useEffect(() => {
                   onChange={(e) => setTerminos(e.target.checked)}
                 />
               </div>
-
             </div>
-
             <button onClick={handleBack}>Back</button>
-
             <button type="submit"> Restaurant Created</button>
-
-
-
           </form>
         </div>
       )}
@@ -664,3 +651,5 @@ useEffect(() => {
   );
 }
 
+//TRAER DEL ESTADO GLOBAL LO JARCODEADO
+//LLAMAR LA AXION DEL ESTADO GLOBAL SI LLENAS UN CAMPO BIEN TE VAS A LA HOME Y SI TENES ERROR QUE TE DEJE EN EL FORMULARIO 
