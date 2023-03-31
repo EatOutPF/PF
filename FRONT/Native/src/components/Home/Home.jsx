@@ -45,13 +45,13 @@ const Main = () => {
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
       <AppBar />       
         <Routes>
-          <Route path='/' element= {<RestosList />} />          // Restos
+          <Route path='/' element= {<RestosList />} /> // Restos
           <Route path='/restorantslist' element= {            // Listado
           // <Text>Working on it</Text>
             <ListOfFiltered/>
           } />
-          <Route path='/mapview' element= {<Map data={RestosList}/>} />       // Mapa
-          <Route path='/pagerview' element={<Text>Working on it 1</Text>} />            // EJ2
+          <Route path='/mapview' element= {<Map data={RestosList}/>} /> // Mapa
+          <Route path='/pagerview' element={<Text>Working on it 1</Text>} /> // EJ2
           <Route path='/signin' element= { 
             <Login/> 
             // <Text>Working on it 1</Text>

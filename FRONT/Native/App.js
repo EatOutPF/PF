@@ -6,13 +6,14 @@ import { Provider } from 'react-redux'
 import Main from './src/components/Home/Home.jsx'
 
 
-{/* Importaciones FLOR*/ }
 import 'react-native-gesture-handler';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import React, { useRef, useState } from 'react'
 import Filters from './src/components/Filters/Filters';
-import { HandleModalFilter } from './src/components/Filters/HandleModalFilter.jsx'
-// import LowerNavBar from "../Native/src/components/NavBar/SearchBar"
+
+
+
+
 
 export default function App() {
   const bottomSheetModalRef = useRef(null)
@@ -63,7 +64,7 @@ export default function App() {
 
         </View>
       </BottomSheetModalProvider>
-    </Provider>
+      </Provider>
 
   );
 }
