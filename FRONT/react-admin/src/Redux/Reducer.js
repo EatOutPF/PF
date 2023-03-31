@@ -9,6 +9,7 @@ import {
   GET_RESTAURAN_NAME,
   DELETE_RESTAURANT,
   POST_RESTAURANT,
+  SET_TOKEN,
 } from "./Actions";
 
 const initialState = {
@@ -85,17 +86,26 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, currentListRestaurants: payload };
     case DELETE_RESTAURANT:
       return { ...state, message: payload };
-    default:
-      return { ...state };
-
-
-
+    
     case POST_RESTAURANT:
       return {
        
         ...state,
       createRestaurant:[...state.createRestaurant,payload]
       };
+    
+      case SET_TOKEN:
+        return {
+          ...state,
+          token: [payload],
+        };
+
+      default:
+      return { ...state };
+
+
+
+    
 
   }
 

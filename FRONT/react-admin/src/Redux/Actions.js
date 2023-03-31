@@ -13,7 +13,7 @@ export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
-
+export const SET_TOKEN= "SET_TOKEN"
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
@@ -33,10 +33,11 @@ export const getAllRestaurants = () => {
   };
 };
 
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: { user },
-});
+export const setUser = (user) => {
+  return (dispatch) => {
+    dispatch({ type: SET_USER, payload: user });
+  };
+};
 
 export const logoutUser = () => ({
   type: LOGOUT_USER,
@@ -164,3 +165,13 @@ export const postRestaurant = (create) => async (dispatch) => {
 //   }
 // }
 
+export const setToken = (token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${baseUrl}/users`, { token });
+      dispatch({ type: SET_TOKEN, payload: response.data });
+    } catch (error) {
+      console.error('Error setting token:', error);
+    }
+  };
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
+import { setToken } from '../Redux/Actions'
 import { useDispatch } from "react-redux";
 import { setUser } from "../Redux/Actions";
 import { initializeApp } from "firebase/app";
@@ -14,14 +15,17 @@ import {
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
-  authDomain: "eatout-d06bc.firebaseapp.com",
-  projectId: "eatout-d06bc",
-  storageBucket: "eatout-d06bc.appspot.com",
-  messagingSenderId: "716033457346",
-  appId: "1:716033457346:web:532059ce3be30b1c140f5b",
- 
-};
+  apiKey:"AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
+  authDomain:"eatout-d06bc.firebaseapp.com",
+  projectId:"eatout-d06bc",
+  storageBucket:"eatout-d06bc.appspot.com",
+  messagingSenderId:"716033457346",
+  appId:"1:716033457346:web:532059ce3be30b1c140f5b",
+  measurementId:"G-15QEGRB69P",
+  serviceAccount:"firebase-adminsdk-e60fh@eatout-d06bc.iam.gserviceaccount.com",
+  credential:"716033457346-uiqt23knlrpkkcp12d8da9qmp4pptfja.apps.googleusercontent.com"};
+
+  
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -32,19 +36,14 @@ function Login() {
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
   const [error, setError] = useState(null);
-  const provider = new GoogleAuthProvider();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+});
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        dispatch(setUser(user));
-      }
-    });
+  
 
-    return () => {
-      unsubscribe();
-    };
-  }, [dispatch]);
+ 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,14 +55,19 @@ function Login() {
         return;
       }
 
+     
       const userCredential = await signInWithEmailAndPassword(
         auth,
         emailLogin,
         passwordLogin
       );
+      
+    setUser(userCredential.user);
+      dispatch(setToken(userCredential.accessToken));
 
-      dispatch(setUser(userCredential.user));
-      window.location.href = "/home";
+    
+  console.log(userCredential);
+     window.location.href = "/home";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
@@ -71,17 +75,21 @@ function Login() {
   };
 
   const handleOnClick = () => {
-    signInWithPopup(auth, provider)
+    signInWithPopup(auth, new GoogleAuthProvider())
       .then((result) => {
-        const user = result.user;
-        dispatch(setUser(user));
+        const user = result;
+        setUser(user);
         window.location.href = "/home";
+        setUser(user.user);
+      dispatch(setToken(user.accessToken));
+        console.log(user);
       })
       .catch((error) => {
         console.error("Sign in with Google failed!", error);
         setError(error.message);
       });
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>
