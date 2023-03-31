@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllRestauranName } from "../Redux/Actions";
 
-function Searchbar({ setSearchResults }) {
+function Searchbar() {
   const [state, setState] = useState("");
   const dispatch = useDispatch();
 
@@ -13,9 +13,7 @@ function Searchbar({ setSearchResults }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (state.length > 1) {
-      dispatch(getAllRestauranName(state)).then((response) => {
-        setSearchResults(response.payload);
-      });
+      dispatch(getAllRestauranName(state))
       setState("");
     } else {
       alert("No está el restaurante");
