@@ -58,7 +58,7 @@ const Home = () => {
           currentRestaurants={currentRestaurants}
         />
       )}
-      )
+      
     </div>
   );
 };
