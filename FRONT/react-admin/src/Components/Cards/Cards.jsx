@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "../Card/Card";
-import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
 
 const Cards = ({ currentRestaurants }) => {
@@ -13,11 +12,12 @@ const Cards = ({ currentRestaurants }) => {
           <thead>
             <tr className={style.containerTitle}>
               <th>Restaurante</th>
-              <th>Comida</th>
-              <th>Puntuación</th>
+              <th>Tipo Comida</th>
+              <th>Cuenta con</th>
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
+              <th>Puntuación</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>

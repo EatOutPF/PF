@@ -36,12 +36,15 @@ const Home = () => {
 
   return (
     <div className={style.containerHome}>
-      <Filter
-        setOrder={setOrder}
-        setResetFilter={setResetFilter}
-        setCurrentPage={setCurrentPage}
-        resetFilter={resetFilter}
-      />
+      <div className={style.containerSearchBar}>
+        <Filter
+          setOrder={setOrder}
+          setResetFilter={setResetFilter}
+          setCurrentPage={setCurrentPage}
+          resetFilter={resetFilter}
+        />
+        <Searchbar setCurrentPage={setCurrentPage} />
+      </div>
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
         restaurants={searchResults ? searchResults.length : restaurants.length}
@@ -49,14 +52,13 @@ const Home = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      <Searchbar setCurrentPage={setCurrentPage} />
       {currentRestaurants && (
         <Cards
           restaurants={searchResults || restaurants}
           currentRestaurants={currentRestaurants}
         />
       )}
-      )
+      
     </div>
   );
 };
