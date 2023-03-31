@@ -1,8 +1,5 @@
 import axios from "axios";
 import { updateMapper } from "./utils";
-
-const baseUrl = "http://localhost:5001";
-
 export const GET_ALL_RESTAURANTS = "GET_ALL_RESTAURANTS";
 export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
@@ -17,7 +14,7 @@ export const POST_RESTAURANT = "POST_RESTAURANT";
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant`)
+      .get(`/restaurant`)
       .then((response) => {
         dispatch({
           type: "GET_ALL_RESTAURANTS",
@@ -51,7 +48,7 @@ export const getFilterByDiets = (comida) => {
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant/${id}`)
+      .get(`/restaurant/${id}`)
       .then((result) => {
         dispatch({
           type: DETAIL_RESTAURANT,
@@ -71,7 +68,7 @@ export const modifyRestaurant = (dataToUpdate) => {
   let restaurant = updateMapper(dataToUpdate);
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
+      .put(`/restaurant/${dataToUpdate.id}`, restaurant)
       .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
@@ -93,9 +90,7 @@ export const getAllRestauranName = (name) => {
       return dispatch({ type: ERROR_MSSG });
     }
     try {
-      let RestauranByName = await axios.get(
-        `${baseUrl}/restaurant?name=${name}`
-      );
+      let RestauranByName = await axios.get(`/restaurant?name=${name}`);
       return dispatch({
         type: GET_RESTAURAN_NAME,
         payload: RestauranByName.data,
@@ -109,7 +104,7 @@ export const getAllRestauranName = (name) => {
 export const deleteRestaurant = (dataToUpdate) => {
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, {
+      .put(`/restaurant/${dataToUpdate.id}`, {
         active: dataToUpdate.active,
       })
       .then((response) => {
@@ -125,42 +120,37 @@ export const deleteRestaurant = (dataToUpdate) => {
   };
 };
 
-
 export const postRestaurant = (create) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/restaurant`, create);
+    const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
     dispatch({
       type: "POST_RESTAURANT",
-      payload: restaurant
+      payload: restaurant,
     });
   } catch (error) {
     alert(error.response.data);
     dispatch({
       type: "POST_RESTAURANT",
-      payload: []
+      payload: [],
     });
   }
 };
 
 // export function postRestaurant(create){
 //   return async function(dispatch){
-  
+
 //               axios.post(`${baseUrl}/restaurant`,create).then(res => {
 //                   return dispatch({
 //                     type: "POST_RESTAURANT",
 //                     payload: res.data,
 //                   })
-                  
 
 //               } ).catch(error => {dispatch({
 //                   type: "POST_RESTAURANT",
 //                   payload: [],
-//               }); alert(error.response.data) 
+//               }); alert(error.response.data)
 //           });
-              
 
-    
 //   }
 // }
-

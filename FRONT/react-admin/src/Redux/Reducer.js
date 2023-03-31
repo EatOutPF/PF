@@ -12,7 +12,7 @@ import {
 } from "./Actions";
 
 const initialState = {
-  createRestaurant:[],
+  createRestaurant: [],
   allRestaurants: [],
   user: null,
   detailRestaurant: {},
@@ -88,18 +88,12 @@ const Reducer = (state = initialState, { type, payload }) => {
     default:
       return { ...state };
 
-
-
     case POST_RESTAURANT:
       return {
-       
         ...state,
-      createRestaurant:[...state.createRestaurant,payload]
+        createRestaurant: [...state.createRestaurant, payload],
       };
-
   }
-
-
-}
+};
 
 export default Reducer;

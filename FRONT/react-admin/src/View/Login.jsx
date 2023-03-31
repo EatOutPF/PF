@@ -52,7 +52,7 @@ function Login() {
       );
 
       setUser(userCredential.user);
-      window.location.href = "/home";
+      window.location.href = "/landing";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
