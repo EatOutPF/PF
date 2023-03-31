@@ -1,29 +1,38 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button } from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTypesOfFoods } from '../../redux/actions.js';
+import {
+    getTypesOfFoods,
+    getAtmosphere,
+    getSections,
+    getDiet,
+    getExtras,
+    filterRestorant
+} from '../../redux/actions.js';
+
 
 
 export default Filters = (props) => {
+    const response = () => {
+        props.handleBottonSheet()
+    }
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getTypesOfFoods())
+        dispatch(getSections())
+        dispatch(getAtmosphere())
+        dispatch(getDiet())
+        dispatch(getExtras())
     }, dispatch)
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
-
-    const response = () => {
-        props.handleBottonSheet()
-    }
-
-    const [foods, setFoods] = useState(null);
-    const [ambiences, setAmbiences] = useState(null);
-    const [selectedValue3, setSelectedValue3] = useState(null);
-    const [selectedValue4, setSelectedValue4] = useState(null);
-    const [selectedValue5, setSelectedValue5] = useState(null);
+    const typesOfSections = useSelector((state) => state.typesOfSections);
+    const typesOfAtmosphere = useSelector((state) => state.typesOfAtmosphere);
+    const typesOfDiet = useSelector((state) => state.typesOfDiet);
+    const typesOfExtras = useSelector((state) => state.typesOfExtras);
 
     const foodOptions = typesOfFoods?.map(e => {
         return {
@@ -32,28 +41,61 @@ export default Filters = (props) => {
         }
     })
 
+    const [menu, setMenu] = useState(null);
+    const [ambiences, setAmbiences] = useState(null);
+    const [spaces, setSpaces] = useState(null);
+    const [diet, setDiet] = useState(null);
+    const [extra, setExtra] = useState(null);
 
-    const ambienceOptions = [
-        { label: 'Moderno', value: 'Moderno' },
-        { label: 'Relajado', value: 'Relajado' },
-        { label: 'Clasico', value: 'Clasico' },
-    ];
-    const spaceOptions = [
-        { label: 'Salon', value: 'Salon' },
-        { label: 'Patio', value: 'Patio' },
-        { label: 'Terraza', value: 'Terraza' },
-    ];
-    const menuOptions = [
-        { label: 'Menu Celíaco', value: 'Menu Celíaco' },
-        { label: 'Menu Vegano', value: 'Menu Vegano' },
-        { label: 'Crypto', value: 'Menu Vegetariano' },
-    ];
+    const [filters, setFilters] = useState({
+        menu: null,
+        ambiences: null,
+        spaces: null,
+        diet: null,
+        extra: null,
+    });
+
+    const atmosphereOptions = typesOfAtmosphere?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
+    const spaceOptions = typesOfSections?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
+    const dietOptions = typesOfDiet?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
+    const extraOptions = typesOfExtras?.map(e => {
+        return {
+            label: e.name,
+            value: e.name,
+        }
+    })
+
     const otherOptions = [
         { label: 'Sector Fumadores', value: 'Sector Fumadores' },
         { label: 'Pet Friendly', value: 'Pet Friendly' },
         { label: 'Crypto', value: 'Crypto' },
     ];
 
+    //HANDLERS:
+
+    const handlerFilters = () => {
+        dispatch(filterRestorant(filters));
+        //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
+    }
+    //Renderizado
     return (
         <View>
             <View style={styles.cont}>
@@ -88,6 +130,14 @@ export default Filters = (props) => {
                     </ScrollView>
                 </View>
 
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}>
+                    <Text style={styles.title}>Filtrar Por</Text>
+                </View>
+
                 <View style={styles.containerP}>
                     <View style={styles.containerPiker}>
                         <View style={styles.labelContainer}>
@@ -96,8 +146,11 @@ export default Filters = (props) => {
                         </View>
                         <View style={styles.picker}>
                             <Picker
-                                selectedValue={foods}
-                                onValueChange={(value) => setFoods(value)}
+                                selectedValue={menu}
+                                onValueChange={(value) => {
+                                    setMenu(value),
+                                        setFilters({ ...filters, menu: value })
+                                }}
                             >
                                 <Picker.Item label="Tipo de comida" value=""
                                 />
@@ -123,10 +176,13 @@ export default Filters = (props) => {
 
                         <Picker
                             selectedValue={ambiences}
-                            onValueChange={(value) => setAmbiences(value)}
+                            onValueChange={(value) => {
+                                setAmbiences(value),
+                                setFilters({ ...filters, ambiences: value })
+                            }}
                         >
                             <Picker.Item label="Ambiente" value="" />
-                            {ambienceOptions.map((option) => (
+                            {atmosphereOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
@@ -141,8 +197,8 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Espacios</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue3}
-                            onValueChange={(value) => setSelectedValue3(value)}
+                            selectedValue={spaces}
+                            onValueChange={(value) => setSpaces(value)}
                         >
                             <Picker.Item label="Espacios" value="" />
                             {spaceOptions.map((option) => (
@@ -160,11 +216,11 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Cuenta con</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue4}
-                            onValueChange={(value) => setSelectedValue4(value)}
+                            selectedValue={diet}
+                            onValueChange={(value) => setDiet(value)}
                         >
                             <Picker.Item label="Cuenta con" value="" />
-                            {menuOptions.map((option) => (
+                            {dietOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
@@ -179,16 +235,30 @@ export default Filters = (props) => {
                             <Text style={styles.label}>Otros</Text>
                         </View>
                         <Picker
-                            selectedValue={selectedValue5}
-                            onValueChange={(value) => setSelectedValue5(value)}
+                            selectedValue={extra}
+                            onValueChange={(value) => setExtra(value)}
                         >
                             <Picker.Item label="Otros" value="" />
-                            {otherOptions.map((option) => (
+                            {extraOptions.map((option) => (
                                 <Picker.Item key={option.value} label={option.label} value={option.value} />
                             ))}
                         </Picker>
                     </View>
                 </View>
+
+            </View>
+
+            <View>
+                <Button
+                    onPress={handlerFilters}
+                    title='Aplicar Filtros'
+                >
+                </Button>
+
+                <Button
+                    title='Limpiar Filtros'
+                >
+                </Button>
 
             </View>
         </View >
@@ -229,6 +299,7 @@ const styles = StyleSheet.create({
     containerOrderButtons: {
         margin: 5,
         paddingVertical: 5,
+
     },
     orderButton: {
         paddingHorizontal: 10,

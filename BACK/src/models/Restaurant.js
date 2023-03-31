@@ -19,9 +19,15 @@ const restaurantSchema = new Schema({
       type: String,
       required: [true, "El nombre de la calle es obligatorio"],
     },
-    streetNumber: Number,
+    streetNumber: {
+      type: Number,
+      required: [true, "El número de la calle es obligatorio"],
+    },
     neighborhood: String,
-    city: String,
+    city: {
+      type: String,
+      required: [true, "El nombre de la ciudad es obligatorio"],
+    },
     state: String,
     country: String,
     coordinate: {
@@ -29,7 +35,7 @@ const restaurantSchema = new Schema({
         type: Number,
         required: [
           true,
-          "La latitud es obligatoria. El formato debe ser ##.######",
+          "La latitud es obligatoria",
         ],
         min: [-89.999999, "La latitud mínima es de -89.999999"],
         max: [89.999999, "La latitud máxima es de 89.999999"],
@@ -69,6 +75,7 @@ const restaurantSchema = new Schema({
   },
   ranking: Number,
   advance: Number,
+  about: String,
   review: [
     {
       type: Schema.Types.ObjectId,
@@ -115,6 +122,14 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  review: {
+    type: String,
+    ref: "Review",
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
