@@ -10,6 +10,8 @@ import {
   DELETE_RESTAURANT,
   POST_RESTAURANT,
   SET_TOKEN,
+  FILTER_BY_MENU,
+  FILTER_BY_ACTIVE
 } from "./Actions";
 
 const initialState = {
@@ -18,8 +20,8 @@ const initialState = {
   user: null,
   detailRestaurant: {},
   currentListRestaurants: [],
-  stateToFilters: [],
   message: "",
+  filteredData: [],
   optionsMenu: [
     "italiana",
     "asiática",
@@ -43,6 +45,7 @@ const initialState = {
   optionsExtras: ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"],
   optionsSection: ["salón principal", "terraza", "barra"],
   msg: "",
+  token: null
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -64,6 +67,23 @@ const Reducer = (state = initialState, { type, payload }) => {
         restaurant.diets.includes(payload)
       );
       return { ...state, currentListRestaurants: filterByDiets };
+     
+     
+    case FILTER_BY_MENU:
+        const filterBymenu= state.currentListRestaurants.filter((e)=>
+          e.menu.includes(payload)
+        )
+        return{ ...state, currentListRestaurants: filterBymenu}
+
+    case FILTER_BY_ACTIVE: 
+  
+    const filteredData = state.currentListRestaurants.filter((item) => item.active === payload
+    );
+    return {
+      ...state,
+     currentListRestaurants: filteredData }
+
+
 
     case DETAIL_RESTAURANT:
       return {
@@ -94,13 +114,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       createRestaurant:[...state.createRestaurant,payload]
       };
     
-      case SET_TOKEN:
+    case SET_TOKEN:
         return {
           ...state,
           token: [payload],
         };
 
-      default:
+    default:
       return { ...state };
 
 
