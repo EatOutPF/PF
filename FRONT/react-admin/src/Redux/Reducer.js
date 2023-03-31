@@ -15,7 +15,7 @@ import {
 } from "./Actions";
 
 const initialState = {
-  createRestaurant:[],
+  createRestaurant: [],
   allRestaurants: [],
   user: null,
   detailRestaurant: {},
@@ -67,7 +67,7 @@ const Reducer = (state = initialState, { type, payload }) => {
         restaurant.diets.includes(payload)
       );
       return { ...state, currentListRestaurants: filterByDiets };
-     
+   
      
     case FILTER_BY_MENU:
         const filterBymenu= state.currentListRestaurants.filter((e)=>
@@ -106,14 +106,12 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, currentListRestaurants: payload };
     case DELETE_RESTAURANT:
       return { ...state, message: payload };
-    
     case POST_RESTAURANT:
       return {
-       
         ...state,
-      createRestaurant:[...state.createRestaurant,payload]
+        createRestaurant: [...state.createRestaurant, payload],
       };
-    
+  
     case SET_TOKEN:
         return {
           ...state,
@@ -125,11 +123,8 @@ const Reducer = (state = initialState, { type, payload }) => {
 
 
 
-    
 
   }
-
-
-}
+};
 
 export default Reducer;

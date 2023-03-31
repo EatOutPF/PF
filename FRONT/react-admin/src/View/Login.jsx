@@ -64,10 +64,9 @@ function Login() {
       
     setUser(userCredential.user);
       dispatch(setToken(userCredential.accessToken));
+      setUser(userCredential.user);
+      window.location.href = "/landing";
 
-    
-  console.log(userCredential);
-     window.location.href = "/home";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
