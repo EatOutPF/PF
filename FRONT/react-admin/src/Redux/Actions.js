@@ -13,6 +13,11 @@ export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
+export const SET_TOKEN= "SET_TOKEN"
+export const FILTER_BY_MENU= "FILTER_BY_MENU"
+export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE"
+
+
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -33,10 +38,11 @@ export const getAllRestaurants = () => {
   };
 };
 
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: { user },
-});
+export const setUser = (user) => {
+  return (dispatch) => {
+    dispatch({ type: SET_USER, payload: user });
+  };
+};
 
 export const logoutUser = () => ({
   type: LOGOUT_USER,
@@ -48,6 +54,23 @@ export const getFilterByDiets = (comida) => {
     payload: comida,
   };
 };
+
+export const getFilterByMenu= (comida)=>{
+return{
+  type: FILTER_BY_MENU,
+  payload:comida,
+};
+};
+export const getFilterActive= (active)=>{
+  return {
+    type: FILTER_BY_ACTIVE,
+    payload: active
+  }
+}
+
+
+
+
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
@@ -135,7 +158,7 @@ export const postRestaurant = (create) => async (dispatch) => {
       payload: restaurant
     });
   } catch (error) {
-    alert(error.response.data);
+    alert(error.message.data);
     dispatch({
       type: "POST_RESTAURANT",
       payload: []
@@ -143,24 +166,13 @@ export const postRestaurant = (create) => async (dispatch) => {
   }
 };
 
-// export function postRestaurant(create){
-//   return async function(dispatch){
-  
-//               axios.post(`${baseUrl}/restaurant`,create).then(res => {
-//                   return dispatch({
-//                     type: "POST_RESTAURANT",
-//                     payload: res.data,
-//                   })
-                  
-
-//               } ).catch(error => {dispatch({
-//                   type: "POST_RESTAURANT",
-//                   payload: [],
-//               }); alert(error.response.data) 
-//           });
-              
-
-    
-//   }
-// }
-
+export const setToken = (token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${baseUrl}/users`, { token });
+      dispatch({ type: SET_TOKEN, payload: response.data });
+    } catch (error) {
+      console.error('Error setting token:', error);
+    }
+  };
+}
