@@ -278,9 +278,9 @@ export default function Form() {
 };
 
 
-useEffect(() => {
-  dispatch(postRestaurant())
-  }, [dispatch])
+// useEffect(() => {
+//   dispatch(postRestaurant())
+//   }, [dispatch])
 
 
   return (
