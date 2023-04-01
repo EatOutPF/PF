@@ -9,7 +9,8 @@ import Form from "./Components/CreateRestaurant.jsx";
 import Landing from "./View/Landing/Landing.jsx";
 import axios from "axios";
 import Reviews from "./Components/Reviews/Reviews.jsx";
-axios.defaults.baseURL = "http://localhost:5001/";
+axios.defaults.baseURL =
+  "http://localhost:5001/" /* "https://eatout.onrender.com/" */;
 
 function App() {
   const location = useLocation().pathname;
