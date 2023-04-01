@@ -1,0 +1,29 @@
+datos mercado pago
+
+CUENTA DE VENDEDOR
+Identificacion: Restaurante 1
+usuario: TEST_USER_1520917480
+contrasena rtSYru8reC
+
+CUENTA COMPRADOR
+
+Identificacion: comprador 1
+usuario: TEST_USER_1018092254
+contrasena 9FySEdu74p
+
+TARJETAS DE PRUEBA
+TC : Mastercard
+numero: 5031 7557 3453 0604
+cod Seg: 123
+caducidad: 11/25
+
+Visa
+4509 9535 6623 3704
+123
+11/25
+
+American Express
+3711 803032 57522
+1234
+11/25
+

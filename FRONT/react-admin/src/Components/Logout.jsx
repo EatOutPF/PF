@@ -8,13 +8,16 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../Redux/Actions";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBXy8ahKPSssP3A1I0M7WVi9zER6uBab2s",
-  authDomain: "prueba-de-funciones-4b9e8.firebaseapp.com",
-  projectId: "prueba-de-funciones-4b9e8",
-  storageBucket: "prueba-de-funciones-4b9e8.appspot.com",
-  messagingSenderId: "589197491000",
-  appId: "1:589197491000:web:34d30b1db2bbb90f631fcd"
-};
+  apiKey:"AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
+  authDomain:"eatout-d06bc.firebaseapp.com",
+  projectId:"eatout-d06bc",
+  storageBucket:"eatout-d06bc.appspot.com",
+  messagingSenderId:"716033457346",
+  appId:"1:716033457346:web:532059ce3be30b1c140f5b",
+  measurementId:"G-15QEGRB69P",
+  serviceAccount:"firebase-adminsdk-e60fh@eatout-d06bc.iam.gserviceaccount.com",
+  credential:"716033457346-uiqt23knlrpkkcp12d8da9qmp4pptfja.apps.googleusercontent.com"};
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

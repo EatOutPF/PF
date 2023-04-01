@@ -41,9 +41,6 @@ const SearchBar = () => {
       </View>
 
   )
-
-
-
 }
 
 const styles = StyleSheet.create({
@@ -63,6 +60,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
 
 export default SearchBar

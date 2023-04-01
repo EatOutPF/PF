@@ -15,6 +15,11 @@
   padding: 5px;
 }
 
+.danger {
+  font-size: 0.8rem;
+  color: rgb(206, 34, 34);
+}
+
 .containerModify button {
   padding: 5px 10px;
   /* text-decoration-line: none; */
@@ -54,6 +59,16 @@ select {
   gap: 1px 10px;
 }
 
+.containerDataSection div {
+  display: flex;
+}
+
+@media (max-width: 750px) {
+  .containerDataSection {
+    flex-direction: column;
+  }
+}
+
 .containerModify form {
   display: flex;
   flex-direction: column;
@@ -61,6 +76,13 @@ select {
   justify-content: center;
   margin-top: 0px;
   gap: 7px;
+}
+
+@media (max-width: 750px) {
+  .containerModify {
+    flex-direction: column;
+    width: max-content;
+  }
 }
 
 .modal {
@@ -93,22 +115,36 @@ select {
   font-weight: bold;
 }
 
+@media (max-width: 750px) {
+  .containerSection {
+    flex-direction: column;
+  }
+}
+
 .containerData {
   display: flex;
   flex-wrap: wrap;
 }
 
 .container {
-  padding: 7px;
+  padding: 8px 30px;
   border: 1 solid black;
   display: flex;
   flex-wrap: wrap;
   border: solid 1px azure;
   border-radius: 1rem;
   width: -webkit-fill-available;
+  gap: 8px;
 }
 
-.container .containerCheckBox {
+@media (max-width: 750px) {
+  .container {
+    flex-direction: column;
+    width: max-content;
+  }
+}
+
+.containerCheckBox {
   padding: 7px;
   display: flex;
   flex-direction: column;

@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { searchRestorantById,  } from '../../redux/actions.js'
 
 import Loading from "../Loading/Loading"
-
 import theme from '../../styles/theme.js'
-
 
 const DetailResto = (props) => {
     const { _id } = useParams();
@@ -17,16 +15,14 @@ const DetailResto = (props) => {
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch();
+
     useEffect(() => {
-
         if(Object?.keys(detail)?.length === 0) { 
-
             dispatch(searchRestorantById(_id));
             }
         else {
             setLoading(false)
-        }
-    
+        }  
     },[detail])
 
     return(
@@ -76,14 +72,11 @@ const DetailResto = (props) => {
                     <Text style={styles.textBody}> ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a {detail?.schedule[0]?.sunday?.close}hs</Text>
 
 
-
-
                     <Text> </Text>
                     <Text style={styles.title}> Metodos de Pago </Text>
                     <Text style={styles.textBody}> -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]}, {detail?.paymentMethods[2]}</Text>
                     <Text> </Text>
                     <Text> </Text>
-
 
 
                 </View>
