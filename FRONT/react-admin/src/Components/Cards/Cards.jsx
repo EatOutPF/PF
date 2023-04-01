@@ -40,6 +40,7 @@ const Cards = ({ currentRestaurants }) => {
                     extras={r.extras}
                     ranking={r.ranking}
                     active={r.active}
+                    advance={r.advance ? r.advance : 0}
                   />
                 )
             )}
