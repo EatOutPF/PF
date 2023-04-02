@@ -35,6 +35,7 @@ function HomeScreen() {
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log('Account created!')
+        Alert.alert('Account created!')
         const user = userCredential.user;
         console.log(user)
       })

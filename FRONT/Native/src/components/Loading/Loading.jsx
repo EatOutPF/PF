@@ -10,10 +10,10 @@ const Loading = ({ children, to }) => {
         <View style={styles.container} > 
             {/* <DualRingLoader /> */}
             <Image style={styles.image} 
-                source={require('../../img/logo-name-banner-eatout.jpeg')}
+                source={require('../../img/png/eatout-logo-name-eslogan.png')}
             ></Image>
             <Text>Buscando los Restaurantes cercanos...</Text>
-            <ActivityIndicator style={styles.loading} size="small" color="#0000ff" />
+            <ActivityIndicator style={styles.loading} size="large" color="#FA6B6B" />
 
         </View>
     )
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     },
     image: {
         
-      width: 350,
-      height: 350,
+      width: 300,
+      height: 300,
       borderRadius: 100,
     },
     loading: {

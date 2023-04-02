@@ -15,7 +15,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 
-import AppBar from '../NavBar/AppBar.jsx'
+import AppBarTab from '../NavBar/AppBar(oldRouters).jsx'
 import LowerNavBar from "../NavBar/LowerNavBar"
 
 import DetailResto from '../DetailResto/DetailResto.jsx';

@@ -45,6 +45,7 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 allRestorants: action.payload,
+                allRestorantsCopy: action.payload,
                 restorantsFound: action.payload,
             }
         }
