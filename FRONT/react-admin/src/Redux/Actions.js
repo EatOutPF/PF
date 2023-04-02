@@ -13,6 +13,8 @@ export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
+export const ORDER_BY_NAME = "ORDER_BY_NAME";
+export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY"
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -130,7 +132,7 @@ export const postRestaurant = (create) => async (dispatch) => {
   try {
     const response = await axios.post(`${baseUrl}/restaurant`, create);
     const restaurant = response.data;
-    console.log(restaurant)
+    console.log({restaurant})
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant
@@ -144,24 +146,10 @@ export const postRestaurant = (create) => async (dispatch) => {
   }
 };
 
-// export function postRestaurant(create){
-//   return async function(dispatch){
-  
-//               axios.post(`${baseUrl}/restaurant`,create).then(res => {
-//                   return dispatch({
-//                     type: "POST_RESTAURANT",
-//                     payload: res.data,
-//                   })
-                  
+export const orderByName = (order) => {
+  return {type: ORDER_BY_NAME, payload: order}
+}
 
-//               } ).catch(error => {dispatch({
-//                   type: "POST_RESTAURANT",
-//                   payload: [],
-//               }); alert(error.response.data) 
-//           });
-              
-
-    
-//   }
-// }
-
+export const orderByPopularity = (order) => {
+  return {type: ORDER_BY_POPULARITY, payload: order}
+}

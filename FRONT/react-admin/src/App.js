@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./View/NavBar/NavBar";
 import "./App.css";
 import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
-import Form from "./Components/CreateRestaurant.jsx";
+import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
 
 function App() {
   const location = useLocation().pathname;

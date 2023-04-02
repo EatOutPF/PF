@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
-import Validation from "../Validaciones/Validaciones";
+import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
 
 const ModifyRestaurant = (props) => {
