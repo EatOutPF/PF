@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { deleteRestaurant, getAllRestaurants } from "../../Redux/Actions";
+import { deleteRestaurant } from "../../Redux/Actions";
 import style from "./Card.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
+import showReviews from "../../assets/customer-review.png";
+import axios from "axios";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -19,10 +21,20 @@ const Card = (props) => {
   };
 
   const handlerDelete = () => {
-    console.log(props);
     dispatch(deleteRestaurant(props));
     console.log(message);
     if (message) alert(message);
+  };
+
+  /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
+
+  const handlerPayment = () => {
+    axios
+      .post(
+        "http://localhost:5001/payment" /* "https://eatout.onrender.com/payment" */,
+        props
+      )
+      .then((res) => (window.location.href = res.data.response.init_point));
   };
 
   return (
@@ -31,17 +43,18 @@ const Card = (props) => {
         <tr key={props._id} className={!props.active ? style.disable : null}>
           <td>{props.name}</td>
           <td>{props.menu}</td>
-          <td>{props.ranking}</td>
+          <td>{props.diets.map((d) => `${d} `)}</td>
+
           <td>
             {props.address?.streetName} - {props.address?.streetNumber}
           </td>
           <td>{props.address?.city}</td>
           <td>{props.address?.country}</td>
+          <td>{props.ranking}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
             {props.active ? (
               <>
-                {" "}
                 <NavLink to={`/modify/${props.id}`}>
                   <button onClick={handlerClick}>
                     <div title="editar">
@@ -53,6 +66,14 @@ const Card = (props) => {
             ) : (
               <></>
             )}
+
+            <NavLink to={`/reviews/${props.id}`}>
+              <button onClick={handlerClick} className={style.rowsInactive}>
+                <div title="Ver Reviews">
+                  <img src={showReviews} alt="reviews" />
+                </div>
+              </button>
+            </NavLink>
 
             <button
               onClick={handlerDelete}
@@ -70,6 +91,8 @@ const Card = (props) => {
                 </div>
               )}
             </button>
+            {/* -----------MERCADOPAGO--------- */}
+            <button onClick={handlerPayment}> Pagar Reserva </button>
           </td>
         </tr>
       )}

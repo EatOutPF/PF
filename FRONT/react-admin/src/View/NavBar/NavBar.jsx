@@ -10,7 +10,7 @@ const NavBar = () => {
   return (
     <div className={style.containerNavbar}>
       <div>
-        <NavLink to="/home">
+        <NavLink to="/landing">
           <>
             <div title="Home">
               <img

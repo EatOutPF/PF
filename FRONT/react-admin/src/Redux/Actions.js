@@ -1,8 +1,5 @@
 import axios from "axios";
 import { updateMapper } from "./utils";
-
-const baseUrl = "http://localhost:5001";
-
 export const GET_ALL_RESTAURANTS = "GET_ALL_RESTAURANTS";
 export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
@@ -14,12 +11,17 @@ export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
 export const ORDER_BY_NAME = "ORDER_BY_NAME";
-export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY"
+export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
+export const SET_TOKEN= "SET_TOKEN";
+export const FILTER_BY_MENU= "FILTER_BY_MENU";
+export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE";
+
+
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant`)
+      .get(`/restaurant`)
       .then((response) => {
         dispatch({
           type: "GET_ALL_RESTAURANTS",
@@ -35,10 +37,11 @@ export const getAllRestaurants = () => {
   };
 };
 
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: { user },
-});
+export const setUser = (user) => {
+  return (dispatch) => {
+    dispatch({ type: SET_USER, payload: user });
+  };
+};
 
 export const logoutUser = () => ({
   type: LOGOUT_USER,
@@ -50,10 +53,27 @@ export const getFilterByDiets = (comida) => {
     payload: comida,
   };
 };
+
+export const getFilterByMenu= (comida)=>{
+return{
+  type: FILTER_BY_MENU,
+  payload:comida,
+};
+};
+export const getFilterActive= (active)=>{
+  return {
+    type: FILTER_BY_ACTIVE,
+    payload: active
+  }
+}
+
+
+
+
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant/${id}`)
+      .get(`/restaurant/${id}`)
       .then((result) => {
         dispatch({
           type: DETAIL_RESTAURANT,
@@ -73,7 +93,7 @@ export const modifyRestaurant = (dataToUpdate) => {
   let restaurant = updateMapper(dataToUpdate);
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
+      .put(`/restaurant/${dataToUpdate.id}`, restaurant)
       .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
@@ -95,9 +115,7 @@ export const getAllRestauranName = (name) => {
       return dispatch({ type: ERROR_MSSG });
     }
     try {
-      let RestauranByName = await axios.get(
-        `${baseUrl}/restaurant?name=${name}`
-      );
+      let RestauranByName = await axios.get(`/restaurant?name=${name}`);
       return dispatch({
         type: GET_RESTAURAN_NAME,
         payload: RestauranByName.data,
@@ -111,7 +129,7 @@ export const getAllRestauranName = (name) => {
 export const deleteRestaurant = (dataToUpdate) => {
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, {
+      .put(`/restaurant/${dataToUpdate.id}`, {
         active: dataToUpdate.active,
       })
       .then((response) => {
@@ -127,21 +145,20 @@ export const deleteRestaurant = (dataToUpdate) => {
   };
 };
 
-
 export const postRestaurant = (create) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/restaurant`, create);
+    const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
     console.log({restaurant})
     dispatch({
       type: "POST_RESTAURANT",
-      payload: restaurant
+      payload: restaurant,
     });
   } catch (error) {
-    alert(error.response.data);
+    alert(error.message.data);
     dispatch({
       type: "POST_RESTAURANT",
-      payload: []
+      payload: [],
     });
   }
 };
@@ -149,6 +166,17 @@ export const postRestaurant = (create) => async (dispatch) => {
 export const orderByName = (order) => {
   return {type: ORDER_BY_NAME, payload: order}
 }
+export const setToken = (token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`/users`, { token });
+      dispatch({ type: SET_TOKEN, payload: response.data });
+    } catch (error) {
+      console.error('Error setting token:', error);
+    }
+  };
+}
+
 
 export const orderByPopularity = (order) => {
   return {type: ORDER_BY_POPULARITY, payload: order}

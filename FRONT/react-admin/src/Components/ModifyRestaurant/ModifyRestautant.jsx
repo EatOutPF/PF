@@ -235,6 +235,7 @@ const ModifyRestaurant = (props) => {
                 name="name"
                 value={input.name}
                 onChange={handlerChange}
+                style={{ display: "flex", flexGrow: 100 }}
               />
               {errors.name && (
                 <span className={style.danger}>{errors.name}</span>
@@ -395,17 +396,16 @@ const ModifyRestaurant = (props) => {
             </div>
 
             <div className={style.container}>
-              <div>
-                <label htmlFor="images">Imagenes (url):</label>
-                <input
-                  type="url"
-                  name="images"
-                  id="images"
-                  value={input?.images?.map((image) => `${image},`)}
-                  onChange={handlerChange}
-                  style={{ width: 370 }}
-                />
-              </div>
+              <label htmlFor="images">Imagenes (url):</label>
+              <input
+                type="url"
+                name="images"
+                id="images"
+                value={input?.images?.map((image) => `${image},`)}
+                onChange={handlerChange}
+                style={{ display: "flex", flexGrow: 100 }}
+              />
+
               {/* {errors.images && <p>*{errors.images}</p>} */}
             </div>
 
@@ -428,8 +428,12 @@ const ModifyRestaurant = (props) => {
               <select name="menu" onChange={handlerChange}>
                 <option defaultValue={input.menu}>{input.menu}</option>
                 {optionsMenu &&
-                  optionsMenu.map((opc) => {
-                    return <option value={opc}>{opc}</option>;
+                  optionsMenu.map((opc, index) => {
+                    return (
+                      <option value={opc} key={`${opc}${index}`}>
+                        {opc}
+                      </option>
+                    );
                   })}
               </select>
             </div>
@@ -686,7 +690,7 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Dietas</div>
               <div className={style.containerDataSection}>
-                {selectedDiets?.map((diet) => {
+                {selectedDiets?.map((diet, index) => {
                   return (
                     <div>
                       <input
@@ -694,6 +698,7 @@ const ModifyRestaurant = (props) => {
                         id="diets"
                         name="diets"
                         value={diet.name}
+                        key={`${diet}${index}`}
                         checked={diet.checked}
                         onChange={(e) =>
                           handlerCheckBox(
@@ -713,10 +718,11 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Metodos de Pago</div>
               <div className={style.containerDataSection}>
-                {selectedPaymentMethods?.map((paymentMethod) => {
+                {selectedPaymentMethods?.map((paymentMethod, index) => {
                   return (
                     <div>
                       <input
+                        key={`${paymentMethod}${index}`}
                         type="checkbox"
                         id="paymentMethods"
                         name="paymentMethods"
@@ -742,10 +748,11 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Atmosfera</div>
               <div className={style.containerDataSection}>
-                {selectedAtmosphere?.map((at) => {
+                {selectedAtmosphere?.map((at, index) => {
                   return (
                     <div>
                       <input
+                        key={`${at}${index}`}
                         type="checkbox"
                         id="atmosphere"
                         name="atmosphere"
@@ -769,10 +776,11 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Extras</div>
               <div className={style.containerDataSection}>
-                {selectedExtras?.map((extra) => {
+                {selectedExtras?.map((extra, index) => {
                   return (
                     <div>
                       <input
+                        key={`${extra}${index}`}
                         type="checkbox"
                         id="extras"
                         name="extras"
@@ -796,10 +804,11 @@ const ModifyRestaurant = (props) => {
             <div className={style.containerCheckBox}>
               <div className={style.containerDataSection}>Sección</div>
               <div className={style.containerDataSection}>
-                {selectedSection?.map((sect) => {
+                {selectedSection?.map((sect, index) => {
                   return (
                     <div>
                       <input
+                        key={`${sect}${index}`}
                         type="checkbox"
                         id="section"
                         name="section"

@@ -6,7 +6,12 @@ import NavBar from "./View/NavBar/NavBar";
 import "./App.css";
 import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
 import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
-
+import Landing from "./View/Landing/Landing.jsx";
+import axios from "axios";
+import Reviews from "./Components/Reviews/Reviews.jsx";
+axios.defaults.baseURL =
+  "http://localhost:5001/" /* "https://eatout.onrender.com/" */;
+        
 function App() {
   const location = useLocation().pathname;
 
@@ -25,6 +30,12 @@ function App() {
             element={<ModifyRestaurant />}
           ></Route>
           <Route exact path="/create" element={<Form />}></Route>
+          <Route exact path="/landing" element={<Landing />}></Route>
+          <Route
+            exact
+            path="/reviews/:id"
+            element={<Reviews></Reviews>}
+          ></Route>
         </Routes>
       </div>
     </div>
