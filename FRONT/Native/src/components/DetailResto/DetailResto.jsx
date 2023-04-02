@@ -4,26 +4,36 @@ import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text } from 'r
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById,  } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById  } from '../../redux/actions.js'
 
 import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
 
-const DetailResto = (props) => {
-    const { _id } = useParams();
+const DetailResto = ({route}) => {
+    // const { _id } = useParams();
+    const { _id } = route.params;
     const detail = useSelector(state => state?.restorantById)
     const [loading, setLoading] = useState(true)
-
+  console.log("SOY DETAIL: ", _id);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(Object?.keys(detail)?.length === 0) { 
             dispatch(searchRestorantById(_id));
             }
-        else {
-            setLoading(false)
-        }  
-    },[detail])
+        else 
+        if(Object?.keys(detail)?.length !== 0)
+        { 
+          if(detail?._id !== _id){
+            // dispatch(clearStateResatorantById())
+            dispatch(searchRestorantById(_id));
+            setLoading(true)
+
+          }
+            else setLoading(false)
+        } 
+        
+    },[detail, loading])
 
     return(
         <ScrollView>
@@ -38,7 +48,7 @@ const DetailResto = (props) => {
                     <Text style={styles.textBody}>  ⭐️{detail?.ranking} - 📍{detail?.address?.streetName}, {detail?.address?.streetNumber}</Text>
                     <Text> </Text>
 
-                    <Text style={styles.textBody}> ---- Facebool: {detail?.contact?.socialMedia?.facebook} </Text>
+                    <Text style={styles.textBody}> ---- Facebook: {detail?.contact?.socialMedia?.facebook} </Text>
                     <Text style={styles.textBody}> ---- Instagram: {detail?.contact?.socialMedia?.instagram} </Text>
 
 

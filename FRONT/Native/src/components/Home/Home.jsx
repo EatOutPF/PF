@@ -1,23 +1,23 @@
 
 import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+
 import RestosList from '../Restos/RestosList.jsx'
 import Map from '../Map/Map.jsx'
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 
-import { NavigationContainer } from '@react-navigation/native';
-import LowerNavBar from "../NavBar/LowerNavBar"
-// import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
-// import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
+import BottonSheetFilters from "../Filters/BottomSheetFilters"
 import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Login from "../Login/Login"
-import LowerNavbar from "../NavBar/LowerNavBar"
+// import LowerNavbar from "../NavBar/LowerNavBar"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-// import Filters from '../Filters/Filters.jsx';
-import { BottomSheet, Button, ListItem } from '@rneui/themed';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 
 import AppBar from '../NavBar/AppBar.jsx'
+import LowerNavBar from "../NavBar/LowerNavBar"
+
 import DetailResto from '../DetailResto/DetailResto.jsx';
 
 import { Redirect, Route, Routes } from 'react-router-native'
@@ -26,7 +26,7 @@ import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 
 
-const Main = () => {
+const Home = () => {
   const [loading, setLoading] = useState(true)
   const restorantes = useSelector(state => state.allRestorants);
   const dispatch = useDispatch();
@@ -39,56 +39,40 @@ const Main = () => {
   // //   else if(restorantes?.length === 0)dispatch(getAllRestorants());
   // //   // listaRestos = useSelector(state => state.allRestorants);
   // },[restorantes])
+  const Tab = createBottomTabNavigator();
+
 
   return (
-    <NavigationContainer>
-    <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
-      {/* <LowerNavbar/> //ANDA PERO NO ANDA, usted me entiende */}
-      <AppBar />       
-        <Routes>
-          <Route path='/' element= {<RestosList />} />          // Restos
-          <Route path='/restorantslist' element= {            // Listado
-          // <Text>Working on it</Text>
-            <ListOfFiltered/>
-          } />
-          <Route path='/mapview' element= {<Map data={RestosList}/>} />       // Mapa
-          <Route path='/pagerview' element={<Text>Working on it 1</Text>} />            // EJ2
-          <Route path='/signin' element= { 
-            <Login/> 
-            // <Text>Working on it 1</Text>
-          }       //EJ1
-          />
-          <Route path='/detail/:_id' element={<DetailResto />} />
+    <View style={{ flex: 1 , width: '100%', backgroundColor: "#efe4dc"}}>
 
-        </Routes> 
-    <LowerNavBar/>
-        
+      <RestosList />   
+      <BottonSheetFilters/>
     </View>
+    
 
-    </NavigationContainer>
   )
 }
 
 {/*Flor*/ }
 
-export function FilterButton() {
+// export function FilterButton() {
 
 
-return (
-    <View styles={styles.container}>
-      <TouchableOpacity style={styles.buttonLocation} onPress={() => setIsVisible(true)}
-        buttonStyle={styles.button}>
-        <View style={styles.buttonColor}>
-          <Text style={styles.buttonText}>Filtros</Text>
-        </View>
-      </TouchableOpacity>
-      <IonicIcon
-        name="filter"
-        size={22}
-      />
-    </View>
-  ) 
-}
+// return (
+//     <View styles={styles.container}>
+//       <TouchableOpacity style={styles.buttonLocation} onPress={() => setIsVisible(true)}
+//         buttonStyle={styles.button}>
+//         <View style={styles.buttonColor}>
+//           <Text style={styles.buttonText}>Filtros</Text>
+//         </View>
+//       </TouchableOpacity>
+//       <IonicIcon
+//         name="filter"
+//         size={22}
+//       />
+//     </View>
+//   ) 
+// }
 
 
 
@@ -118,4 +102,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Main
+export default Home

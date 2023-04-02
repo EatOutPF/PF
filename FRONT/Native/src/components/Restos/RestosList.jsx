@@ -55,6 +55,7 @@ const RestosList = () => {
             type={"extra"} 
             title={"fumadores"}>
         </CarouselAux>
+      <Text></Text>
 
       {/* <Text>Fumadores 🚬</Text> */}
       <StyledText style={styles.language}>Fumadores 🚬</StyledText>

@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert, Image, Dimen
 import { Link, useLocation, Navigate } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearStateRestauranteById } from '../../redux/actions';
+import { useNavigation } from '@react-navigation/native';
 
 
 // const repositories = restorantsJson;
@@ -17,6 +18,7 @@ let imageHeight = 200;
 // if (width >= 1000) {imageWidth = width * 0.3; screenwidth = "50%";}
 
 const CarouselAux = (props) => {
+  const navigation = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
   // const handlePrev = () => {
@@ -29,9 +31,14 @@ const CarouselAux = (props) => {
   function handlePress (value) {
     // Alert.alert('Aca va el Detail', 'Con todos los datos del resto.');
     console.log("quiero entrar al detail, ", value);
+    
+    const _id = value
+    console.log("quiero entrar, ", {_id: value});
+
+    navigation.navigate("Detalle Restaurant", {_id})
+    
     // dispatch(clearStateRestauranteById());
     // Navigate(`/detail/${value}`);
-    console.log("quiero entrar al detail, ", value);
 
   };
 
@@ -40,19 +47,21 @@ const CarouselAux = (props) => {
 
     {
       const isActive = index === activeIndex;
-      const restoImg = item?.images[0];
+      const restoImg = item?.images?.[0];
       
       return (
         <View style={[styles.itemContainer]}>
             {/* styles.itemContainer, isActive && styles.activeItemContainer */}
-            <Link to={`/detail/${item?._id}`} component={TouchableOpacity} onPress={()=>handlePress} >
+          {/* <Link to={`/detail/${item?._id}`} component={TouchableOpacity} onPress={()=>handlePress} > */}
+            <TouchableOpacity onPress={()=>handlePress(item?._id)} >
               <ImageBackground  style={styles.image} source={{ uri: restoImg }}>
                 <Text style={[styles.itemTitle]}>{item?.name}</Text> 
                 <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text> 
                   {/* styles.itemTitle, isActive && styles.activeItemTitle */}
 
               </ImageBackground >
-              </Link>
+            </TouchableOpacity>
+          {/* </Link> */}
           
         </View>
       );

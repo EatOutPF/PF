@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button } from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +16,7 @@ import {
 
 
 export default Filters = (props) => {
+    const navigation = useNavigation();
     const response = () => {
         props.handleBottonSheet()
     }
@@ -26,7 +28,7 @@ export default Filters = (props) => {
         dispatch(getAtmosphere())
         dispatch(getDiet())
         dispatch(getExtras())
-    }, dispatch)
+    }, [])
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
     const typesOfSections = useSelector((state) => state.typesOfSections);
@@ -91,12 +93,15 @@ export default Filters = (props) => {
 
     //HANDLERS:
 
-    const handlerFilters = () => {
+
+    function handlerFilters () {
+        navigation.navigate("Filtrados")
         dispatch(filterRestorant(filters));
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
     //Renderizado
     return (
+        // <NavigationContainer>
         <View>
             <View style={styles.cont}>
                 <View style={styles.containerTitle}>
@@ -262,6 +267,7 @@ export default Filters = (props) => {
 
             </View>
         </View >
+        // </NavigationContainer>
     )
 }
 

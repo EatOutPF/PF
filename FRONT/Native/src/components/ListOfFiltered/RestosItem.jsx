@@ -3,8 +3,12 @@ import { Image, View, StyleSheet, Dimensions, TouchableOpacity, Button } from 'r
 import { Link, useLocation, Navigate } from 'react-router-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import theme from '../../styles/theme.js'
+import { useNavigation } from '@react-navigation/native';
 
-const RestoItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) => (
+
+const RestoItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) => {
+
+  return(
   <View style={{ flexDirection: 'row', paddingBottom: 2 }}>
     
       <View style={{ paddingRight: 10 }}>
@@ -20,26 +24,33 @@ const RestoItemHeader = ({ _id, images, name, menu, atmosphere, ranking }) => (
         {/* <Button title='Claudio' accessibilityLabel='Claudio' disabled="false"/> */}
       </View>
   </View>
-)
+)}
 
-const RestosItem = (props) => (
+const RestosItem = (props) => {
+
+  const navigation = useNavigation();
+  function handlePress (value) {
+    console.log("SOY DETAILD DE FILER: ", value);
+    const _id = value
+    navigation.navigate("Detalle Restaurant", {_id})
+    // dispatch(clearStateRestauranteById());
+  }
+  return(
   <View key={props?._id} style={styles.container}>
-    <Link to={`/detail/${props?._id}`} component={TouchableOpacity} onPress={()=>handlePress} >
-     <RestoItemHeader {...props} />
-     </Link>
+    {/* <Link to={`/detail/${props?._id}`} component={TouchableOpacity} onPress={()=>handlePress} > */}
+      <TouchableOpacity onPress={()=>handlePress(props?._id)} >
+        <RestoItemHeader {...props} />
+      </TouchableOpacity>
+    {/* </Link> */}
     {/* <RepositoryStats {...props} /> */}
   </View>
-)
+)}
 
-function handlePress (value) {
-  // Alert.alert('Aca va el Detail', 'Con todos los datos del resto.');
-  console.log("quiero entrar al detail, ", value);
-  // dispatch(clearStateRestauranteById());
-  // Navigate(`/detail/${value}`);
-};
+
 
 //  MODIFICAR ESTE CODIGO; SE HABIA USADO PARA TRATAR DE DIFERNECIA WEB DE CELULAR, PERO YA NO SE HACE WEB
 const { width } = Dimensions.get('window');
+
 console.log("width screen", width);
 let imageWidth = 0.5 * width;
 let screenwidth = "100%"
