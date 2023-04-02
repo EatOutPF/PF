@@ -14,14 +14,27 @@ import {
   SET_TOKEN,
   FILTER_BY_MENU,
   FILTER_BY_ACTIVE,
-
+  GET_ALL_USERS,
 } from "./Actions";
 
 const initialState = {
   createRestaurant: [],
   stateToSorted: [],
   allRestaurants: [],
-  user: null,
+  /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
+  user: {
+    _id: "641f0e901cb579a0bd405ec4",
+    name: "diana",
+    phone: 1169957270,
+    email: "diana@gmail.com",
+    password: "hola123",
+    favorite: [],
+    reserve: [],
+    role: "admin",
+    restaurant: [],
+    active: true,
+    __v: 0,
+  },
   detailRestaurant: {},
   currentListRestaurants: [],
   message: "",
@@ -49,7 +62,8 @@ const initialState = {
   optionsExtras: ["petfriendly", "bar", "wi-fi", "fumadores", "menú para niño"],
   optionsSection: ["salón principal", "terraza", "barra"],
   msg: "",
-  token: null
+  token: null,
+  currentUsers: [],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -72,21 +86,20 @@ const Reducer = (state = initialState, { type, payload }) => {
       );
       return { ...state, currentListRestaurants: filterByDiets };
 
-
     case FILTER_BY_MENU:
       const filterBymenu = state.currentListRestaurants.filter((e) =>
         e.menu.includes(payload)
-      )
-      return { ...state, currentListRestaurants: filterBymenu }
+      );
+      return { ...state, currentListRestaurants: filterBymenu };
 
     case FILTER_BY_ACTIVE:
-
-      const filteredData = state.currentListRestaurants.filter((item) => item.active === payload
+      const filteredData = state.currentListRestaurants.filter(
+        (item) => item.active === payload
       );
       return {
         ...state,
-        currentListRestaurants: filteredData
-      }
+        currentListRestaurants: filteredData,
+      };
 
     case DETAIL_RESTAURANT:
       return {
@@ -151,12 +164,19 @@ const Reducer = (state = initialState, { type, payload }) => {
         stateToSorted: data.map(e => e)
       }
 
+    case GET_ALL_USERS:
+      return {
+        ...state,
+        currentUsers: payload,
+      };
+
+
+
     default:
       return { ...state };
 
   };
 
 }
-
 
 export default Reducer;

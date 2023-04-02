@@ -15,8 +15,7 @@ export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
 export const SET_TOKEN= "SET_TOKEN";
 export const FILTER_BY_MENU= "FILTER_BY_MENU";
 export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE";
-
-
+export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -24,7 +23,7 @@ export const getAllRestaurants = () => {
       .get(`/restaurant`)
       .then((response) => {
         dispatch({
-          type: "GET_ALL_RESTAURANTS",
+          type: GET_ALL_RESTAURANTS,
           payload: response.data,
         });
       })
@@ -54,21 +53,18 @@ export const getFilterByDiets = (comida) => {
   };
 };
 
-export const getFilterByMenu= (comida)=>{
-return{
-  type: FILTER_BY_MENU,
-  payload:comida,
+export const getFilterByMenu = (comida) => {
+  return {
+    type: FILTER_BY_MENU,
+    payload: comida,
+  };
 };
-};
-export const getFilterActive= (active)=>{
+export const getFilterActive = (active) => {
   return {
     type: FILTER_BY_ACTIVE,
-    payload: active
-  }
-}
-
-
-
+    payload: active,
+  };
+};
 
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
@@ -172,12 +168,27 @@ export const setToken = (token) => {
       const response = await axios.post(`/users`, { token });
       dispatch({ type: SET_TOKEN, payload: response.data });
     } catch (error) {
-      console.error('Error setting token:', error);
+      console.error("Error setting token:", error);
     }
   };
-}
+};
 
 
 export const orderByPopularity = (order) => {
   return {type: ORDER_BY_POPULARITY, payload: order}
 }
+export const getAllUsers = () => {
+  return (dispatch) => {
+    axios
+      .get(`/users`)
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_USERS,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({ type: GET_ALL_USERS, payload: error });
+      });
+  };
+};
