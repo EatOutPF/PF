@@ -9,7 +9,7 @@ const Cards = ({ currentRestaurants }) => {
         <div>No se encontraron resultados</div>
       ) : (
         <table>
-          <thead>
+          <thead className={style.containerThead}>
             <tr className={style.containerTitle}>
               <th>Restaurante</th>
               <th>Tipo Comida</th>
@@ -22,7 +22,7 @@ const Cards = ({ currentRestaurants }) => {
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={style.containerBodyTable}>
             {currentRestaurants?.map(
               (r) =>
                 r && (

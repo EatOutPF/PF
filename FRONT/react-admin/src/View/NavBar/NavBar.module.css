@@ -1,0 +1,12 @@
+.containerHeader {
+  display: flex;
+  flex-grow: 1;
+  width: 100vw;
+  z-index: auto;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+  box-shadow: inset -6px 1px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  gap: 8px;
+}
