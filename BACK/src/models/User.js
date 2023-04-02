@@ -17,7 +17,7 @@ const userSchema = new Schema({
     default: 'client'
   },
   restaurant: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Restaurant'
   }],
   active: {
