@@ -2,9 +2,12 @@ import React, {useEffect} from 'react';
 import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+  } from 'firebase/auth';
+
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../../firebase-config';
+import 'expo-dev-client';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -58,6 +61,10 @@ function HomeScreen() {
       })
     }
 
+    const handleLoginGoogle = async () => {
+    
+    }
+
 
     return (
       <View style={styles.container}>
@@ -88,6 +95,9 @@ function HomeScreen() {
               </TouchableOpacity>
               <TouchableOpacity onPress={handleCreateAccount} style={[styles.button, {backgroundColor: '#512e2e'}]}>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Create Account</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleLoginGoogle} style={[styles.button, {backgroundColor: '#512e2e'}]}>
+                <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Google</Text>
               </TouchableOpacity>
             </View>
           </BlurView>

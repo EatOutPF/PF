@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "EatOut",
-    "slug": "EatOut",
+    "displayName": "EatOut",
+    "slug": "eatout",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,8 +36,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "bf68803b-8fba-4f2e-a463-fc7fbeaebfa5"
+        "projectId": "18819804-cd54-4e91-8621-f3ceb7e4aeee"
       }
-    }
+    },
+    "owner": "eatoutpf"
   }
 }
