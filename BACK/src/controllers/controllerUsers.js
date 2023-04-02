@@ -6,10 +6,13 @@ async function getUsers(name) {
   const search = name;
 
   if (search) {
-    const users = await User.findOne({ name: { $regex: search } });
+    const users = await User.findOne({ name: { $regex: search } }).populate(
+      "restaurant"
+    );
+
     return users;
   }
-  const users = await User.find();
+  const users = await User.find().populate("restaurant");
 
   return users;
 }
@@ -22,28 +25,24 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
-    password,
   });
   const resultado = await newUsers.save();
   return `El usuario ${resultado.name} fue creado con exito`;
 }
 
 async function putUsers(id, { name, phone, email, password }) {
-
   if (!id) throw new Error("El id tiene que ser valido ");
   const user = await User.findByIdAndUpdate(id, {
     _id: id,
     name: name,
     phone: phone,
     email: email,
-    password: password,
   });
   if (!user) throw new Error(`No se encuentra el user con el id  ${user.id}`);
   return `El user ${user.name} fue actualizado con exito`;
 }
 
 async function activeUsers(id, active) {
-
   if (!id) throw new Error("El id debe ser valido");
   const user = await User.findOne({ _id: id });
 

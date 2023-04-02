@@ -11,21 +11,24 @@ async function postReviews(review, score, user, idRestaurant) {
   const newReview = new Review({
     review,
     score,
-    restaurant: [restaurant._id],
-    user: [users._id]
+    restaurant: restaurant._id,
+    user: users._id
   });
   const resultado = await newReview.save();
   return `El review fue creado con exito`;
 }
 
-async function getReviews(idUser, idRestaurant) {
+async function getReviews() {
   
-  const review = await Review.find();
+  const review = await Review.find()
+  .populate("restaurant", "name")
+  .populate("user", "name")
+  
   return review;
 }
 
 async function putReviews(id, review) {
-  console.log(id, review);
+
   if (!id) throw new Error("Deberá consignar un id válido");
   if(!review) throw new Error("El review tiene que ser valido");
   const reviews = await Review.findByIdAndUpdate(id, {
