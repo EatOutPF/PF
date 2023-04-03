@@ -1,6 +1,8 @@
 .containerHome {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
 }
 
 .containerSearchBar {
@@ -8,4 +10,9 @@
   justify-content: space-around;
   flex-wrap: wrap;
   padding: 35px 0px;
+}
+
+.containterTable {
+  flex-grow: 1;
+  overflow: auto;
 }

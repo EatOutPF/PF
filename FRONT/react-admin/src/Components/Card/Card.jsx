@@ -7,11 +7,12 @@ import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
+import axios from "axios";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
   const [closeEdit, setClose] = useState(true);
-  const { message } = useSelector((state) => state.message);
+  const { message, user } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handlerClick = () => {
@@ -23,6 +24,17 @@ const Card = (props) => {
     dispatch(deleteRestaurant(props));
     console.log(message);
     if (message) alert(message);
+  };
+
+  /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
+
+  const handlerPayment = () => {
+    axios
+      .post(
+        "http://localhost:5001/payment" /* "https://eatout.onrender.com/payment" */,
+        props
+      )
+      .then((res) => (window.location.href = res.data.response.init_point));
   };
 
   return (
@@ -41,7 +53,7 @@ const Card = (props) => {
           <td>{props.ranking}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
-            {props.active ? (
+            {props.active && user.role === "admin" ? (
               <>
                 <NavLink to={`/modify/${props.id}`}>
                   <button onClick={handlerClick}>
@@ -63,22 +75,27 @@ const Card = (props) => {
               </button>
             </NavLink>
 
-            <button
-              onClick={handlerDelete}
-              className={props.active ? style.rowsActive : style.rowsInactive}
-            >
-              {props.active ? (
-                <>
-                  <div title="Desactivar">
-                    <img src={papelera} alt="desactivar" />
+            {user.role === "superadmin" && (
+              <button
+                onClick={handlerDelete}
+                className={props.active ? style.rowsActive : style.rowsInactive}
+              >
+                {props.active ? (
+                  <>
+                    <div title="Desactivar">
+                      <img src={papelera} alt="desactivar" />
+                    </div>
+                  </>
+                ) : (
+                  <div title="Activar">
+                    <img src={recuperar} alt="desactivar" />
                   </div>
-                </>
-              ) : (
-                <div title="Activar">
-                  <img src={recuperar} alt="desactivar" />
-                </div>
-              )}
-            </button>
+                )}
+              </button>
+            )}
+
+            {/* -----------MERCADOPAGO--------- */}
+            <button onClick={handlerPayment}> Pagar Reserva </button>
           </td>
         </tr>
       )}

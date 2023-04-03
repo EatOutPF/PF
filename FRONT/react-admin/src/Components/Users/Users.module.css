@@ -1,0 +1,18 @@
+.containerCards {
+  padding: 0rem 4rem;
+}
+
+.containerTitle {
+  background-color: #fa6b6b;
+  color: #ffffff;
+}
+
+.containerBodyTable {
+  overflow: auto;
+}
+
+.containerThead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2px;
+}

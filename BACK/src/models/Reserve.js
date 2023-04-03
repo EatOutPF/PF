@@ -17,7 +17,10 @@ const reserveSchema = new Schema({
   time: {
     type: String,
   },
-  payment: Number,
+  payment:  [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
   table: Number,
 
 })
@@ -25,3 +28,6 @@ const reserveSchema = new Schema({
 const Reserve = mongoose.model('Reserve', reserveSchema)
 
 module.exports = Reserve
+
+
+
