@@ -16,6 +16,7 @@ export const SET_TOKEN= "SET_TOKEN";
 export const FILTER_BY_MENU= "FILTER_BY_MENU";
 export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE";
 export const GET_ALL_USERS = "GET_ALL_USERS";
+export const POST_USERS = "POST_USERS"
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -165,7 +166,11 @@ export const orderByName = (order) => {
 export const setToken = (token) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`/users`, { token });
+      const response = await axios.get('/users', {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       dispatch({ type: SET_TOKEN, payload: response.data });
     } catch (error) {
       console.error("Error setting token:", error);
@@ -192,3 +197,26 @@ export const getAllUsers = () => {
       });
   };
 };
+
+
+export const postUsers= (create)=>async (dispatch)=>
+{
+try {
+  const users= await axios.post(`/users`,create)
+ const userdata= users.data 
+ console.log(userdata);
+ dispatch({
+  type: POST_USERS,
+  payload: userdata,
+});
+} catch (error) {
+  alert(error.response.data);
+  dispatch({
+    type: POST_USERS,
+    payload: [],
+  });
+}
+
+
+
+}

@@ -15,6 +15,7 @@ import {
   FILTER_BY_MENU,
   FILTER_BY_ACTIVE,
   GET_ALL_USERS,
+  POST_USERS,
 } from "./Actions";
 
 const initialState = {
@@ -22,18 +23,17 @@ const initialState = {
   stateToSorted: [],
   allRestaurants: [],
   /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
-  user: {
-    _id: "641f0e901cb579a0bd405ec4",
-    name: "diana",
-    phone: 1169957270,
-    email: "diana@gmail.com",
-    password: "hola123",
-    favorite: [],
-    reserve: [],
-    role: "admin",
-    restaurant: [],
-    active: true,
-    __v: 0,
+  user: {_id: "641f0e901cb579a0bd405ec4",
+  name: "diana",
+  phone: 1169957270,
+  email: "diana@gmail.com",
+  password: "hola123",
+  favorite: [],
+  reserve: [],
+  role: "superadmin",
+  restaurant: [],
+  active: true,
+  __v: 0,
   },
   detailRestaurant: {},
   currentListRestaurants: [],
@@ -74,7 +74,7 @@ const Reducer = (state = initialState, { type, payload }) => {
         currentListRestaurants: payload,
       };
 
-    case SET_USER:
+      case SET_USER:
       return { ...state, user: payload.user };
 
     case LOGOUT_USER:
@@ -169,7 +169,12 @@ const Reducer = (state = initialState, { type, payload }) => {
         ...state,
         currentUsers: payload,
       };
-
+       
+      case POST_USERS: 
+      return{
+        ...state,
+        currentUsers: payload
+      }
 
 
     default:
