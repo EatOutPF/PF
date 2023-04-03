@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const admin = require("./firebaseConfig");
+const admin = require("../firebase/firebaseConfig");
 
 const { User } = require("../db");
 
