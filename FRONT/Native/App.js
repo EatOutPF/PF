@@ -1,23 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
+import React, { useRef, useState, useEffect } from 'react'
 import { StyleSheet, View, Button } from 'react-native';
 import { NativeRouter, } from 'react-router-native'
-import { store } from './src/redux/store'
-import { Provider } from 'react-redux'
-import Main from './src/components/Home/Home.jsx'
-
-
 import 'react-native-gesture-handler';
+import { Provider } from 'react-redux'
+import { StatusBar } from 'expo-status-bar';
+import { store } from './src/redux/store'
+import Main from './src/components/Home/Home.jsx'
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import React, { useRef, useState } from 'react'
 import Filters from './src/components/Filters/Filters';
+import { useFonts } from "expo-font";
 
+const fontConfig = {
+  "Inria-Sans-Regular": require("./assets/Inria_Sans/InriaSans-Regular.ttf"),
+  "Inria-Sans-Bold": require("./assets/Inria_Sans/InriaSans-Bold.ttf"),
+  "Inria-Sans-Italic": require("./assets/Inria_Sans/InriaSans-Italic.ttf"),
+  "Inria-Sans-Bold-Italic": require("./assets/Inria_Sans/InriaSans-BoldItalic.ttf"),
+  "Inria-Sans-Light": require("./assets/Inria_Sans/InriaSans-Light.ttf"),
+  "Inria-Sans-Light-Italic": require("./assets/Inria_Sans/InriaSans-LightItalic.ttf"),
+};
 
-
-
-
-export default function App() {
+const App = () => {
   const bottomSheetModalRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [loaded] = useFonts(fontConfig);
+  if (!loaded) {
+    return null;
+  }
   // const snapPoints = ['30%', '50%', '70%']
   const snapPoints = ['70%']
 
@@ -26,21 +34,15 @@ export default function App() {
     console.log(bottomSheetModalRef.current)
   }
 
-
   const handleBottonSheet = () => {
     bottomSheetModalRef.current.forceClose();
   };
 
-
-  {/*-------Flor*/ }
-
   return (
     <Provider store={store}>
       <BottomSheetModalProvider
-      // onPress={()=> {bottomSheetModalRef.current?.collapse()}}
       >
         <View style={styles.container}>
-          {/* <Text>Esta al es de prueba en React Native 12.</Text> */}
           <StatusBar style="auto" />
           <NativeRouter>
             <Main />
@@ -61,11 +63,9 @@ export default function App() {
               </View>
             </BottomSheetModal>
           </NativeRouter>
-
         </View>
       </BottomSheetModalProvider>
-      </Provider>
-
+    </Provider>
   );
 }
 
@@ -91,3 +91,4 @@ const styles = StyleSheet.create({
 });
 
 
+export default App;

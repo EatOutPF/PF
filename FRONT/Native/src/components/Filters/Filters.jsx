@@ -9,7 +9,9 @@ import {
     getSections,
     getDiet,
     getExtras,
-    filterRestorant
+    filterRestorant,
+    clearFilters,
+    getAllRestorants,
 } from '../../redux/actions.js';
 
 
@@ -21,12 +23,13 @@ export default Filters = (props) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(getAllRestorants())
         dispatch(getTypesOfFoods())
         dispatch(getSections())
         dispatch(getAtmosphere())
         dispatch(getDiet())
         dispatch(getExtras())
-    }, dispatch)
+    }, [dispatch])
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
     const typesOfSections = useSelector((state) => state.typesOfSections);
@@ -34,7 +37,7 @@ export default Filters = (props) => {
     const typesOfDiet = useSelector((state) => state.typesOfDiet);
     const typesOfExtras = useSelector((state) => state.typesOfExtras);
 
-    const foodOptions = typesOfFoods?.map(e => {
+    const foodOptions = typesOfFoods && typesOfFoods.map(e => {
         return {
             label: e.name,
             value: e.name,
@@ -95,6 +98,12 @@ export default Filters = (props) => {
         dispatch(filterRestorant(filters));
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
+    const handlerClearFilters = () => {
+        
+        // dispatch(clearFilters());
+    }
+
+
     //Renderizado
     return (
         <View>
@@ -259,7 +268,10 @@ export default Filters = (props) => {
             }}>
 
                 <View style={styles.containerButtonFilter}>
-                    <TouchableOpacity style={styles.bottonFilter}>
+                    <TouchableOpacity
+                        style={styles.bottonFilter}
+                        onPress={handlerClearFilters}
+                    >
                         <Text style={styles.clearFilterButtonText}>
                             Limpiar filtros
                         </Text>
@@ -267,8 +279,9 @@ export default Filters = (props) => {
                 </View>
 
                 <View style={styles.containerButtonFilter}>
-                    <TouchableOpacity style={styles.bottonFilter}
-                    onPress={handlerFilters}
+                    <TouchableOpacity
+                        style={styles.bottonFilter}
+                        onPress={handlerFilters}
                     >
                         <Text style={styles.filterButtonText}>
                             Aplicar filtros
@@ -381,10 +394,10 @@ const styles = StyleSheet.create({
         width: 100,
         alignItems: 'center',
         elevation: 5, // sombreado en Android
-    shadowOffset: { width: 3, height: 3 }, // sombreado en iOS
-    shadowColor: 'black',
-    shadowOpacity: 0.5,
-    shadowRadius: 7,
+        shadowOffset: { width: 3, height: 3 }, // sombreado en iOS
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 7,
     },
     filterButtonText: {
         color: 'white',

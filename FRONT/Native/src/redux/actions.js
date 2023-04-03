@@ -15,6 +15,7 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    CLEAR_FILTERS,
 } from "./type";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
@@ -84,23 +85,20 @@ export function setSearchText(status) {
     };
 }
 
-export function searchRestorantById(id) {
-    return async (dispatch) => {
-        await axios
-            .get(`${DB_HOST}/restaurant/${id}`)
-            .then((response) => {
-                // console.log("RESPONSE -> ", response);
-                dispatch({
-                    type: GET_RESTORANT_BY_ID,
-                    payload: response.data,
-                });
-            })
-            .catch((error) => {
-                dispatch({
-                    type: GET_RESTORANT_BY_ID,
-                    payload: error.message,
-                });
+export const searchRestorantById = (id) =>{
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/restaurant/${id}`);
+            return dispatch({
+                type: GET_RESTORANT_BY_ID,
+                payload: response.data,
             });
+        } catch (error) {
+            return {
+                error: "No se encontró el restaurante especificado",
+                originalError: error,
+            };
+        }
     };
 }
 
@@ -216,6 +214,14 @@ export const filterRestorant = (payload) => {
         payload,
     };
 };
+
+export const clearFilters = (payload) => {
+    return {
+        type: CLEAR_FILTERS,
+        payload,
+    }
+}
+
 
 // export const getAsmosphere = () => {
 //     return async function (dispatch) {

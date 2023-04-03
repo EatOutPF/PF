@@ -14,6 +14,7 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    CLEAR_FILTERS,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -38,52 +39,41 @@ const initialState = {
 // ---------- REDUCER ----------
 export default function rootReducer(state = initialState, action) {
     switch (action.type) {
-
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
-            // console.log("HOLAA : ", action.payload);
             return {
                 ...state,
                 allRestorants: action.payload,
                 restorantsFound: action.payload,
             }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID: {
-            // console.log(restorantsJson);
             return { ...state, restorantById: action.payload, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
-            // console.log(restorantsJson);
             return { ...state, restorantById: {}, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
-            //console.log("reducer: ", action.payload);
             return { ...state, restorantsFound: action.payload }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
-            //console.log("reducer: ", action.payload);
             return { ...state, restorantsFound: state.allRestorants, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_SEARCH_TEXT: {
-            //console.log("reducer: ", action.payload);
             return { ...state, searchText: "", }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case SET_SEARCH_TEXT: {
-            //console.log("reducer: ", action.payload);
             return { ...state, searchText: action.payload }
         }
-//-------------------------------------------------------------------------    
+        //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
-            // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state.allRestorants];
-            // state.restorantsFiltered = [...state.allRestorants]
-
             const filteredRestorants = auxAllRestorants.filter(resto =>
                 (resto.menu.includes(state.filterByMenu) || resto.menu === 'All') &&
                 (resto.atmosphere.includes(state.filterByAtmosphere) || resto.atmosphere === 'All') &&
@@ -94,15 +84,12 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state, restorantsFiltered: filteredRestorants,
             }
-
         }
-
-//-------------------------------------------------------------------------              
+        //-------------------------------------------------------------------------              
         case ORDER_CARDS:
             switch (action.payload) {
-
                 //---------- A - Z ----------
-                case "az": {    
+                case "az": {
                     const updatedState = {
                         ...state,
                         orderState: action.payload,
@@ -111,7 +98,6 @@ export default function rootReducer(state = initialState, action) {
                     };
                     return updatedState;
                 }
-
                 //---------- Z - A ----------
                 case "za": {
                     const updatedState = {
@@ -122,7 +108,6 @@ export default function rootReducer(state = initialState, action) {
                     };
                     return updatedState;
                 }
-
                 //---------- Mayor Ranking a Menor Ranking ----------
                 case "rk": {
                     const updatedState = {
@@ -133,7 +118,6 @@ export default function rootReducer(state = initialState, action) {
                     };
                     return updatedState;
                 }
-
                 //---------- Mayor Precio a Menor Precio ----------
                 case "hp": {
                     const updatedState = {
@@ -144,7 +128,6 @@ export default function rootReducer(state = initialState, action) {
                     };
                     return updatedState;
                 }
-
                 //---------- Menor Precio a Mayor Precio ----------
                 case "lp": {
                     const updatedState = {
@@ -155,7 +138,6 @@ export default function rootReducer(state = initialState, action) {
                     };
                     return updatedState;
                 }
-
                 //---------- Menor Distancia a Mayor Distancia ----------
                 // case "km": {
                 //     const updatedState = {
@@ -167,14 +149,14 @@ export default function rootReducer(state = initialState, action) {
                 //     return updatedState;
                 // }
             }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_TYPES_FOODS: {
             return {
                 ...state,
                 typesOfFoods: action.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_ATMOSPHERE: {
             return {
                 ...state,
@@ -187,21 +169,20 @@ export default function rootReducer(state = initialState, action) {
                 typesOfSections: action.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_DIET: {
             return {
                 ...state,
                 typesOfDiet: action.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_EXTRA: {
             return {
                 ...state,
                 typesOfExtras: action.payload,
             }
         }
-
         case FILTER_RESTORANTS: {
             const {
                 menu, // => string
@@ -234,13 +215,16 @@ export default function rootReducer(state = initialState, action) {
                 allRestorants: arrayFiltered,
             }
         }
-
-
+        case CLEAR_FILTERS: {
+            return {
+                ...state,
+                allRestorants: action.payload,
+                restorantsFound: action.payload,
+            }
+        }
         default:
             return state;
-}
-
-
+    }
 
     function sortAsc(aux) {
         return aux.sort((a, b) => {
@@ -271,7 +255,5 @@ export default function rootReducer(state = initialState, action) {
             return a.ranking - b.ranking;
         });
     }
-
-
 };
 
