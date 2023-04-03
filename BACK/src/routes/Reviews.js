@@ -21,12 +21,9 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  let { idRestaurant } = req.params;
-
-  let { idUser } = req.body;
+router.get("/", async (req, res) => {
   try {
-    let resultado = await getReviews(idRestaurant, idUser);
+    let resultado = await getReviews();
     res.status(200).json(resultado);
   } catch (error) {
     res.status(404).json({ error: error.message });

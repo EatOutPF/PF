@@ -13,16 +13,20 @@ const reviewSchema = new Schema({
     maxLength: 255
   },
   score: { type: Number, required: true },
-  restaurant: [{
+  restaurant: {
       type: Schema.Types.ObjectId,
       ref: "Restaurant"
-    }],
-  user: [{
+    },
+  user: {
       type: Schema.Types.ObjectId,
       ref: "User"
-    }],
+    },
 });
 
 const Review = mongoose.model("Review", reviewSchema);
 
 module.exports = Review;
+
+
+
+
