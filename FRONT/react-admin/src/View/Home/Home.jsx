@@ -52,13 +52,15 @@ const Home = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      {currentRestaurants && (
-        <Cards
-          restaurants={searchResults || restaurants}
-          currentRestaurants={currentRestaurants}
-        />
-      )}
-      
+
+      <div className={style.containterTable}>
+        {currentRestaurants && (
+          <Cards
+            restaurants={searchResults || restaurants}
+            currentRestaurants={currentRestaurants}
+          />
+        )}
+      </div>
     </div>
   );
 };

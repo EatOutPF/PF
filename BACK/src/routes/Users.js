@@ -15,12 +15,13 @@ router.use(express.json());
 router.use(cors())
 
 router.get("/", async (req, res) => {
+
   let token = req.headers.authorization.split(' ')[1]
 
   try {
     let user = await decode(token)
     let resultado = await getUsers(user);
-  
+
     res.status(200).json(resultado);
   } catch (error) {
     console.log(error.message)
@@ -29,7 +30,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  // console.log(req.body)
+
   try {
     let resultado = await postUsers(req.body);
     res.status(200).json(resultado);

@@ -1,0 +1,39 @@
+tr.disable {
+  background-color: gainsboro;
+  color: grey;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.rows button {
+  padding: 5px 10px;
+  font-size: small;
+  border-radius: 16px;
+  background-color: #e3960a;
+  width: fit-content;
+}
+
+button.rowsActive {
+  padding: 5px 10px;
+  font-size: small;
+  border-radius: 16px;
+  background-color: rgb(156 4 67);
+  width: fit-content;
+}
+
+button.rowsInactive {
+  padding: 5px 10px;
+  font-size: small;
+  border-radius: 16px;
+  background-color: rgb(83, 185, 24);
+  width: fit-content;
+}
+
+.rows img {
+  width: 16px;
+}
