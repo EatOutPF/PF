@@ -10,6 +10,7 @@ import Searchbar from "../../Components/SearchBar";
 const Home = () => {
   const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.user);
   const restaurants = useSelector((state) => state.currentListRestaurants);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +26,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllRestaurants());
+    if (user?.role === "superadmin") dispatch(getAllRestaurants());
+    /* else {
+      dispatch(getAllRestaurantUser());
+    } */
   }, []);
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;

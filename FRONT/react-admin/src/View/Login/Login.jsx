@@ -13,6 +13,7 @@ import {
 import { getStorage } from "firebase/storage";
 import logo from "../../assets/logoNombre.png";
 import style from "./Login.module.css";
+import { NavLink } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
@@ -113,7 +114,11 @@ function Login() {
           </button>
         </ul>
         {error && <p>{error}</p>}
+        <NavLink to="/createUsers">
+          <button>Registrate</button>
+        </NavLink>
       </form>
+
       <div className={style.containerImagenLogin}>
         <img src={logo} alt="logo"></img>
       </div>

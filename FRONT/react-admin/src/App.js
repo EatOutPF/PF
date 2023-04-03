@@ -32,14 +32,10 @@ function App() {
       {user && (
         <>
           <Routes>
+            <Route exact path="/createUsers" element={<CreateUsers />}></Route>
             {user.role === "superadmin" && (
               <>
                 <Route exact path="/" element={<Login />}></Route>
-                <Route
-                  exact
-                  path="/createUsers"
-                  element={<CreateUsers />}
-                ></Route>
                 <Route exact path="/Users" element={<HomeUsers />}></Route>
                 <Route exact path="/landing" element={<Landing />}></Route>
                 <Route
@@ -53,6 +49,7 @@ function App() {
 
             {user.role === "admin" && (
               <>
+                <Route exact path="/" element={<Login />}></Route>
                 <Route exact path="/home" element={<Home />}></Route>
                 <Route
                   exact
@@ -68,6 +65,7 @@ function App() {
                 <Route exact path="/landing" element={<Landing />}></Route>
               </>
             )}
+            <Route exact path="/" element={<Login />}></Route>
           </Routes>
         </>
       )}

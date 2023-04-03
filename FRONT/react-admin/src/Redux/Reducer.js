@@ -13,6 +13,7 @@ import {
   FILTER_BY_MENU,
   FILTER_BY_ACTIVE,
   GET_ALL_USERS,
+  GET_ALL_RESTAURANTS_BY_USER,
 } from "./Actions";
 
 const initialState = {
@@ -27,8 +28,62 @@ const initialState = {
     password: "hola123",
     favorite: [],
     reserve: [],
-    role: "admin",
-    restaurant: [],
+    role: "superadmin",
+    restaurant: [
+      {
+        address: {
+          coordinate: {
+            latitude: -38.01497,
+            longitude: -57.550316,
+          },
+          streetName: "30 Straubel Junction",
+          streetNumber: 125,
+          neighborhood: "Raven",
+          city: "Mar de Plata",
+          state: "buenos aires",
+          country: "Argentina",
+        },
+        contact: {
+          socialMedia: {
+            instagram: "jpittendreigh0@nhs.uk",
+            facebook: "msimyson0@scribd.com",
+            wpp: 178773622,
+          },
+          phoneNumber: 125115155,
+          email: "ffogg0@furl.net",
+        },
+        schedule: {
+          monday: {
+            open: "11:00",
+            close: "22:09",
+          },
+          tuesday: {
+            open: "11:00",
+            close: "23:38",
+          },
+          wednesday: {
+            open: "11:00",
+            close: "23:07",
+          },
+          thursday: {
+            open: "11:00",
+            close: "23:57",
+          },
+          friday: {
+            open: "11:00",
+            close: "23:25",
+          },
+          saturday: {
+            open: "11:00",
+            close: "22:31",
+          },
+          sunday: {
+            open: "11:00",
+            close: "20:49",
+          },
+        },
+      },
+    ],
     active: true,
     __v: 0,
   },
@@ -135,7 +190,11 @@ const Reducer = (state = initialState, { type, payload }) => {
         ...state,
         currentUsers: payload,
       };
-
+    case GET_ALL_RESTAURANTS_BY_USER:
+      return {
+        ...state,
+        currentListRestaurants: payload,
+      };
     default:
       return { ...state };
   }

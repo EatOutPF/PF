@@ -14,6 +14,7 @@ export const SET_TOKEN = "SET_TOKEN";
 export const FILTER_BY_MENU = "FILTER_BY_MENU";
 export const FILTER_BY_ACTIVE = "FILTER_BY_ACTIVE";
 export const GET_ALL_USERS = "GET_ALL_USERS";
+export const GET_ALL_RESTAURANTS_BY_USER = "GET_ALL_RESTAURANTS_BY_USER";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -180,5 +181,12 @@ export const getAllUsers = () => {
       .catch((error) => {
         return dispatch({ type: GET_ALL_USERS, payload: error });
       });
+  };
+};
+
+export const getAllrestautantsByUsers = (user) => {
+  return {
+    type: GET_ALL_RESTAURANTS_BY_USER,
+    payload: user,
   };
 };

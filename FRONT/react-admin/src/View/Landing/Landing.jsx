@@ -12,7 +12,9 @@ const Landing = () => {
       <h3>{user.role}</h3>
       <div className={style.containerShow}>
         <NavLink to="/home">
-          <button className={style.containerButton}>Restaurantes</button>
+          <button className={style.containerButton}>
+            {user.role === "superadmin" ? "Restaurantes " : "Mis Restaurantes"}
+          </button>
         </NavLink>
 
         {user.role === "superadmin" && (
