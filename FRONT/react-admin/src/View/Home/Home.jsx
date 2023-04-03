@@ -6,6 +6,7 @@ import Filter from "../../Components/Filter";
 import Paginate from "../../Components/Paginado/Paginado";
 import style from "./Home.module.css";
 import Searchbar from "../../Components/SearchBar";
+import Sort from "../../Components/Sort"
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,8 +19,9 @@ const Home = () => {
   const [order, setOrder] = useState("");
   const [filter, setResetFilter] = useState("");
   const [resetFilter, setsetFilter] = useState("");
-
+  
   const [searchResults, setSearchResults] = useState(null);
+  const [sort, setSort] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -47,8 +49,15 @@ const Home = () => {
           setCurrentPage={setCurrentPage}
           resetFilter={resetFilter}
         />
+        <Sort
+         setOrder={setOrder}
+         setSort={setSort}
+         setCurrentPage={setCurrentPage}
+         resetFilter={resetFilter}
+        />
         <Searchbar setCurrentPage={setCurrentPage} />
       </div>
+      
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
         restaurants={searchResults ? searchResults.length : restaurants.length}

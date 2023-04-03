@@ -8,6 +8,7 @@ function ResetButton() {
   function handleReset() {
     dispatch(resetFilters());
     dispatch(resetSearchResults());
+    
   }
 
   return (

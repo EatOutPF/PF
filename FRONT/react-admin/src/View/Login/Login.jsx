@@ -81,7 +81,7 @@ function Login() {
         setUser(user);
         window.location.href = "/home";
         setUser(user.user);
-        dispatch(setToken(user.accessToken));
+        dispatch(setToken(result.user.accessToken));
         console.log(user);
       })
       .catch((error) => {

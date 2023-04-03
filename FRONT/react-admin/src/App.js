@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./View/NavBar/NavBar.jsx";
 import "./App.css";
 import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
-import Form from "./Components/CreateRestaurant.jsx";
+import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
 import Landing from "./View/Landing/Landing.jsx";
 import axios from "axios";
 import Reviews from "./Components/Reviews/Reviews.jsx";
