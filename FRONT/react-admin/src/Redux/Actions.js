@@ -171,7 +171,7 @@ export const setToken = (token) => {
           Authorization: "Bearer " + token,
         },
       });
-      dispatch({ type: SET_TOKEN, payload: response.data });
+      dispatch({ type: SET_USER, payload: response.data });
     } catch (error) {
       console.error("Error setting token:", error);
     }
