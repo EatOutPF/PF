@@ -23,17 +23,7 @@ const initialState = {
   stateToSorted: [],
   allRestaurants: [],
   /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
-  user: {_id: "641f0e901cb579a0bd405ec4",
-  name: "diana",
-  phone: 1169957270,
-  email: "diana@gmail.com",
-  password: "hola123",
-  favorite: [],
-  reserve: [],
-  role: "superadmin",
-  restaurant: [],
-  active: true,
-  __v: 0,
+  user: {
   },
   detailRestaurant: {},
   currentListRestaurants: [],
@@ -75,7 +65,7 @@ const Reducer = (state = initialState, { type, payload }) => {
       };
 
       case SET_USER:
-      return { ...state, user: payload.user };
+      return { ...state, user : payload};
 
     case LOGOUT_USER:
       return { ...state, user: payload };
