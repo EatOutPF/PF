@@ -7,18 +7,25 @@ const userSchema = new Schema({
   phone: Number,
   email: {type: String, unique: true},
   password: String,
-  favorite: [String],
+  favorite: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Favorite'
+  }],
   reserve: [{
     type: String,
     ref: 'Reserve'
   }],
   role: { 
     type: String,
-    default: 'client'
+    default: 'user'
   },
   restaurant: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Restaurant'
+  }],
+  payment : [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
   }],
   active: {
     type: Boolean,

@@ -129,7 +129,15 @@ const restaurantSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
-  }
+  },
+  favorite: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Favorite'
+  }],
+  payment : [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
