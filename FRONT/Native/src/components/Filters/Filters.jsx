@@ -9,7 +9,9 @@ import {
     getSections,
     getDiet,
     getExtras,
-    filterRestorant
+    filterRestorant,
+    clearFilters,
+    getAllRestorants,
 } from '../../redux/actions.js';
 
 
@@ -21,12 +23,13 @@ export default Filters = (props) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(getAllRestorants())
         dispatch(getTypesOfFoods())
         dispatch(getSections())
         dispatch(getAtmosphere())
         dispatch(getDiet())
         dispatch(getExtras())
-    }, dispatch)
+    }, [dispatch])
 
     const typesOfFoods = useSelector((state) => state.typesOfFoods);
     const typesOfSections = useSelector((state) => state.typesOfSections);
@@ -34,7 +37,7 @@ export default Filters = (props) => {
     const typesOfDiet = useSelector((state) => state.typesOfDiet);
     const typesOfExtras = useSelector((state) => state.typesOfExtras);
 
-    const foodOptions = typesOfFoods?.map(e => {
+    const foodOptions = typesOfFoods && typesOfFoods.map(e => {
         return {
             label: e.name,
             value: e.name,
@@ -95,6 +98,12 @@ export default Filters = (props) => {
         dispatch(filterRestorant(filters));
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
+    const handlerClearFilters = () => {
+        
+        // dispatch(clearFilters());
+    }
+
+
     //Renderizado
     return (
         <View>
@@ -122,10 +131,10 @@ export default Filters = (props) => {
                             <Text style={styles.orderButtonText}>Distancia</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.orderButton}>
-                            <Text style={styles.orderButtonText}>MayorPrecio</Text>
+                            <Text style={styles.orderButtonText}>Mayor Precio</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.orderButton}>
-                            <Text style={styles.orderButtonText}>MenorPrecio</Text>
+                            <Text style={styles.orderButtonText}>Menor Precio</Text>
                         </TouchableOpacity>
                     </ScrollView>
                 </View>
@@ -178,7 +187,7 @@ export default Filters = (props) => {
                             selectedValue={ambiences}
                             onValueChange={(value) => {
                                 setAmbiences(value),
-                                setFilters({ ...filters, ambiences: value })
+                                    setFilters({ ...filters, ambiences: value })
                             }}
                         >
                             <Picker.Item label="Ambiente" value="" />
@@ -248,20 +257,43 @@ export default Filters = (props) => {
 
             </View>
 
-            <View>
-                <Button
-                    onPress={handlerFilters}
-                    title='Aplicar Filtros'
-                >
-                </Button>
+            <View style={{
+                alignItems: 'center',
+                height: 2,
+                // backgroundColor: 'blue',
+                borderRadius: 10,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                padding: 30,
+            }}>
 
-                <Button
-                    title='Limpiar Filtros'
-                >
-                </Button>
+                <View style={styles.containerButtonFilter}>
+                    <TouchableOpacity
+                        style={styles.bottonFilter}
+                        onPress={handlerClearFilters}
+                    >
+                        <Text style={styles.clearFilterButtonText}>
+                            Limpiar filtros
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.containerButtonFilter}>
+                    <TouchableOpacity
+                        style={styles.bottonFilter}
+                        onPress={handlerFilters}
+                    >
+                        <Text style={styles.filterButtonText}>
+                            Aplicar filtros
+                        </Text>
+
+                    </TouchableOpacity>
+                </View>
+
 
             </View>
-        </View >
+        </View>
+        // </View >
     )
 }
 
@@ -293,13 +325,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "flex-end",
         fontSize: 40,
-        margin: 0.1,
-        paddingVertical: 15,
+        padding: 0,
     },
     containerOrderButtons: {
         margin: 5,
         paddingVertical: 5,
-
     },
     orderButton: {
         paddingHorizontal: 10,
@@ -312,12 +342,13 @@ const styles = StyleSheet.create({
     },
     orderButtonText: {
         fontSize: 14,
-        color: "white"
+        color: "white",
+        fontWeight: 'bold',
     },
     containerP: {
         flex: 1,
         padding: 0,
-        marginTop: 10,
+        marginTop: 5,
     },
     containerPiker: {
         paddingHorizontal: 16,
@@ -327,10 +358,17 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#D9D9D9',
         margin: 5,
+
+        elevation: 5, // sombreado en Android
+        shadowOffset: { width: 2, height: 2 }, // sombreado en iOS
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
     },
     labelContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+
     },
     labelIcon: {
         fontSize: 20,
@@ -343,5 +381,34 @@ const styles = StyleSheet.create({
     picker: {
         // backgroundColor: 'red',
     },
+
+    containerButtonFilter: {
+        height: 20,
+        width: 130, // 
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    bottonFilter: {
+        backgroundColor: '#FA6B6B',
+        borderRadius: 8,
+        width: 100,
+        alignItems: 'center',
+        elevation: 5, // sombreado en Android
+        shadowOffset: { width: 3, height: 3 }, // sombreado en iOS
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 7,
+    },
+    filterButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '900',
+        borderBottomColor: 'black',
+    },
+    clearFilterButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '300',
+    }
 })
 
