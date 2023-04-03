@@ -37,8 +37,6 @@ const DetailResto = (props) => {
 
     <View style={styles.container}>
       <ScrollView>
-
-
         {loading ? (
           <Loading />
         ) : (
@@ -74,6 +72,7 @@ const DetailResto = (props) => {
               <View style={styles.containerPerCalHor}>
 
 
+                {/* Cuantas personas ----------------------*/}
                 <View style={styles.containerPersons}>
                   <IonicIcon
                     name="people-outline"
@@ -82,7 +81,6 @@ const DetailResto = (props) => {
 
                   />
 
-                {/* Cuantas personas ----------------------*/}
                   <View style={styles.reservDetail}>
                     <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
                     <Text style={styles.textReservDetail}>2 personas</Text>
@@ -111,6 +109,10 @@ const DetailResto = (props) => {
 
                 </View>
 
+
+
+                {/* Que dia ?------------------------ */}
+
                 <View style={styles.containerPersons}>
                   <IonicIcon
                     name="calendar-outline"
@@ -120,7 +122,6 @@ const DetailResto = (props) => {
                   />
 
 
-                {/* Que dia ?------------------------ */}
                   <View style={styles.reservDetail}>
                     <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
                     <Text style={styles.textReservDetail}>Dom, 2 de Abr -Hoy-</Text>
@@ -128,42 +129,65 @@ const DetailResto = (props) => {
 
                   <View style={styles.containerButtonsPerson}>
 
-                  
-                  {/* En esta parte deberia tener un picker que me de las opciones disponibles de los dias en que puedo realizar una reserva */}
-                    <View style={styles.containerButton}>    
-                    <IonicIcon 
-                    name="chevron-down-circle-outline" 
-                    size={37}
-                    onPress={() => setPickerVisible(true)} />
+
+                    {/* En esta parte deberia tener un picker que me de las opciones disponibles de los dias en que puedo realizar una reserva */}
+                    <View style={styles.containerButton}>
+                      <IonicIcon
+                        name="chevron-down-circle-outline"
+                        size={37}
+                        onPress={() => setPickerVisible(true)} />
 
                     </View>
 
                   </View>
 
-          
-
-
-
-
-
-
                 </View>
 
+                {/* Qué horario? */}
+                <View style={styles.containerPersons}>
+                  <IonicIcon
+                    name="time-outline"
+                    size={50}
+                    margin={10}
+                  />
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                  </View>
+                  <View style={styles.containerButtonsPerson}>
+                    <View >
+                    <IonicIcon
+                        name="chevron-down-circle-outline"
+                        size={37}
+                        onPress={() => setPickerVisible(true)} />
+                    </View>
+                  </View>
+                </View>
 
+                {/* Boton 'CONFIRMAR RESERVA' */}
+                <TouchableOpacity style={styles.confirmButton}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
+                </TouchableOpacity>
               </View>
+
+              <Text style={styles.title}> Sobre Nosotros</Text>
+              <Text style={{ paddingLeft: 20 }}>
+                {" "}
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy text
+                ever since the 1500s, when an unknown printer took a galley of type
+                and scrambled it to make a type specimen book. It has survived not
+                only five centuries.
+              </Text>
+
             </View>
 
 
             <Text style={styles.textBody}> Calendario ...</Text>
-            <Text style={styles.title}> Sobre Nosotros</Text>
-            <Text style={{ paddingLeft: 20 }}>
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of type
-              and scrambled it to make a type specimen book. It has survived not
-              only five centuries.
-            </Text>
             <Text style={styles.textBody}> MENU --- Link a la carta</Text>
             <Text style={styles.title}> Categorias :</Text>
             <Text style={styles.textBody}>
@@ -274,15 +298,20 @@ const styles = StyleSheet.create({
   containerPerCalHor: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '50%',
+    height: '43.5%',
     alignItems: 'center',
-    padding: 10,
-    // backgroundColor: 'red',
+    justifyContent: 'center',
+    padding: 2,
+    margin: 0,
+    borderRadius: 20,
+    borderWidth: 0.2,
+    borderColor: 'black',
+    borderStyle: 'dotted',
   },
   containerPersons: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#EBE9E9',
     width: '99%',
     height: '22%',
     borderRadius: 20,
@@ -360,6 +389,24 @@ const styles = StyleSheet.create({
     marginTop: 5,
     justifyContent: 'center',
   },
+  confirmButton: {
+    flexDirection: 'row',
+    backgroundColor: 'grey',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    height: 40,
+    width: 160,
+    marginTop: 5,
+
+    elevation: 5,
+    shadowOffset: { width: 3, height: 3 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+
+  },
+
 });
 
 //Falta: a qué distancia me encuentro para llegar al restaurant.
