@@ -31,7 +31,7 @@ const initialState = {
     password: "hola123",
     favorite: [],
     reserve: [],
-    role: "superadmin",
+    role: "admin",
     restaurant: [
       {
         address: {
