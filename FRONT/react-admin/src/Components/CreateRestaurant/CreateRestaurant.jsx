@@ -39,7 +39,7 @@ export default function Form() {
   const [errorSocialMedia, setErrorSocialMedia] = useState({
     instagram: "",
     facebook: "",
-    wpp: "",
+    wpp: 0,
   })
 
 
@@ -142,8 +142,8 @@ export default function Form() {
   };
   useEffect(() => {
     console.log('Input:', input);
-    console.log('Social Media Errors:', errorName);
-  }, [input, errorName]);
+    // console.log('Social Media Errors:', errorName);
+  }, [input]);
 
   const handleDiets = (event) => {
     const checked = selectDiets.includes(event.target.value);
@@ -322,8 +322,8 @@ export default function Form() {
   };
   useEffect(() => {
     console.log('Conctact:', contact);
-    console.log('Conctact Errors:', errorContact);
-  }, [contact, errorContact]);
+    // console.log('Conctact Errors:', errorContact);
+  }, [contact]);
 
 
   const handleAddress = (event) => {
@@ -343,8 +343,8 @@ export default function Form() {
 
   useEffect(() => {
     console.log("address:", address);
-    console.log("Error address changed:", errorAddress);
-  }, [address, errorAddress]);
+    // console.log("Error address changed:", errorAddress);
+  }, [address]);
 
 
 
@@ -358,7 +358,6 @@ export default function Form() {
     console.log(coordinate)
   }
 
-
   const handleLatitude = (event) => {
     console.log(event.target.value)
     setCoordinate({ ...coordinate, latitude: event.target.value });
@@ -367,11 +366,11 @@ export default function Form() {
       latitude: event.target.value
     }))
   }
-  useEffect(() => {
-    console.log("address:", coordinate);
-    console.log("Error address changed:", errorCoordinate);
-  }, [coordinate, errorCoordinate]);
 
+  useEffect(() => {
+    console.log('address, coordinate:', address, coordinate);
+    // console.log('Conctact Errors:', errorContact);
+  }, [address, coordinate]);
 
 
   const handleInstagram = (event) => {
@@ -401,6 +400,8 @@ export default function Form() {
     }))
     console.log(socialMedia)
   }
+ 
+
 
   const handleWpp = (event) => {
     console.log(event.target.value)
@@ -415,11 +416,10 @@ export default function Form() {
     console.log(socialMedia)
   }
 
-
   useEffect(() => {
-    console.log('Social Media:', socialMedia);
-    console.log('Social Media Errors:', errorSocialMedia);
-  }, [socialMedia, errorSocialMedia]);
+    console.log('contact, socialMedia:', contact, socialMedia);
+    // console.log('Conctact Errors:', errorContact);
+  }, [contact, socialMedia]);
 
 
 
@@ -447,8 +447,8 @@ export default function Form() {
 
   useEffect(() => {
     console.log("Schedule:", schedule);
-    console.log("Errors:", errorSchedule);
-  }, [schedule, errorSchedule]);
+    // console.log("Errors:", errorSchedule);
+  }, [schedule]);
 
 
   const handleTable = (event) => {
@@ -459,8 +459,8 @@ export default function Form() {
 
   const handleCreate = (event) => {
     event.preventDefault();
-    setAddress({ ...address, coordinate })
-    setContact({ ...contact, socialMedia })
+    address.coordinate = coordinate
+    contact.socialMedia = socialMedia
     const newRestaurant = {
       name: input.name,
       address,
@@ -517,7 +517,7 @@ export default function Form() {
               </label>
             </div>
             <h3>Social Media</h3>
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Instagram:
                 <input type="text" name="instagram" value={socialMedia.instagram} onChange={handleInstagram} />
@@ -525,7 +525,7 @@ export default function Form() {
               {errorSocialMedia.instagram && <span>{errorSocialMedia.instagram}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Facebook:
                 <input type="text" name="facebook" value={socialMedia.facebook} onChange={handleFacebook} />
@@ -533,7 +533,7 @@ export default function Form() {
               {errorSocialMedia.facebook && <span>{errorSocialMedia.facebook}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Wpp:
                 <input type="number" name="wpp" value={socialMedia.wpp} onChange={handleWpp} />
@@ -551,7 +551,7 @@ export default function Form() {
             <h2>Step 2</h2>
             <h3>Address</h3>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Street Name:
                 <input type="text" name="streetName" value={address.streetName} onChange={handleAddress} />
@@ -559,7 +559,7 @@ export default function Form() {
               {errorAddress.streetName && <span>{errorAddress.streetName}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Street Number:
                 <input type="number" name="streetNumber" value={address.streetNumber} onChange={handleAddress} />
@@ -567,7 +567,7 @@ export default function Form() {
               {errorAddress.streetNumber && <span>{errorAddress.streetNumber}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Neighborhood:
                 <input type="text" name="neighborhood" value={address.neighborhood} onChange={handleAddress} />
@@ -575,7 +575,7 @@ export default function Form() {
               {errorAddress.neighborhood && <span>{errorAddress.neighborhood}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 City:
                 <input type="text" name="city" value={address.city} onChange={handleAddress} />
@@ -583,7 +583,7 @@ export default function Form() {
               {errorAddress.city && <span>{errorAddress.city}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 State:
                 <input type="text" name="state" value={address.state} onChange={handleAddress} />
@@ -591,7 +591,7 @@ export default function Form() {
               {errorAddress.state && <span>{errorAddress.state}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Country:
                 <input type="text" name="country" value={address.country} onChange={handleAddress} />
@@ -599,7 +599,7 @@ export default function Form() {
               {errorAddress.country && <span>{errorAddress.country}</span>}
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Images:
                 <input type="file" onChange={(e) => setImages([...images, e.target.files[0]])} />
@@ -607,7 +607,7 @@ export default function Form() {
             </div>
 
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Longitude:
                 <input type="number" name="longitude" value={coordinate.longitude} onChange={handleLongitude} />
@@ -616,7 +616,7 @@ export default function Form() {
 
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label>
                 Latitude:
                 <input type="number" name="latitude" value={coordinate.latitude} onChange={handleLatitude} />
@@ -635,26 +635,26 @@ export default function Form() {
             <h2>Step 3</h2>
 
             <h3>Schedule</h3>
-             <div   className={styles.div}>
-            <label htmlFor="monday"> Monday :
-              <input
-                placeholder="Open"
-                name="monday open"
-                value={schedule.monday.open}
-                onChange={handleSchedule}
-              />
-              {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>}
-              <input
-                placeholder="Close"
-                name="monday close"
-                value={schedule.monday.close}
-                onChange={handleSchedule}
-              />
-              {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>}
-            </label>
-             </div>
+            <div className={styles.div}>
+              <label htmlFor="monday"> Monday :
+                <input
+                  placeholder="Open"
+                  name="monday open"
+                  value={schedule.monday.open}
+                  onChange={handleSchedule}
+                />
+                {/* {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>} */}
+                <input
+                  placeholder="Close"
+                  name="monday close"
+                  value={schedule.monday.close}
+                  onChange={handleSchedule}
+                />
+                {/* {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>} */}
+              </label>
+            </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label htmlFor="Tuesday">  Tuesday
                 <input
                   placeholder="Open"
@@ -662,7 +662,7 @@ export default function Form() {
                   value={schedule.tuesday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>}
+                {/* {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -670,11 +670,11 @@ export default function Form() {
                   value={schedule.tuesday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>}
+                {/* {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>} */}
               </label>
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label htmlFor="Wednesday"> Wednesday
                 <input
                   placeholder="Open"
@@ -682,7 +682,7 @@ export default function Form() {
                   value={schedule.wednesday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>}
+                {/* {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -690,11 +690,11 @@ export default function Form() {
                   value={schedule.wednesday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>}
+                {/* {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>} */}
               </label>
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label htmlFor="Thursday"> Thursday
                 <input
                   placeholder="Open"
@@ -702,7 +702,7 @@ export default function Form() {
                   value={schedule.thursday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>}
+                {/* {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -710,12 +710,12 @@ export default function Form() {
                   value={schedule.thursday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>}
+                {/* {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>} */}
               </label>
 
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label htmlFor="Friday"> Friday
                 <input
                   placeholder="Open"
@@ -723,7 +723,7 @@ export default function Form() {
                   value={schedule.friday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>}
+                {/* {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -731,12 +731,12 @@ export default function Form() {
                   value={schedule.friday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>}
+                {/* {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>} */}
               </label>
 
             </div>
 
-            <div  className={styles.div}>
+            <div className={styles.div}>
               <label htmlFor="Saturday"> Saturday
                 <input
                   placeholder="Open"
@@ -744,7 +744,7 @@ export default function Form() {
                   value={schedule.saturday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>}
+                {/* {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -752,11 +752,11 @@ export default function Form() {
                   value={schedule.saturday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>}
+                {/* {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>} */}
               </label>
             </div>
 
-            <div  className={styles.div}> 
+            <div className={styles.div}>
               <label htmlFor="sunday"> Sunday
                 <input
                   placeholder="Open"
@@ -764,7 +764,7 @@ export default function Form() {
                   value={schedule.sunday.open}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>}
+                {/* {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>} */}
 
                 <input
                   placeholder="Close"
@@ -772,25 +772,25 @@ export default function Form() {
                   value={schedule.sunday.close}
                   onChange={handleSchedule}
                 />
-                {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>}
+                {/* {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>} */}
               </label>
             </div>
 
             <h3>Select Menu options:</h3>
-             <div  className={styles.div}>
-            {optionsMenu.map((menu) => (
-              <label key={menu}>
-                <input
-                  type="checkbox"
-                  value={menu}
-                  checked={selectMenu.includes(menu)}
-                  onChange={handleMenu}
-                />
-                {menu}
+            <div className={styles.div}>
+              {optionsMenu.map((menu) => (
+                <label key={menu}>
+                  <input
+                    type="checkbox"
+                    value={menu}
+                    checked={selectMenu.includes(menu)}
+                    onChange={handleMenu}
+                  />
+                  {menu}
 
-              </label>
-            ))}
-             </div>
+                </label>
+              ))}
+            </div>
 
 
             <h2>Select your diets:</h2>
@@ -890,25 +890,7 @@ export default function Form() {
               </div>
             </div>
             <button className={styles.buttons} onClick={handleBack}>Back</button>
-            <button className={styles.buttons} type="submit" disabled={
-              errorName ||
-              errorAddress.streetName ||
-              errorAddress.streetNumber ||
-              errorAddress.city ||
-              errorAddress.state ||
-              errorAddress.country ||
-              errorAddress.city ||
-              errorAddress.country ||
-              errorCoordinate.latitude ||
-              errorCoordinate.latitude ||
-              errorContact.email ||
-              errorContact.phoneNumber ||
-              errorSocialMedia.instagram ||
-              errorSocialMedia.facebook ||
-              errorSocialMedia.wpp ||
-              errorSchedule
-
-            }> Restaurant Created</button>
+            <button className={styles.buttons} type="submit" > Restaurant Created</button>
           </div>
         )}
       </form>
@@ -917,3 +899,25 @@ export default function Form() {
   );
 }
 
+
+
+// <button className={styles.buttons} onClick={handleBack}>Back</button>
+// <button className={styles.buttons} type="submit" disabled={
+//   errorName ||
+//   errorAddress.streetName ||
+//   errorAddress.streetNumber ||
+//   errorAddress.city ||
+//   errorAddress.state ||
+//   errorAddress.country ||
+//   errorAddress.city ||
+//   errorAddress.country ||
+//   errorCoordinate.latitude ||
+//   errorCoordinate.latitude ||
+//   errorContact.email ||
+//   errorContact.phoneNumber ||
+//   errorSocialMedia.instagram ||
+//   errorSocialMedia.facebook ||
+//   errorSocialMedia.wpp ||
+//   errorSchedule
+
+// }> Restaurant Created</button>
