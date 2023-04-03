@@ -15,19 +15,27 @@ router.use(express.json());
 router.use(cors())
 
 router.get("/", async (req, res) => {
-
-  let token = req.headers.authorization.split(' ')[1]
-
-  try {
-    let user = await decode(token)
-    let resultado = await getUsers(user);
-
-    res.status(200).json(resultado);
-  } catch (error) {
-    console.log(error.message)
-    res.status(404).json({ error: error.message });
-  }
-});
+  let token = req.headers.authorization?.split(' ')[1]
+ 
+   try {
+ 
+     if (token) {
+       let user = await decode(token)
+     let resultado = await getUsers(user);
+     res.status(200).json(resultado);
+     }
+     else{
+      
+       let resultado = await getUsers();
+     res.status(200).json(resultado);
+     }
+    
+ 
+   } catch (error) {
+     console.log(error.message)
+     res.status(404).json({ error: error.message });
+   }
+ });
 
 router.post("/", async (req, res) => {
 
