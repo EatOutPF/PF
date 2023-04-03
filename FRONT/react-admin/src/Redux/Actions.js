@@ -10,9 +10,11 @@ export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
-export const SET_TOKEN = "SET_TOKEN";
-export const FILTER_BY_MENU = "FILTER_BY_MENU";
-export const FILTER_BY_ACTIVE = "FILTER_BY_ACTIVE";
+export const ORDER_BY_NAME = "ORDER_BY_NAME";
+export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
+export const SET_TOKEN= "SET_TOKEN";
+export const FILTER_BY_MENU= "FILTER_BY_MENU";
+export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export const getAllRestaurants = () => {
@@ -143,6 +145,7 @@ export const postRestaurant = (create) => async (dispatch) => {
   try {
     const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
+    console.log({restaurant})
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant,
@@ -156,6 +159,9 @@ export const postRestaurant = (create) => async (dispatch) => {
   }
 };
 
+export const orderByName = (order) => {
+  return {type: ORDER_BY_NAME, payload: order}
+}
 export const setToken = (token) => {
   return async (dispatch) => {
     try {
@@ -167,6 +173,10 @@ export const setToken = (token) => {
   };
 };
 
+
+export const orderByPopularity = (order) => {
+  return {type: ORDER_BY_POPULARITY, payload: order}
+}
 export const getAllUsers = () => {
   return (dispatch) => {
     axios

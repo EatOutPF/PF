@@ -9,6 +9,8 @@ import {
   GET_RESTAURAN_NAME,
   DELETE_RESTAURANT,
   POST_RESTAURANT,
+  ORDER_BY_NAME,
+  ORDER_BY_POPULARITY,
   SET_TOKEN,
   FILTER_BY_MENU,
   FILTER_BY_ACTIVE,
@@ -17,6 +19,7 @@ import {
 
 const initialState = {
   createRestaurant: [],
+  stateToSorted: [],
   allRestaurants: [],
   /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
   user: {
@@ -130,15 +133,50 @@ const Reducer = (state = initialState, { type, payload }) => {
         ...state,
         token: [payload],
       };
+
+    case POST_RESTAURANT:
+      return {
+
+        ...state,
+        msg: payload,
+      };
+
+    case ORDER_BY_NAME:
+      let sorted
+      payload === 'asc' ? sorted = state.currentListRestaurants.sort((a, z) => a.name > z.name ? 1 : -1) :
+        payload === 'desc' ? sorted = state.currentListRestaurants.sort((a, z) => a.name < z.name ? 1 : -1) :
+          sorted = state.stateToSorted
+
+
+      return {
+        ...state,
+        stateToSorted: sorted.map(e => e)
+      };
+
+    case ORDER_BY_POPULARITY:
+      let data
+      payload === 'max' ? data = state.currentListRestaurants.sort((a, b) => a.ranking < b.ranking ? 1 : -1) :
+        payload === 'min' ? data = state.currentListRestaurants.sort((a, b) => a.ranking > b.ranking ? 1 : -1) :
+          data = state.stateToSorted
+
+      return {
+        ...state,
+        stateToSorted: data.map(e => e)
+      }
+
     case GET_ALL_USERS:
       return {
         ...state,
         currentUsers: payload,
       };
 
+
+
     default:
       return { ...state };
-  }
-};
+
+  };
+
+}
 
 export default Reducer;
