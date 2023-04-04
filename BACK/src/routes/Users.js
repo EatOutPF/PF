@@ -10,9 +10,13 @@ const {
   activeUsers,
 } = require("../controllers/controllerUsers");
 
+const corsOptions = {
+  origin: '*',
+  optionSuccessStatus: 200,
+}
 const router = Router();
 router.use(express.json());
-router.use(cors())
+router.use(cors(corsOptions));
 
 router.get("/", async (req, res) => {
   let token = req.headers.authorization?.split(' ')[1]

@@ -13,7 +13,8 @@ import CreateUsers from "./View/CreateUsers/CreateUsers.jsx";
 import HomeUsers from "./View/HomeUser/HomeUser.jsx";
 import { useSelector } from "react-redux";
 axios.defaults.baseURL =
-  "http://localhost:5001/" /* "https://eatout.onrender.com/" */;
+  /* "https://eatout.onrender.com/"; */
+  "http://localhost:5001/";
 
 function App() {
   const location = useLocation().pathname;
@@ -29,17 +30,13 @@ function App() {
         </div>
       )}
 
-      {user && (
-        <>
-          <Routes>
+      <Routes>
+        <Route exact path="/" element={<Login />}></Route>
+        <Route exact path="/createUsers" element={<CreateUsers />}></Route>
+        {user && (
+          <>
             {user.role === "superadmin" && (
               <>
-                <Route exact path="/" element={<Login />}></Route>
-                <Route
-                  exact
-                  path="/createUsers"
-                  element={<CreateUsers />}
-                ></Route>
                 <Route exact path="/Users" element={<HomeUsers />}></Route>
                 <Route exact path="/landing" element={<Landing />}></Route>
                 <Route
@@ -53,7 +50,6 @@ function App() {
 
             {user.role === "admin" && (
               <>
-                <Route exact path="/" element={<Login />}></Route>
                 <Route exact path="/home" element={<Home />}></Route>
                 <Route
                   exact
@@ -70,9 +66,9 @@ function App() {
               </>
             )}
             <Route exact path="/" element={<Login />}></Route>
-          </Routes>
-        </>
-      )}
+          </>
+        )}
+      </Routes>
     </div>
   );
 }
