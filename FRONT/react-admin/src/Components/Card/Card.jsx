@@ -31,7 +31,7 @@ const Card = (props) => {
   const handlerPayment = () => {
     axios
       .post(
-        "http://localhost:5001/payment" /* "https://eatout.onrender.com/payment" */,
+       /* "http://localhost:5001/payment" */ "https://eatout.onrender.com/payment",
         props
       )
       .then((res) => (window.location.href = res.data.response.init_point));
