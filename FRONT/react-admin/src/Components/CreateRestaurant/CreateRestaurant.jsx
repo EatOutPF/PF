@@ -12,7 +12,7 @@ export default function Form() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
-
+  const user = useSelector(state => state.user);
   const [errorName, setErrorName] = useState({
     name: "",
   });
@@ -273,6 +273,8 @@ export default function Form() {
     setStage(stage - 1);
   };
 
+
+
   const handleContact = (event) => {
     console.log(event.target.value);
     setContact({
@@ -419,6 +421,22 @@ export default function Form() {
     // console.log("Errors:", errorSchedule);
   }, [schedule]);
 
+  const handleImages = async (event) => {
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'EatOut');
+
+    const response = await fetch("https://api.cloudinary.com/v1_1/dkqxubvyj/upload", {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+    setImages([...images, result.secure_url]);
+  }
+
   const handleTable = (event) => {
     console.log(event.target.value);
     setTables(event.target.value);
@@ -441,11 +459,14 @@ export default function Form() {
       atmosphere: selectAtmosphere,
       extras: selectExtra,
       section: selectSection,
+      user: user._id,
     };
 
     console.log({ newRestaurant });
     dispatch(postRestaurant(newRestaurant));
-    alert(msg);
+    msg.error?
+    alert(msg.error): alert(msg)
+
     navigate("/home");
   };
 
@@ -635,13 +656,19 @@ export default function Form() {
               </div>
 
               <div className={styles.div}>
-                <label>
+                <label htmlFor="imageUrl"> Image Url
                   Images:
                   <input
                     type="file"
-                    onChange={(e) => setImages([...images, e.target.files[0]])}
+                    id="imageUrl"
+                    name="imageUrl"
+                    onChange={handleImages}
                   />
+                  <button type="submit">Add Image</button>
                 </label>
+                {images.map((image, index) => (
+                  <img key={index} src={image.url} alt={image.name} />
+                ))}
               </div>
 
               <div className={styles.div}>
@@ -688,186 +715,182 @@ export default function Form() {
 
               <h3>Schedule</h3>
               <div className={styles.div}>
-                <label htmlFor="monday">
-                  {" "}
-                  Monday :
+                <label htmlFor="monday"> Monday :
                   <input
                     placeholder="Open"
                     name="monday open"
                     value={schedule.monday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>} */}
+                  {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>}
                   <input
                     placeholder="Close"
                     name="monday close"
                     value={schedule.monday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>} */}
+                  {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Tuesday">
-                  {" "}
-                  Tuesday
+                <label htmlFor="Tuesday">  Tuesday
                   <input
                     placeholder="Open"
                     name="tuesday open"
                     value={schedule.tuesday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>} */}
+                  {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="tuesday close"
                     value={schedule.tuesday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>} */}
+                  {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Wednesday">
-                  {" "}
-                  Wednesday
+                <label htmlFor="Wednesday"> Wednesday
                   <input
                     placeholder="Open"
                     name="wednesday open"
                     value={schedule.wednesday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>} */}
+                  {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="wednesday close"
                     value={schedule.wednesday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>} */}
+                  {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Thursday">
-                  {" "}
-                  Thursday
+                <label htmlFor="Thursday"> Thursday
                   <input
                     placeholder="Open"
                     name="thursday open"
                     value={schedule.thursday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>} */}
+                  {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="thursday close"
                     value={schedule.thursday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>} */}
+                  {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>}
                 </label>
+
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Friday">
-                  {" "}
-                  Friday
+                <label htmlFor="Friday"> Friday
                   <input
                     placeholder="Open"
                     name="friday open"
                     value={schedule.friday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>} */}
+                  {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="friday close"
                     value={schedule.friday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>} */}
+                  {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>}
                 </label>
+
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Saturday">
-                  {" "}
-                  Saturday
+                <label htmlFor="Saturday"> Saturday
                   <input
                     placeholder="Open"
                     name="saturday open"
                     value={schedule.saturday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>} */}
+                  {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="saturday close"
                     value={schedule.saturday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>} */}
+                  {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="sunday">
-                  {" "}
-                  Sunday
+                <label htmlFor="sunday"> Sunday
                   <input
                     placeholder="Open"
                     name="sunday open"
                     value={schedule.sunday.open}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>} */}
+                  {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>}
+
                   <input
                     placeholder="Close"
                     name="sunday close"
                     value={schedule.sunday.close}
                     onChange={handleSchedule}
                   />
-                  {/* {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>} */}
+                  {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>}
                 </label>
               </div>
 
-              <h3>Select Menu options:</h3>
+              <h3>Select Diets options:</h3>
               <div className={styles.div}>
-                {optionsMenu.map((menu) => (
-                  <label key={menu}>
+                {optionsDiets.map((diet) => (
+                  <label key={diet}>
                     <input
                       type="checkbox"
-                      value={menu}
-                      checked={selectMenu.includes(menu)}
-                      onChange={handleMenu}
+                      value={diet}
+                      checked={selectDiets.includes(diet)}
+                      onChange={handleDiets}
                     />
-                    {menu}
+                    {diet}
                   </label>
                 ))}
+
+                <h3>Select Menu options:</h3>
+                <div className={styles.div}>
+                  {optionsMenu.map((menu) => (
+                    <label key={menu}>
+                      <input
+                        type="checkbox"
+                        value={menu}
+                        checked={selectMenu.includes(menu)}
+                        onChange={handleMenu}
+                      />
+                      {menu}
+                    </label>
+                  ))}
+                </div>
+
+                <button className={styles.buttons} onClick={handleBack}>
+                  Back
+                </button>
+                <button className={styles.buttons} onClick={handleNext}>
+                  Next
+                </button>
               </div>
-
-              <h2>Select your diets:</h2>
-              {optionsDiets.map((diet) => (
-                <label key={diet}>
-                  <input
-                    type="checkbox"
-                    value={diet}
-                    checked={selectDiets.includes(diet)}
-                    onChange={handleDiets}
-                  />
-                  {diet}
-                </label>
-              ))}
-
-              <button className={styles.buttons} onClick={handleBack}>
-                Back
-              </button>
-              <button className={styles.buttons} onClick={handleNext}>
-                Next
-              </button>
             </div>
           )}
           {stage === 4 && (
@@ -963,29 +986,10 @@ export default function Form() {
               </button>
             </div>
           )}
+
         </form>
       </div>
     </div>
   );
 }
 
-// <button className={styles.buttons} onClick={handleBack}>Back</button>
-// <button className={styles.buttons} type="submit" disabled={
-//   errorName ||
-//   errorAddress.streetName ||
-//   errorAddress.streetNumber ||
-//   errorAddress.city ||
-//   errorAddress.state ||
-//   errorAddress.country ||
-//   errorAddress.city ||
-//   errorAddress.country ||
-//   errorCoordinate.latitude ||
-//   errorCoordinate.latitude ||
-//   errorContact.email ||
-//   errorContact.phoneNumber ||
-//   errorSocialMedia.instagram ||
-//   errorSocialMedia.facebook ||
-//   errorSocialMedia.wpp ||
-//   errorSchedule
-
-// }> Restaurant Created</button>

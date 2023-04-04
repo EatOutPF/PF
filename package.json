@@ -2,6 +2,7 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.1.6",
+    "cloudinary-core": "^2.13.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-reanimated": "^3.0.2",
     "react-native-safe-area-context": "^4.5.0",
