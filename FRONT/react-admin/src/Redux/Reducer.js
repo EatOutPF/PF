@@ -16,6 +16,7 @@ import {
   FILTER_BY_ACTIVE,
   GET_ALL_USERS,
   POST_USERS,
+  GET_ALL_RESTAURANTS_BY_USER,
 } from "./Actions";
 
 const initialState = {
@@ -23,8 +24,7 @@ const initialState = {
   stateToSorted: [],
   allRestaurants: [],
   /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
-  user: {
-  },
+  user: {},
   detailRestaurant: {},
   currentListRestaurants: [],
   message: "",
@@ -54,6 +54,7 @@ const initialState = {
   msg: "",
   token: null,
   currentUsers: [],
+  currentListRestaurantsByUser: [],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -64,8 +65,8 @@ const Reducer = (state = initialState, { type, payload }) => {
         currentListRestaurants: payload,
       };
 
-      case SET_USER:
-      return { ...state, user : payload};
+    case SET_USER:
+      return { ...state, user: payload };
 
     case LOGOUT_USER:
       return { ...state, user: payload };
@@ -126,52 +127,63 @@ const Reducer = (state = initialState, { type, payload }) => {
 
     case POST_RESTAURANT:
       return {
-
         ...state,
         msg: payload,
       };
 
     case ORDER_BY_NAME:
-      let sorted
-      payload === 'asc' ? sorted = state.currentListRestaurants.sort((a, z) => a.name > z.name ? 1 : -1) :
-        payload === 'desc' ? sorted = state.currentListRestaurants.sort((a, z) => a.name < z.name ? 1 : -1) :
-          sorted = state.stateToSorted
-
-
+      let sorted;
+      payload === "asc"
+        ? (sorted = state.currentListRestaurants.sort((a, z) =>
+            a.name > z.name ? 1 : -1
+          ))
+        : payload === "desc"
+        ? (sorted = state.currentListRestaurants.sort((a, z) =>
+            a.name < z.name ? 1 : -1
+          ))
+        : (sorted = state.stateToSorted);
       return {
         ...state,
-        stateToSorted: sorted.map(e => e)
+        stateToSorted: sorted.map((e) => e),
       };
 
     case ORDER_BY_POPULARITY:
-      let data
-      payload === 'max' ? data = state.currentListRestaurants.sort((a, b) => a.ranking < b.ranking ? 1 : -1) :
-        payload === 'min' ? data = state.currentListRestaurants.sort((a, b) => a.ranking > b.ranking ? 1 : -1) :
-          data = state.stateToSorted
-
+      let data;
+      payload === "max"
+        ? (data = state.currentListRestaurants.sort((a, b) =>
+            a.ranking < b.ranking ? 1 : -1
+          ))
+        : payload === "min"
+        ? (data = state.currentListRestaurants.sort((a, b) =>
+            a.ranking > b.ranking ? 1 : -1
+          ))
+        : (data = state.stateToSorted);
       return {
         ...state,
-        stateToSorted: data.map(e => e)
-      }
+        stateToSorted: data.map((e) => e),
+      };
 
     case GET_ALL_USERS:
       return {
         ...state,
         currentUsers: payload,
       };
-       
-      case POST_USERS: 
-      return{
-        ...state,
-        currentUsers: payload
-      }
 
+    case POST_USERS:
+      return {
+        ...state,
+        currentUsers: payload,
+      };
+
+    case GET_ALL_RESTAURANTS_BY_USER:
+      return {
+        ...state,
+        currentListRestaurantsByUser: payload.restaurant,
+      };
 
     default:
       return { ...state };
-
-  };
-
-}
+  }
+};
 
 export default Reducer;
