@@ -12,11 +12,12 @@ export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
 export const ORDER_BY_NAME = "ORDER_BY_NAME";
 export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
-export const SET_TOKEN= "SET_TOKEN";
-export const FILTER_BY_MENU= "FILTER_BY_MENU";
-export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE";
+export const SET_TOKEN = "SET_TOKEN";
+export const FILTER_BY_MENU = "FILTER_BY_MENU";
+export const FILTER_BY_ACTIVE = "FILTER_BY_ACTIVE";
 export const GET_ALL_USERS = "GET_ALL_USERS";
-export const POST_USERS = "POST_USERS"
+export const POST_USERS = "POST_USERS";
+export const GET_ALL_RESTAURANTS_BY_USER = "GET_ALL_RESTAURANTS_BY_USER";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -146,7 +147,7 @@ export const postRestaurant = (create) => async (dispatch) => {
   try {
     const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
-    console.log({restaurant})
+    console.log({ restaurant });
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant,
@@ -161,12 +162,12 @@ export const postRestaurant = (create) => async (dispatch) => {
 };
 
 export const orderByName = (order) => {
-  return {type: ORDER_BY_NAME, payload: order}
-}
+  return { type: ORDER_BY_NAME, payload: order };
+};
 export const setToken = (token) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get('/users', {
+      const response = await axios.get("/users", {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -178,10 +179,9 @@ export const setToken = (token) => {
   };
 };
 
-
 export const orderByPopularity = (order) => {
-  return {type: ORDER_BY_POPULARITY, payload: order}
-}
+  return { type: ORDER_BY_POPULARITY, payload: order };
+};
 export const getAllUsers = () => {
   return (dispatch) => {
     axios
@@ -198,25 +198,28 @@ export const getAllUsers = () => {
   };
 };
 
+export const postUsers = (create) => async (dispatch) => {
+  try {
+    const users = await axios.post(`/users`, create);
+    const userdata = users.data;
+    console.log(userdata);
+    dispatch({
+      type: POST_USERS,
+      payload: userdata,
+    });
+  } catch (error) {
+    alert(error.response.data);
+    dispatch({
+      type: POST_USERS,
+      payload: [],
+    });
+  }
+};
 
-export const postUsers= (create)=>async (dispatch)=>
-{
-try {
-  const users= await axios.post(`/users`,create)
- const userdata= users.data 
- console.log(userdata);
- dispatch({
-  type: POST_USERS,
-  payload: userdata,
-});
-} catch (error) {
-  alert(error.response.data);
-  dispatch({
-    type: POST_USERS,
-    payload: [],
-  });
-}
-
-
-
-}
+export const getAllRestaurantsByUser = (user) => {
+  console.log(user);
+  return {
+    type: GET_ALL_RESTAURANTS_BY_USER,
+    payload: user,
+  };
+};

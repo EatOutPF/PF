@@ -10,3 +10,11 @@
   color: magenta;
   text-decoration: underline;
 }
+
+.containerGeneral {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
