@@ -643,14 +643,14 @@ export default function Form() {
                   value={schedule.monday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>} */}
+                {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>}
                 <input
                   placeholder="Close"
                   name="monday close"
                   value={schedule.monday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>} */}
+                {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>}
               </label>
             </div>
 
@@ -662,7 +662,7 @@ export default function Form() {
                   value={schedule.tuesday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>} */}
+                {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -670,7 +670,7 @@ export default function Form() {
                   value={schedule.tuesday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>} */}
+                {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>}
               </label>
             </div>
 
@@ -682,7 +682,7 @@ export default function Form() {
                   value={schedule.wednesday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>} */}
+                {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -690,7 +690,7 @@ export default function Form() {
                   value={schedule.wednesday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>} */}
+                {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>}
               </label>
             </div>
 
@@ -702,7 +702,7 @@ export default function Form() {
                   value={schedule.thursday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>} */}
+                {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -710,7 +710,7 @@ export default function Form() {
                   value={schedule.thursday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>} */}
+                {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>}
               </label>
 
             </div>
@@ -723,7 +723,7 @@ export default function Form() {
                   value={schedule.friday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>} */}
+                {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -731,7 +731,7 @@ export default function Form() {
                   value={schedule.friday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>} */}
+                {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>}
               </label>
 
             </div>
@@ -744,7 +744,7 @@ export default function Form() {
                   value={schedule.saturday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>} */}
+                {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -752,7 +752,7 @@ export default function Form() {
                   value={schedule.saturday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>} */}
+                {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>}
               </label>
             </div>
 
@@ -764,7 +764,7 @@ export default function Form() {
                   value={schedule.sunday.open}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>} */}
+                {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>}
 
                 <input
                   placeholder="Close"
@@ -772,7 +772,7 @@ export default function Form() {
                   value={schedule.sunday.close}
                   onChange={handleSchedule}
                 />
-                {/* {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>} */}
+                {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>}
               </label>
             </div>
 
