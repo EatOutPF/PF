@@ -35,13 +35,13 @@ function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
 
 
 
-  function handleClearFilter(evt) {
-    evt.preventDefault();
-    dispatch(getAllRestaurants());
-    setResetFilter(!resetFilter);
-    setCurrentPage(1);
-    setOrder("");
-  }
+function handleClearFilter(evt) {
+  evt.preventDefault();
+  dispatch(getAllRestaurants());
+  setResetFilter(!resetFilter);
+  setCurrentPage(1);
+  setOrder("");
+}
 
   return (
     <div>
@@ -99,7 +99,7 @@ function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
       </select>
       <button onClick={handleActive} >Activo</button>
        <button onClick={handleInactivo} >Inactivo</button>
-      <button onClick={handleClearFilter}>Restaurantes</button>
+      <button onClick={handleClearFilter}>Restablecer</button>
     </div>
   );
 }
