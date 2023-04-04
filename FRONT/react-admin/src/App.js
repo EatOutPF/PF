@@ -12,9 +12,8 @@ import Reviews from "./Components/Reviews/Reviews.jsx";
 import CreateUsers from "./View/CreateUsers/CreateUsers.jsx";
 import HomeUsers from "./View/HomeUser/HomeUser.jsx";
 import { useSelector } from "react-redux";
-axios.defaults.baseURL =
-  /* "https://eatout.onrender.com/"; */
-  "http://localhost:5001/";
+axios.defaults.baseURL = "https://eatout.onrender.com/";
+  //"http://localhost:5001/";
 
 function App() {
   const location = useLocation().pathname;
