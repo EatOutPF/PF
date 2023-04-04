@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const express = require("express");
+const decode = require("../firebase/decode");
+const cors = require("cors")
 
 const {
   getUsers,
@@ -8,19 +10,39 @@ const {
   activeUsers,
 } = require("../controllers/controllerUsers");
 
+const corsOptions = {
+  origin: '*',
+  optionSuccessStatus: 200,
+}
 const router = Router();
 router.use(express.json());
+router.use(cors(corsOptions));
 
 router.get("/", async (req, res) => {
-  try {
-    let resultado = await getUsers();
-    res.status(200).json(resultado);
-  } catch (error) {
-    res.status(404).json({ error: error.message });
-  }
-});
+  let token = req.headers.authorization?.split(' ')[1]
+ 
+   try {
+ 
+     if (token) {
+       let user = await decode(token)
+     let resultado = await getUsers(user);
+     res.status(200).json(resultado);
+     }
+     else{
+      
+       let resultado = await getUsers();
+     res.status(200).json(resultado);
+     }
+    
+ 
+   } catch (error) {
+     console.log(error.message)
+     res.status(404).json({ error: error.message });
+   }
+ });
 
 router.post("/", async (req, res) => {
+
   try {
     let resultado = await postUsers(req.body);
     res.status(200).json(resultado);
@@ -50,3 +72,6 @@ router.put("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+
+

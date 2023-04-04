@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./View/NavBar/NavBar.jsx";
 import "./App.css";
 import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
-import Form from "./Components/CreateRestaurant.jsx";
+import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
 import Landing from "./View/Landing/Landing.jsx";
 import axios from "axios";
 import Reviews from "./Components/Reviews/Reviews.jsx";
@@ -13,7 +13,8 @@ import CreateUsers from "./View/CreateUsers/CreateUsers.jsx";
 import HomeUsers from "./View/HomeUser/HomeUser.jsx";
 import { useSelector } from "react-redux";
 axios.defaults.baseURL =
-  "http://localhost:5001/" /* "https://eatout.onrender.com/" */;
+  /* "https://eatout.onrender.com/"; */
+  "http://localhost:5001/";
 
 function App() {
   const location = useLocation().pathname;
@@ -29,17 +30,13 @@ function App() {
         </div>
       )}
 
-      {user && (
-        <>
-          <Routes>
+      <Routes>
+        <Route exact path="/" element={<Login />}></Route>
+        <Route exact path="/createUsers" element={<CreateUsers />}></Route>
+        {user && (
+          <>
             {user.role === "superadmin" && (
               <>
-                <Route exact path="/" element={<Login />}></Route>
-                <Route
-                  exact
-                  path="/createUsers"
-                  element={<CreateUsers />}
-                ></Route>
                 <Route exact path="/Users" element={<HomeUsers />}></Route>
                 <Route exact path="/landing" element={<Landing />}></Route>
                 <Route
@@ -68,9 +65,10 @@ function App() {
                 <Route exact path="/landing" element={<Landing />}></Route>
               </>
             )}
-          </Routes>
-        </>
-      )}
+            <Route exact path="/" element={<Login />}></Route>
+          </>
+        )}
+      </Routes>
     </div>
   );
 }
