@@ -1,33 +1,59 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cards from "../../Components/Cards/Cards";
-import { getAllRestaurants } from "../../Redux/Actions";
+import {
+  getAllRestaurants,
+  getAllRestaurantsByUser,
+} from "../../Redux/Actions";
 import Filter from "../../Components/Filter";
 import Paginate from "../../Components/Paginado/Paginado";
 import style from "./Home.module.css";
 import Searchbar from "../../Components/SearchBar";
-import Sort from "../../Components/Sort"
+import Sort from "../../Components/Sort";
+import Loading from "../../Components/Loading";
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const restaurants = useSelector((state) => state.currentListRestaurants);
+  const { user, currentListRestaurants, currentListRestaurantsByUser } =
+    useSelector((state) => state);
+
+  const restaurants =
+    user.role === "superadmin"
+      ? currentListRestaurants
+      : currentListRestaurantsByUser;
+  /* const user = useSelector((state) => state.user); */
 
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
   const [order, setOrder] = useState("");
   const [filter, setResetFilter] = useState("");
   const [resetFilter, setsetFilter] = useState("");
-  
+
   const [searchResults, setSearchResults] = useState(null);
   const [sort, setSort] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getAllRestaurants());
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    let RegisteredUser = user;
+
+    if (RegisteredUser?.role) {
+      if (RegisteredUser.role === "superadmin") dispatch(getAllRestaurants());
+      if (RegisteredUser.role === "admin")
+        dispatch(getAllRestaurantsByUser(user));
+    }
   }, []);
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
@@ -36,24 +62,30 @@ const Home = () => {
     searchResults ||
     restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
 
+    if (isLoading) {
+      return <Loading />;
+    }
   return (
     <div className={style.containerHome}>
       <div className={style.containerSearchBar}>
-        <Filter
+        <Searchbar setCurrentPage={setCurrentPage} />
+        <>
+          <Filter
+            setOrder={setOrder}
+            setResetFilter={setResetFilter}
+            setCurrentPage={setCurrentPage}
+            resetFilter={resetFilter}
+          />
+        </>
+
+        <Sort
           setOrder={setOrder}
-          setResetFilter={setResetFilter}
+          setSort={setSort}
           setCurrentPage={setCurrentPage}
           resetFilter={resetFilter}
         />
-        <Sort
-         setOrder={setOrder}
-         setSort={setSort}
-         setCurrentPage={setCurrentPage}
-         resetFilter={resetFilter}
-        />
-        <Searchbar setCurrentPage={setCurrentPage} />
       </div>
-      
+
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
         restaurants={searchResults ? searchResults.length : restaurants.length}

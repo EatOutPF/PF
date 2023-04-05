@@ -36,9 +36,6 @@ const NavBar = () => {
           <NavLink to="/Users">
             <button className={styleGeneral.btnGost}>Ver Usuarios</button>
           </NavLink>
-          <NavLink to="/createUsers">
-            <button className={styleGeneral.btnGost}>Crear Usuarios</button>
-          </NavLink>
         </>
       )}
 

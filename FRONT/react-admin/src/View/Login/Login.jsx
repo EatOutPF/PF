@@ -13,7 +13,7 @@ import {
 import { getStorage } from "firebase/storage";
 import logo from "../../assets/logoNombre.png";
 import style from "./Login.module.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
@@ -36,7 +36,7 @@ const storage = getStorage(app);
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
   const [error, setError] = useState(null);
@@ -46,8 +46,7 @@ function Login() {
   });
 
   useEffect(() => {
-    setUser(user)
-    
+    setUser(user);
   });
 
   const handleSubmit = async (event) => {
@@ -69,9 +68,8 @@ function Login() {
       setUser(userCredential.user);
       dispatch(setToken(userCredential.user.accessToken));
       setUser(userCredential.user);
-      navigate("/landing")
-     //window.location.href = "/landing";
-    
+      navigate("/landing");
+      //window.location.href = "/landing";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
@@ -81,12 +79,12 @@ function Login() {
   const handleOnClick = () => {
     signInWithPopup(auth, new GoogleAuthProvider())
       .then((result) => {
-        const user = result
+        const user = result;
         //window.location.href = "/home";
         setUser(user.user);
         dispatch(setToken(result.user.accessToken));
         console.log(user);
-        navigate("/landing")
+        navigate("/landing");
       })
       .catch((error) => {
         console.error("Sign in with Google failed!", error);
@@ -118,6 +116,9 @@ function Login() {
           </button>
         </ul>
         {error && <p>{error}</p>}
+        <NavLink to="/createUsers">
+          <button>Registrese</button>
+        </NavLink>
       </form>
       <div className={style.containerImagenLogin}>
         <img src={logo} alt="logo"></img>
