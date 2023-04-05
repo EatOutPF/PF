@@ -109,7 +109,7 @@ function handleShowAll(evt) {
       </select>
       <button onClick={handleActive}>Activo</button>
       <button onClick={handleInactivo}>Inactivo</button>
-      <button onClick={handleClearFilter}>Restaurantes</button>
+      <button onClick={handleClearFilter}>Reset Filter</button>
     </div>
   );
 }

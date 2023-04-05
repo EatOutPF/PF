@@ -35,8 +35,9 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
         <select
           defaultValue={resetFilter}
           onChange={(e) => handleSortByName(e)}
+          className="form-selected"
         >
-          <option value="">Select...</option>
+          <option value="">Order by alphabetical</option>
           <option value="asc"> A to Z</option>
           <option value="desc"> Z to A</option>
         </select>
@@ -45,8 +46,9 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
         <select
           defaultValue={resetFilter}
           onChange={(e) => handleOrderByPopularity(e)}
+          className="form-selected"
         >
-          <option value="">Select...</option>
+          <option value="">Order by ranking</option>
           <option value="max">Ascendent popularity</option>
           <option value="min">Descendent popularity</option>
         </select>

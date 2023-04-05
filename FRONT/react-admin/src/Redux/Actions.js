@@ -152,6 +152,7 @@ export const postRestaurant = (create) => async (dispatch) => {
       type: "POST_RESTAURANT",
       payload: restaurant,
     });
+    dispatch (getAllRestaurantsByUser())
   } catch (error) {
     alert(error.message.data);
     dispatch({
