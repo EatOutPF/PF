@@ -74,7 +74,7 @@ const Home = () => {
             setOrder={setOrder}
             setResetFilter={setResetFilter}
             setCurrentPage={setCurrentPage}
-            resetFilter={resetFilter}
+            resetFilter={setResetFilter}
           />
         </>
 

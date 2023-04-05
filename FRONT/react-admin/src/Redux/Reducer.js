@@ -64,6 +64,7 @@ const Reducer = (state = initialState, { type, payload }) => {
     case GET_ALL_RESTAURANTS:
       return {
         ...state,
+        filteredData: payload,
         currentListRestaurants: payload,
       };
 
@@ -74,24 +75,28 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, user: payload };
 
     case FILTER_BY_DIETS:
-      const filterByDiets = state.currentListRestaurants.filter((restaurant) =>
+      const filterByDiets = state.filteredData.filter((restaurant) =>
         restaurant.diets.includes(payload)
       );
-      return { ...state, currentListRestaurants: filterByDiets };
-
-    case FILTER_BY_MENU:
-      const filterBymenu = state.currentListRestaurants.filter((e) =>
-        e.menu.includes(payload)
-      );
-      return { ...state, currentListRestaurants: filterBymenu };
+     
+      const filteredLis= payload===""?state.filteredData: filterByDiets
+      return { ... state , currentListRestaurants: filteredLis };
+      
+      case FILTER_BY_MENU:
+        const filterBymenu = state.filteredData.filter((e) =>
+          e.menu.includes(payload)
+        );
+        const filteredList = payload === "" ? state.filteredData : filterBymenu;
+        return { ...state, currentListRestaurants: filteredList };
 
     case FILTER_BY_ACTIVE:
-      const filteredData = state.currentListRestaurants.filter(
+      const filteredData = state.filteredData.filter(
         (item) => item.active === payload
       );
+      const filteredLi = payload === "" ? state.filteredData : filteredData;
       return {
         ...state,
-        currentListRestaurants: filteredData,
+        currentListRestaurants: filteredLi,
       };
 
     case DETAIL_RESTAURANT:

@@ -10,6 +10,9 @@ import style from "../Styles/General.module.css";
 
 function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
+  const currentListRestaurants = useSelector(
+    (state) => state.currentListRestaurants
+  );
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -43,7 +46,12 @@ function handleClearFilter(evt) {
   setCurrentPage(1);
   setOrder("");
 }
-
+function handleShowAll(evt) {
+  evt.preventDefault();
+  dispatch({currentListRestaurants});
+  setCurrentPage(1);
+  setOrder("");
+}
   return (
     <div className={style.containerGeneral}>
       <h3>Filtrar</h3>
