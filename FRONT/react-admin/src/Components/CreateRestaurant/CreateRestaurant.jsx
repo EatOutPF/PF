@@ -466,7 +466,7 @@ export default function Form() {
 
     console.log({ newRestaurant });
     dispatch(postRestaurant(newRestaurant));
-    msg.error ? sweetAlert(msg.error) : sweetAlert(msg);
+    msg?.error ? sweetAlert(msg.error) : sweetAlert(msg);
 
     navigate("/home");
   };

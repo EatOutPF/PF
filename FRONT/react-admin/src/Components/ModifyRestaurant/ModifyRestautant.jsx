@@ -96,8 +96,8 @@ const ModifyRestaurant = (props) => {
         .map((p) => p.name);
       dispatch(modifyRestaurant(input));
       let newMessage = message;
-      console.log(newMessage);
-      if (newMessage) {
+      console.log(newMessage.data);
+      if (newMessage?.data) {
         sweetAlert(newMessage.data);
         navigate("/home");
       }

@@ -29,15 +29,15 @@ const Card = (props) => {
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-  const handlerPayment = () => {
+  /*  const handlerPayment = () => {
     axios
       .post(
-        /* "http://localhost:5001/payment" */ "https://eatout.onrender.com/payment",
+       "https://eatout.onrender.com/payment",
         props
       )
       .then((res) => (window.location.href = res.data.response.init_point));
   };
-
+ */
   return (
     <>
       {props && (
@@ -96,7 +96,7 @@ const Card = (props) => {
             )}
 
             {/* -----------MERCADOPAGO--------- */}
-            <button onClick={handlerPayment}> Pagar Reserva </button>
+            {/*   <button onClick={handlerPayment}> Pagar Reserva </button> */}
           </td>
         </tr>
       )}

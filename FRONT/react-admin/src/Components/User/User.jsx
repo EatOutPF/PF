@@ -49,7 +49,7 @@ const User = (props) => {
               <></>
             )}
 
-            {/* <button
+            <button
               onClick={handlerDelete}
               className={props.active ? style.rowsActive : style.rowsInactive}
             >
@@ -64,7 +64,7 @@ const User = (props) => {
                   <img src={recuperar} alt="desactivar" />
                 </div>
               )}
-            </button> */}
+            </button>
           </td>
         </tr>
       )}
