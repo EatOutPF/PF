@@ -21,6 +21,7 @@
     "mercadopago": "^1.5.15",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "stripe": "^11.17.0"
   }
 }
