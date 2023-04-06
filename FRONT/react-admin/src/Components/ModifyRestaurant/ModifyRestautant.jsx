@@ -4,6 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
 import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
+import sweetAlert from "sweetalert";
 
 const ModifyRestaurant = (props) => {
   const { id } = useParams();
@@ -95,8 +96,9 @@ const ModifyRestaurant = (props) => {
         .map((p) => p.name);
       dispatch(modifyRestaurant(input));
       let newMessage = message;
-      if (newMessage) {
-        alert(newMessage.data);
+      console.log(newMessage.data);
+      if (newMessage?.data) {
+        sweetAlert("Actualizacion exitosa", newMessage.data);
         navigate("/home");
       }
     }

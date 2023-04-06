@@ -148,16 +148,18 @@ export const postRestaurant = (create) => async (dispatch) => {
     const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
     console.log({ restaurant });
+    alert(restaurant);
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant,
     });
-    dispatch (getAllRestaurantsByUser())
+    dispatch(getAllRestaurantsByUser());
   } catch (error) {
-    alert(error.message.data);
+    alert(error.response.data.error);
+
     dispatch({
       type: "POST_RESTAURANT",
-      payload: [],
+      payload: error.response.data.error,
     });
   }
 };

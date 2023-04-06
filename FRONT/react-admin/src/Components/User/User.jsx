@@ -7,6 +7,7 @@ import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import axios from "axios";
+import sweetAlert from "sweetalert";
 
 const User = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -22,7 +23,7 @@ const User = (props) => {
   const handlerDelete = () => {
     /* dispatch(deleteRestaurant(props)); */
     console.log(message);
-    if (message) alert(message);
+    if (message) sweetAlert(message);
   };
 
   return (
@@ -48,7 +49,7 @@ const User = (props) => {
               <></>
             )}
 
-            {/* <button
+            <button
               onClick={handlerDelete}
               className={props.active ? style.rowsActive : style.rowsInactive}
             >
@@ -63,7 +64,7 @@ const User = (props) => {
                   <img src={recuperar} alt="desactivar" />
                 </div>
               )}
-            </button> */}
+            </button>
           </td>
         </tr>
       )}
