@@ -12,7 +12,7 @@ const userSchema = new Schema({
     ref: 'Favorite'
   }],
   reserve: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Reserve'
   }],
   role: { 
@@ -27,6 +27,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Payment'
   }],
+  login: { 
+    type: Boolean,
+    default: false
+  },
   active: {
     type: Boolean,
     default: true,
