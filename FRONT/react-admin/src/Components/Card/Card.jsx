@@ -8,6 +8,7 @@ import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
 import axios from "axios";
+import sweetAlert from "sweetalert";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -23,7 +24,7 @@ const Card = (props) => {
   const handlerDelete = () => {
     dispatch(deleteRestaurant(props));
     console.log(message);
-    if (message) alert(message);
+    if (message) sweetAlert(message);
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
@@ -31,7 +32,7 @@ const Card = (props) => {
   const handlerPayment = () => {
     axios
       .post(
-        "http://localhost:5001/payment" /* "https://eatout.onrender.com/payment" */,
+        /* "http://localhost:5001/payment" */ "https://eatout.onrender.com/payment",
         props
       )
       .then((res) => (window.location.href = res.data.response.init_point));

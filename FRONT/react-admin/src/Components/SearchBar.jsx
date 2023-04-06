@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllRestauranName } from "../Redux/Actions";
+import sweetAlert from "sweetalert";
 
 function Searchbar() {
   const [state, setState] = useState("");
@@ -13,10 +14,10 @@ function Searchbar() {
   function handleSubmit(e) {
     e.preventDefault();
     if (state.length > 1) {
-      dispatch(getAllRestauranName(state))
+      dispatch(getAllRestauranName(state));
       setState("");
     } else {
-      alert("No está el restaurante");
+      sweetAlert("No está el restaurante");
     }
   }
 
