@@ -7,19 +7,24 @@ async function getUsers(email) {
   const search = email;
 
   if (search) {
-
     const users = await User.findOne({ email: { $regex: search } })
-    .populate("restaurant")
-    .populate("favorite");
+      .populate("restaurant")
+      .populate("favorite")
+      .populate("reserve")
+      .populate("payment");
 
-    if (users === null) throw new Error("No existen usuarios con ese E-Mail registrado")
-    
+    if (users === null)
+      throw new Error("No existen usuarios con ese E-Mail registrado");
+    users.login = true;
+    users.save();
+
     return users;
   }
   const users = await User.find()
-  .populate("restaurant")
-  .populate("favorite")
-
+    .populate("restaurant")
+    .populate("favorite")
+    .populate("reserve")
+    .populate("payment");
   return users;
 }
 
@@ -40,20 +45,17 @@ async function postUsers({ name, phone, email, password }) {
     phone,
     email,
     password,
-  })
+  });
   return `El usuario ${resultado.name} fue creado con exito`;
 }
 
-
 async function putUsers(id, { name, phone, email }) {
-
   if (!id) throw new Error("El id tiene que ser valido ");
   const user = await User.findByIdAndUpdate(id, {
     _id: id,
     name: name,
     phone: phone,
     email: email,
-
   });
   if (!user) throw new Error(`No se encuentra el user con el id  ${user.id}`);
   return `El user ${user.name} fue actualizado con exito`;
@@ -67,7 +69,7 @@ async function activeUsers(id, active) {
   user.active = !active;
   user.save();
 
-  await admin.auth().updateUser(id, {disabled: !active})
+  await admin.auth().updateUser(id, { disabled: !active });
 
   return `Se ha modificado el estado del user ${user.name}`;
 }
@@ -77,5 +79,3 @@ module.exports = {
   putUsers,
   activeUsers,
 };
-
-

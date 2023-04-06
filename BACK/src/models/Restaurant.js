@@ -138,6 +138,7 @@ const restaurantSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Payment'
   }],
+  balance: Number,
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
