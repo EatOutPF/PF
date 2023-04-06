@@ -19,6 +19,7 @@ export const GET_ALL_USERS = "GET_ALL_USERS";
 export const POST_USERS = "POST_USERS";
 export const GET_ALL_RESTAURANTS_BY_USER = "GET_ALL_RESTAURANTS_BY_USER";
 
+
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
@@ -48,17 +49,17 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
-export const getFilterByDiets = (comida) => {
+export const getFilterByDiets = (diets) => {
   return {
     type: FILTER_BY_DIETS,
-    payload: comida,
+    payload: diets,
   };
 };
 
-export const getFilterByMenu = (comida) => {
+export const getFilterByMenu = (menu) => {
   return {
     type: FILTER_BY_MENU,
-    payload: comida,
+    payload: menu,
   };
 };
 export const getFilterActive = (active) => {
@@ -224,4 +225,3 @@ export const getAllRestaurantsByUser = (user) => {
     payload: user,
   };
 };
-

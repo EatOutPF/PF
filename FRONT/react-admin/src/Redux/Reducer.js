@@ -78,25 +78,21 @@ const Reducer = (state = initialState, { type, payload }) => {
       const filterByDiets = state.filteredData.filter((restaurant) =>
         restaurant.diets.includes(payload)
       );
-     
-      const filteredLis= payload===""?state.filteredData: filterByDiets
-      return { ... state , currentListRestaurants: filteredLis };
-      
-      case FILTER_BY_MENU:
-        const filterBymenu = state.filteredData.filter((e) =>
-          e.menu.includes(payload)
-        );
-        const filteredList = payload === "" ? state.filteredData : filterBymenu;
-        return { ...state, currentListRestaurants: filteredList };
+      return { ...state, currentListRestaurants: filterByDiets };
+
+    case FILTER_BY_MENU:
+      const filterBymenu = state.currentListRestaurants.filter((e) =>
+        e.menu.includes(payload)
+      );
+      return { ...state, currentListRestaurants: filterBymenu };
 
     case FILTER_BY_ACTIVE:
-      const filteredData = state.filteredData.filter(
+      const filteredData = state.currentListRestaurants.filter(
         (item) => item.active === payload
       );
-      const filteredLi = payload === "" ? state.filteredData : filteredData;
       return {
         ...state,
-        currentListRestaurants: filteredLi,
+        currentListRestaurants: filteredData,
       };
 
     case DETAIL_RESTAURANT:
@@ -187,8 +183,8 @@ const Reducer = (state = initialState, { type, payload }) => {
         ...state,
         currentListRestaurantsByUser: payload.restaurant,
       };
-  
- 
+
+
     default:
       return { ...state };
   }

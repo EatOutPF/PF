@@ -7,12 +7,12 @@ import {
 } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import style from "../Styles/General.module.css";
+import { useState } from "react";
 
-function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
+function Filter({  resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
-  const currentListRestaurants = useSelector(
-    (state) => state.currentListRestaurants
-  );
+ const [order , setOrder]= useState()
+ const [ currentPage, setCurrentPage]= useState()
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -46,12 +46,7 @@ function handleClearFilter(evt) {
   setCurrentPage(1);
   setOrder("");
 }
-function handleShowAll(evt) {
-  evt.preventDefault();
-  dispatch({currentListRestaurants});
-  setCurrentPage(1);
-  setOrder("");
-}
+
   return (
     <div className={style.containerGeneral}>
       <h3>Filtrar</h3>

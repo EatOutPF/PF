@@ -66,6 +66,7 @@ const Home = () => {
       return <Loading />;
     }
   return (
+  
     <div className={style.containerHome}>
       <div className={style.containerSearchBar}>
         <Searchbar setCurrentPage={setCurrentPage} />
