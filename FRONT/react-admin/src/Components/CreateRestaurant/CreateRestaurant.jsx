@@ -463,12 +463,12 @@ export default function Form() {
       section: selectSection,
       user: user._id,
     };
-
-    console.log({ newRestaurant });
     dispatch(postRestaurant(newRestaurant));
-    msg?.error ? sweetAlert(msg.error) : sweetAlert(msg);
 
-    navigate("/home");
+    if (msg?.restaurant) {
+      sweetAlert("Creación Exitosa", msg.restaurant);
+      navigate("/home");
+    }
   };
 
   return (

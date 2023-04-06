@@ -24,7 +24,12 @@ const Card = (props) => {
   const handlerDelete = () => {
     dispatch(deleteRestaurant(props));
     console.log(message);
-    if (message) sweetAlert(message);
+    return props.active
+      ? sweetAlert(
+          "Se inactivó",
+          `Se ha deshabilitado el restaurant ${props.name}`
+        )
+      : sweetAlert("Se activó", `Se ha habilitado el restaurant ${props.name}`);
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/

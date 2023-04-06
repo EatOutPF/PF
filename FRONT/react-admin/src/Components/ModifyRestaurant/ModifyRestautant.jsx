@@ -98,7 +98,7 @@ const ModifyRestaurant = (props) => {
       let newMessage = message;
       console.log(newMessage.data);
       if (newMessage?.data) {
-        sweetAlert(newMessage.data);
+        sweetAlert("Actualizacion exitosa", newMessage.data);
         navigate("/home");
       }
     }
