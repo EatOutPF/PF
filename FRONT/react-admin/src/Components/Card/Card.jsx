@@ -8,6 +8,7 @@ import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
 import axios from "axios";
+import sweetAlert from "sweetalert";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -23,20 +24,25 @@ const Card = (props) => {
   const handlerDelete = () => {
     dispatch(deleteRestaurant(props));
     console.log(message);
-    if (message) alert(message);
+    return props.active
+      ? sweetAlert(
+          "Se inactivó",
+          `Se ha deshabilitado el restaurant ${props.name}`
+        )
+      : sweetAlert("Se activó", `Se ha habilitado el restaurant ${props.name}`);
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-  const handlerPayment = () => {
+  /*  const handlerPayment = () => {
     axios
       .post(
-       /* "http://localhost:5001/payment" */ "https://eatout.onrender.com/payment",
+       "https://eatout.onrender.com/payment",
         props
       )
       .then((res) => (window.location.href = res.data.response.init_point));
   };
-
+ */
   return (
     <>
       {props && (
@@ -95,7 +101,7 @@ const Card = (props) => {
             )}
 
             {/* -----------MERCADOPAGO--------- */}
-            <button onClick={handlerPayment}> Pagar Reserva </button>
+            {/*   <button onClick={handlerPayment}> Pagar Reserva </button> */}
           </td>
         </tr>
       )}

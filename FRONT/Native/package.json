@@ -28,7 +28,7 @@
     "firebase": "^9.18.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "0.71.6",
     "react-native-animated-header": "^1.0.7",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "^2.9.0",
