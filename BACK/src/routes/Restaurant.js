@@ -12,6 +12,7 @@ const router = Router();
 router.use(express.json());
 
 router.post("/", async (req, res) => {
+  
   try {
     let resultado = await postRestaurant(req.body);
     res.status(200).json(resultado);

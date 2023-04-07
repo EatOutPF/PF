@@ -117,11 +117,6 @@ const Reducer = (state = initialState, { type, payload }) => {
       return { ...state, currentListRestaurants: payload };
     case DELETE_RESTAURANT:
       return { ...state, message: payload };
-    case POST_RESTAURANT:
-      return {
-        ...state,
-        createRestaurant: [...state.createRestaurant, payload],
-      };
 
     case SET_TOKEN:
       return {

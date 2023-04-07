@@ -12,6 +12,7 @@ const dietRouter = require("./Diet");
 const extraRouter = require("./Extra");
 const atmosphereRouter = require("./Atmosphere");
 const reviewsRouter = require("./Reviews")
+const sendEmailRouter = require("./sendEmail")
 
 /* --------MERCADOPAGO------- */
 const paymentMercadoPagoRouter = require("./PaymentMercadoPago");
@@ -26,7 +27,8 @@ router.use("/menu", menuRouter);
 router.use("/diet", dietRouter);
 router.use("/extra", extraRouter);
 router.use("/atmosphere", atmosphereRouter);
-router.use("/reviews", reviewsRouter)
+router.use("/reviews", reviewsRouter);
+router.use("/sendemail", sendEmailRouter);
 
 /* --------MERCADOPAGO------- */
 router.use("/payment", paymentMercadoPagoRouter);
