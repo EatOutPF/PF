@@ -73,4 +73,6 @@ const updateMapper = (dataToUpdate) => {
   return mappedData;
 };
 
-export { updateMapper };
+
+
+export { updateMapper};
