@@ -1,31 +1,33 @@
 import axios from "axios";
 import { updateMapper } from "./utils";
-
-const baseUrl = "http://localhost:5001";
-
 export const GET_ALL_RESTAURANTS = "GET_ALL_RESTAURANTS";
 export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
+
 export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
 export const POST_RESTAURANT = "POST_RESTAURANT";
-export const SET_TOKEN= "SET_TOKEN"
-export const FILTER_BY_MENU= "FILTER_BY_MENU"
-export const FILTER_BY_ACTIVE= "FILTER_BY_ACTIVE"
+export const ORDER_BY_NAME = "ORDER_BY_NAME";
+export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
+export const SET_TOKEN = "SET_TOKEN";
 
+export const GET_ALL_USERS = "GET_ALL_USERS";
+export const POST_USERS = "POST_USERS";
+export const GET_ALL_RESTAURANTS_BY_USER = "GET_ALL_RESTAURANTS_BY_USER";
+export const FILTERS_OPTIONS = "FILTERS_OPTIONS";
+export const POST_OPTIONS = "POST_OPTIONS";
 
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant`)
+      .get(`/restaurant`)
       .then((response) => {
         dispatch({
-          type: "GET_ALL_RESTAURANTS",
+          type: GET_ALL_RESTAURANTS,
           payload: response.data,
         });
       })
@@ -48,33 +50,18 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
-export const getFilterByDiets = (comida) => {
+export const getFilterOptions = ({ diets, menu, active }) => {
   return {
-    type: FILTER_BY_DIETS,
-    payload: comida,
+    type: FILTERS_OPTIONS,
+    payload: { diets, menu, active },
   };
 };
-
-export const getFilterByMenu= (comida)=>{
-return{
-  type: FILTER_BY_MENU,
-  payload:comida,
-};
-};
-export const getFilterActive= (active)=>{
-  return {
-    type: FILTER_BY_ACTIVE,
-    payload: active
-  }
-}
-
-
 
 
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
-      .get(`${baseUrl}/restaurant/${id}`)
+      .get(`/restaurant/${id}`)
       .then((result) => {
         dispatch({
           type: DETAIL_RESTAURANT,
@@ -94,7 +81,7 @@ export const modifyRestaurant = (dataToUpdate) => {
   let restaurant = updateMapper(dataToUpdate);
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, restaurant)
+      .put(`/restaurant/${dataToUpdate.id}`, restaurant)
       .then((result) => {
         dispatch({
           type: MODIFY_RESTAURANT,
@@ -116,9 +103,7 @@ export const getAllRestauranName = (name) => {
       return dispatch({ type: ERROR_MSSG });
     }
     try {
-      let RestauranByName = await axios.get(
-        `${baseUrl}/restaurant?name=${name}`
-      );
+      let RestauranByName = await axios.get(`/restaurant?name=${name}`);
       return dispatch({
         type: GET_RESTAURAN_NAME,
         payload: RestauranByName.data,
@@ -132,7 +117,7 @@ export const getAllRestauranName = (name) => {
 export const deleteRestaurant = (dataToUpdate) => {
   return (dispatch) => {
     axios
-      .put(`${baseUrl}/restaurant/${dataToUpdate.id}`, {
+      .put(`/restaurant/${dataToUpdate.id}`, {
         active: dataToUpdate.active,
       })
       .then((response) => {
@@ -148,31 +133,107 @@ export const deleteRestaurant = (dataToUpdate) => {
   };
 };
 
-
 export const postRestaurant = (create) => async (dispatch) => {
   try {
-    const response = await axios.post(`${baseUrl}/restaurant`, create);
+    const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
+    console.log({ restaurant });
+    alert(restaurant);
     dispatch({
       type: "POST_RESTAURANT",
-      payload: restaurant
+      payload: restaurant,
     });
+    dispatch(getAllRestaurantsByUser());
   } catch (error) {
-    alert(error.message.data);
+    alert(error.response.data.error);
+
     dispatch({
       type: "POST_RESTAURANT",
-      payload: []
+      payload: error.response.data.error,
     });
   }
 };
 
+export const orderByName = (order) => {
+  return { type: ORDER_BY_NAME, payload: order };
+};
 export const setToken = (token) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${baseUrl}/users`, { token });
-      dispatch({ type: SET_TOKEN, payload: response.data });
+      const response = await axios.get("/users", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      dispatch({ type: SET_USER, payload: response.data });
     } catch (error) {
-      console.error('Error setting token:', error);
+      console.error("Error setting token:", error);
     }
   };
+};
+
+export const orderByPopularity = (order) => {
+  return { type: ORDER_BY_POPULARITY, payload: order };
+};
+export const getAllUsers = () => {
+  return (dispatch) => {
+    axios
+      .get(`/users`)
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_USERS,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({ type: GET_ALL_USERS, payload: error });
+      });
+  };
+};
+
+export const postUsers = (create) => async (dispatch) => {
+  try {
+    const users = await axios.post(`/users`, create);
+    const userdata = users.data;
+    console.log(userdata);
+    dispatch({
+      type: POST_USERS,
+      payload: userdata,
+    });
+  } catch (error) {
+    alert(error.response.data);
+    dispatch({
+      type: POST_USERS,
+      payload: [],
+    });
+  }
+};
+
+export const getAllRestaurantsByUser = (user) => {
+  console.log(user);
+  return {
+    type: GET_ALL_RESTAURANTS_BY_USER,
+    payload: user,
+  };
+};
+
+
+export const PostsOptions = (create) => async(dispatch) => {
+ try {
+   const options = await axios.post(`/options`,create)
+   const dataOptions = options.data;
+
+   dispatch({
+    type: POST_OPTIONS,
+    payload: dataOptions,
+  });
+  
+ } catch (error) {
+  dispatch({
+    type: POST_OPTIONS,
+    payload: [],
+  });
+  
+ }
+
 }

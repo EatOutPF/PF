@@ -45,13 +45,13 @@ const Main = () => {
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#c7c8c1"}}>
       <AppBar />       
         <Routes>
-          <Route path='/' element= {<RestosList />} />          // Restos
+          <Route path='/' element= {<RestosList />} /> // Restos
           <Route path='/restorantslist' element= {            // Listado
           // <Text>Working on it</Text>
             <ListOfFiltered/>
           } />
-          <Route path='/mapview' element= {<Map data={RestosList}/>} />       // Mapa
-          <Route path='/pagerview' element={<Text>Working on it 1</Text>} />            // EJ2
+          <Route path='/mapview' element= {<Map data={RestosList}/>} /> // Mapa
+          <Route path='/pagerview' element={<Text>Working on it 1</Text>} /> // EJ2
           <Route path='/signin' element= { 
             <Login/> 
             // <Text>Working on it 1</Text>
@@ -73,20 +73,21 @@ const Main = () => {
 export function FilterButton() {
 
 
-return (
-    <View styles={styles.container}>
-      <TouchableOpacity style={styles.buttonLocation} onPress={() => setIsVisible(true)}
-        buttonStyle={styles.button}>
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.buttonLocation} onPress={() => setIsVisible(true)}>
         <View style={styles.buttonColor}>
-          <Text style={styles.buttonText}>Filtros</Text>
+          <View style={styles.iconContainer}>
+            <IonicIcon 
+              name="filter-outline"
+              size={34}
+            />
+            <Text style={styles.buttonText}>Filtros</Text>
+          </View>
         </View>
       </TouchableOpacity>
-      <IonicIcon
-        name="filter"
-        size={22}
-      />
     </View>
-  ) 
+  );
 }
 
 
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   },
   buttonLocation: {
     position: 'absolute',
-    buttom: 40,
+    bottom: 40,
     right: 25,
   },
   buttonColor: {
@@ -107,14 +108,17 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     justifyContent: 'center',
-
   },
   buttonText: {
     color: 'white',
     fontSize: 20,
-    top: -15,
     alignSelf: 'center',
   },
-})
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Main

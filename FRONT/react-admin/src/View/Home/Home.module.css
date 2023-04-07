@@ -1,11 +1,19 @@
 .containerHome {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
 }
 
 .containerSearchBar {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 35px 0px;
+  padding-top: 30px;
+}
+
+.containterTable {
+  flex-grow: 1;
+  overflow: auto;
 }

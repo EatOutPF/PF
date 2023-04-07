@@ -1,39 +1,30 @@
-import React from "react";
-import { getFilterByDiets, getAllRestaurants, getFilterByMenu , getFilterActive} from "../Redux/Actions";
-import { useDispatch , useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import {
+  getFilterByDiets,
+  getAllRestaurants,
+  getFilterByMenu,
+  getFilterActive,
+  getFilterOptions
+} from "../Redux/Actions";
+import { useDispatch, } from "react-redux";
+import style from "../Styles/General.module.css";
 
-function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
+function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
-  
 
-  function handleSubmit(evt) {
+  const [selectedOptions, setSelectedOptions] = useState({});
+
+  function onChangefilter(evt) {
     evt.preventDefault();
-    dispatch(getFilterByDiets(evt.target.value));
-    setOrder(`${evt.target.value}`);
+    setSelectedOptions({
+      ...selectedOptions,
+      [evt.target.name]: evt.target.value,
+    });
   }
-  function handleOnClick(evt){
-    evt.preventDefault()
-    dispatch(getFilterByMenu(evt.target.value))
-    setOrder(`${evt.target.value}`)
-  }
-  function handleActive(e){
-    console.log(e.target.value)
-    e.preventDefault()
-    dispatch(getFilterActive(true))
-    setCurrentPage(1)
-    setOrder("")
-   
-} 
-     function handleInactivo(e){
-    console.log(e.target.value)
-    e.preventDefault()
-    dispatch(getFilterActive(false))
-    setCurrentPage(1)
-    setOrder("")
-   
-} 
 
-
+  useEffect(() => {
+    dispatch(getFilterOptions(selectedOptions));
+  }, [selectedOptions]);
 
   function handleClearFilter(evt) {
     evt.preventDefault();
@@ -44,10 +35,12 @@ function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
   }
 
   return (
-    <div>
+    <div className={style.containerGeneral}>
+      <h3>Filtrar Dieta</h3>
       <select
         defaultValue={resetFilter}
-        onChange={(event) => handleSubmit(event)}
+        onChange={onChangefilter}
+        name="diets"
         className="form-selected"
       >
         <option>Filter by type</option>
@@ -64,48 +57,54 @@ function Filter ({setOrder, setCurrentPage, resetFilter, setResetFilter}) {
       </select>
       <select
         defaultValue={resetFilter}
-        onChange={(event) => handleOnClick(event)}
+        onChange={onChangefilter}
+        name="menu"
         className="form-selected"
       >
-        <option>Filter by Menu</option>
+        <option>Filtrar Menu</option>
         <option key="internacional" value="internacional">
-        internacional
+          internacional
         </option>
         <option key="italiana" value="italiana">
-        italiana
+          italiana
         </option>
         <option key="asiática" value="asiática">
-        asiática
-        </option> 
+          asiática
+        </option>
         <option key="hamburguesas" value="hamburguesas">
-        hamburguesas
-        </option> 
+          hamburguesas
+        </option>
         <option key="alta cocina" value="alta cocina">
-        alta cocina
+          alta cocina
         </option>
-         <option key="bares" value="bares">
-         bares
+        <option key="bares" value="bares">
+          bares
         </option>
-         <option key="pizzerías" value="pizzerías">
-         pizzerías
-        </option> 
+        <option key="pizzerías" value="pizzerías">
+          pizzerías
+        </option>
         <option key="mediterránea" value="mediterránea">
-        mediterránea
-        </option> 
+          mediterránea
+        </option>
         <option key="gourmet" value="gourmet">
-        gourmet
+          gourmet
         </option>
         ...
       </select>
-      <button onClick={handleActive} >Activo</button>
-       <button onClick={handleInactivo} >Inactivo</button>
-      <button onClick={handleClearFilter}>Restaurantes</button>
+
+      <select onChange={onChangefilter} name="active" className="form-selected" defaultValue="filtrar por status">
+      <option>Filtrar por estado</option>
+        <option key="active" value="active">
+          Active
+        </option>
+        <option key="inactive" value="inactive" >
+          Inactive
+        </option>
+      </select>
+      <button onClick={handleClearFilter}>Reset Filter</button>
     </div>
   );
 }
 
 export default Filter;
-
-
-
-
+      

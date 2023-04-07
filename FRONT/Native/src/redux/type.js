@@ -19,3 +19,4 @@ export const GET_DIET = "GET_DIET";
 export const GET_EXTRA = "GET_EXTRA";
 
 export const FILTER_RESTORANTS = "FILTER_RESTORANTS";
+export const CLEAR_FILTERS = "CLEAR_FILTERS";

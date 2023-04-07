@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "../Card/Card";
-import { useSelector } from "react-redux";
 import style from "./Cards.module.css";
 
 const Cards = ({ currentRestaurants }) => {
@@ -10,19 +9,20 @@ const Cards = ({ currentRestaurants }) => {
         <div>No se encontraron resultados</div>
       ) : (
         <table>
-          <thead>
+          <thead className={style.containerThead}>
             <tr className={style.containerTitle}>
               <th>Restaurante</th>
-              <th>Comida</th>
-              <th>Puntuación</th>
+              <th>Tipo Comida</th>
+              <th>Cuenta con</th>
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
+              <th>Puntuación</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={style.containerBodyTable}>
             {currentRestaurants?.map(
               (r) =>
                 r && (
@@ -40,6 +40,7 @@ const Cards = ({ currentRestaurants }) => {
                     extras={r.extras}
                     ranking={r.ranking}
                     active={r.active}
+                    advance={r.advance ? r.advance : 0}
                   />
                 )
             )}
