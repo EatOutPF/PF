@@ -106,3 +106,4 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
 }
 
 export default Filter;
+      
