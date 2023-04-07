@@ -36,7 +36,7 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
 
   return (
     <div className={style.containerGeneral}>
-      <h3>Filtrar</h3>
+      <h3>Filtrar Dieta</h3>
       <select
         defaultValue={resetFilter}
         onChange={onChangefilter}
@@ -61,7 +61,7 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
         name="menu"
         className="form-selected"
       >
-        <option>Filter by Menu</option>
+        <option>Filtrar Menu</option>
         <option key="internacional" value="internacional">
           internacional
         </option>
@@ -93,6 +93,7 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
       </select>
 
       <select onChange={onChangefilter} name="active" className="form-selected" defaultValue="filtrar por status">
+      <option>Filtrar por estado</option>
         <option key="active" value="active">
           Active
         </option>
