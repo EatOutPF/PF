@@ -51,8 +51,8 @@ const Home = () => {
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
   const currentRestaurants =
     searchResults ||
-    restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
-
+    restaurants?.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
+       
   return (
     <div className={style.containerHome}>
       <div className={style.containerSearchBar}>
@@ -63,7 +63,8 @@ const Home = () => {
             setResetFilter={setResetFilter}
             setCurrentPage={setCurrentPage}
             resetFilter={resetFilter}
-          />
+            restaurants = {restaurants}
+            />
         </>
 
         <Sort
@@ -76,7 +77,7 @@ const Home = () => {
 
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
-        restaurants={searchResults ? searchResults.length : restaurants.length}
+        restaurants={searchResults ? searchResults?.length : restaurants?.length}
         paginado={paginate}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
