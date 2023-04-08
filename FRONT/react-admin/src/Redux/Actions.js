@@ -5,7 +5,7 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const MODIFY_RESTAURANT = "MODIFY_RESTAURANT";
 export const DETAIL_RESTAURANT = "DETAIL_RESTAURANT";
-export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
+
 export const ERROR_MSSG = "ERROR_MSSG";
 export const GET_RESTAURAN_NAME = "GET_RESTAURAN_NAME";
 export const DELETE_RESTAURANT = "DELETE_RESTAURANT";
@@ -21,6 +21,7 @@ export const SORT_BY_RESTAURANT_BY_USER = "SORT_BY_RESTAURANT_BY_USER";
 export const SORT_BY_POPULARITY_BY_RESTAURANT_USER =
   "SORT_BY_POPULARITY_BY_RESTAURANT_USER";
 export const DELETE_USER = "DELETE_USER";
+export const POST_OPTIONS = "POST_OPTIONS";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -250,4 +251,21 @@ export const getAllRestaurantsByUser = (user) => {
     type: GET_ALL_RESTAURANTS_BY_USER,
     payload: user,
   };
+};
+
+export const PostsOptions = (create) => async (dispatch) => {
+  try {
+    const options = await axios.post(`/options`, create);
+    const dataOptions = options.data;
+
+    dispatch({
+      type: POST_OPTIONS,
+      payload: dataOptions,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_OPTIONS,
+      payload: [],
+    });
+  }
 };

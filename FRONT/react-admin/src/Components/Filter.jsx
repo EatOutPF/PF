@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  getFilterByDiets,
   getAllRestaurants,
-  getFilterByMenu,
-  getFilterActive,
   getFilterOptions,
   getAllRestaurantsByUser,
 } from "../Redux/Actions";
@@ -41,7 +38,7 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
 
   return (
     <div className={style.containerGeneral}>
-      <h3>Filtrar</h3>
+      <h3>Filtrar Dieta</h3>
       <select
         defaultValue={resetFilter}
         onChange={onChangefilter}

@@ -18,7 +18,9 @@ import {
   SORT_BY_RESTAURANT_BY_USER,
   SORT_BY_POPULARITY_BY_RESTAURANT_USER,
   DELETE_USER,
+  POST_OPTIONS,
 } from "./Actions";
+// import { filterOptions } from "./utils";
 
 const initialState = {
   createRestaurant: [],
@@ -220,6 +222,12 @@ const Reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         currentListRestaurantsByUser: sortedByPopularity,
+      };
+
+    case POST_OPTIONS:
+      return {
+        ...state,
+        msg: payload,
       };
 
     default:
