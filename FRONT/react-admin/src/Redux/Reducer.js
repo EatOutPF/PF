@@ -4,7 +4,6 @@ import {
   SET_USER,
   MODIFY_RESTAURANT,
   DETAIL_RESTAURANT,
-  FILTER_BY_DIETS,
   ERROR_MSSG,
   GET_RESTAURAN_NAME,
   DELETE_RESTAURANT,
@@ -12,13 +11,13 @@ import {
   ORDER_BY_NAME,
   ORDER_BY_POPULARITY,
   SET_TOKEN,
-  FILTER_BY_MENU,
-  FILTER_BY_ACTIVE,
   GET_ALL_USERS,
   POST_USERS,
   GET_ALL_RESTAURANTS_BY_USER,
-  SET_LOADING,
+  POST_OPTIONS,
+  FILTERS_OPTIONS
 } from "./Actions";
+// import { filterOptions } from "./utils";
 
 const initialState = {
   createRestaurant: [],
@@ -66,6 +65,7 @@ const Reducer = (state = initialState, { type, payload }) => {
         ...state,
         filteredData: payload,
         currentListRestaurants: payload,
+        allRestaurants: payload,
       };
 
     case SET_USER:
@@ -74,25 +74,28 @@ const Reducer = (state = initialState, { type, payload }) => {
     case LOGOUT_USER:
       return { ...state, user: payload };
 
-    case FILTER_BY_DIETS:
-      const filterByDiets = state.filteredData.filter((restaurant) =>
-        restaurant.diets.includes(payload)
-      );
-      return { ...state, currentListRestaurants: filterByDiets };
 
-    case FILTER_BY_MENU:
-      const filterBymenu = state.currentListRestaurants.filter((e) =>
-        e.menu.includes(payload)
-      );
-      return { ...state, currentListRestaurants: filterBymenu };
-
-    case FILTER_BY_ACTIVE:
-      const filteredData = state.currentListRestaurants.filter(
-        (item) => item.active === payload
-      );
+    case FILTERS_OPTIONS:
+      let filters = state.allRestaurants;
+      if (payload.diets) {
+        filters = filters.filter((restaurant) =>
+          restaurant.diets.includes(payload.diets)
+        );
+      }
+      if (payload.menu) {
+        filters = filters.filter((restaurant) =>
+          restaurant.menu.includes(payload.menu)
+        );
+      }
+      if (payload.active === "active") {
+        filters = filters.filter((restaurant) => restaurant.active);
+      }
+      if (payload.active === "inactive") {
+        filters = filters.filter((restaurant) => !restaurant.active);
+      }
       return {
         ...state,
-        currentListRestaurants: filteredData,
+        currentListRestaurants: filters,
       };
 
     case DETAIL_RESTAURANT:
@@ -133,13 +136,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       let sorted;
       payload === "asc"
         ? (sorted = state.currentListRestaurants.sort((a, z) =>
-            a.name > z.name ? 1 : -1
-          ))
+          a.name > z.name ? 1 : -1
+        ))
         : payload === "desc"
-        ? (sorted = state.currentListRestaurants.sort((a, z) =>
+          ? (sorted = state.currentListRestaurants.sort((a, z) =>
             a.name < z.name ? 1 : -1
           ))
-        : (sorted = state.stateToSorted);
+          : (sorted = state.stateToSorted);
       return {
         ...state,
         stateToSorted: sorted.map((e) => e),
@@ -149,13 +152,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       let data;
       payload === "max"
         ? (data = state.currentListRestaurants.sort((a, b) =>
-            a.ranking < b.ranking ? 1 : -1
-          ))
+          a.ranking < b.ranking ? 1 : -1
+        ))
         : payload === "min"
-        ? (data = state.currentListRestaurants.sort((a, b) =>
+          ? (data = state.currentListRestaurants.sort((a, b) =>
             a.ranking > b.ranking ? 1 : -1
           ))
-        : (data = state.stateToSorted);
+          : (data = state.stateToSorted);
       return {
         ...state,
         stateToSorted: data.map((e) => e),
@@ -177,6 +180,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         currentListRestaurantsByUser: payload.restaurant,
+        allRestaurants: payload.restaurant,
+      };
+
+    case POST_OPTIONS:
+      return {
+        ...state,
+        msg: payload,
       };
 
 

@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "EatOut",
+    "slug": "EatOut",
+    "plugins": ["@react-native-google-signin/google-signin"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "googleServicesFile": "./google-services.json",
+      "package": "com.eatoutpf.EatOut",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA8wHVl7x6tJiALwmMYUL5h_l14X74f_A8"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "345c6669-2cd4-4b70-82ae-4f0633ba4082"
+      }
+    }
+  }
+}
