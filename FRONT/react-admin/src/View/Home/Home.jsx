@@ -28,10 +28,7 @@ const Home = () => {
       ? currentListRestaurants
       : currentListRestaurantsByUser;
 
-  useEffect(() => {
-    console.log({ restaurants }, { allRestaurants }, { allRestaurantsByUser });
-  });
-
+ 
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
   const [order, setOrder] = useState("");

@@ -27,13 +27,20 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
 
   function handleClearFilter(evt) {
     evt.preventDefault();
+
+    setResetFilter(!resetFilter);
+    setCurrentPage(1);
+    setOrder("");
+    setSelectedOptions({
+      diets: "",
+      menu: "",
+      active: "",
+    });
+
     if (user.role === "superadmin") dispatch(getAllRestaurants());
     else {
       dispatch(getAllRestaurantsByUser(user));
     }
-    setResetFilter(!resetFilter);
-    setCurrentPage(1);
-    setOrder("");
   }
 
   return (
