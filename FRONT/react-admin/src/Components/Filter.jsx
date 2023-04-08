@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   getFilterByDiets,
   getAllRestaurants,
   getFilterByMenu,
   getFilterActive,
+  getFilterOptions,
+  getAllRestaurantsByUser,
 } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import style from "../Styles/General.module.css";
@@ -11,34 +13,27 @@ import style from "../Styles/General.module.css";
 function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
 
-  function handleSubmit(evt) {
+  const user = useSelector((state) => state.user);
+  const [selectedOptions, setSelectedOptions] = useState({});
+
+  function onChangefilter(evt) {
     evt.preventDefault();
-    dispatch(getFilterByDiets(evt.target.value));
-    setOrder(`${evt.target.value}`);
+    setSelectedOptions({
+      ...selectedOptions,
+      [evt.target.name]: evt.target.value,
+    });
   }
-  function handleOnClick(evt) {
-    evt.preventDefault();
-    dispatch(getFilterByMenu(evt.target.value));
-    setOrder(`${evt.target.value}`);
-  }
-  function handleActive(e) {
-    console.log(e.target.value);
-    e.preventDefault();
-    dispatch(getFilterActive(true));
-    setCurrentPage(1);
-    setOrder("");
-  }
-  function handleInactivo(e) {
-    console.log(e.target.value);
-    e.preventDefault();
-    dispatch(getFilterActive(false));
-    setCurrentPage(1);
-    setOrder("");
-  }
+
+  useEffect(() => {
+    dispatch(getFilterOptions(selectedOptions));
+  }, [selectedOptions]);
 
   function handleClearFilter(evt) {
     evt.preventDefault();
-    dispatch(getAllRestaurants());
+    if (user.role === "superadmin") dispatch(getAllRestaurants());
+    else {
+      dispatch(getAllRestaurantsByUser(user));
+    }
     setResetFilter(!resetFilter);
     setCurrentPage(1);
     setOrder("");
@@ -49,10 +44,11 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
       <h3>Filtrar</h3>
       <select
         defaultValue={resetFilter}
-        onChange={(event) => handleSubmit(event)}
+        onChange={onChangefilter}
+        name="diets"
         className="form-selected"
       >
-        <option>Filter by type</option>
+        <option value="">Filtrar por Dieta</option>
         <option key="vegetariano" value="vegetariano">
           vegetariano
         </option>
@@ -66,10 +62,11 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
       </select>
       <select
         defaultValue={resetFilter}
-        onChange={(event) => handleOnClick(event)}
+        onChange={onChangefilter}
+        name="menu"
         className="form-selected"
       >
-        <option>Filter by Menu</option>
+        <option value="">Filtrar por Menú</option>
         <option key="internacional" value="internacional">
           internacional
         </option>
@@ -99,9 +96,22 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
         </option>
         ...
       </select>
-      <button onClick={handleActive}>Activo</button>
-      <button onClick={handleInactivo}>Inactivo</button>
-      <button onClick={handleClearFilter}>Reset Filter</button>
+
+      <select
+        onChange={onChangefilter}
+        name="active"
+        className="form-selected"
+        defaultValue="Filtrar por estado"
+      >
+        <option>Filtrar por estado</option>
+        <option key="active" value="active">
+          Active
+        </option>
+        <option key="inactive" value="inactive">
+          Inactive
+        </option>
+      </select>
+      <button onClick={handleClearFilter}>Borrar Filtros</button>
     </div>
   );
 }

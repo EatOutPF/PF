@@ -33,13 +33,17 @@ function Paginate({
 
   return (
     <div className="pagination">
-      <button onClick={() => handlePrev()}>Prev</button>
+      <button onClick={() => handlePrev()} className={style.buttonPagination}>
+        Prev
+      </button>
       {pageNumbers &&
         pageNumbers.map((number) => (
           <button
             onClick={() => paginado(number)}
             key={number}
-            className={number === currentPage ? style.active : null}
+            className={
+              number === currentPage ? style.active : style.buttonPagination
+            }
           >
             {number}
           </button>
@@ -47,6 +51,7 @@ function Paginate({
       <button
         onClick={() => handleNext()}
         disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+        className={style.buttonPagination}
       >
         Next
       </button>

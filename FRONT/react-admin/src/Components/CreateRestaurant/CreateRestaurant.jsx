@@ -465,6 +465,7 @@ export default function Form() {
     };
     dispatch(postRestaurant(newRestaurant));
 
+    console.log();
     if (msg?.restaurant) {
       sweetAlert("Creación Exitosa", msg.restaurant);
       navigate("/home");
