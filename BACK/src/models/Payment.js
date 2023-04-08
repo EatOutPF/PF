@@ -13,7 +13,7 @@ const paymentSchema = new Schema({
     }],
     reserve: [{
         type: Schema.Types.ObjectId,
-        ref: "reserve"
+        ref: "Reserve"
       }],
 });
 
