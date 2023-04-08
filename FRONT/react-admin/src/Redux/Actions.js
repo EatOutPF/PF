@@ -22,6 +22,7 @@ export const SORT_BY_POPULARITY_BY_RESTAURANT_USER =
   "SORT_BY_POPULARITY_BY_RESTAURANT_USER";
 export const DELETE_USER = "DELETE_USER";
 export const POST_OPTIONS = "POST_OPTIONS";
+export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -268,4 +269,11 @@ export const PostsOptions = (create) => async (dispatch) => {
       payload: [],
     });
   }
+};
+
+export const searchByRestaurantByUser = (name) => {
+  return {
+    type: SEARCH_BY_RESTAURANT_BY_USER,
+    payload: name,
+  };
 };

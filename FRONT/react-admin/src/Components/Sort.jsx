@@ -36,7 +36,6 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
   }
 
   function handleOrderByPopularity(event) {
-    console.log(event.target.value);
     if (user) {
       if (user?.role === "superadmin") {
         dispatch(orderByPopularity(event.target.value));

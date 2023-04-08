@@ -19,6 +19,7 @@ import {
   SORT_BY_POPULARITY_BY_RESTAURANT_USER,
   DELETE_USER,
   POST_OPTIONS,
+  SEARCH_BY_RESTAURANT_BY_USER,
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -26,7 +27,6 @@ const initialState = {
   createRestaurant: [],
   stateToSorted: [],
   allRestaurants: [],
-  /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
   user: {},
   detailRestaurant: {},
   currentListRestaurants: [],
@@ -230,6 +230,17 @@ const Reducer = (state = initialState, { type, payload }) => {
         msg: payload,
       };
 
+    case SEARCH_BY_RESTAURANT_BY_USER:
+      let searchRestaurant = state.allRestaurantsByUser.filter((r) =>
+        r.name.toLowerCase().includes(payload.toLowerCase())
+      );
+
+      if (searchRestaurant)
+        return {
+          ...state,
+          currentListRestaurantsByUser: searchRestaurant,
+        };
+      break;
     default:
       return { ...state };
   }

@@ -28,7 +28,6 @@ const Home = () => {
       ? currentListRestaurants
       : currentListRestaurantsByUser;
 
- 
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
   const [order, setOrder] = useState("");
@@ -44,7 +43,6 @@ const Home = () => {
 
   useEffect(() => {
     let RegisteredUser = user;
-
     if (RegisteredUser?.role) {
       if (RegisteredUser.role === "superadmin") dispatch(getAllRestaurants());
       if (RegisteredUser.role === "admin")
