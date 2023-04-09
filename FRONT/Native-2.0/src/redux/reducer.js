@@ -90,8 +90,11 @@ export default function rootReducer(state = initialState, action) {
         }
 //-------------------------------------------------------------------------    
         case GET_LINK_MERCADOPAGO: {
-            //console.log("reducer: ", action.payload);
+            // console.log("reducer: ", action.payload);
+            console.log("soy el reducer de mp");
+            //   return () => clearTimeout(timer);
             return { ...state, checkoutLinkMP: action.payload }
+
         }
 //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
