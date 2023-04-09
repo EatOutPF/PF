@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text, Touchabl
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById  } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
@@ -12,204 +12,215 @@ import * as WebBrowser from 'expo-web-browser';
 import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
 
-const DetailResto = ({route}) => {
-    // const { _id } = useParams();
-    const { _id } = route.params;
-    const detail = useSelector(state => state?.restorantById)
-    const [loading, setLoading] = useState(true)
+const DetailResto = ({ route }) => {
+  // const { _id } = useParams();
+  const { _id } = route.params;
+  const detail = useSelector(state => state?.restorantById)
+  const [loading, setLoading] = useState(true)
   console.log("SOY DETAIL: ", _id);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  // Sumar o restar personas para la reserva
+  const [contador, setContador] = useState(2)
 
 
-
-
-    useEffect(() => {
-        if(Object?.keys(detail)?.length === 0) { 
-            dispatch(searchRestorantById(_id));
-            }
-        else 
-        if(Object?.keys(detail)?.length !== 0)
-        { 
-          if(detail?._id !== _id){
-            // dispatch(clearStateResatorantById())
-            dispatch(searchRestorantById(_id));
-            setLoading(true)
-
-          }
-            else setLoading(false)
-        } 
-        
-    },[detail, loading])
-
-    const navigation = useNavigation();
-    function handleCheckOut () {
-      console.log("QUIERO IR A MERCADOPAGO");
-      const checkout = {
-        resto: detail,
-        reserve: {
-          userId: "aaaaa", // Chequear el stado global del usuario logeado
-          cantPersons: 2,
-          cantTables: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
-          schedule: "schedule", // la fecha y hora de la reserva
-        }
-      }
-      navigation.navigate("Checkout", checkout)
+  useEffect(() => {
+    if (Object?.keys(detail)?.length === 0) {
+      dispatch(searchRestorantById(_id));
     }
+    else
+      if (Object?.keys(detail)?.length !== 0) {
+        if (detail?._id !== _id) {
+          // dispatch(clearStateResatorantById())
+          dispatch(searchRestorantById(_id));
+          setLoading(true)
 
-    return(
-        <ScrollView>
-            
-            {loading ? <Loading/> :
-              <View>
-                  <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+        }
+        else setLoading(false)
+      }
 
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.superTitle}>{detail?.name}</Text>
+  }, [detail, loading])
+
+  const navigation = useNavigation();
+  function handleCheckOut() {
+    console.log("QUIERO IR A MERCADOPAGO");
+    const checkout = {
+      resto: detail,
+      reserve: {
+        userId: "aaaaa", // Chequear el stado global del usuario logeado
+        cantPersons: 2,
+        cantTables: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
+        schedule: "schedule", // la fecha y hora de la reserva
+      }
+    }
+    navigation.navigate("Checkout", checkout)
+  }
+
+  return (
+    <ScrollView>
+
+      {loading ? <Loading /> :
+        <View>
+          <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+
+          <View style={styles.titleContainer}>
+            <Text style={styles.superTitle}>{detail?.name}</Text>
+          </View>
+
+          <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
+
+          <View style={styles.container2}>
+            <View style={styles.iconText}>
+              <IonicIcon
+                name="star-outline"
+                size={20} />
+              <Text style={styles.text1}>{detail?.ranking}</Text>
+            </View>
+            <View style={styles.iconText}>
+              <IonicIcon
+                name="pin-outline"
+                size={20}
+              />
+              <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+            </View>
+          </View>
+
+          <View style={styles.containerReserva}>
+            <Text style={styles.subTitle}> Hacé tu reserva</Text>
+
+            <View style={styles.containerPerCalHor}>
+
+
+              {/* ----------------------Cuantas personas ----------------------*/}
+              <View style={styles.containerPersons}>
+                <IonicIcon
+                  name="people-outline"
+                  size={50}
+                  margin={10}
+
+                />
+
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
+                  <Text style={styles.textReservDetail}> {contador} personas</Text>
+                </View>
+
+                <View style={styles.containerButtonsPerson}>
+
+                  <TouchableOpacity>
+                    <IonicIcon
+                      style={styles.buttonPersons}
+                      name="remove-circle-outline"
+                      size={37}
+                      onPress={() => {
+                        if(contador === 2){
+                          setContador(2)
+                        }else{
+                          setContador(contador - 1)
+                        }
+                      }}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <IonicIcon
+                      style={styles.buttonPersons}
+                      name="add-circle-outline"
+                      size={37}
+                      onPress={() => {
+                        if(contador === 30){
+                          setContador(30)
+                        }else{
+                          setContador(contador + 1)
+                        }
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+
+
+              {/* Que dia ?------------------------ */}
+
+              <View style={styles.containerPersons}>
+                <IonicIcon
+                  name="calendar-outline"
+                  size={45}
+                  margin={10}
+
+                />
+
+
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
+                  <Text style={styles.textReservDetail}>Dom, 2 de Abr -Hoy-</Text>
+                </View>
+
+                <View style={styles.containerButtonsPerson}>
+
+
+                  {/* En esta parte deberia tener un picker que me de las opciones disponibles de los dias en que puedo realizar una reserva */}
+                  <View style={styles.containerButton}>
+                    <IonicIcon
+                      name="chevron-down-circle-outline"
+                      size={37}
+                    // onPress={() => setPickerVisible(true)} 
+                    />
+
                   </View>
 
-                  <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
+                </View>
 
-                  <View style={styles.container2}>
-                    <View style={styles.iconText}>
-                      <IonicIcon
-                        name="star-outline"
-                        size={20} />
-                      <Text style={styles.text1}>{detail?.ranking}</Text>
-                    </View>
-                    <View style={styles.iconText}>
-                      <IonicIcon
-                        name="pin-outline"
-                        size={20}
-                      />
-                      <Text style={styles.text1}>{detail?.address?.streetName}</Text>
-                    </View>
+              </View>
+
+              {/* Qué horario? */}
+              <View style={styles.containerPersons}>
+                <IonicIcon
+                  name="time-outline"
+                  size={50}
+                  margin={10}
+                />
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                </View>
+                <View style={styles.containerButtonsPerson}>
+                  <View >
+                    <IonicIcon
+                      name="chevron-down-circle-outline"
+                      size={37}
+                    // onPress={() => setPickerVisible(true)} 
+                    />
                   </View>
+                </View>
+              </View>
 
-                  <View style={styles.containerReserva}>
-                    <Text style={styles.subTitle}> Hacé tu reserva</Text>
+              {/* Boton 'CONFIRMAR RESERVA' */}
+              <TouchableOpacity style={styles.confirmButton}
+                onPress={() => handleCheckOut()}>
+                <IonicIcon
+                  name="checkmark-outline"
+                  size={20}
+                  color={'white'}
 
-                    <View style={styles.containerPerCalHor}>
-
-
-                      {/* Cuantas personas ----------------------*/}
-                      <View style={styles.containerPersons}>
-                        <IonicIcon
-                          name="people-outline"
-                          size={50}
-                          margin={10}
-
-                        />
-
-                        <View style={styles.reservDetail}>
-                          <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
-                          <Text style={styles.textReservDetail}>2 personas</Text>
-                        </View>
-
-                        <View style={styles.containerButtonsPerson}>
-
-                          <View style={styles.containerButton}>
-                            <IonicIcon
-                              style={styles.buttonPersons}
-                              name="remove-circle-outline"
-                              size={37}
-                            // onPress
-                            />
-                          </View>
-                          <View style={styles.containerButton}>
-                            <IonicIcon
-                              style={styles.buttonPersons}
-                              name="add-circle-outline"
-                              size={37}
-                            // onPress
-                            />
-                          </View>
-
-                        </View>
-
-                      </View>
-
-
-
-                      {/* Que dia ?------------------------ */}
-
-                      <View style={styles.containerPersons}>
-                        <IonicIcon
-                          name="calendar-outline"
-                          size={45}
-                          margin={10}
-
-                        />
-
-
-                        <View style={styles.reservDetail}>
-                          <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
-                          <Text style={styles.textReservDetail}>Dom, 2 de Abr -Hoy-</Text>
-                        </View>
-
-                        <View style={styles.containerButtonsPerson}>
-
-
-                          {/* En esta parte deberia tener un picker que me de las opciones disponibles de los dias en que puedo realizar una reserva */}
-                          <View style={styles.containerButton}>
-                            <IonicIcon
-                              name="chevron-down-circle-outline"
-                              size={37}
-                              // onPress={() => setPickerVisible(true)} 
-                              />
-
-                          </View>
-
-                        </View>
-
-                      </View>
-
-                      {/* Qué horario? */}
-                      <View style={styles.containerPersons}>
-                        <IonicIcon
-                          name="time-outline"
-                          size={50}
-                          margin={10}
-                        />
-                        <View style={styles.reservDetail}>
-                          <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                        </View>
-                        <View style={styles.containerButtonsPerson}>
-                          <View >
-                          <IonicIcon
-                              name="chevron-down-circle-outline"
-                              size={37}
-                              // onPress={() => setPickerVisible(true)} 
-                              />
-                          </View>
-                        </View>
-                      </View>
-
-                      {/* Boton 'CONFIRMAR RESERVA' */}
-                      <TouchableOpacity style={styles.confirmButton}
-                        onPress={()=>handleCheckOut()}>
-                        <IonicIcon
-                          name="checkmark-outline"
-                          size={20}
-                          color={'white'}
-                          
-                        />
-                        {/* {showWebview && (
+                />
+                {/* {showWebview && (
                             <WebView
                               source={{ uri: 'https://google.com' }}
                               style={{ flex: 1 }}
                             />
                           )} */}
-                        <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
-                      </TouchableOpacity>
+                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
+              </TouchableOpacity>
 
-        
 
-                    </View>
 
-                      <Text style={styles.title}> Sobre Nosotros</Text>
-                      <Text style={styles.title}> {detail?.about} </Text>
+            </View>
 
-                      {/* <Text style={{ paddingLeft: 20 }}>
+            <Text style={styles.title}> Sobre Nosotros</Text>
+            <Text style={styles.title}> {detail?.about} </Text>
+
+            {/* <Text style={{ paddingLeft: 20 }}>
 
                         Lorem Ipsum is simply dummy text of the printing and typesetting
                         industry. Lorem Ipsum has been the industry's standard dummy text
@@ -218,73 +229,73 @@ const DetailResto = ({route}) => {
                         only five centuries.
                       </Text> */}
 
-                    </View>
+          </View>
 
-                  <View>
-                    <Text style={styles.textBody}> Calendario ...</Text>
-                    <Text style={styles.textBody}> MENU --- Link a la carta</Text>
-                    <Text style={styles.title}> Categorias :</Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      -- {detail?.menu[0]} {detail?.diets[0]} {detail?.extras[0]}{" "}
-                      {detail?.extras[1]} {detail?.extras[2]}{" "}
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]}{" "}
-                      {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]}{" "}
-                    </Text>
-                    <Text style={styles.title}> HORARIOS</Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
-                      {detail?.schedule[0]?.monday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
-                      {detail?.schedule[0]?.tuesday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
-                      {detail?.schedule[0]?.wednesday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
-                      {detail?.schedule[0]?.thursday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
-                      {detail?.schedule[0]?.friday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
-                      {detail?.schedule[0]?.saturday?.close}hs
-                    </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
-                      {detail?.schedule[0]?.sunday?.close}hs
-                    </Text>
-                    <Text style={styles.title}> Metodos de Pago </Text>
-                    <Text style={styles.textBody}>
-                      {" "}
-                      -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-                      {detail?.paymentMethods[2]}
-                    </Text>
-                  </View>
-            </View>
+          <View>
+            <Text style={styles.textBody}> Calendario ...</Text>
+            <Text style={styles.textBody}> MENU --- Link a la carta</Text>
+            <Text style={styles.title}> Categorias :</Text>
+            <Text style={styles.textBody}>
+              {" "}
+              -- {detail?.menu[0]} {detail?.diets[0]} {detail?.extras[0]}{" "}
+              {detail?.extras[1]} {detail?.extras[2]}{" "}
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]}{" "}
+              {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]}{" "}
+            </Text>
+            <Text style={styles.title}> HORARIOS</Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
+              {detail?.schedule[0]?.monday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
+              {detail?.schedule[0]?.tuesday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
+              {detail?.schedule[0]?.wednesday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
+              {detail?.schedule[0]?.thursday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
+              {detail?.schedule[0]?.friday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
+              {detail?.schedule[0]?.saturday?.close}hs
+            </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
+              {detail?.schedule[0]?.sunday?.close}hs
+            </Text>
+            <Text style={styles.title}> Metodos de Pago </Text>
+            <Text style={styles.textBody}>
+              {" "}
+              -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
+              {detail?.paymentMethods[2]}
+            </Text>
+          </View>
+        </View>
 
-                // :<Loading/>
+        // :<Loading/>
 
-            } 
-                
-        </ScrollView>
-    );
+      }
+
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -362,10 +373,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 7,
+    marginTop: 15,
+    marginLeft: 12,
+
   },
   containerButton: {
-    backgroundColor: '#FA6B6B',
+    // backgroundColor: '#FA6B6B',
     width: 40,
     height: 40,
     borderRadius: 20,
