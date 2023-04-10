@@ -18,9 +18,9 @@ const router = Router();
 router.use(express.json());
 router.use(cors(corsOptions));
 
-router.get("/", async (req, res) => {
+router.get("/id?", async (req, res) => {
   let token = req.headers.authorization?.split(' ')[1]
- 
+  let id = req.params.id
    try {
  
      if (token) {
@@ -28,11 +28,13 @@ router.get("/", async (req, res) => {
      let resultado = await getUsers(user);
      res.status(200).json(resultado);
      }
-     else{
-      
-       let resultado = await getUsers();
+     else if (id){
+      resultado = await getUsers(id);
      res.status(200).json(resultado);
-     }
+     } else {
+      resultado = await getUsers();
+     res.status(200).json(resultado);
+    }
     
  
    } catch (error) {

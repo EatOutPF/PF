@@ -3,23 +3,37 @@ const admin = require("../firebase/firebaseConfig");
 
 const { User } = require("../db");
 
-async function getUsers(email) {
-  const search = email;
+async function getUsers(props) {
 
-  if (search) {
-    const users = await User.findOne({ email: { $regex: search } })
-      .populate("restaurant")
-      .populate("favorite")
-      .populate("reserve")
-      .populate("payment");
+  if (props) {
+    if (mongoose.Types.ObjectId.isValid(props)) {
+      const users = await User.findById(props)
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
 
-    if (users === null)
-      throw new Error("No existen usuarios con ese E-Mail registrado");
-    users.login = true;
-    users.save();
+      if (users === null) throw new Error("No existen usuarios con ese Id");
+      users.login = true;
+      users.save();
 
-    return users;
+      return users;
+    } else {
+      const users = await User.findOne({ email: { $regex: search } })
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
+
+      if (users === null)
+        throw new Error("No existen usuarios con ese E-Mail registrado");
+      users.login = true;
+      users.save();
+
+      return users;
+    }
   }
+
   const users = await User.find()
     .populate("restaurant")
     .populate("favorite")
