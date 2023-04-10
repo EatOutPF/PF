@@ -7,7 +7,8 @@ const {
   Atmosphere,
   Extra,
   Section,
-  User,
+  User
+
 } = require("../db");
 
 async function postRestaurant({
@@ -27,11 +28,14 @@ async function postRestaurant({
   section,
   idUser,
 }) {
+
   if (!name || !address || !contact || !tables || !schedule)
     throw new Error("Hay datos obligatorios sin completar");
 
   // const reviewObjects = await Review.find
+
   const userObject = await User.findById(user);
+
   const menuOjects = await Menu.find({ title: { $in: menu } });
   const dietObjects = await Diet.find({ title: { $in: diets } });
   const paymentMethodObjects = await PaymentMethods.find({
@@ -64,6 +68,11 @@ async function postRestaurant({
 
   // Guardar la receta en la base de datos
   const resultado = await newRestaurant.save();
+
+  const user = await User.findById(idUser)
+  user.restaurant.push(resultado._id.toString())
+  const resuser = await user.save();
+
 
   return `El restaurant ${resultado.name} fue creado`;
 }

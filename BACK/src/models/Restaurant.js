@@ -122,27 +122,26 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  review: {
-    type: String,
+  review: [{
+    type: Schema.Types.ObjectId,
     ref: "Review",
-  },
-  user: {
+  }],
+  user: [{
     type: Schema.Types.ObjectId,
     ref: "User",
-  },
-  favorite: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Favorite",
-    },
-  ],
-  payment: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Payment",
-    },
-  ],
+
+  }],
+  favorite: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Favorite'
+  }],
+  payment : [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
+
   balance: Number,
+  about: String,
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
