@@ -8,7 +8,6 @@ import {
 } from "../Redux/Actions";
 import { useDispatch, } from "react-redux";
 import style from "../Styles/General.module.css";
-import { useState } from "react";
 
 function Filter({  resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
@@ -17,8 +16,8 @@ function Filter({  resetFilter, setResetFilter }) {
 
   const [selectedOptions, setSelectedOptions] = useState({});
 
-  function onChangefilter(evt) {
-    evt.preventDefault();
+  function onChangefilter(evt)
+   { evt.preventDefault();
     setSelectedOptions({
       ...selectedOptions,
       [evt.target.name]: evt.target.value,
@@ -26,11 +25,11 @@ function Filter({  resetFilter, setResetFilter }) {
   }
 
   useEffect(() => {
-    dispatch(getFilterOptions(selectedOptions));
+  dispatch(getFilterOptions(selectedOptions));
   }, [selectedOptions]);
 
   function handleClearFilter(evt) {
-    evt.preventDefault();
+    evt.preventDefault();  
     dispatch(getAllRestaurants());
     setResetFilter(!resetFilter);
     setCurrentPage(1);
