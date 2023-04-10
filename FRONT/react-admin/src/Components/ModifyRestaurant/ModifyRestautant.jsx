@@ -231,17 +231,21 @@ const ModifyRestaurant = (props) => {
 
             <form onSubmit={handlerSubmit}>
               <div className={style.container}>
-                <label htmlFor="name">Restaurante</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={input.name}
-                  onChange={handlerChange}
-                  style={{ display: "flex", flexGrow: 100 }}
-                />
+                <div>
+                  <label htmlFor="name">Restaurante</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={input.name}
+                    onChange={handlerChange}
+                    style={{ display: "flex", flexGrow: 100 }}
+                  />
+                </div>
                 {errors.name && (
-                  <span className={style.danger}>{errors.name}</span>
+                  <div>
+                    <span className={style.danger}>{errors.name}</span>
+                  </div>
                 )}
               </div>
 

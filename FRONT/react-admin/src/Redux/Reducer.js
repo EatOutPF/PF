@@ -14,8 +14,12 @@ import {
   GET_ALL_USERS,
   POST_USERS,
   GET_ALL_RESTAURANTS_BY_USER,
+  FILTERS_OPTIONS,
+  SORT_BY_RESTAURANT_BY_USER,
+  SORT_BY_POPULARITY_BY_RESTAURANT_USER,
+  DELETE_USER,
   POST_OPTIONS,
-  FILTERS_OPTIONS
+  SEARCH_BY_RESTAURANT_BY_USER,
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -23,7 +27,6 @@ const initialState = {
   createRestaurant: [],
   stateToSorted: [],
   allRestaurants: [],
-  /* -----ESTE VALOR DEBE MODIFICARSE CUANDO LOS VALORES VENGAN DE LOGIN ---- vr harcodeado */
   user: {},
   detailRestaurant: {},
   currentListRestaurants: [],
@@ -55,6 +58,7 @@ const initialState = {
   token: null,
   currentUsers: [],
   currentListRestaurantsByUser: [],
+  allRestaurantsByUser: [],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -72,9 +76,12 @@ const Reducer = (state = initialState, { type, payload }) => {
     case LOGOUT_USER:
       return { ...state, user: payload };
 
-
     case FILTERS_OPTIONS:
-      let filters = state.allRestaurants;
+      let filters =
+        state.user?.role === "superadmin"
+          ? state.allRestaurants
+          : state.allRestaurantsByUser;
+
       if (payload.diets) {
         filters = filters.filter((restaurant) =>
           restaurant.diets.includes(payload.diets)
@@ -91,16 +98,23 @@ const Reducer = (state = initialState, { type, payload }) => {
       if (payload.active === "inactive") {
         filters = filters.filter((restaurant) => !restaurant.active);
       }
-      return {
-        ...state,
-        currentListRestaurants: filters,
-      };
+
+      return state.user?.role === "superadmin"
+        ? {
+            ...state,
+            currentListRestaurants: filters,
+          }
+        : {
+            ...state,
+            currentListRestaurantsByUser: filters,
+          };
 
     case DETAIL_RESTAURANT:
       return {
         ...state,
         detailRestaurant: payload,
       };
+
     case MODIFY_RESTAURANT:
       return {
         ...state,
@@ -116,6 +130,9 @@ const Reducer = (state = initialState, { type, payload }) => {
     case GET_RESTAURAN_NAME:
       return { ...state, currentListRestaurants: payload };
     case DELETE_RESTAURANT:
+      return { ...state, message: payload };
+
+    case DELETE_USER:
       return { ...state, message: payload };
 
     case SET_TOKEN:
@@ -134,13 +151,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       let sorted;
       payload === "asc"
         ? (sorted = state.currentListRestaurants.sort((a, z) =>
-          a.name > z.name ? 1 : -1
-        ))
+            a.name > z.name ? 1 : -1
+          ))
         : payload === "desc"
-          ? (sorted = state.currentListRestaurants.sort((a, z) =>
+        ? (sorted = state.currentListRestaurants.sort((a, z) =>
             a.name < z.name ? 1 : -1
           ))
-          : (sorted = state.stateToSorted);
+        : (sorted = state.stateToSorted);
       return {
         ...state,
         stateToSorted: sorted.map((e) => e),
@@ -150,13 +167,13 @@ const Reducer = (state = initialState, { type, payload }) => {
       let data;
       payload === "max"
         ? (data = state.currentListRestaurants.sort((a, b) =>
-          a.ranking < b.ranking ? 1 : -1
-        ))
+            a.ranking < b.ranking ? 1 : -1
+          ))
         : payload === "min"
-          ? (data = state.currentListRestaurants.sort((a, b) =>
+        ? (data = state.currentListRestaurants.sort((a, b) =>
             a.ranking > b.ranking ? 1 : -1
           ))
-          : (data = state.stateToSorted);
+        : (data = state.stateToSorted);
       return {
         ...state,
         stateToSorted: data.map((e) => e),
@@ -178,7 +195,33 @@ const Reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         currentListRestaurantsByUser: payload.restaurant,
-        allRestaurants: payload.restaurant,
+        allRestaurantsByUser: payload.restaurant,
+      };
+
+    case SORT_BY_RESTAURANT_BY_USER:
+      let sortedByUser = state.currentListRestaurantsByUser;
+      if (sortedByUser && payload === "asc")
+        sortedByUser = sortedByUser?.sort((a, z) => (a.name > z.name ? 1 : -1));
+      if (sortedByUser && payload === "desc")
+        sortedByUser = sortedByUser?.sort((a, z) => (a.name < z.name ? 1 : -1));
+      return {
+        ...state,
+        currentListRestaurantsByUser: sortedByUser,
+      };
+
+    case SORT_BY_POPULARITY_BY_RESTAURANT_USER:
+      let sortedByPopularity = state.currentListRestaurantsByUser;
+      if (sortedByPopularity && payload === "max")
+        sortedByPopularity = sortedByPopularity.sort((a, b) =>
+          a.ranking < b.ranking ? 1 : -1
+        );
+      if (sortedByPopularity && payload === "min")
+        sortedByPopularity = sortedByPopularity.sort((a, b) =>
+          a.ranking > b.ranking ? 1 : -1
+        );
+      return {
+        ...state,
+        currentListRestaurantsByUser: sortedByPopularity,
       };
 
     case POST_OPTIONS:
@@ -187,6 +230,17 @@ const Reducer = (state = initialState, { type, payload }) => {
         msg: payload,
       };
 
+    case SEARCH_BY_RESTAURANT_BY_USER:
+      let searchRestaurant = state.allRestaurantsByUser.filter((r) =>
+        r.name.toLowerCase().includes(payload.toLowerCase())
+      );
+
+      if (searchRestaurant)
+        return {
+          ...state,
+          currentListRestaurantsByUser: searchRestaurant,
+        };
+      break;
     default:
       return { ...state };
   }
