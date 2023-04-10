@@ -8,6 +8,7 @@ import {
     SET_SEARCH_TEXT,
     FILTER_CARDS,
     ORDER_CARDS,
+    GET_LINK_MERCADOPAGO,
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -86,6 +87,14 @@ export default function rootReducer(state = initialState, action) {
         case SET_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
             return { ...state, searchText: action.payload }
+        }
+//-------------------------------------------------------------------------    
+        case GET_LINK_MERCADOPAGO: {
+            // console.log("reducer: ", action.payload);
+            console.log("soy el reducer de mp");
+            //   return () => clearTimeout(timer);
+            return { ...state, checkoutLinkMP: action.payload }
+
         }
 //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
