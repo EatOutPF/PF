@@ -89,6 +89,7 @@ export const modifyRestaurant = (dataToUpdate) => {
           type: MODIFY_RESTAURANT,
           payload: result,
         });
+        dispatch(getAllUsers());
       })
       .catch((error) => {
         return dispatch({

@@ -194,8 +194,8 @@ const Reducer = (state = initialState, { type, payload }) => {
     case GET_ALL_RESTAURANTS_BY_USER:
       return {
         ...state,
-        currentListRestaurantsByUser: payload.restaurant,
-        allRestaurantsByUser: payload.restaurant,
+        currentListRestaurantsByUser: payload?.restaurant,
+        allRestaurantsByUser: payload?.restaurant,
       };
 
     case SORT_BY_RESTAURANT_BY_USER:

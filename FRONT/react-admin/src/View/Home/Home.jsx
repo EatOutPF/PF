@@ -19,8 +19,7 @@ const Home = () => {
     user,
     currentListRestaurants,
     currentListRestaurantsByUser,
-    allRestaurants,
-    allRestaurantsByUser,
+    currentUsers,
   } = useSelector((state) => state);
 
   const restaurants =
@@ -42,13 +41,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let RegisteredUser = user;
-    if (RegisteredUser?.role) {
-      if (RegisteredUser.role === "superadmin") dispatch(getAllRestaurants());
-      if (RegisteredUser.role === "admin")
-        dispatch(getAllRestaurantsByUser(user));
+    if (user?.role) {
+      if (user.role === "superadmin") dispatch(getAllRestaurants());
+      if (user.role === "admin") dispatch(getAllRestaurantsByUser(user));
     }
-  }, []);
+  }, [currentUsers]);
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;

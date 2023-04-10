@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
+import {
+  findDetailRestaurant,
+  getAllRestaurantsByUser,
+  getAllUsers,
+  modifyRestaurant,
+} from "../../Redux/Actions";
 import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
 import sweetAlert from "sweetalert";
@@ -18,6 +23,8 @@ const ModifyRestaurant = (props) => {
     optionpaymentMethods,
     optionsExtras,
     optionsSection,
+    user,
+    currentUser,
   } = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -62,7 +69,7 @@ const ModifyRestaurant = (props) => {
   const handlerChange = (e) => {
     const { name, value } = e.target;
     if (name === "images") {
-      let arrImages = value.split(",");
+      let arrImages = value?.split(",");
       setSelectedImages(arrImages);
     }
     setInput({ ...input, [name]: value });
@@ -94,9 +101,11 @@ const ModifyRestaurant = (props) => {
       input.paymentMethods = selectedPaymentMethods
         .filter((p) => p.checked)
         .map((p) => p.name);
+
       dispatch(modifyRestaurant(input));
+
       let newMessage = message;
-      console.log(newMessage.data);
+      console.log(newMessage.data, { input }, { user });
       if (newMessage?.data) {
         sweetAlert("Actualizacion exitosa", newMessage.data);
         navigate("/home");
@@ -201,6 +210,7 @@ const ModifyRestaurant = (props) => {
         section: detailRestaurant.section,
         ranking: detailRestaurant.ranking,
         active: detailRestaurant.active,
+        idUser: user._id,
       });
       setSelectedImages(input?.images);
       setSelectedMenu(input?.menu);
@@ -412,7 +422,11 @@ const ModifyRestaurant = (props) => {
                   type="url"
                   name="images"
                   id="images"
-                  value={input?.images?.map((image) => `${image},`)}
+                  value={
+                    input.images
+                      ? input?.images?.map((image) => `${image},`)
+                      : ""
+                  }
                   onChange={handlerChange}
                   style={{ display: "flex", flexGrow: 100 }}
                 />
@@ -848,7 +862,7 @@ const ModifyRestaurant = (props) => {
                   type="text"
                   id="ranking"
                   name="ranking"
-                  value={input.ranking}
+                  defaultValue={input.ranking}
                   style={{ backgroundColor: "#c6c5c5" }}
                 />
               </div>
