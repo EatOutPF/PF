@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text, TouchableOpacity } from 'react-native'
+import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +11,10 @@ import * as WebBrowser from 'expo-web-browser';
 
 import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment';
+import 'moment/locale/es'; // Importa el idioma español
+
 
 const DetailResto = ({ route }) => {
   // const { _id } = useParams();
@@ -20,8 +24,31 @@ const DetailResto = ({ route }) => {
   console.log("SOY DETAIL: ", _id);
   const dispatch = useDispatch();
 
-  // Sumar o restar personas para la reserva
+  // Cuantas personas?
   const [contador, setContador] = useState(2)
+
+  //Que dia?
+  const [showModal, setShowModal] = useState(false);
+  const currentDate = new Date();
+  const formattedDate = currentDate.toISOString().split('T')[0];
+  const dateToString = moment(currentDate).locale('es').format('ddd, D [de] MMM');
+  const [showDate, setShowDate] = useState(dateToString)
+
+  const handleDate = (date) => {
+    const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
+    setShowDate(newDate)
+  }
+
+  //A que hora ? -Horarios
+  const horarios = [
+    '9:00',
+    '9:30',
+    '10:00',
+    '10:30',
+    '11:00',
+    '11:30',
+    '12:00',
+  ]
 
 
   useEffect(() => {
@@ -113,9 +140,9 @@ const DetailResto = ({ route }) => {
                       name="remove-circle-outline"
                       size={37}
                       onPress={() => {
-                        if(contador === 2){
+                        if (contador === 2) {
                           setContador(2)
-                        }else{
+                        } else {
                           setContador(contador - 1)
                         }
                       }}
@@ -128,9 +155,9 @@ const DetailResto = ({ route }) => {
                       name="add-circle-outline"
                       size={37}
                       onPress={() => {
-                        if(contador === 30){
+                        if (contador === 30) {
                           setContador(30)
-                        }else{
+                        } else {
                           setContador(contador + 1)
                         }
                       }}
@@ -141,40 +168,50 @@ const DetailResto = ({ route }) => {
 
 
 
-              {/* Que dia ?------------------------ */}
+              {/* ------------------------¿Que dia ?------------------------ */}
 
               <View style={styles.containerPersons}>
                 <IonicIcon
                   name="calendar-outline"
                   size={45}
-                  margin={10}
-
+                  margin={15}
                 />
-
 
                 <View style={styles.reservDetail}>
                   <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
-                  <Text style={styles.textReservDetail}>Dom, 2 de Abr -Hoy-</Text>
+                  <Text style={styles.textReservDetail}>{showDate}</Text>
                 </View>
 
                 <View style={styles.containerButtonsPerson}>
 
 
-                  {/* En esta parte deberia tener un picker que me de las opciones disponibles de los dias en que puedo realizar una reserva */}
-                  <View style={styles.containerButton}>
+                  <TouchableOpacity>
                     <IonicIcon
+                      style={{ marginLeft: 70, }}
                       name="chevron-down-circle-outline"
                       size={37}
-                    // onPress={() => setPickerVisible(true)} 
+                      onPress={() => setShowModal(true)}
                     />
+                  </TouchableOpacity>
+                  <Modal visible={showModal} animationType='fade'>
+                    <Calendar
+                      // style=
+                      onDayPress={date => {
+                        setShowModal(false)
+                        handleDate(date)
+                      }}
+                      initialDate={formattedDate}
+                      // maxDate=''
+                      markedDates={{
+                        formattedDate: { marked: true },
+                      }}
 
-                  </View>
-
+                    />
+                  </Modal>
                 </View>
-
               </View>
 
-              {/* Qué horario? */}
+              {/*----------------- Qué horario?------------------------ */}
               <View style={styles.containerPersons}>
                 <IonicIcon
                   name="time-outline"
@@ -183,16 +220,22 @@ const DetailResto = ({ route }) => {
                 />
                 <View style={styles.reservDetail}>
                   <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                  <Text>9:30 hs</Text>
                 </View>
-                <View style={styles.containerButtonsPerson}>
-                  <View >
+                <View style={styles.buttonPersons}>
+                  <TouchableOpacity>
                     <IonicIcon
+                      style={{ marginLeft: 70, }}
                       name="chevron-down-circle-outline"
                       size={37}
+
                     // onPress={() => setPickerVisible(true)} 
                     />
-                  </View>
+                  </TouchableOpacity>
+
                 </View>
+
+
               </View>
 
               {/* Boton 'CONFIRMAR RESERVA' */}
@@ -377,24 +420,11 @@ const styles = StyleSheet.create({
     marginLeft: 12,
 
   },
-  containerButton: {
-    // backgroundColor: '#FA6B6B',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    margin: 10,
 
-
-    elevation: 5, // sombreado en Android
-    shadowOffset: { width: 2, height: 2 }, // sombreado en iOS
-    shadowColor: 'black',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
   buttonPersons: {
     alignSelf: 'center',
-    marginLeft: 1,
+    margin: 8,
+    // backgroundColor: 'orange',
   },
 
 
@@ -409,6 +439,7 @@ const styles = StyleSheet.create({
   reservDetail: {
     // backgroundColor: 'green',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   textReservDetail: {
     fontFamily: 'Inria-Sans-Bold',
