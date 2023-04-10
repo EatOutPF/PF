@@ -15,6 +15,10 @@ async function postReviews(review, score, user, idRestaurant) {
     user: users._id
   });
   const resultado = await newReview.save();
+
+  restaurant.review.push(newReview._id);
+  const restreview = await restaurant.save();
+  
   return `El review fue creado con exito`;
 }
 

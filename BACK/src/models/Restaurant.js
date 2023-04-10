@@ -73,7 +73,10 @@ const restaurantSchema = new Schema({
     saturday: { open: String, close: String },
     sunday: { open: String, close: String },
   },
-  ranking: Number,
+  ranking: {
+    type: Number,
+    default: 0
+  },
   advance: Number,
   about: String,
   review: [
@@ -122,14 +125,14 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  review: {
-    type: String,
+  review: [{
+    type: Schema.Types.ObjectId,
     ref: "Review",
-  },
-  user: {
+  }],
+  user: [{
     type: Schema.Types.ObjectId,
     ref: "User",
-  },
+  }],
   favorite: [{
     type: Schema.Types.ObjectId,
     ref: 'Favorite'
@@ -139,6 +142,7 @@ const restaurantSchema = new Schema({
     ref: 'Payment'
   }],
   balance: Number,
+  about: String,
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
