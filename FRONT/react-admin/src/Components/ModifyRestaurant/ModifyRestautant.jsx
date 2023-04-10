@@ -4,6 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { findDetailRestaurant, modifyRestaurant } from "../../Redux/Actions";
 import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
+import sweetAlert from "sweetalert";
 
 const ModifyRestaurant = (props) => {
   const { id } = useParams();
@@ -95,8 +96,9 @@ const ModifyRestaurant = (props) => {
         .map((p) => p.name);
       dispatch(modifyRestaurant(input));
       let newMessage = message;
-      if (newMessage) {
-        alert(newMessage.data);
+      console.log(newMessage.data);
+      if (newMessage?.data) {
+        sweetAlert("Actualizacion exitosa", newMessage.data);
         navigate("/home");
       }
     }
@@ -229,17 +231,21 @@ const ModifyRestaurant = (props) => {
 
             <form onSubmit={handlerSubmit}>
               <div className={style.container}>
-                <label htmlFor="name">Restaurante</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={input.name}
-                  onChange={handlerChange}
-                  style={{ display: "flex", flexGrow: 100 }}
-                />
+                <div>
+                  <label htmlFor="name">Restaurante</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={input.name}
+                    onChange={handlerChange}
+                    style={{ display: "flex", flexGrow: 100 }}
+                  />
+                </div>
                 {errors.name && (
-                  <span className={style.danger}>{errors.name}</span>
+                  <div>
+                    <span className={style.danger}>{errors.name}</span>
+                  </div>
                 )}
               </div>
 

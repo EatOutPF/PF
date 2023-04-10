@@ -1,4 +1,6 @@
 .containerCards {
+  flex-grow: 1;
+  padding-top: 30px;
   padding: 0rem 20px;
 }
 

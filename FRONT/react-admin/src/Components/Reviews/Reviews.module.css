@@ -1,0 +1,26 @@
+.containerCards {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 30px;
+}
+
+.containerTitle {
+  background-color: #fa6b6b;
+  color: #ffffff;
+}
+
+.containerBodyTable {
+  overflow: auto;
+}
+
+.containerThead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2px;
+}
+
+.containerBack {
+  display: flex;
+  text-decoration: none;
+}

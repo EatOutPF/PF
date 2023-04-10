@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "716033457346",
+    "project_id": "eatout-d06bc",
+    "storage_bucket": "eatout-d06bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716033457346:android:cb7441ed19cbfc43140f5b",
+        "android_client_info": {
+          "package_name": "com.eatoutpf.EatOut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716033457346-tl5a5aj7em52gscgl40cnhvr08au7a5a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eatoutpf.EatOut",
+            "certificate_hash": "f8201e681b44a8bc30bf7c0698d7e6bd73e810ac"
+          }
+        },
+        {
+          "client_id": "716033457346-tpude7okvlljg40au0arbl1mfm5eha1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eatoutpf.EatOut",
+            "certificate_hash": "45de3141b34ba293babc4287f09156d2eb0ae7fa"
+          }
+        },
+        {
+          "client_id": "716033457346-uiqt23knlrpkkcp12d8da9qmp4pptfja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmJhb5W3exbyIsoS_5Ou10a8fIaYNFAAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716033457346-1r51qba8m4h9cmpeqd87t1ggks89npcp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

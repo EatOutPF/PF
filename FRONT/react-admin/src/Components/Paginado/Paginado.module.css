@@ -1,4 +1,11 @@
 button.active {
   background-color: rgb(23, 32, 70);
   color: antiquewhite;
+  padding: 5px 13px;
+  font-size: 16px;
+}
+
+.buttonPagination {
+  padding: 5px 13px;
+  font-size: 16px;
 }

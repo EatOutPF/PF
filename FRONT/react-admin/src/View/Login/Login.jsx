@@ -47,7 +47,8 @@ function Login() {
 
   useEffect(() => {
     setUser(user);
-  });
+    console.log(user);
+  }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

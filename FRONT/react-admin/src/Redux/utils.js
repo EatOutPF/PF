@@ -1,3 +1,5 @@
+import { useReducer, useEffect } from "react";
+
 const updateMapper = (dataToUpdate) => {
   let mappedData = {
     name: dataToUpdate.name,
@@ -73,4 +75,40 @@ const updateMapper = (dataToUpdate) => {
   return mappedData;
 };
 
-export { updateMapper };
+const saveLocalStorage = (nameLocalStorage, data) => {
+  window.localStorage.setItem(nameLocalStorage, JSON.stringify(data));
+};
+
+const getLocalStorage = (nameLocalStorage) => {
+  return JSON.parse(window.localStorage.getItem(nameLocalStorage));
+};
+
+function useLocallyPersistedReducer(
+  reducer,
+  defaultState,
+  storageKey,
+  init = null
+) {
+  const hookVars = useReducer(reducer, defaultState, (defaultState) => {
+    const persisted = JSON.parse(localStorage.getItem(storageKey));
+    return persisted !== null
+      ? persisted
+      : init !== null
+      ? init(defaultState)
+      : defaultState;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(hookVars[0]));
+  }, [storageKey, hookVars[0]]);
+
+  return hookVars;
+}
+
+export {
+  updateMapper,
+  saveLocalStorage,
+  getLocalStorage,
+  useLocallyPersistedReducer,
+};
+    

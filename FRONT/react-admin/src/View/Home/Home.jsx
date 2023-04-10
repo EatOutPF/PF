@@ -15,14 +15,18 @@ import Sort from "../../Components/Sort";
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { user, currentListRestaurants, currentListRestaurantsByUser } =
-    useSelector((state) => state);
+  const {
+    user,
+    currentListRestaurants,
+    currentListRestaurantsByUser,
+    allRestaurants,
+    allRestaurantsByUser,
+  } = useSelector((state) => state);
 
   const restaurants =
-    user.role === "superadmin"
+    user?.role === "superadmin"
       ? currentListRestaurants
       : currentListRestaurantsByUser;
-  /* const user = useSelector((state) => state.user); */
 
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
@@ -39,7 +43,6 @@ const Home = () => {
 
   useEffect(() => {
     let RegisteredUser = user;
-
     if (RegisteredUser?.role) {
       if (RegisteredUser.role === "superadmin") dispatch(getAllRestaurants());
       if (RegisteredUser.role === "admin")
@@ -51,7 +54,7 @@ const Home = () => {
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
   const currentRestaurants =
     searchResults ||
-    restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
+    restaurants?.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
 
   return (
     <div className={style.containerHome}>
@@ -63,6 +66,7 @@ const Home = () => {
             setResetFilter={setResetFilter}
             setCurrentPage={setCurrentPage}
             resetFilter={resetFilter}
+            restaurants={restaurants}
           />
         </>
 
@@ -76,7 +80,9 @@ const Home = () => {
 
       <Paginate
         restaurantsPerPage={restaurantsPerPage}
-        restaurants={searchResults ? searchResults.length : restaurants.length}
+        restaurants={
+          searchResults ? searchResults?.length : restaurants?.length
+        }
         paginado={paginate}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
