@@ -8,6 +8,7 @@ const {
   Extra,
   Section,
   User
+
 } = require("../db");
 
 async function postRestaurant({
@@ -32,6 +33,8 @@ async function postRestaurant({
     throw new Error("Hay datos obligatorios sin completar");
 
   // const reviewObjects = await Review.find
+
+  const userObject = await User.findById(user);
 
   const menuOjects = await Menu.find({ title: { $in: menu } });
   const dietObjects = await Diet.find({ title: { $in: diets } });
@@ -60,7 +63,7 @@ async function postRestaurant({
     atmosphere: atmosphereObjects,
     extras: extraObjects,
     section: sectionObjects,
-
+    user: userObject,
   });
 
   // Guardar la receta en la base de datos

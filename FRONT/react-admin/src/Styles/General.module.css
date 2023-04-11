@@ -3,6 +3,7 @@
   outline: none;
   box-shadow: none;
   color: white;
+  padding: 14px 9px
 }
 
 .btnGost:hover {
@@ -24,3 +25,13 @@
 h3 {
   margin: 0px;
 }
+
+
+
+
+
+button:hover {
+  box-shadow: rgba(255, 255, 255, .2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
+  transform: scale(1.05);
+}
+

@@ -4,7 +4,6 @@ const admin = require("../firebase/firebaseConfig");
 const { User } = require("../db");
 
 async function getUsers(props) {
-
   if (props) {
     if (mongoose.Types.ObjectId.isValid(props)) {
       const users = await User.findById(props)
@@ -19,7 +18,7 @@ async function getUsers(props) {
 
       return users;
     } else {
-      const users = await User.findOne({ email: { $regex: search } })
+      const users = await User.findOne({ email: { $regex: props } })
         .populate("restaurant")
         .populate("favorite")
         .populate("reserve")
