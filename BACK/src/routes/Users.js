@@ -2,7 +2,7 @@ const { Router } = require("express");
 const express = require("express");
 const decode = require("../firebase/decode");
 const cors = require("cors")
-
+const mongoose = require("mongoose")
 const {
   getUsers,
   postUsers,
@@ -52,11 +52,18 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
+
   const { id } = req.params;
+  console.log(mongoose.Types.ObjectId.isValid(id))
   const { active } = req.body;
+  console.log(active)
   if (active !== undefined) {
+   
     try {
+
+  
       let resultado = await activeUsers(id, active);
+      console.log(resultado)
       res.status(200).json(resultado);
     } catch (error) {
       res.status(400).json({ error: error.message });

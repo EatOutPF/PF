@@ -33,10 +33,7 @@ const restaurantSchema = new Schema({
     coordinate: {
       latitude: {
         type: Number,
-        required: [
-          true,
-          "La latitud es obligatoria",
-        ],
+        required: [true, "La latitud es obligatoria"],
         min: [-89.999999, "La latitud mínima es de -89.999999"],
         max: [89.999999, "La latitud máxima es de 89.999999"],
       },
@@ -122,28 +119,33 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  review: {
-    type: String,
-    ref: "Review",
+  reserve: {
+    type: Schema.Types.ObjectId,
+    ref: "Reserve",
   },
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  favorite: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Favorite'
-  }],
-  payment : [{
-    type: Schema.Types.ObjectId,
-    ref: 'Payment'
-  }],
+  favorite: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Favorite",
+    },
+  ],
+  payment: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Payment",
+    },
+  ],
   balance: Number,
+  dailyTable: {
+    type: Number,
+    default: 40,
+  },
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);
 
 module.exports = Restaurant;
-
-
-
