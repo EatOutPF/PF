@@ -25,6 +25,7 @@ export const POST_OPTIONS = "POST_OPTIONS";
 export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
 
+
 export const getAllRestaurants = () => {
   return (dispatch) => {
     axios
@@ -233,13 +234,18 @@ export const getAllUsers = () => {
 
 export const postUsers = (create) => async (dispatch) => {
   try {
-    const users = await axios.post(`/users`, create);
-    const userdata = users.data;
-    console.log(userdata);
-    dispatch({
-      type: POST_USERS,
-      payload: userdata,
-    });
+  
+    if (typeof create === "object" && create.name && create.phone && create.email && create.password && create.role) {
+      const users = await axios.post(`/users`, create);
+      const userdata = users.data;
+      console.log(userdata);
+      dispatch({
+        type: POST_USERS,
+        payload: userdata,
+      });
+    } else {
+      throw new Error("El argumento create no es válido");
+    }
   } catch (error) {
     alert(error.response.data);
     dispatch({

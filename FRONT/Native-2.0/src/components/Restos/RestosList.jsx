@@ -19,7 +19,7 @@ const RestosList = () => {
   const restorantById = useSelector(state => state.restorantById);
   const resto = useSelector(state => state.allRestorants);
   // const restorantById = useSelector(state => state.restorantById);
-  const [restorantes, setRestorantes] = useState( []);
+  const [restorantes, setRestorantes] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {

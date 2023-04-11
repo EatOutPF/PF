@@ -41,14 +41,15 @@ async function getUsers(props) {
   return users;
 }
 
-async function postUsers({ name, phone, email, password }) {
-  if (!name || !phone || !email || !password)
+async function postUsers({ name, phone, email, password, role}) {
+  if (!name || !phone || !email || !password || !role)
     throw new Error("Hay datos obligatorios sin completar");
 
   const newUsers = new User({
     name,
     phone,
     email,
+    role,
   });
   const resultado = await newUsers.save();
 
@@ -57,6 +58,7 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
     password,
   });
   return `El usuario ${resultado.name} fue creado con exito`;

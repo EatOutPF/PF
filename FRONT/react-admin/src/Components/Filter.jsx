@@ -7,14 +7,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import style from "../Styles/General.module.css";
 
-function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
+function Filter({  resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
+ const [order , setOrder]= useState()
+ const [ currentPage, setCurrentPage]= useState()
 
   const user = useSelector((state) => state.user);
   const [selectedOptions, setSelectedOptions] = useState({});
 
-  function onChangefilter(evt) {
-    evt.preventDefault();
+  function onChangefilter(evt)
+   { evt.preventDefault();
     setSelectedOptions({
       ...selectedOptions,
       [evt.target.name]: evt.target.value,
@@ -22,7 +24,7 @@ function Filter({ setOrder, setCurrentPage, resetFilter, setResetFilter }) {
   }
 
   useEffect(() => {
-    dispatch(getFilterOptions(selectedOptions));
+  dispatch(getFilterOptions(selectedOptions));
   }, [selectedOptions]);
 
   function handleClearFilter(evt) {
