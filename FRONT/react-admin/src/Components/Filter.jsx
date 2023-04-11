@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  getFilterByDiets,
   getAllRestaurants,
-  getFilterByMenu,
-  getFilterActive,
-  getFilterOptions
+  getFilterOptions,
+  getAllRestaurantsByUser,
 } from "../Redux/Actions";
-import { useDispatch, } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import style from "../Styles/General.module.css";
 
 function Filter({  resetFilter, setResetFilter }) {
@@ -14,6 +12,7 @@ function Filter({  resetFilter, setResetFilter }) {
  const [order , setOrder]= useState()
  const [ currentPage, setCurrentPage]= useState()
 
+  const user = useSelector((state) => state.user);
   const [selectedOptions, setSelectedOptions] = useState({});
 
   function onChangefilter(evt)
@@ -29,11 +28,21 @@ function Filter({  resetFilter, setResetFilter }) {
   }, [selectedOptions]);
 
   function handleClearFilter(evt) {
-    evt.preventDefault();  
-    dispatch(getAllRestaurants());
+    evt.preventDefault();
+
     setResetFilter(!resetFilter);
     setCurrentPage(1);
     setOrder("");
+    setSelectedOptions({
+      diets: "",
+      menu: "",
+      active: "",
+    });
+
+    if (user.role === "superadmin") dispatch(getAllRestaurants());
+    else {
+      dispatch(getAllRestaurantsByUser(user));
+    }
   }
 
   return (
@@ -45,7 +54,7 @@ function Filter({  resetFilter, setResetFilter }) {
         name="diets"
         className="form-selected"
       >
-        <option>Filter by type</option>
+        <option value="">Filtrar por Dieta</option>
         <option key="vegetariano" value="vegetariano">
           vegetariano
         </option>
@@ -63,7 +72,7 @@ function Filter({  resetFilter, setResetFilter }) {
         name="menu"
         className="form-selected"
       >
-        <option>Filtrar Menu</option>
+        <option value="">Filtrar por Menú</option>
         <option key="internacional" value="internacional">
           internacional
         </option>
@@ -94,19 +103,23 @@ function Filter({  resetFilter, setResetFilter }) {
         ...
       </select>
 
-      <select onChange={onChangefilter} name="active" className="form-selected" defaultValue="filtrar por status">
-      <option>Filtrar por estado</option>
+      <select
+        onChange={onChangefilter}
+        name="active"
+        className="form-selected"
+        defaultValue="Filtrar por estado"
+      >
+        <option>Filtrar por estado</option>
         <option key="active" value="active">
           Active
         </option>
-        <option key="inactive" value="inactive" >
+        <option key="inactive" value="inactive">
           Inactive
         </option>
       </select>
-      <button onClick={handleClearFilter}>Reset Filter</button>
+      <button onClick={handleClearFilter}>Borrar Filtros</button>
     </div>
   );
 }
 
 export default Filter;
-      

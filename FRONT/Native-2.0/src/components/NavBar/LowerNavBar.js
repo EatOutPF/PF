@@ -17,6 +17,8 @@ import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Filters from '../Filters/Filters.jsx';
 import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
+import CheckoutState from '../CheckoutPayment/CheckoutState';
+
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
 // import MercadoPago1 from '../MercadoPago/MercadoPago.js';
@@ -49,6 +51,10 @@ function HomeScreenStack(){
       <HomeStackNavigator.Screen
         name="Checkout"
         component={CheckoutPayment}
+      />
+      <HomeStackNavigator.Screen
+        name="Estado de la Reserva"
+        component={CheckoutState}
       />
       <HomeStackNavigator.Screen
         name="Filtrados"

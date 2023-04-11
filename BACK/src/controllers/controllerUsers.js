@@ -3,23 +3,36 @@ const admin = require("../firebase/firebaseConfig");
 
 const { User } = require("../db");
 
-async function getUsers(email) {
-  const search = email;
+async function getUsers(props) {
+  if (props) {
+    if (mongoose.Types.ObjectId.isValid(props)) {
+      const users = await User.findById(props)
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
 
-  if (search) {
-    const users = await User.findOne({ email: { $regex: search } })
-      .populate("restaurant")
-      .populate("favorite")
-      .populate("reserve")
-      .populate("payment");
+      if (users === null) throw new Error("No existen usuarios con ese Id");
+      users.login = true;
+      users.save();
 
-    if (users === null)
-      throw new Error("No existen usuarios con ese E-Mail registrado");
-    users.login = true;
-    users.save();
+      return users;
+    } else {
+      const users = await User.findOne({ email: { $regex: props } })
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
 
-    return users;
+      if (users === null)
+        throw new Error("No existen usuarios con ese E-Mail registrado");
+      users.login = true;
+      users.save();
+
+      return users;
+    }
   }
+
   const users = await User.find()
     .populate("restaurant")
     .populate("favorite")
@@ -28,14 +41,15 @@ async function getUsers(email) {
   return users;
 }
 
-async function postUsers({ name, phone, email, password }) {
-  if (!name || !phone || !email || !password)
+async function postUsers({ name, phone, email, password, role}) {
+  if (!name || !phone || !email || !password || !role)
     throw new Error("Hay datos obligatorios sin completar");
 
   const newUsers = new User({
     name,
     phone,
     email,
+    role,
   });
   const resultado = await newUsers.save();
 
@@ -44,6 +58,7 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
     password,
   });
   return `El usuario ${resultado.name} fue creado con exito`;

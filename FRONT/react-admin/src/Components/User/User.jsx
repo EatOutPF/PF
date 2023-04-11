@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-/* import { deleteRestaurant } from "../../Redux/Actions"; */
 import style from "./User.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
-import axios from "axios";
+
 import sweetAlert from "sweetalert";
+import { deleteUser, getAllUsers } from "../../Redux/Actions";
 
 const User = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -21,9 +21,15 @@ const User = (props) => {
   };
 
   const handlerDelete = () => {
-    /* dispatch(deleteRestaurant(props)); */
-    console.log(message);
-    if (message) sweetAlert(message);
+    if (props?.id) {
+      dispatch(deleteUser(props));
+      return props.active
+        ? sweetAlert(
+            "Se inactivó",
+            `Se ha deshabilitado el Usuario ${props.name}`
+          )
+        : sweetAlert("Se activó", `Se ha habilitado el Usuario ${props.name}`);
+    }
   };
 
   return (
@@ -35,7 +41,8 @@ const User = (props) => {
           <td>{props.role}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
-            {props.active ? (
+            {/* ESTO SE DESCOMENTA CUANDO SE HAGA LA FUNCION DE MODIFICAR USUARIO */}
+            {/* {props.active ? (
               <>
                 <NavLink to={`/modify/${props.id}`}>
                   <button onClick={handlerClick}>
@@ -47,7 +54,7 @@ const User = (props) => {
               </>
             ) : (
               <></>
-            )}
+            )} */}
 
             <button
               onClick={handlerDelete}
