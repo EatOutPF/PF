@@ -5,46 +5,49 @@ import Cards from "../../Components/Cards/Cards";
 import {
   getAllRestaurants,
   getAllRestaurantsByUser,
+  getUserById,
 } from "../../Redux/Actions";
 import Filter from "../../Components/Filter";
 import Paginate from "../../Components/Paginado/Paginado";
 import style from "./Home.module.css";
 import Searchbar from "../../Components/SearchBar";
 import Sort from "../../Components/Sort";
+import Loading from "../../Components/Loading/Loading";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
 
-  const { user, currentListRestaurants, currentListRestaurantsByUser } =
-    useSelector((state) => state);
+  const {
+    user,
+    currentListRestaurants,
+    currentListRestaurantsByUser,
+    currentUser,
+  } = useSelector((state) => state);
 
   const restaurants =
-    user.role === "superadmin"
+    user?.role === "superadmin"
       ? currentListRestaurants
       : currentListRestaurantsByUser;
-  /* const user = useSelector((state) => state.user); */
 
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage, setRestaurantsPerPage] = useState(10);
   const [order, setOrder] = useState("");
   const [filter, setResetFilter] = useState("");
   const [resetFilter, setsetFilter] = useState("");
-
   const [searchResults, setSearchResults] = useState(null);
   const [sort, setSort] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let RegisteredUser = user;
-
-    if (RegisteredUser?.role) {
-      if (RegisteredUser.role === "superadmin") dispatch(getAllRestaurants());
-      if (RegisteredUser.role === "admin")
-        dispatch(getAllRestaurantsByUser(user));
-    }
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
@@ -52,45 +55,65 @@ const Home = () => {
   const currentRestaurants =
     searchResults ||
     restaurants?.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
-       
+
+  useEffect(() => {
+    if (user?.role) {
+      if (user.role === "superadmin") dispatch(getAllRestaurants());
+      if (user.role === "admin") dispatch(getAllRestaurantsByUser(user));
+    }
+  }, []);
+
+  useEffect(() => {
+    restaurants.length && setLoaded(true);
+  }, [restaurants]);
+
   return (
+  
     <div className={style.containerHome}>
-      <div className={style.containerSearchBar}>
-        <Searchbar setCurrentPage={setCurrentPage} />
+      {!loaded ? (
+        <Loading />
+      ) : (
         <>
-          <Filter
-            setOrder={setOrder}
-            setResetFilter={setResetFilter}
-            setCurrentPage={setCurrentPage}
-            resetFilter={resetFilter}
-            restaurants = {restaurants}
+          <div className={style.containerSearchBar}>
+            <Searchbar setCurrentPage={setCurrentPage} />
+            <>
+              <Filter
+                setOrder={setOrder}
+                setResetFilter={setResetFilter}
+                setCurrentPage={setCurrentPage}
+                resetFilter={resetFilter}
+                restaurants={restaurants}
+              />
+            </>
+
+            <Sort
+              setOrder={setOrder}
+              setSort={setSort}
+              setCurrentPage={setCurrentPage}
+              resetFilter={resetFilter}
             />
-        </>
+          </div>
 
-        <Sort
-          setOrder={setOrder}
-          setSort={setSort}
-          setCurrentPage={setCurrentPage}
-          resetFilter={resetFilter}
-        />
-      </div>
-
-      <Paginate
-        restaurantsPerPage={restaurantsPerPage}
-        restaurants={searchResults ? searchResults?.length : restaurants?.length}
-        paginado={paginate}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-
-      <div className={style.containterTable}>
-        {currentRestaurants && (
-          <Cards
-            restaurants={searchResults || restaurants}
-            currentRestaurants={currentRestaurants}
+          <Paginate
+            restaurantsPerPage={restaurantsPerPage}
+            restaurants={
+              searchResults ? searchResults?.length : restaurants?.length
+            }
+            paginado={paginate}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
-        )}
-      </div>
+
+          <div className={style.containterTable}>
+            {currentRestaurants && (
+              <Cards
+                restaurants={searchResults || restaurants}
+                currentRestaurants={currentRestaurants}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

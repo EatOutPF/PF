@@ -13,12 +13,17 @@ export const POST_RESTAURANT = "POST_RESTAURANT";
 export const ORDER_BY_NAME = "ORDER_BY_NAME";
 export const ORDER_BY_POPULARITY = "ORDER_BY_POPULARITY";
 export const SET_TOKEN = "SET_TOKEN";
-
 export const GET_ALL_USERS = "GET_ALL_USERS";
 export const POST_USERS = "POST_USERS";
 export const GET_ALL_RESTAURANTS_BY_USER = "GET_ALL_RESTAURANTS_BY_USER";
 export const FILTERS_OPTIONS = "FILTERS_OPTIONS";
+export const SORT_BY_RESTAURANT_BY_USER = "SORT_BY_RESTAURANT_BY_USER";
+export const SORT_BY_POPULARITY_BY_RESTAURANT_USER =
+  "SORT_BY_POPULARITY_BY_RESTAURANT_USER";
+export const DELETE_USER = "DELETE_USER";
 export const POST_OPTIONS = "POST_OPTIONS";
+export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
+export const GET_USER_BY_ID = "GET_USER_BY_ID";
 
 
 export const getAllRestaurants = () => {
@@ -57,7 +62,6 @@ export const getFilterOptions = ({ diets, menu, active }) => {
   };
 };
 
-
 export const findDetailRestaurant = (id) => {
   return (dispatch) => {
     axios
@@ -87,6 +91,7 @@ export const modifyRestaurant = (dataToUpdate) => {
           type: MODIFY_RESTAURANT,
           payload: result,
         });
+        dispatch(getAllUsers());
       })
       .catch((error) => {
         return dispatch({
@@ -133,6 +138,28 @@ export const deleteRestaurant = (dataToUpdate) => {
   };
 };
 
+export const deleteUser = (user) => {
+  return (dispatch) => {
+    axios
+      .put(`/users/${user.id}`, {
+        active: user.active,
+      })
+      .then((response) => {
+        dispatch({
+          type: DELETE_USER,
+          payload: response.data,
+        });
+        dispatch(getAllUsers());
+      })
+      .catch((error) => {
+        return dispatch({
+          type: DELETE_USER,
+          payload: error,
+        });
+      });
+  };
+};
+
 export const postRestaurant = (create) => async (dispatch) => {
   try {
     const response = await axios.post(`/restaurant`, create);
@@ -172,6 +199,20 @@ export const setToken = (token) => {
   };
 };
 
+export const sortByRestaurantByUser = (order) => {
+  return {
+    type: SORT_BY_RESTAURANT_BY_USER,
+    payload: order,
+  };
+};
+
+export const sortByRestaurantByPopularityByUser = (order) => {
+  return {
+    type: SORT_BY_POPULARITY_BY_RESTAURANT_USER,
+    payload: order,
+  };
+};
+
 export const orderByPopularity = (order) => {
   return { type: ORDER_BY_POPULARITY, payload: order };
 };
@@ -193,13 +234,18 @@ export const getAllUsers = () => {
 
 export const postUsers = (create) => async (dispatch) => {
   try {
-    const users = await axios.post(`/users`, create);
-    const userdata = users.data;
-    console.log(userdata);
-    dispatch({
-      type: POST_USERS,
-      payload: userdata,
-    });
+  
+    if (typeof create === "object" && create.name && create.phone && create.email && create.password && create.role) {
+      const users = await axios.post(`/users`, create);
+      const userdata = users.data;
+      console.log(userdata);
+      dispatch({
+        type: POST_USERS,
+        payload: userdata,
+      });
+    } else {
+      throw new Error("El argumento create no es válido");
+    }
   } catch (error) {
     alert(error.response.data);
     dispatch({
@@ -210,30 +256,66 @@ export const postUsers = (create) => async (dispatch) => {
 };
 
 export const getAllRestaurantsByUser = (user) => {
-  console.log(user);
-  return {
-    type: GET_ALL_RESTAURANTS_BY_USER,
-    payload: user,
+  return (dispatch) => {
+    axios
+      .get(`/users/${user._id}`)
+      .then((response) => {
+        console.log(1, response.data);
+        dispatch({
+          type: GET_ALL_RESTAURANTS_BY_USER,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: GET_USER_BY_ID,
+          payload: error.response.data.error,
+        });
+      });
   };
 };
 
+export const PostsOptions = (create) => async (dispatch) => {
+  try {
+    const options = await axios.post(`/options`, create);
+    const dataOptions = options.data;
 
-export const PostsOptions = (create) => async(dispatch) => {
- try {
-   const options = await axios.post(`/options`,create)
-   const dataOptions = options.data;
+    dispatch({
+      type: POST_OPTIONS,
+      payload: dataOptions,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_OPTIONS,
+      payload: [],
+    });
+  }
+};
 
-   dispatch({
-    type: POST_OPTIONS,
-    payload: dataOptions,
-  });
-  
- } catch (error) {
-  dispatch({
-    type: POST_OPTIONS,
-    payload: [],
-  });
-  
- }
+export const searchByRestaurantByUser = (name) => {
+  return {
+    type: SEARCH_BY_RESTAURANT_BY_USER,
+    payload: name,
+  };
+};
 
-}
+export const getUserById = (user) => {
+  console.log(user._id);
+  return (dispatch) => {
+    axios
+      .get(`/users/${user._id}`)
+      .then((response) => {
+        console.log(1, response.data);
+        dispatch({
+          type: GET_USER_BY_ID,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: GET_USER_BY_ID,
+          payload: error.response.data.error,
+        });
+      });
+  };
+};

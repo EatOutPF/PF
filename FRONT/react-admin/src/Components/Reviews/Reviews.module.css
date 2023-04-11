@@ -1,7 +1,8 @@
 .containerCards {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  padding-top: 30px;
-  padding: 0rem 20px;
+  padding: 30px;
 }
 
 .containerTitle {
@@ -17,4 +18,9 @@
   position: -webkit-sticky;
   position: sticky;
   top: 2px;
+}
+
+.containerBack {
+  display: flex;
+  text-decoration: none;
 }

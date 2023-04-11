@@ -9,6 +9,7 @@ import {
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
+    GET_LINK_MERCADOPAGO,
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -121,6 +122,27 @@ export function searchRestorantByString(string) {
             .catch((error) => {
                 dispatch({
                     type: GET_RESTORANT_BY_STRING,
+                    payload: error.message,
+                });
+            });
+    };
+}
+
+export function getLinkMercadoPago(value) {
+    // console.log("soy el action:", string);
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/payment`, value)
+            .then((response) => {
+                // console.log("RESPONSE del action -> ", response);
+                dispatch({
+                    type: GET_LINK_MERCADOPAGO,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_LINK_MERCADOPAGO,
                     payload: error.message,
                 });
             });
