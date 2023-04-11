@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Image, View, StyleSheet, ScrollView, Dimensions, Button, Text, TouchableOpacity } from 'react-native'
-import StyledText from '../../styles/StyledText/StyledText.jsx'
+// import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchRestorantById, clearStateResatorantById  } from '../../redux/actions.js'
@@ -11,6 +11,8 @@ import * as WebBrowser from 'expo-web-browser';
 
 import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
+// import ListReviews from '../Reviews/Reviews.jsx'
+// import { getAllRestaurants } from '../../../../react-admin/src/Redux/Actions.js'
 
 const DetailResto = ({route}) => {
     // const { _id } = useParams();
@@ -218,7 +220,10 @@ const DetailResto = ({route}) => {
                         only five centuries.
                       </Text> */}
 
+                      
+
                     </View>
+                    
 
                   <View>
                     <Text style={styles.textBody}> Calendario ...</Text>
@@ -276,6 +281,8 @@ const DetailResto = ({route}) => {
                       -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
                       {detail?.paymentMethods[2]}
                     </Text>
+
+
                   </View>
             </View>
 

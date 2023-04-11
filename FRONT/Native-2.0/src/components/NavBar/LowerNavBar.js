@@ -17,6 +17,7 @@ import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Filters from '../Filters/Filters.jsx';
 import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
+import ListReviews from '../Reviews/Reviews.jsx';
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
 // import MercadoPago1 from '../MercadoPago/MercadoPago.js';
