@@ -20,6 +20,7 @@ import {
   DELETE_USER,
   POST_OPTIONS,
   SEARCH_BY_RESTAURANT_BY_USER,
+  GET_USER_BY_ID
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -59,6 +60,7 @@ const initialState = {
   currentUsers: [],
   currentListRestaurantsByUser: [],
   allRestaurantsByUser: [],
+  currentUser: {}
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -241,6 +243,12 @@ const Reducer = (state = initialState, { type, payload }) => {
           currentListRestaurantsByUser: searchRestaurant,
         };
       break;
+
+      case GET_USER_BY_ID:
+        return {
+          ...state,
+          currentUser: payload
+        }
     default:
       return { ...state };
   }

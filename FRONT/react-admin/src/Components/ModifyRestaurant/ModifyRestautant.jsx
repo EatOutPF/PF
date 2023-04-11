@@ -6,6 +6,7 @@ import {
   getAllRestaurantsByUser,
   getAllUsers,
   modifyRestaurant,
+  getUserById,
 } from "../../Redux/Actions";
 import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
@@ -65,6 +66,7 @@ const ModifyRestaurant = (props) => {
     sundayOpen: "",
     sundayClose: "",
   });
+  const [loaded, setLoaded] = useState(false);
 
   const handlerChange = (e) => {
     const { name, value } = e.target;
@@ -103,9 +105,8 @@ const ModifyRestaurant = (props) => {
         .map((p) => p.name);
 
       dispatch(modifyRestaurant(input));
-
       let newMessage = message;
-      console.log(newMessage.data, { input }, { user });
+
       if (newMessage?.data) {
         sweetAlert("Actualizacion exitosa", newMessage.data);
         navigate("/home");

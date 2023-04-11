@@ -23,6 +23,7 @@ export const SORT_BY_POPULARITY_BY_RESTAURANT_USER =
 export const DELETE_USER = "DELETE_USER";
 export const POST_OPTIONS = "POST_OPTIONS";
 export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
+export const GET_USER_BY_ID = "GET_USER_BY_ID";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -249,9 +250,22 @@ export const postUsers = (create) => async (dispatch) => {
 };
 
 export const getAllRestaurantsByUser = (user) => {
-  return {
-    type: GET_ALL_RESTAURANTS_BY_USER,
-    payload: user,
+  return (dispatch) => {
+    axios
+      .get(`/users/${user._id}`)
+      .then((response) => {
+        console.log(1, response.data);
+        dispatch({
+          type: GET_ALL_RESTAURANTS_BY_USER,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: GET_USER_BY_ID,
+          payload: error.response.data.error,
+        });
+      });
   };
 };
 
@@ -276,5 +290,26 @@ export const searchByRestaurantByUser = (name) => {
   return {
     type: SEARCH_BY_RESTAURANT_BY_USER,
     payload: name,
+  };
+};
+
+export const getUserById = (user) => {
+  console.log(user._id);
+  return (dispatch) => {
+    axios
+      .get(`/users/${user._id}`)
+      .then((response) => {
+        console.log(1, response.data);
+        dispatch({
+          type: GET_USER_BY_ID,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: GET_USER_BY_ID,
+          payload: error.response.data.error,
+        });
+      });
   };
 };

@@ -5,21 +5,24 @@ import Cards from "../../Components/Cards/Cards";
 import {
   getAllRestaurants,
   getAllRestaurantsByUser,
+  getUserById,
 } from "../../Redux/Actions";
 import Filter from "../../Components/Filter";
 import Paginate from "../../Components/Paginado/Paginado";
 import style from "./Home.module.css";
 import Searchbar from "../../Components/SearchBar";
 import Sort from "../../Components/Sort";
+import Loading from "../../Components/Loading/Loading";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
 
   const {
     user,
     currentListRestaurants,
     currentListRestaurantsByUser,
-    currentUsers,
+    currentUser,
   } = useSelector((state) => state);
 
   const restaurants =
@@ -32,7 +35,6 @@ const Home = () => {
   const [order, setOrder] = useState("");
   const [filter, setResetFilter] = useState("");
   const [resetFilter, setsetFilter] = useState("");
-
   const [searchResults, setSearchResults] = useState(null);
   const [sort, setSort] = useState("");
 
@@ -40,59 +42,69 @@ const Home = () => {
     setCurrentPage(pageNumber);
   };
 
-  useEffect(() => {
-    if (user?.role) {
-      if (user.role === "superadmin") dispatch(getAllRestaurants());
-      if (user.role === "admin") dispatch(getAllRestaurantsByUser(user));
-    }
-  }, [currentUsers]);
-
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
   const currentRestaurants =
     searchResults ||
     restaurants?.slice(indexOfFirstRestaurant, indexOfLastRestaurant);
 
+  useEffect(() => {
+    if (user?.role) {
+      if (user.role === "superadmin") dispatch(getAllRestaurants());
+      if (user.role === "admin") dispatch(getAllRestaurantsByUser(user));
+    }
+  }, []);
+
+  useEffect(() => {
+    restaurants.length && setLoaded(true);
+  }, [restaurants]);
+
   return (
     <div className={style.containerHome}>
-      <div className={style.containerSearchBar}>
-        <Searchbar setCurrentPage={setCurrentPage} />
+      {!loaded ? (
+        <Loading />
+      ) : (
         <>
-          <Filter
-            setOrder={setOrder}
-            setResetFilter={setResetFilter}
+          <div className={style.containerSearchBar}>
+            <Searchbar setCurrentPage={setCurrentPage} />
+            <>
+              <Filter
+                setOrder={setOrder}
+                setResetFilter={setResetFilter}
+                setCurrentPage={setCurrentPage}
+                resetFilter={resetFilter}
+                restaurants={restaurants}
+              />
+            </>
+
+            <Sort
+              setOrder={setOrder}
+              setSort={setSort}
+              setCurrentPage={setCurrentPage}
+              resetFilter={resetFilter}
+            />
+          </div>
+
+          <Paginate
+            restaurantsPerPage={restaurantsPerPage}
+            restaurants={
+              searchResults ? searchResults?.length : restaurants?.length
+            }
+            paginado={paginate}
+            currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            resetFilter={resetFilter}
-            restaurants={restaurants}
           />
+
+          <div className={style.containterTable}>
+            {currentRestaurants && (
+              <Cards
+                restaurants={searchResults || restaurants}
+                currentRestaurants={currentRestaurants}
+              />
+            )}
+          </div>
         </>
-
-        <Sort
-          setOrder={setOrder}
-          setSort={setSort}
-          setCurrentPage={setCurrentPage}
-          resetFilter={resetFilter}
-        />
-      </div>
-
-      <Paginate
-        restaurantsPerPage={restaurantsPerPage}
-        restaurants={
-          searchResults ? searchResults?.length : restaurants?.length
-        }
-        paginado={paginate}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-
-      <div className={style.containterTable}>
-        {currentRestaurants && (
-          <Cards
-            restaurants={searchResults || restaurants}
-            currentRestaurants={currentRestaurants}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 };
