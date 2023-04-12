@@ -37,7 +37,7 @@ router.use("/sendemail", sendEmailRouter);
 router.use("/favorite", favoriteRouter);
 router.use("/reserve", reserveRouter)
 router.use("/payment", paymentRouter)
-router.post("/paymentstatus", paymentstatusRouter)
+router.use("/paymentstatus", paymentstatusRouter)
 
 /* --------MERCADOPAGO------- */
 router.use("/mercadopago", paymentMercadoPagoRouter);
