@@ -70,12 +70,46 @@ const ModifyRestaurant = (props) => {
 
   const handlerChange = (e) => {
     const { name, value } = e.target;
-    if (name === "images") {
-      let arrImages = value?.split(",");
-      setSelectedImages(arrImages);
-    }
     setInput({ ...input, [name]: value });
     setErrors(Validation({ ...input, [name]: value }));
+  };
+
+  const onChangeImages = (e) => {
+    let indexImg;
+
+    if (selectedImages.length > 0) {
+      indexImg = selectedImages[selectedImages.length - 1];
+    } else {
+      indexImg = 0;
+    }
+    let newImgsToState = readmultifiles(e, indexImg);
+    let newImgState = [...selectedImages, ...newImgsToState];
+    setSelectedImages(newImgState);
+  };
+
+  const readmultifiles = (e, indexInitial) => {
+    const files = e.target.files;
+    const arrayImages = [];
+
+    console.log(1, Array.isArray(files));
+    Object.keys(files).forEach((i) => {
+      const file = files(i);
+      let url = URL.createObjectURL(file);
+      console.log(2, file);
+      arrayImages.push({
+        index: indexInitial,
+        url,
+        file,
+      });
+      indexInitial++;
+    });
+    console.log(arrayImages);
+    return arrayImages;
+  };
+
+  const deleteImages = (index) => {
+    const newImages = selectedImages.filter((img) => img.index !== index);
+    setSelectedImages(newImages);
   };
 
   const handlerCheckBox = (value, array, setArray) => {
@@ -227,6 +261,10 @@ const ModifyRestaurant = (props) => {
     initCheckbox(optionsSection, "extras", setSelectedExtras);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailRestaurant]);
+
+  useEffect(() => {
+    console.log(input?.images);
+  }, [input]);
 
   return (
     <div className={style.containerFormModify}>
@@ -418,19 +456,32 @@ const ModifyRestaurant = (props) => {
               </div>
 
               <div className={style.container}>
-                <label htmlFor="images">Imagenes (url):</label>
-                <input
-                  type="url"
-                  name="images"
-                  id="images"
-                  value={
-                    input.images
-                      ? input?.images?.map((image) => `${image},`)
-                      : ""
-                  }
-                  onChange={handlerChange}
-                  style={{ display: "flex", flexGrow: 100 }}
-                />
+                <label>
+                  <span> Seleccionar imagenes </span>
+                  <input
+                    hidden
+                    type="file"
+                    multiple
+                    onChange={onChangeImages}
+                  ></input>
+                </label>
+
+                {/* {input.images &&
+                  input?.images?.map((img, index) => {
+                    return (
+                      <div>
+                        <div>
+                          <button onClick={deleteImages(img.index)}> X </button>
+                          <img
+                            alt="imagen"
+                            src={selectedImages}
+                            data-toggle="modal"
+                            data-target="#ModalPreviewImg"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })} */}
 
                 {/* {errors.images && <p>*{errors.images}</p>} */}
               </div>
