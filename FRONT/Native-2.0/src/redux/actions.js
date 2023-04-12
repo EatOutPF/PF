@@ -10,6 +10,9 @@ import {
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
     GET_LINK_MERCADOPAGO,
+    LOGIN_USER_FIREBASE,
+    LOGIN_USER_GOOGLE,
+    CREATE_USERS,
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -44,6 +47,26 @@ export function getAllRestorants() {
             });
     };
 }
+
+export function createUser(value) {
+    return async (dispatch) => {
+        await axios
+            .get(`${DB_HOST}/users`, value)
+            .then((response) => {
+                // console.log("RESPONSE -> ", response);
+                dispatch({
+                    type: CREATE_USERS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: CREATE_USERS,
+                    payload: error.message,
+                });
+            });
+    };
+};
 
 export function filterCards(status) {
     return {

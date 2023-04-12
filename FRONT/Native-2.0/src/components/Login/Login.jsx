@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
+import CreateAccountFirebase from "../Login/CreateAccountFirebase"
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
   } from 'firebase/auth';
@@ -42,17 +43,19 @@ function HomeScreen() {
     });
 
     const handleCreateAccount = () => {
-      createUserWithEmailAndPassword(authF, email, password)
-      .then((userCredential) => {
-        console.log('Account created!')
-        Alert.alert('Account created!')
-        const user = userCredential.user;
-        console.log(user)
-      })
-      .catch(error => {
-        console.log(error)
-        Alert.alert(error.message)
-      })
+      // createUserWithEmailAndPassword(authF, email, password)
+      // .then((userCredential) => {
+      //   console.log('Account created!')
+      //   Alert.alert('Account created!')
+      //   const user = userCredential.user;
+      //   console.log(user)
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      //   Alert.alert(error.message)
+      // })
+      navigation.navigate('Crear cuenta');
+
     }
 
     const handleSignIn = () => {
@@ -73,13 +76,18 @@ function HomeScreen() {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       // Get the users ID token
       const { idToken } = await GoogleSignin.signIn();
-    
+      const idT = await GoogleSignin.signIn();
+
+      console.log("idtoken LARGO: ", idToken);
+
+      console.log("idtoken CORTO: ", idT);
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    
+      console.log("googleCredential:", googleCredential);
       // Sign-in the user with the credential
       // return auth().signInWithCredential(googleCredential);
       const user_sing_in = auth().signInWithCredential(googleCredential);
+      console.log("user-sing: ", user_sing_in);
       user_sing_in
         .then((user)=> {
           console.log("user data: ", user);
@@ -146,7 +154,8 @@ function HomeScreen() {
   return (
     
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Iniciar Sesion" component={LoginScreen} />
+        <Stack.Screen name="Crear cuenta" component={CreateAccountFirebase} />
         <Stack.Screen name="Bienvenido" component={Profile} />
       </Stack.Navigator>
   );
