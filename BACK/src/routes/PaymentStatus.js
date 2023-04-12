@@ -10,11 +10,9 @@ router.use(express.json());
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", (req, res) => {
-    
-    console.log(req.body);
-
 const { body } = req;
-//  const signature = req.header('x-signature');
+const signature = req.header('x-signature');
+    console.log(body, signature)
 
   // Verifica la firma de la solicitud
   //const hash = crypto.createHmac('sha256', MERCADOPAGO_KEY)
