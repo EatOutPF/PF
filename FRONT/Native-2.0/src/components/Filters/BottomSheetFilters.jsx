@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react'
 import 'react-native-gesture-handler';
-import { StyleSheet, View, Button } from 'react-native';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { StyleSheet, View, Text } from 'react-native';
+import { BottomSheetModal, TouchableOpacity,} from '@gorhom/bottom-sheet'
 import Filters from "../Filters/Filters"
 import { useNavigation } from '@react-navigation/native';
+import IonicIcon from 'react-native-vector-icons/Ionicons';
+
 
 
 export default function BottonSheetFilters() {
@@ -26,34 +28,49 @@ export default function BottonSheetFilters() {
         navigation.navigate("Mapa")
     }
 
-    {/*-------Flor*/ } 
+    {/*-------Flor*/ }
     return (
         <View style={styles.container}>
             {/* <Text>Esta al es de prueba en React Native 12.</Text> */}
-            <Button style={styles.itemTitle} title='Filtros' onPress={handlePresentModal} 
-            
-            />
-                <BottomSheetModal
-                    ref={bottomSheetModalRef}
-                    index={0}
-                    snapPoints={snapPoints}
-                    backgroundStyle={{ borderRadius: 50 }}
-                    backgroundOpacity={0}
-                    enableDismissOnClose={true}
-                    onClose={() => setIsOpen(false)}
-                >
-                    <View style={styles.contentContainer}>
-                        <Filters
-                            array={isOpen}
-                            handleBottonSheet={handleBottonSheet}
-                        />
-                    </View>
-                </BottomSheetModal>
 
-            <Button style={styles.itemTitle} title='Mapa' onPress={handleMapDisplay} 
-            
-            />
+            <View style={styles.buttons}>
+            <TouchableOpacity>
+                <IonicIcon
+                    name="filter-outline"
+                    size={30}
+                    onPress={handlePresentModal}
+                />
+                <Text>Filtros</Text>
 
+            </TouchableOpacity>
+            </View>
+
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={0}
+                snapPoints={snapPoints}
+                backgroundStyle={{ borderRadius: 50 }}
+                backgroundOpacity={0}
+                enableDismissOnClose={true}
+                onClose={() => setIsOpen(false)}
+            >
+                <View style={styles.contentContainer}>
+                    <Filters
+                        array={isOpen}
+                        handleBottonSheet={handleBottonSheet}
+                    />
+                </View>
+            </BottomSheetModal>
+
+            <TouchableOpacity>
+                <IonicIcon
+                    name="map-outline"
+                    size={30}
+                    onPress={handleMapDisplay}
+                />
+                <Text>Mapa</Text>
+
+            </TouchableOpacity>
         </View>
     );
 }
@@ -78,7 +95,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         right: 100
     },
-    
+
     itemTitle: {
         color: '#A81337',
         fontSize: 16,
@@ -86,13 +103,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         width: '80%',
-        
+
         padding: 10,
         position: "absolute",
         left: 21,
         bottom: 5,
         borderRadius: 20,
         backgroundColor: "#D9D9D9"
-    
     },
+    buttons:{
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems: 'center',
+     
+    }
 });

@@ -56,7 +56,8 @@ const CarouselAux = (props) => {
             <TouchableOpacity onPress={()=>handlePress(item?._id)} >
               <ImageBackground  style={styles.image} source={{ uri: restoImg }}>
                 <Text style={[styles.itemTitle]}>{item?.name}</Text> 
-                <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text> 
+                <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text>
+                 
                   {/* styles.itemTitle, isActive && styles.activeItemTitle */}
 
               </ImageBackground >

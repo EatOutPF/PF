@@ -8,9 +8,9 @@ const Reserve = require("./models/Reserve");
 const Restaurant = require("./models/Restaurant");
 const Section = require("./models/Section");
 const User = require("./models/User");
-const Review = require("./models/Review")
-const Favorite = require("./models/Favorite")
-const Payment = require("./models/Payment")
+const Review = require("./models/Review");
+const Favorite = require("./models/Favorite");
+const Payment = require("./models/Payment");
 const { ATLAS_URI } = process.env;
 const mongoose = require("mongoose");
 
@@ -37,7 +37,5 @@ module.exports = {
   User,
   Review,
   Favorite,
-  Payment
+  Payment,
 };
-
-

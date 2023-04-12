@@ -3,23 +3,36 @@ const admin = require("../firebase/firebaseConfig");
 
 const { User } = require("../db");
 
-async function getUsers(email) {
-  const search = email;
+async function getUsers(props) {
+  if (props) {
+    if (mongoose.Types.ObjectId.isValid(props)) {
+      const users = await User.findById(props)
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
 
-  if (search) {
-    const users = await User.findOne({ email: { $regex: search } })
-      .populate("restaurant")
-      .populate("favorite")
-      .populate("reserve")
-      .populate("payment");
+      if (users === null) throw new Error("No existen usuarios con ese Id");
+      users.login = true;
+      users.save();
 
-    if (users === null)
-      throw new Error("No existen usuarios con ese E-Mail registrado");
-    users.login = true;
-    users.save();
+      return users;
+    } else {
+      const users = await User.findOne({ email: { $regex: props } })
+        .populate("restaurant")
+        .populate("favorite")
+        .populate("reserve")
+        .populate("payment");
 
-    return users;
+      if (users === null)
+        throw new Error("No existen usuarios con ese E-Mail registrado");
+      users.login = true;
+      users.save();
+
+      return users;
+    }
   }
+
   const users = await User.find()
     .populate("restaurant")
     .populate("favorite")
@@ -28,7 +41,7 @@ async function getUsers(email) {
   return users;
 }
 
-async function postUsers({ name, phone, email, password }) {
+async function postUsers({ name, phone, email, password, role}) {
   if (!name || !phone || !email || !password)
     throw new Error("Hay datos obligatorios sin completar");
 
@@ -36,6 +49,7 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
   });
   const resultado = await newUsers.save();
 
@@ -44,18 +58,20 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
     password,
   });
   return `El usuario ${resultado.name} fue creado con exito`;
 }
 
-async function putUsers(id, { name, phone, email }) {
+async function putUsers(id, { name, phone, email, role }) {
   if (!id) throw new Error("El id tiene que ser valido ");
   const user = await User.findByIdAndUpdate(id, {
     _id: id,
     name: name,
     phone: phone,
     email: email,
+    role: role,
   });
   if (!user) throw new Error(`No se encuentra el user con el id  ${user.id}`);
   return `El user ${user.name} fue actualizado con exito`;

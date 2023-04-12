@@ -14,12 +14,12 @@ const NavBar = () => {
   return (
     <>
       <div className={style.containerHeader}>
-        {user.name}
+        {user?.name}
         <NavLink to="/">
           <Logout />
         </NavLink>
       </div>
-      {user.role === "superadmin" && (
+      {user?.role === "superadmin" && (
         <>
           <NavLink to="/landing">
             <div title="Home">
@@ -39,7 +39,7 @@ const NavBar = () => {
         </>
       )}
 
-      {user.role === "admin" && (
+      {user?.role === "admin" && (
         <>
           <NavLink to="/landing">
             <div title="Home">

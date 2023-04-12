@@ -70,6 +70,7 @@ const updateMapper = (dataToUpdate) => {
     atmosphere: dataToUpdate?.atmosphere,
     extras: dataToUpdate?.extras,
     section: dataToUpdate?.section,
+    idUser: dataToUpdate?.idUser,
   };
 
   return mappedData;
@@ -111,4 +112,3 @@ export {
   getLocalStorage,
   useLocallyPersistedReducer,
 };
-    
