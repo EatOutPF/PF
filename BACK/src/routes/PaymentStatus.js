@@ -29,7 +29,7 @@ const { body } = req;
   //} else {
     // La firma es inválida, rechaza la solicitud
     //res.sendStatus(400);
-  }
+  //}
 
 });
 
