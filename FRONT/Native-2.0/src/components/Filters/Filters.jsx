@@ -10,7 +10,8 @@ import {
     getSections,
     getDiet,
     getExtras,
-    filterRestorant
+    filterRestorant,
+    orderCards
 } from '../../redux/actions.js';
 
 
@@ -94,33 +95,39 @@ export default Filters = (props) => {
     //HANDLERS:
 
 
-    function handlerFilters () {
+    const handlerFilters = () => {
         navigation.navigate("Filtrados")
         dispatch(filterRestorant(filters));
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
+    const handleOrderByRating = (value) => {
+        dispatch(orderCards(value))
+    }
+
     //Renderizado
     return (
         // <NavigationContainer>
         <View>
             <View style={styles.cont}>
-                <View style={styles.containerTitle}>
-                    <Text style={styles.title}>Ordenar Por</Text>
-                    <IonicIcon
-                        style={styles.closeBottom}
-                        name="close-circle-outline"
-                        size={22}
-                        onPress={() => response()}
-                    />
-                </View>
+                <Text style={styles.title}>Ordenar Por</Text>
+                <IonicIcon
+                    style={styles.closeBottom}
+                    name="close-circle-outline"
+                    size={22}
+                    onPress={() => response()}
+                />
             </View>
+
             <View style={styles.container}>
+
                 <View style={styles.containerOrderButtons}>
                     <ScrollView
                         showsHorizontalScrollIndicator={false}
                         horizontal
                     >
-                        <TouchableOpacity style={styles.orderButton}>
+                        <TouchableOpacity
+                            style={styles.orderButton}
+                            onPress={() => handleOrderByRating('rk')}>
                             <Text style={styles.orderButtonText}>Calificación</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.orderButton}>
@@ -149,7 +156,7 @@ export default Filters = (props) => {
                             <IonicIcon name="fast-food-outline" style={styles.labelIcon} />
                             <Text style={styles.label}>Tipo de comida</Text>
                         </View>
-                        <View style={styles.picker}>
+                        <View>
                             <Picker
                                 selectedValue={menu}
                                 onValueChange={(value) => {
@@ -157,9 +164,11 @@ export default Filters = (props) => {
                                         setFilters({ ...filters, menu: value })
                                 }}
                             >
-                                <Picker.Item label="Tipo de comida" value=""
+                                <Picker.Item
+
+                                    label="Tipo de comida" value=""
                                 />
-                                {foodOptions.map((option) => (
+                                {foodOptions?.map((option) => (
                                     <Picker.Item
                                         key={option.value}
                                         label={option.label}
@@ -183,7 +192,7 @@ export default Filters = (props) => {
                             selectedValue={ambiences}
                             onValueChange={(value) => {
                                 setAmbiences(value),
-                                setFilters({ ...filters, ambiences: value })
+                                    setFilters({ ...filters, ambiences: value })
                             }}
                         >
                             <Picker.Item label="Ambiente" value="" />
@@ -249,21 +258,25 @@ export default Filters = (props) => {
                             ))}
                         </Picker>
                     </View>
+
+
                 </View>
 
             </View>
 
-            <View>
-                <Button
-                    onPress={handlerFilters}
-                    title='Aplicar Filtros'
-                >
-                </Button>
+            <View style={styles.containerButtonFilters}>
+                <TouchableOpacity style={styles.button}>
+                    <Text>Limpiar filtros</Text>
+                </TouchableOpacity>
 
-                <Button
-                    title='Limpiar Filtros'
-                >
-                </Button>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handlerFilters}>
+                    <Text>Aplicar filtros</Text>
+                </TouchableOpacity>
+
+
+
 
             </View>
         </View >
@@ -274,25 +287,24 @@ export default Filters = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: 'blue',
     },
     cont: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: 5,
+        marginTop: 0,
+        height: 68,
         marginVertical: 1,
+        // backgroundColor: 'pink',
     },
-    containerTitle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flex: 1
-    },
+
     title: {
         color: 'black',
         fontWeight: '900',
         letterSpacing: 1,
-        fontSize: 20,
+        fontSize: 22,
         paddingHorizontal: 8,
     },
     closeBottom: {
@@ -324,6 +336,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 0,
         marginTop: 10,
+        // backgroundColor: 'yellow',
+
     },
     containerPiker: {
         paddingHorizontal: 16,
@@ -333,21 +347,40 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#D9D9D9',
         margin: 5,
+        width: '100%',
+        height: 70,
     },
     labelContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        // backgroundColor: 'red',
     },
     labelIcon: {
         fontSize: 20,
+        marginTop: 10,
     },
     label: {
         fontWeight: 'bold',
         fontSize: 16,
         marginLeft: 10,
+        marginTop: 10,
     },
-    picker: {
-        // backgroundColor: 'red',
+
+    containerButtonFilters: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10,
     },
+    button: {
+        backgroundColor: '#FA6B6B',
+        height: 30,
+        width: 100,
+        borderRadius: 10,
+        marginLeft: 2,
+        marginRight: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 })
 

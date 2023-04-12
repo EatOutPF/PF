@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
@@ -49,6 +49,12 @@ const DetailResto = ({ route }) => {
     '11:30',
     '12:00',
   ]
+
+  //Menú, Categorias, Horarios, Medios de Pago, reviews
+  const scrollViewRef = useRef();
+  const handlePress = () => {
+    scrollViewRef.current.scrollTo({ y: 500, animated: true });
+  };
 
 
   useEffect(() => {
@@ -259,9 +265,100 @@ const DetailResto = ({ route }) => {
 
 
             </View>
+            {/* ---------- Scroll Horizontal ------------ */}
 
-            <Text style={styles.title}> Sobre Nosotros</Text>
-            <Text style={styles.title}> {detail?.about} </Text>
+
+            <View style={{ margin: 8, }}>
+              <ScrollView
+                horizontal={true}
+                ref={scrollViewRef}>
+
+
+                <TouchableOpacity
+                  style={styles.buttonHorizontalScroll}
+                  onPress={handlePress}>
+                  <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
+                </TouchableOpacity>
+
+              </ScrollView>
+            </View>
+
+            {/*------------------ Sobre Nosotros------------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Sobre Nosotros</Text>
+            </View>
+            <View style={styles.textAbout}>
+              <Text style={styles.textReserv2}> {detail?.about} </Text>
+            </View>
+
+
+            {/* ---------------- menu --> link a la carta del resto ----- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> MENU --- Link a la carta</Text>
+            </View>
+
+            {/*-------------- categorias ------------------------------ */}
+
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Categorías</Text>
+            </View>
+
+            <View style={styles.containerTypesCategories}>
+              <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
+              <Text style={styles.textCategories}>Tipo de comida: </Text>
+              <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
+            </View>
+
+                        
+            <View style={styles.containerTypesCategories}>
+              <IonicIcon name="beer-outline" style={styles.iconCategories} />
+              <Text style={styles.textCategories}>Ambiente: </Text>
+              <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
+            </View>
+
+            <View style={styles.containerTypesCategories}>
+              <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
+              <Text style={styles.textCategories}>Espacios: </Text>
+              <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+            </View>
+
+            <View style={styles.containerTypesCategories}>
+              <IonicIcon name="leaf-outline" style={styles.iconCategories} />
+              <Text style={styles.textCategories}>Cuenta con: </Text>
+              <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+            </View>
+
+            <Text>
+              {" "}
+              --  {detail?.diets[0]} {detail?.extras[0]}{" "}
+              {detail?.extras[1]} {detail?.extras[2]}{" "}
+            </Text>
+            <Text >
+              {" "}
+              --  {detail?.section[1]} {detail?.section[2]}{" "}
+              {detail?.active} {detail?.diets[1]} {" "}
+            </Text>
+
 
             {/* <Text style={{ paddingLeft: 20 }}>
 
@@ -275,19 +372,8 @@ const DetailResto = ({ route }) => {
           </View>
 
           <View>
-            <Text style={styles.textBody}> Calendario ...</Text>
-            <Text style={styles.textBody}> MENU --- Link a la carta</Text>
             <Text style={styles.title}> Categorias :</Text>
-            <Text style={styles.textBody}>
-              {" "}
-              -- {detail?.menu[0]} {detail?.diets[0]} {detail?.extras[0]}{" "}
-              {detail?.extras[1]} {detail?.extras[2]}{" "}
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              -- {detail?.section[0]} {detail?.section[1]} {detail?.section[2]}{" "}
-              {detail?.active} {detail?.diets[1]} {detail?.atmosphere[0]}{" "}
-            </Text>
+
             <Text style={styles.title}> HORARIOS</Text>
             <Text style={styles.textBody}>
               {" "}
@@ -348,8 +434,6 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     // backgroundColor: 'grey',
-
-
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",
@@ -386,7 +470,7 @@ const styles = StyleSheet.create({
   containerPerCalHor: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '43.5%',
+    height: '28%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
@@ -420,20 +504,17 @@ const styles = StyleSheet.create({
     marginLeft: 12,
 
   },
-
   buttonPersons: {
     alignSelf: 'center',
     margin: 8,
     // backgroundColor: 'orange',
   },
 
-
   textReserv2: {
     fontFamily: "Inria-Sans-Regular",
     fontSize: 20,
     // backgroundColor: 'yellow',
-    marginLeft: 2,
-    marginTop: 10,
+
 
   },
   reservDetail: {
@@ -458,14 +539,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   title: {
-    fontFamily: "Inria-Sans-Regular",
+    fontFamily: "Inria-Sans-Bold",
     fontSize: 25,
+
+
   },
   textBody: {
     fontFamily: "Inria-Sans-Regular",
     fontSize: 20,
     marginTop: 5,
     justifyContent: 'center',
+    // backgroundColor: 'blue',
   },
   confirmButton: {
     flexDirection: 'row',
@@ -485,5 +569,48 @@ const styles = StyleSheet.create({
 
   },
 
+  //----------- botones del scroll horizontal--------
+  buttonHorizontalScroll: {
+    backgroundColor: '#FA6B6B',
+    margin: 10,
+    borderRadius: 10,
+    width: 100,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowOffset: { width: 3, height: 3 },
+  },
+  textButtonHorizontalScroll: {
+    fontFamily: 'Inria-Sans-Bold',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  //----------Titulos e informacion---------------------
+  containerTitle: {
+    margin: 10,
+  },
+  textAbout: {
+
+  },
+  //----------Categorias-----------------
+  containerTypesCategories: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconCategories: {
+    fontSize: 25,
+    // color: 'grey',
+    margin: 10,
+  },
+  textCategories: {
+    fontFamily: 'Inria-Sans-Italic',
+    fontSize: 18,
+  },
+  aboutCategories: {
+    fontFamily: 'Inria-Sans-Light',
+    fontSize: 18,
+    marginLeft: 10,
+  }
 });
 export default DetailResto
