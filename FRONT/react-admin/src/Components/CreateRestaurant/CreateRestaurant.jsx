@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { postRestaurant } from "../../Redux/Actions";
 import Validations from "../Validations/Validations";
 import { useNavigate } from "react-router-dom";
+import sweetAlert from "sweetalert";
 
 export default function Form() {
   const msg = useSelector((stage) => stage.msg);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
   const [errorName, setErrorName] = useState({
     name: "",
   });
@@ -20,7 +21,7 @@ export default function Form() {
   const [errorAddress, setErrorAddress] = useState({
     streetName: "",
     streetNumber: 0,
-    neighborhood: "",
+    /*  neighborhood: "", */
     city: "",
     state: "",
     country: "",
@@ -36,12 +37,12 @@ export default function Form() {
     email: "",
   });
   const [errorSocialMedia, setErrorSocialMedia] = useState({
-    instagram: "",
-    facebook: "",
+    /*   instagram: "",
+    facebook: "", */
     wpp: 0,
   });
 
-  const [errorSchedule, setErrorShedule] = useState({
+  /*  const [errorSchedule, setErrorShedule] = useState({
     monday: { open: "", close: "" },
     tuesday: { open: "", close: "" },
     wednesday: { open: "", close: "" },
@@ -49,7 +50,7 @@ export default function Form() {
     friday: { open: "", close: "" },
     saturday: { open: "", close: "" },
     sunday: { open: "", close: "" },
-  });
+  }); */
 
   const [input, setInput] = useState({
     name: "",
@@ -81,13 +82,13 @@ export default function Form() {
   });
 
   const [schedule, setSchedule] = useState({
-    monday: { open: "", close: "" },
-    tuesday: { open: "", close: "" },
-    wednesday: { open: "", close: "" },
-    thursday: { open: "", close: "" },
-    friday: { open: "", close: "" },
-    saturday: { open: "", close: "" },
-    sunday: { open: "", close: "" },
+    monday: { open: "00:00", close: "00:00" },
+    tuesday: { open: "00:00", close: "00:00" },
+    wednesday: { open: "00:00", close: "00:00" },
+    thursday: { open: "00:00", close: "00:00" },
+    friday: { open: "00:00", close: "00:00" },
+    saturday: { open: "00:00", close: "00:00" },
+    sunday: { open: "00:00", close: "00:00" },
   });
 
   const [images, setImages] = useState([]);
@@ -273,8 +274,6 @@ export default function Form() {
     setStage(stage - 1);
   };
 
-
-
   const handleContact = (event) => {
     console.log(event.target.value);
     setContact({
@@ -406,14 +405,14 @@ export default function Form() {
         [time]: value,
       },
     }));
-    setErrorShedule((prevErrors) => ({
+    /* setErrorShedule((prevErrors) => ({
       ...prevErrors,
       [day]: {
         ...prevErrors[day],
         [time]: Validations(value) ? "" : "Invalid time format",
       },
     }));
-    console.log(schedule);
+    console.log(schedule); */
   };
 
   useEffect(() => {
@@ -425,17 +424,20 @@ export default function Form() {
     const file = event.target.files[0];
 
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'EatOut');
+    formData.append("file", file);
+    formData.append("upload_preset", "EatOut");
 
-    const response = await fetch("https://api.cloudinary.com/v1_1/dkqxubvyj/upload", {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/dkqxubvyj/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const result = await response.json();
     setImages([...images, result.secure_url]);
-  }
+  };
 
   const handleTable = (event) => {
     console.log(event.target.value);
@@ -446,6 +448,7 @@ export default function Form() {
     event.preventDefault();
     address.coordinate = coordinate;
     contact.socialMedia = socialMedia;
+    console.log(user._id);
     const newRestaurant = {
       name: input.name,
       address,
@@ -459,15 +462,16 @@ export default function Form() {
       atmosphere: selectAtmosphere,
       extras: selectExtra,
       section: selectSection,
-      user: user._id,
+      idUser: user._id,
     };
 
-    console.log({ newRestaurant });
     dispatch(postRestaurant(newRestaurant));
-    msg.error?
-    alert(msg.error): alert(msg)
 
-    navigate("/home");
+    console.log(1, newRestaurant);
+    if (msg?.restaurant) {
+      sweetAlert("Creación Exitosa", msg.restaurant);
+      navigate("/home");
+    }
   };
 
   return (
@@ -479,43 +483,55 @@ export default function Form() {
             <div>
               <h2>Step 1</h2>
               <div className={styles.divInt}>
-                <label>
-                  Name:
-                  <input
-                    type="text"
-                    name="name"
-                    value={input.name}
-                    onChange={handleInput}
-                  />
-                  {errorName.name && <span>{errorName.name}</span>}
-                </label>
+                <div>
+                  <label>
+                    Name:
+                    <input
+                      type="text"
+                      name="name"
+                      value={input.name}
+                      onChange={handleInput}
+                    />
+                  </label>
+                </div>
+                {errorName.name && (
+                  <span className={styles.danger}>{errorName.name}</span>
+                )}
               </div>
               <h3>Contact</h3>
               <div className={styles.divInt}>
-                <label>
-                  Phone Number:
-                  <input
-                    type="number"
-                    name="phoneNumber"
-                    value={contact.phoneNumber}
-                    onChange={handleContact}
-                  />
-                  {errorContact.phoneNumber && (
-                    <span>{errorContact.phoneNumber}</span>
-                  )}
-                </label>
+                <div>
+                  <label>
+                    Phone Number:
+                    <input
+                      type="number"
+                      name="phoneNumber"
+                      value={contact.phoneNumber}
+                      onChange={handleContact}
+                    />
+                  </label>
+                </div>
+                {errorContact.phoneNumber && (
+                  <span className={styles.danger}>
+                    {errorContact.phoneNumber}
+                  </span>
+                )}
               </div>
               <div className={styles.div}>
-                <label>
-                  Email:
-                  <input
-                    type="text"
-                    name="email"
-                    value={contact.email}
-                    onChange={handleContact}
-                  />
-                  {errorContact.email && <span>{errorContact.email}</span>}
-                </label>
+                <div>
+                  <label>
+                    Email:
+                    <input
+                      type="text"
+                      name="email"
+                      value={contact.email}
+                      onChange={handleContact}
+                    />
+                  </label>
+                </div>
+                {errorContact.email && (
+                  <span className={styles.danger}>{errorContact.email}</span>
+                )}
               </div>
               <h3>Social Media</h3>
               <div className={styles.div}>
@@ -528,9 +544,6 @@ export default function Form() {
                     onChange={handleInstagram}
                   />
                 </label>
-                {errorSocialMedia.instagram && (
-                  <span>{errorSocialMedia.instagram}</span>
-                )}
               </div>
 
               <div className={styles.div}>
@@ -543,22 +556,23 @@ export default function Form() {
                     onChange={handleFacebook}
                   />
                 </label>
-                {errorSocialMedia.facebook && (
-                  <span>{errorSocialMedia.facebook}</span>
-                )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Wpp:
-                  <input
-                    type="number"
-                    name="wpp"
-                    value={socialMedia.wpp}
-                    onChange={handleWpp}
-                  />
-                </label>
-                {errorSocialMedia.wpp && <span>{errorSocialMedia.wpp}</span>}
+                <div>
+                  <label>
+                    Wpp:
+                    <input
+                      type="number"
+                      name="wpp"
+                      value={socialMedia.wpp}
+                      onChange={handleWpp}
+                    />
+                  </label>
+                </div>
+                {errorSocialMedia.wpp && (
+                  <span className={styles.danger}>{errorSocialMedia.wpp}</span>
+                )}
               </div>
 
               <button className={styles.buttons} onClick={handleNext}>
@@ -572,92 +586,111 @@ export default function Form() {
               <h3>Address</h3>
 
               <div className={styles.div}>
-                <label>
-                  Street Name:
-                  <input
-                    type="text"
-                    name="streetName"
-                    value={address.streetName}
-                    onChange={handleAddress}
-                  />
-                </label>
+                <div>
+                  <label>
+                    Street Name:
+                    <input
+                      type="text"
+                      name="streetName"
+                      value={address.streetName}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
                 {errorAddress.streetName && (
-                  <span>{errorAddress.streetName}</span>
+                  <span className={styles.danger}>
+                    {errorAddress.streetName}
+                  </span>
                 )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Street Number:
-                  <input
-                    type="number"
-                    name="streetNumber"
-                    value={address.streetNumber}
-                    onChange={handleAddress}
-                  />
-                </label>
+                <div>
+                  <label>
+                    Street Number:
+                    <input
+                      type="number"
+                      name="streetNumber"
+                      value={address.streetNumber}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
                 {errorAddress.streetNumber && (
-                  <span>{errorAddress.streetNumber}</span>
+                  <span className={styles.danger}>
+                    {errorAddress.streetNumber}
+                  </span>
                 )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Neighborhood:
-                  <input
-                    type="text"
-                    name="neighborhood"
-                    value={address.neighborhood}
-                    onChange={handleAddress}
-                  />
-                </label>
-                {errorAddress.neighborhood && (
-                  <span>{errorAddress.neighborhood}</span>
+                <div>
+                  <label>
+                    Neighborhood:
+                    <input
+                      type="text"
+                      name="neighborhood"
+                      value={address.neighborhood}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div className={styles.div}>
+                <div>
+                  <label>
+                    City:
+                    <input
+                      type="text"
+                      name="city"
+                      value={address.city}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
+                {errorAddress.city && (
+                  <span className={styles.danger}>{errorAddress.city}</span>
                 )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  City:
-                  <input
-                    type="text"
-                    name="city"
-                    value={address.city}
-                    onChange={handleAddress}
-                  />
-                </label>
-                {errorAddress.city && <span>{errorAddress.city}</span>}
+                <div>
+                  <label>
+                    State:
+                    <input
+                      type="text"
+                      name="state"
+                      value={address.state}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
+                {errorAddress.state && (
+                  <span className={styles.danger}>{errorAddress.state}</span>
+                )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  State:
-                  <input
-                    type="text"
-                    name="state"
-                    value={address.state}
-                    onChange={handleAddress}
-                  />
-                </label>
-                {errorAddress.state && <span>{errorAddress.state}</span>}
+                <div>
+                  <label>
+                    Country:
+                    <input
+                      type="text"
+                      name="country"
+                      value={address.country}
+                      onChange={handleAddress}
+                    />
+                  </label>
+                </div>
+                {errorAddress.country && (
+                  <span className={styles.danger}>{errorAddress.country}</span>
+                )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Country:
-                  <input
-                    type="text"
-                    name="country"
-                    value={address.country}
-                    onChange={handleAddress}
-                  />
-                </label>
-                {errorAddress.country && <span>{errorAddress.country}</span>}
-              </div>
-
-              <div className={styles.div}>
-                <label htmlFor="imageUrl"> Image Url
-                  Images:
+                <label htmlFor="imageUrl">
+                  Image Url Images:
                   <input
                     type="file"
                     id="imageUrl"
@@ -672,32 +705,40 @@ export default function Form() {
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Longitude:
-                  <input
-                    type="number"
-                    name="longitude"
-                    value={coordinate.longitude}
-                    onChange={handleLongitude}
-                  />
-                </label>
+                <div>
+                  <label>
+                    Longitude:
+                    <input
+                      type="number"
+                      name="longitude"
+                      value={coordinate.longitude}
+                      onChange={handleLongitude}
+                    />
+                  </label>
+                </div>
                 {errorCoordinate.longitude && (
-                  <span>{errorCoordinate.longitude}</span>
+                  <span className={styles.danger}>
+                    {errorCoordinate.longitude}
+                  </span>
                 )}
               </div>
 
               <div className={styles.div}>
-                <label>
-                  Latitude:
-                  <input
-                    type="number"
-                    name="latitude"
-                    value={coordinate.latitude}
-                    onChange={handleLatitude}
-                  />
-                </label>
+                <div>
+                  <label>
+                    Latitude:
+                    <input
+                      type="number"
+                      name="latitude"
+                      value={coordinate.latitude}
+                      onChange={handleLatitude}
+                    />
+                  </label>
+                </div>
                 {errorCoordinate.latitude && (
-                  <span>{errorCoordinate.latitude}</span>
+                  <span className={styles.danger}>
+                    {errorCoordinate.latitude}
+                  </span>
                 )}
               </div>
 
@@ -715,143 +756,134 @@ export default function Form() {
 
               <h3>Schedule</h3>
               <div className={styles.div}>
-                <label htmlFor="monday"> Monday :
+                <label htmlFor="monday">
+                  Monday :
                   <input
                     placeholder="Open"
                     name="monday open"
                     value={schedule.monday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.monday.open && <span>{errorSchedule.monday.open}</span>}
                   <input
                     placeholder="Close"
                     name="monday close"
                     value={schedule.monday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.monday.close && <span>{errorSchedule.monday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Tuesday">  Tuesday
+                <label htmlFor="Tuesday">
+                  {" "}
+                  Tuesday
                   <input
                     placeholder="Open"
                     name="tuesday open"
                     value={schedule.tuesday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.tuesday.open && <span>{errorSchedule.tuesday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="tuesday close"
                     value={schedule.tuesday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.tuesday.close && <span>{errorSchedule.tuesday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Wednesday"> Wednesday
+                <label htmlFor="Wednesday">
+                  {" "}
+                  Wednesday
                   <input
                     placeholder="Open"
                     name="wednesday open"
                     value={schedule.wednesday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.wednesday.open && <span>{errorSchedule.wednesday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="wednesday close"
                     value={schedule.wednesday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.wednesday.close && <span>{errorSchedule.wednesday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Thursday"> Thursday
+                <label htmlFor="Thursday">
+                  {" "}
+                  Thursday
                   <input
                     placeholder="Open"
                     name="thursday open"
                     value={schedule.thursday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.thursday.open && <span>{errorSchedule.thursday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="thursday close"
                     value={schedule.thursday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.thursday.close && <span>{errorSchedule.thursday.close}</span>}
                 </label>
-
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Friday"> Friday
+                <label htmlFor="Friday">
+                  {" "}
+                  Friday
                   <input
                     placeholder="Open"
                     name="friday open"
                     value={schedule.friday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.friday.open && <span>{errorSchedule.friday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="friday close"
                     value={schedule.friday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.friday.close && <span>{errorSchedule.friday.close}</span>}
                 </label>
-
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="Saturday"> Saturday
+                <label htmlFor="Saturday">
+                  {" "}
+                  Saturday
                   <input
                     placeholder="Open"
                     name="saturday open"
                     value={schedule.saturday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.saturday.open && <span>{errorSchedule.saturday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="saturday close"
                     value={schedule.saturday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.saturday.close && <span>{errorSchedule.saturday.close}</span>}
                 </label>
               </div>
 
               <div className={styles.div}>
-                <label htmlFor="sunday"> Sunday
+                <label htmlFor="sunday">
+                  {" "}
+                  Sunday
                   <input
                     placeholder="Open"
                     name="sunday open"
                     value={schedule.sunday.open}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.sunday.open && <span>{errorSchedule.sunday.open}</span>}
-
                   <input
                     placeholder="Close"
                     name="sunday close"
                     value={schedule.sunday.close}
                     onChange={handleSchedule}
                   />
-                  {errorSchedule.sunday.close && <span>{errorSchedule.sunday.close}</span>}
                 </label>
               </div>
 
@@ -902,12 +934,11 @@ export default function Form() {
                 <input
                   type="number"
                   min="1"
-                  max="41"
                   name="tables"
                   value={tables}
                   onChange={handleTable}
                 />
-                <span>(min: 1 - max: 41)</span>
+                <span>(min: 1)</span>
               </label>
 
               <h2>Select your Payment Method:</h2>
@@ -986,10 +1017,8 @@ export default function Form() {
               </button>
             </div>
           )}
-
         </form>
       </div>
     </div>
   );
 }
-

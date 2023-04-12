@@ -22,127 +22,132 @@ export default function Validation(data) {
   const regexSundayOpen = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
   const regexSundayClose = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
 
-  !data.name && (errors.name = "Diligencie el nombre del Restaurante");
+  !data?.name && (errors.name = "Diligencie el nombre del Restaurante");
 
-  !data.streetName && (errors.streetName = "Diligencie el nombre de la calle");
-  data.streetName &&
-    data.streetName.length <= 4 &&
+  !data?.streetName && (errors.streetName = "Diligencie el nombre de la calle");
+  data?.streetName &&
+    data?.streetName.length <= 4 &&
     (errors.streetName = "El nombre debe contener mas de 4 caracteres");
 
-  !data.streetNumber &&
+  !data?.streetNumber &&
     (errors.streetNumber = "Diligencie el numero de la calle");
-  if (data.streetNumber) {
-    !regexNumber.test(data.streetNumber) &&
+  if (data?.streetNumber) {
+    !regexNumber.test(data?.streetNumber) &&
       (errors.streetNumber = "Debe ser un numero");
   }
 
-  !data.city && (errors.city = "Diligencie la ciudad");
-  if (data.city) {
-    !regexLetras.test(data.city) && (errors.city = " no debe contener numeros");
+  !data?.city && (errors.city = "Diligencie la ciudad");
+  if (data?.city) {
+    !regexLetras.test(data?.city) &&
+      (errors.city = " no debe contener numeros");
   }
 
-  !data.country && (errors.country = "Diligencie el pais");
-  if (data.country) {
-    !regexLetras.test(data.country) &&
+  !data?.country && (errors.country = "Diligencie el pais");
+  if (data?.country) {
+    !regexLetras.test(data?.country) &&
       (errors.country = " no debe contener numeros");
   }
 
-  !data.longitude && (errors.longitude = "Diligencia la coordenada-longitud");
+  !data?.longitude && (errors.longitude = "Diligencia la coordenada-longitud");
 
-  if (data.longitude) {
-    if (data.longitude > 180 || data.longitude < -180)
+  if (data?.longitude) {
+    if (data?.longitude > 180 || data?.longitude < -180)
       errors.longitude = "la longitud debe estar entre 180 y -180";
 
-    if (!regexCoordinate.test(data.longitude))
+    if (!regexCoordinate.test(data?.longitude))
       errors.longitude = "la longitud debe tener 6 decimales";
   }
 
-  !data.latitude && (errors.latitude = "Diligencia la coordenada-latitud");
+  !data?.latitude && (errors.latitude = "Diligencia la coordenada-latitud");
 
-  if (data.latitude) {
-    if (data.latitude > 90 || data.latitude < -90)
+  if (data?.latitude) {
+    if (data?.latitude > 90 || data?.latitude < -90)
       errors.latitude = "la latitud debe estar entre 90 y -90";
 
-    if (!regexCoordinateLatitude.test(data.latitude))
+    if (!regexCoordinateLatitude.test(data?.latitude))
       errors.latitude = "la latitud debe tener 6 decimales";
   }
 
-  !data.phoneNumber &&
+  !data?.phoneNumber &&
     (errors.phoneNumber = "Diligencie un numero de teléfono");
-  if (data.phoneNumber) {
-    !regexPhoneNumber.test(data.phoneNumber) &&
+  if (data?.phoneNumber) {
+    !regexPhoneNumber.test(data?.phoneNumber) &&
       (errors.phoneNumber = "Debe ser un numero");
   }
 
-  !data.email && (errors.email = "Diligenciar un email");
-  if (!regexEmail.test(data.email)) errors.email = "ingresar un email válido";
+  !data?.email && (errors.email = "Diligenciar un email");
+  if (!regexEmail.test(data?.email)) errors.email = "ingresar un email válido";
 
-  !data.tables && (errors.tables = "Diligenciar numero de mesas");
-  if (isNaN(data.tables)) {
+  !data?.tables && (errors.tables = "Diligenciar numero de mesas");
+  if (isNaN(data?.tables)) {
     errors.tables = "debe ser un numero";
   }
 
-  !data.mondayOpen && (errors.mondayOpen = "Diligenciar la hora de apertura");
-  !regexHoraMonday.test(data.mondayOpen) &&
+  !data?.mondayOpen && (errors.mondayOpen = "Diligenciar la hora de apertura");
+  !regexHoraMonday.test(data?.mondayOpen) &&
     (errors.mondayOpen = "Diligenciar en formato 00:00");
 
-  !data.mondayClose && (errors.mondayClose = "Diligenciar la hora de apertura");
-  !regexHourCloseMonday.test(data.mondayClose) &&
+  !data?.mondayClose &&
+    (errors.mondayClose = "Diligenciar la hora de apertura");
+  !regexHourCloseMonday.test(data?.mondayClose) &&
     (errors.mondayClose = "Diligenciar en formato 00:00");
 
-  !data.tuesdayOpen && (errors.tuesdayOpen = "Diligenciar la hora de apertura");
-  !regexTuesdayOpen.test(data.tuesdayOpen) &&
+  !data?.tuesdayOpen &&
+    (errors.tuesdayOpen = "Diligenciar la hora de apertura");
+  !regexTuesdayOpen.test(data?.tuesdayOpen) &&
     (errors.tuesdayOpen = "Diligenciar en formato 00:00");
 
-  !data.tuesdayClose &&
+  !data?.tuesdayClose &&
     (errors.tuesdayClose = "Diligenciar la hora de apertura");
-  !regexTuesdayClose.test(data.tuesdayClose) &&
+  !regexTuesdayClose.test(data?.tuesdayClose) &&
     (errors.tuesdayClose = "Diligenciar en formato 00:00");
 
-  !data.wednesdayOpen &&
+  !data?.wednesdayOpen &&
     (errors.wednesdayOpen = "Diligenciar la hora de apertura");
-  !regexWednesdayOpen.test(data.wednesdayOpen) &&
+  !regexWednesdayOpen.test(data?.wednesdayOpen) &&
     (errors.wednesdayOpen = "Diligenciar en formato 00:00");
 
-  !data.wednesdayClose &&
+  !data?.wednesdayClose &&
     (errors.wednesdayClose = "Diligenciar la hora de apertura");
-  !regexWednesdayClose.test(data.wednesdayClose) &&
+  !regexWednesdayClose.test(data?.wednesdayClose) &&
     (errors.wednesdayClose = "Diligenciar en formato 00:00");
 
-  !data.thursdayOpen &&
+  !data?.thursdayOpen &&
     (errors.thursdayOpen = "Diligenciar la hora de apertura");
-  !regexThursdayOpen.test(data.thursdayOpen) &&
+  !regexThursdayOpen.test(data?.thursdayOpen) &&
     (errors.thursdayOpen = "Diligenciar en formato 00:00");
 
-  !data.thursdayClose &&
+  !data?.thursdayClose &&
     (errors.thursdayClose = "Diligenciar la hora de apertura");
-  !regexThursdayClose.test(data.thursdayClose) &&
+  !regexThursdayClose.test(data?.thursdayClose) &&
     (errors.thursdayClose = "Diligenciar en formato 00:00");
 
-  !data.fridayOpen && (errors.fridayOpen = "Diligenciar la hora de apertura");
-  !regexFridayOpen.test(data.fridayOpen) &&
+  !data?.fridayOpen && (errors.fridayOpen = "Diligenciar la hora de apertura");
+  !regexFridayOpen.test(data?.fridayOpen) &&
     (errors.fridayOpen = "Diligenciar en formato 00:00");
 
-  !data.fridayClose && (errors.fridayClose = "Diligenciar la hora de apertura");
-  !regexFridayClose.test(data.fridayClose) &&
+  !data?.fridayClose &&
+    (errors.fridayClose = "Diligenciar la hora de apertura");
+  !regexFridayClose.test(data?.fridayClose) &&
     (errors.fridayClose = "Diligenciar en formato 00:00");
 
-  !data.saturdayOpen &&
+  !data?.saturdayOpen &&
     (errors.saturdayOpen = "Diligenciar la hora de apertura");
-  !regexSaturdayOpen.test(data.saturdayOpen) &&
+  !regexSaturdayOpen.test(data?.saturdayOpen) &&
     (errors.saturdayOpen = "Diligenciar en formato 00:00");
 
-  !data.saturdayClose &&
+  !data?.saturdayClose &&
     (errors.saturdayClose = "Diligenciar la hora de apertura");
-  !regexSaturdayClose.test(data.saturdayClose) &&
+  !regexSaturdayClose.test(data?.saturdayClose) &&
     (errors.saturdayClose = "Diligenciar en formato 00:00");
 
-  !data.sundayOpen && (errors.sundayOpen = "Diligenciar la hora de apertura");
-  !regexSundayOpen.test(data.sundayOpen) &&
+  !data?.sundayOpen && (errors.sundayOpen = "Diligenciar la hora de apertura");
+  !regexSundayOpen.test(data?.sundayOpen) &&
     (errors.sundayOpen = "Diligenciar en formato 00:00");
 
-  !data.sundayClose && (errors.sundayClose = "Diligenciar la hora de apertura");
-  !regexSundayClose.test(data.sundayClose) &&
+  !data?.sundayClose &&
+    (errors.sundayClose = "Diligenciar la hora de apertura");
+  !regexSundayClose.test(data?.sundayClose) &&
     (errors.sundayClose = "Diligenciar en formato 00:00");
 
   return errors;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./View/Home/Home.jsx";
 import Login from "./View/Login/Login.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -11,15 +11,28 @@ import axios from "axios";
 import Reviews from "./Components/Reviews/Reviews.jsx";
 import CreateUsers from "./View/CreateUsers/CreateUsers.jsx";
 import HomeUsers from "./View/HomeUser/HomeUser.jsx";
-import { useSelector } from "react-redux";
-axios.defaults.baseURL = "https://eatout.onrender.com/";
-  //"http://localhost:5001/";
+import { useDispatch, useSelector } from "react-redux";
+import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js";
+import { setUser } from "./Redux/Actions.js";
+
+axios.defaults.baseURL =
+  /* "https://eatout.onrender.com/" */
+  "http://localhost:5001/";
 
 function App() {
   const location = useLocation().pathname;
-
   const user = useSelector((state) => state.user);
-  console.log(user);
+
+  /* const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("useEffectApp", { user });
+    if (user?.role) {
+      saveLocalStorage("loggedUser", user);
+    } else {
+      dispatch(setUser(getLocalStorage("loggedUser")));
+    }
+  }, [user]); */
 
   return (
     <div className="App">

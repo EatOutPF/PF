@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { getAllRestauranName } from "../Redux/Actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllRestauranName,
+  searchByRestaurantByUser,
+} from "../Redux/Actions";
+import sweetAlert from "sweetalert";
 
 function Searchbar() {
   const [state, setState] = useState("");
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   function handleChange(e) {
     setState(e.target.value);
@@ -12,11 +17,14 @@ function Searchbar() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (state.length > 1) {
-      dispatch(getAllRestauranName(state))
+    if (state.length > 0) {
+      if (user?.role === "superadmin") dispatch(getAllRestauranName(state));
+      else {
+        dispatch(searchByRestaurantByUser(state));
+      }
       setState("");
     } else {
-      alert("No está el restaurante");
+      sweetAlert("Restaurante no encontrado");
     }
   }
 
@@ -27,7 +35,7 @@ function Searchbar() {
         placeholder="Inserta nombre"
         onChange={handleChange}
         value={state}
-        onKeyPress={(e) => e.key === "Enter" && handleSubmit(e)}
+        onClick={(e) => e.key === "Enter" && handleSubmit(e)}
       />
 
       <button type="submit" onClick={handleSubmit}>
