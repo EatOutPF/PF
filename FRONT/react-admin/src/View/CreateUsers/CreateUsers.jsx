@@ -5,6 +5,7 @@ import style from "./CreateUsers.module.css";
 
 const CreateUserForm = () => {
   const dispatch = useDispatch();
+  // Se asigna el rol de admin por defecto
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -20,6 +21,7 @@ const CreateUserForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(formData); // Agregamos un console.log para ver el objeto que se enviará al back
     dispatch(postUsers(formData));
     setFormData({
       name: "",
@@ -29,6 +31,7 @@ const CreateUserForm = () => {
       role: "admin",
     });
   };
+
 
   return (
     <div className={style.container}>
@@ -80,7 +83,19 @@ const CreateUserForm = () => {
               required
             />
           </div>
-          <button type="submit">Create</button>
+          {/* Se usa un select para el rol */}
+          <div>
+            <label htmlFor="role">Role:</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <button type="submit">Create User</button>
         </form>
       </div>
     </div>

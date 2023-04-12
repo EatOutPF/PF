@@ -68,6 +68,7 @@ const Reducer = (state = initialState, { type, payload }) => {
     case GET_ALL_RESTAURANTS:
       return {
         ...state,
+        filteredData: payload,
         currentListRestaurants: payload,
         allRestaurants: payload,
       };

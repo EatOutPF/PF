@@ -41,7 +41,7 @@ async function getUsers(props) {
   return users;
 }
 
-async function postUsers({ name, phone, email, password }) {
+async function postUsers({ name, phone, email, password, role}) {
   if (!name || !phone || !email || !password)
     throw new Error("Hay datos obligatorios sin completar");
 
@@ -49,6 +49,7 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
   });
   const resultado = await newUsers.save();
 
@@ -57,18 +58,20 @@ async function postUsers({ name, phone, email, password }) {
     name,
     phone,
     email,
+    role,
     password,
   });
   return `El usuario ${resultado.name} fue creado con exito`;
 }
 
-async function putUsers(id, { name, phone, email }) {
+async function putUsers(id, { name, phone, email, role }) {
   if (!id) throw new Error("El id tiene que ser valido ");
   const user = await User.findByIdAndUpdate(id, {
     _id: id,
     name: name,
     phone: phone,
     email: email,
+    role: role,
   });
   if (!user) throw new Error(`No se encuentra el user con el id  ${user.id}`);
   return `El user ${user.name} fue actualizado con exito`;

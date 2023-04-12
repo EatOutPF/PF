@@ -1,8 +1,22 @@
 import React from "react";
 import User from "../User/User";
 import style from "./Users.module.css";
+import Loading from "../Loading";
+import { useEffect, useState } from "react";
 
 const Users = ({ currentUsers }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className={style.containerUsers}>
       {!currentUsers?.length > 0 ? (

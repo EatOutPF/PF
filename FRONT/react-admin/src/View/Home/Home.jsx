@@ -41,6 +41,14 @@ const Home = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const indexOfLastRestaurant = currentPage * restaurantsPerPage;
   const indexOfFirstRestaurant = indexOfLastRestaurant - restaurantsPerPage;
@@ -60,6 +68,7 @@ const Home = () => {
   }, [restaurants]);
 
   return (
+  
     <div className={style.containerHome}>
       {!loaded ? (
         <Loading />
