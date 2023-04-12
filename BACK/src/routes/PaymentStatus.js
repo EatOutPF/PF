@@ -10,6 +10,7 @@ router.use(express.json());
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", (req, res) => {
+    if (req.method === "POST") {
     console.log(req.body);
 
 const { body } = req;
@@ -29,7 +30,9 @@ const { body } = req;
     // La firma es inválida, rechaza la solicitud
     res.sendStatus(400);
   }
+}
 });
+
 
 
 
