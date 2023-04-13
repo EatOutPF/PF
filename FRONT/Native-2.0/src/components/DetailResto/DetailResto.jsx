@@ -90,39 +90,43 @@ const DetailResto = ({ route }) => {
   }
 
   return (
-    <ScrollView>
+    <View style={styles.container}>
+      <ScrollView
+      // contentContainerStyle={styles.contentContainer}
+      >
+        {loading ? (
+          <Loading />
+        ) : (
+          detail &&
+          <View>
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
 
-      {loading ? <Loading /> :
-        <View>
-          <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
-
-          <View style={styles.titleContainer}>
-            <Text style={styles.superTitle}>{detail?.name}</Text>
-          </View>
-
-          <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
-
-          <View style={styles.container2}>
-            <View style={styles.iconText}>
-              <IonicIcon
-                name="star-outline"
-                size={20} />
-              <Text style={styles.text1}>{detail?.ranking}</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
-            <View style={styles.iconText}>
-              <IonicIcon
-                name="pin-outline"
-                size={20}
-              />
-              <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+
+            <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
+
+            <View style={styles.container2}>
+              <View style={styles.iconText}>
+                <IonicIcon
+                  name="star-outline"
+                  size={20} />
+                <Text style={styles.text1}>{detail?.ranking}</Text>
+              </View>
+              <View style={styles.iconText}>
+                <IonicIcon
+                  name="pin-outline"
+                  size={20}
+                />
+                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.containerReserva}>
-            <Text style={styles.subTitle}> Hacé tu reserva</Text>
-
+            <View style={styles.containerReserva}>
+              <Text style={styles.subTitle}> Hacé tu reserva</Text>
+            </View>
             <View style={styles.containerPerCalHor}>
-
 
               {/* ----------------------Cuantas personas ----------------------*/}
               <View style={styles.containerPersons}>
@@ -261,9 +265,6 @@ const DetailResto = ({ route }) => {
                           )} */}
                 <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
               </TouchableOpacity>
-
-
-
             </View>
             {/* ---------- Scroll Horizontal ------------ */}
 
@@ -323,107 +324,100 @@ const DetailResto = ({ route }) => {
               <Text style={styles.title}> Categorías</Text>
             </View>
 
-            <View style={styles.containerTypesCategories}>
-              <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
-              <Text style={styles.textCategories}>Tipo de comida: </Text>
-              <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
+            <View>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Tipo de comida: </Text>
+                <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
+              </View>
+
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="beer-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Ambiente: </Text>
+                <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
+              </View>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Espacios: </Text>
+                <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+              </View>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="leaf-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Cuenta con: </Text>
+                <Text style={styles.aboutCategories}>{detail?.diets[0]}</Text>
+              </View>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="paw-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Otros: </Text>
+                <Text style={styles.aboutCategories}>{detail?.extras[0]}</Text>
+              </View>
+
             </View>
 
-                        
-            <View style={styles.containerTypesCategories}>
-              <IonicIcon name="beer-outline" style={styles.iconCategories} />
-              <Text style={styles.textCategories}>Ambiente: </Text>
-              <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
+            {/*-------------------- Horarios -------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}>Horarios</Text>
+              <Text style={{ fontFamily: 'Inria-Sans-Regular', fontWeight: 'bold', fontSize: 15 }}>
+                Horarios de apertura y cierre</Text>
+            </View>
+            <View>
+              <Text style={styles.aboutCategories}>
+                ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
+                {detail?.schedule[0]?.monday?.close}hs
+              </Text>
+
+              <Text style={styles.aboutCategories}>
+                ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
+                {detail?.schedule[0]?.tuesday?.close}hs
+              </Text>
+              <Text style={styles.aboutCategories}>
+                ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
+                {detail?.schedule[0]?.wednesday?.close}hs
+              </Text>
+              <Text style={styles.aboutCategories}>
+                ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
+                {detail?.schedule[0]?.thursday?.close}hs
+              </Text>
+              <Text style={styles.aboutCategories}>
+                ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
+                {detail?.schedule[0]?.friday?.close}hs
+              </Text>
+              <Text style={styles.aboutCategories}>
+                ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
+                {detail?.schedule[0]?.saturday?.close}hs
+              </Text>
+              <Text style={styles.aboutCategories}>
+                ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
+                {detail?.schedule[0]?.sunday?.close}hs
+              </Text>
             </View>
 
-            <View style={styles.containerTypesCategories}>
-              <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
-              <Text style={styles.textCategories}>Espacios: </Text>
-              <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+            {/*--------------- sobre nosotros -------------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}>Sobre Nosotros</Text>
             </View>
 
-            <View style={styles.containerTypesCategories}>
-              <IonicIcon name="leaf-outline" style={styles.iconCategories} />
-              <Text style={styles.textCategories}>Cuenta con: </Text>
-              <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+            {/* ------------Medios de pago ------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Metodos de Pago </Text>
             </View>
-
-            <Text>
-              {" "}
-              --  {detail?.diets[0]} {detail?.extras[0]}{" "}
-              {detail?.extras[1]} {detail?.extras[2]}{" "}
-            </Text>
-            <Text >
-              {" "}
-              --  {detail?.section[1]} {detail?.section[2]}{" "}
-              {detail?.active} {detail?.diets[1]} {" "}
-            </Text>
-
-
-            {/* <Text style={{ paddingLeft: 20 }}>
-
-                        Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text
-                        ever since the 1500s, when an unknown printer took a galley of type
-                        and scrambled it to make a type specimen book. It has survived not
-                        only five centuries.
-                      </Text> */}
-
+            <View >
+              <Text >
+                {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
+                {detail?.paymentMethods[2]}
+              </Text>
+            </View>
           </View>
+        )
+        }
+      </ScrollView >
+    </View>
 
-          <View>
-            <Text style={styles.title}> Categorias :</Text>
-
-            <Text style={styles.title}> HORARIOS</Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
-              {detail?.schedule[0]?.monday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
-              {detail?.schedule[0]?.tuesday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
-              {detail?.schedule[0]?.wednesday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
-              {detail?.schedule[0]?.thursday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
-              {detail?.schedule[0]?.friday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
-              {detail?.schedule[0]?.saturday?.close}hs
-            </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
-              {detail?.schedule[0]?.sunday?.close}hs
-            </Text>
-            <Text style={styles.title}> Metodos de Pago </Text>
-            <Text style={styles.textBody}>
-              {" "}
-              -- {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-              {detail?.paymentMethods[2]}
-            </Text>
-          </View>
-        </View>
-
-        // :<Loading/>
-
-      }
-
-    </ScrollView>
   );
 }
 
@@ -431,6 +425,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  contentContainer: {
+    padding: 5,
+    backgroundColor: '#F5FCFF',
   },
   titleContainer: {
     // backgroundColor: 'grey',
@@ -463,14 +461,13 @@ const styles = StyleSheet.create({
     fontFamily: "Inria-Sans-Bold",
     fontSize: 25,
   },
-
   containerReserva: {
     // backgroundColor: 'orange',
   },
   containerPerCalHor: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '28%',
+    height: '19%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
@@ -528,7 +525,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop: 5,
   },
-
   image: {
     width: '100%',
     height: 250,
@@ -541,15 +537,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Inria-Sans-Bold",
     fontSize: 25,
-
-
-  },
-  textBody: {
-    fontFamily: "Inria-Sans-Regular",
-    fontSize: 20,
-    marginTop: 5,
-    justifyContent: 'center',
-    // backgroundColor: 'blue',
   },
   confirmButton: {
     flexDirection: 'row',

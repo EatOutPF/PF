@@ -36,6 +36,7 @@ export default Filters = (props) => {
     const typesOfAtmosphere = useSelector((state) => state.typesOfAtmosphere);
     const typesOfDiet = useSelector((state) => state.typesOfDiet);
     const typesOfExtras = useSelector((state) => state.typesOfExtras);
+   
 
     const foodOptions = typesOfFoods?.map(e => {
         return {
@@ -49,6 +50,7 @@ export default Filters = (props) => {
     const [spaces, setSpaces] = useState(null);
     const [diet, setDiet] = useState(null);
     const [extra, setExtra] = useState(null);
+    // const [isOrderAsc, setIsOrderAsc] = useState(true);
 
     const [filters, setFilters] = useState({
         menu: null,
@@ -101,7 +103,9 @@ export default Filters = (props) => {
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
     const handleOrderByRating = (value) => {
+        // const orderType = isOrderAsc ? 'asc' : 'desc';
         dispatch(orderCards(value))
+        // setIsOrderAsc(!isOrderAsc);
     }
 
     //Renderizado
@@ -265,9 +269,9 @@ export default Filters = (props) => {
             </View>
 
             <View style={styles.containerButtonFilters}>
-                <TouchableOpacity style={styles.button}>
+                {/* <TouchableOpacity style={styles.button}>
                     <Text>Limpiar filtros</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                     style={styles.button}
