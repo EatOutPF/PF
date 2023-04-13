@@ -9,9 +9,6 @@ import {
     FILTER_CARDS,
     ORDER_CARDS,
     GET_LINK_MERCADOPAGO,
-    LOGIN_USER_FIREBASE,
-    LOGIN_USER_GOOGLE,
-    CREATE_USERS,
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -62,14 +59,9 @@ export default function rootReducer(state = initialState, action) {
             }
         }
 //------------------------------------------------------------------------- 
-        case CREATE_USERS: {
+        case GET_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
             return { ...state, restorantById: action.payload, }
-        }
-//------------------------------------------------------------------------- 
-        case CREATE_USERS: {
-            // console.log(restorantsJson);
-            return { ...state, restorantById: {}, }
         }
 //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
