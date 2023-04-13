@@ -7,9 +7,9 @@ const webhookMercadopago = (req, res) => {
     var data = req.body
     res.sendStatus(200)
 
-    console.log(`** El ID de pago es: ${data.data.id} **`)
+    console.log(`** El ID de pago es: ${data} **`)
 
-    var id_venta = data.data.id
+    var id_venta = data.id
     const token = process.env.MERCADOPAGO_KEY
 
 
