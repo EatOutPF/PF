@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
       },
     ],
     back_urls: {
-      success: "https://eatout.onrender.com",
+      success: "https://eatout-lac.vercel.app/paymentstatus",
       failure: "",
       pending: "",
     },
