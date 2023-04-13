@@ -12,7 +12,7 @@ router.post("/", (req, res) => {
   let preference = {
     items: [
       {
-        id: chosenRestaurant.id,
+        id: chosenRestaurant._id,
         title: chosenRestaurant.name,
         currency_id: "ARS",
         description: chosenRestaurant.menu[0],
@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
       },
     ],
     back_urls: {
-      success: "http://localhost:5001" /* "https://eatout.onrender.com" */,
+      success: "https://eatout.onrender.com",
       failure: "",
       pending: "",
     },
@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
 
     .then((response) => {
       res.redirect(
-        `/SENDEMAIL?email=${chosenRestaurant.restaurant.email}&name=${chosenRestaurant.restaurant.name}&price=${chosenRestaurant.restaurant.price}`
+        `/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
       );
     })
 
