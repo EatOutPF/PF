@@ -106,9 +106,34 @@ function useLocallyPersistedReducer(
   return hookVars;
 }
 
+const readMultifilesUpCloudinary = (event) => {
+  const files = event.target.files;
+  const arrayImages = [];
+
+  Object.keys(files).forEach((i) => {
+    const file = files[i];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "EatOut");
+
+    fetch("https://api.cloudinary.com/v1_1/dkqxubvyj/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((result) => result.json())
+      .then((res) => {
+        const dataImg = { url: res.secure_url, idx: res.asset_id };
+        arrayImages.push(dataImg);
+      });
+  });
+  console.log({ arrayImages });
+  return arrayImages;
+};
+
 export {
   updateMapper,
   saveLocalStorage,
   getLocalStorage,
   useLocallyPersistedReducer,
+  readMultifilesUpCloudinary,
 };

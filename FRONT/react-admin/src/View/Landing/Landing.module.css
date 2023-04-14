@@ -9,7 +9,15 @@
 }
 
 .container h1 {
-  padding: 50px;
+  padding: 30px;
+}
+
+.container h3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2rem;
 }
 
 .containerShow {

@@ -119,7 +119,6 @@ export default function Form() {
   } = useSelector((state) => state);
 
   const handleInput = (event) => {
-    console.log(event.target.value);
     const { name, value } = event.target;
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
     setErrorName(
@@ -179,7 +178,7 @@ export default function Form() {
 
   const handlePaymentMethods = (event) => {
     const checked = selectPaymentMethods.includes(event.target.value);
-    console.log(checked);
+
     if (checked) {
       const newPaymentMethods = selectPaymentMethods.filter(
         (pm) => pm !== event.target.value
@@ -275,7 +274,6 @@ export default function Form() {
   };
 
   const handleContact = (event) => {
-    console.log(event.target.value);
     setContact({
       ...contact,
       [event.target.name]: event.target.value,
@@ -287,15 +285,9 @@ export default function Form() {
         [event.target.name]: event.target.value,
       })
     );
-    console.log(contact);
   };
-  useEffect(() => {
-    console.log("Conctact:", contact);
-    // console.log('Conctact Errors:', errorContact);
-  }, [contact]);
 
   const handleAddress = (event) => {
-    console.log(event.target.value);
     setAddress({
       ...address,
       [event.target.name]: event.target.value,
@@ -306,16 +298,9 @@ export default function Form() {
         address: event.target.value,
       })
     );
-    console.log(address);
   };
 
-  useEffect(() => {
-    console.log("address:", address);
-    // console.log("Error address changed:", errorAddress);
-  }, [address]);
-
   const handleLongitude = (event) => {
-    console.log(event.target.value);
     setCoordinate({ ...coordinate, longitude: event.target.value });
     setErrorCoordinate(
       Validations({
@@ -323,11 +308,9 @@ export default function Form() {
         longitude: event.target.value,
       })
     );
-    console.log(coordinate);
   };
 
   const handleLatitude = (event) => {
-    console.log(event.target.value);
     setCoordinate({ ...coordinate, latitude: event.target.value });
     setErrorCoordinate(
       Validations({
@@ -337,13 +320,7 @@ export default function Form() {
     );
   };
 
-  useEffect(() => {
-    console.log("address, coordinate:", address, coordinate);
-    // console.log('Conctact Errors:', errorContact);
-  }, [address, coordinate]);
-
   const handleInstagram = (event) => {
-    console.log(event.target.value);
     setSocialMedia({
       ...socialMedia,
       instagram: event.target.value,
@@ -354,12 +331,9 @@ export default function Form() {
         instagram: event.target.value,
       })
     );
-
-    console.log(socialMedia);
   };
 
   const handleFacebook = (event) => {
-    console.log(event.target.value);
     setSocialMedia({
       ...socialMedia,
       facebook: event.target.value,
@@ -370,11 +344,9 @@ export default function Form() {
         facebook: event.target.value,
       })
     );
-    console.log(socialMedia);
   };
 
   const handleWpp = (event) => {
-    console.log(event.target.value);
     setSocialMedia({
       ...socialMedia,
       wpp: event.target.value,
@@ -385,16 +357,9 @@ export default function Form() {
         wpp: event.target.value,
       })
     );
-    console.log(socialMedia);
   };
 
-  useEffect(() => {
-    console.log("contact, socialMedia:", contact, socialMedia);
-    // console.log('Conctact Errors:', errorContact);
-  }, [contact, socialMedia]);
-
   const handleSchedule = (event) => {
-    console.log(event.target.value);
     const { name, value } = event.target;
     const [day, time] = name.split(" ");
 
@@ -464,7 +429,7 @@ export default function Form() {
       section: selectSection,
       idUser: user._id,
     };
-
+    console.log(newRestaurant);
     dispatch(postRestaurant(newRestaurant));
 
     console.log(1, newRestaurant);
