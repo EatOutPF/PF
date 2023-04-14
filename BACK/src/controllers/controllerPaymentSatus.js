@@ -1,19 +1,10 @@
 const express = require('express')
 const dotenv = require('dotenv')
 
-
-const webhookMercadopago = (req, res) => {
-
-    var data = req.body
-    res.sendStatus(200)
-
-    console.log(`** El ID de pago es: ${data} **`)
+async function webhook(data) {
 
     var id_venta = data.id
     const token = process.env.MERCADOPAGO_KEY
-
-
-    async function obtenerDatos() {
 
         let url = `https://api.mercadopago.com/v1/payments/${id_venta}?access_token=${token}`;
         let response = await axios(url);
@@ -26,10 +17,4 @@ const webhookMercadopago = (req, res) => {
         return [myJson]
     }
 
-    
-}
-
-
-
-
-module.exports = { webhookMercadopago }
+module.exports =  webhook 
