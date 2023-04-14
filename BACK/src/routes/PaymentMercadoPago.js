@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
       failure: "",
       pending: "",
     },
-    auto_return: "approved",
+  //  auto_return: "approved",
     binary_mode: true,
   };
   mercadopago.preferences
