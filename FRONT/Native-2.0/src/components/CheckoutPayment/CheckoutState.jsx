@@ -58,7 +58,7 @@ const CheckoutState = ({route}) => {
 
     }, )
 
-    console.log("Soy el checkout, ", resto);
+    // console.log("Soy el checkout, ", resto);
     console.log("Soy el checkout-reserve, ", reserve);
 
     const navigation = useNavigation();
