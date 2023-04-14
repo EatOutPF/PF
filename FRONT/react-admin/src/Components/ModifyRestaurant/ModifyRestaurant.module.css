@@ -5,20 +5,17 @@
 
 .containerModify {
   padding: 25px;
-  margin: 30px;
-  background-color: #d9d9d9;
-  border-radius: 2rem;
-  box-shadow: 9px 14px 8px 0 rgba(0, 0, 0, 0.2),
-    0 6px 10px 0 rgba(0, 0, 0, 0.19);
   font-weight: bold;
   display: flex;
   flex-direction: column;
+  /*   position: relative; */
+  height: 100vh;
 }
 
 .containerButton {
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 13px 13px 0 13px;
 }
 
 .danger {
@@ -45,6 +42,8 @@ select {
   font-size: 14px;
   text-align: -webkit-auto;
   margin: 1.5px;
+  height: fit-content;
+  width: fit-content;
 }
 
 .containerModify input,
@@ -77,6 +76,7 @@ select {
 
 .containerModify form {
   display: flex;
+  /* position: absolute; */
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
@@ -141,12 +141,12 @@ select {
   border-radius: 1rem;
   width: -webkit-fill-available;
   gap: 8px;
+  margin: 17px;
 }
 
 @media (max-width: 750px) {
   .container {
     flex-direction: column;
-    width: max-content;
   }
 }
 
@@ -160,4 +160,66 @@ select {
   width: -webkit-fill-available;
   align-content: flex-start;
   gap: 4px;
+  margin: 17px;
+}
+
+.containerSub {
+  background-color: yellowgreen;
+  border-radius: 15px;
+  padding: 5px 10px;
+  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+
+.containerImagen {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.containerButtonImagen {
+  position: absolute;
+  z-index: 1;
+
+  left: 27px;
+  font-size: 9px;
+  padding: 3px 5px;
+  font-size: 10px;
+  padding: 5px;
+  font-weight: 600;
+}
+
+.containerImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.containerSchedule {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-content: center;
+  justify-content: center;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.containerForm2 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  box-shadow: 9px 14px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 1rem;
+  padding: 1rem;
 }

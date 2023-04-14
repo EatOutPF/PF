@@ -7,16 +7,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import style from "../Styles/General.module.css";
 
-function Filter({  resetFilter, setResetFilter }) {
+function Filter({ resetFilter, setResetFilter }) {
   const dispatch = useDispatch();
- const [order , setOrder]= useState()
- const [ currentPage, setCurrentPage]= useState()
+  const [order, setOrder] = useState();
+  const [currentPage, setCurrentPage] = useState();
 
   const user = useSelector((state) => state.user);
   const [selectedOptions, setSelectedOptions] = useState({});
 
-  function onChangefilter(evt)
-   { evt.preventDefault();
+  function onChangefilter(evt) {
+    evt.preventDefault();
     setSelectedOptions({
       ...selectedOptions,
       [evt.target.name]: evt.target.value,
@@ -24,7 +24,7 @@ function Filter({  resetFilter, setResetFilter }) {
   }
 
   useEffect(() => {
-  dispatch(getFilterOptions(selectedOptions));
+    dispatch(getFilterOptions(selectedOptions));
   }, [selectedOptions]);
 
   function handleClearFilter(evt) {
@@ -47,7 +47,7 @@ function Filter({  resetFilter, setResetFilter }) {
 
   return (
     <div className={style.containerGeneral}>
-      <h3>Filtrar Dieta</h3>
+      <h3>Filtrar </h3>
       <select
         defaultValue={resetFilter}
         onChange={onChangefilter}
