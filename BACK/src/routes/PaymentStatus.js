@@ -1,19 +1,29 @@
 const { Router } = require("express");
 const express = require("express");
-const mercadopago = require("mercadopago");
-const { webhookMercadopago } = require("../controllers/controllerPaymentSatus");
+const webhook = require("../controllers/controllerPaymentSatus");
 require("dotenv").config();
-const {MERCADOPAGO_KEY} = process.env
-
 
 const router = Router();
 router.use(express.json());
 
+let resultado
+
 /* ----------MERCADOPAGO---------- */
 
-router.post("/", webhookMercadopago);
+router.post("/", async (req, res) => {
+    var data = req.body
+    console.log(`** El ID de pago es: ${data} **`)
+    try {
+    resultado = await webhook(data)  
+    res.sendStatus(200)
+    } catch (error) {
+       console.log(error) 
+    }
+});
 
-
+router.get("/", async (req, res) => {
+    res.status(200).json(resultado)
+})
 
 
 module.exports = router
