@@ -37,7 +37,7 @@ function HomeScreenStack(){
       screenOptions={{
         screenBackground: 'transparent',
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
-        headerTintColor: '#fff',
+        headerTintColor: '#fff'
       }}
     >
       <HomeStackNavigator.Screen

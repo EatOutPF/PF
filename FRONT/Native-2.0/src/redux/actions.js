@@ -16,12 +16,14 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    POST_FAVORITE,
+
 } from "./type";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
 // ya que es diferente a la IP del Celular
 const DB_HOST = "https://eatout.onrender.com"// ip de la pc con el server corriendo
-// const DB_HOST = "http://192.168.3.206:5001/"// ip de la pc con el server corriendo
+//const DB_HOST = "http://localhost:5001/"// ip de la pc con el server corriendo
 
 
 // ACTION CREATORS
@@ -113,7 +115,7 @@ export function searchRestorantByString(string) {
         axios
             .get(`${DB_HOST}/restaurant?name=${string}`)
             .then((response) => {
-                // console.log("RESPONSE del action -> ", response);
+                //console.log("RESPONSE del action -> ", response);
                 dispatch({
                     type: GET_RESTORANT_BY_STRING,
                     payload: response.data,
@@ -241,6 +243,24 @@ export const filterRestorant = (payload) => {
     };
 };
 
+
+export const PostsOptions = (favorite) => async (dispatch) => {
+    try {
+      const options = await axios.post(`${DB_HOST}/favorite`, favorite);
+      const dataOptions = options.id;
+  
+      dispatch({
+        type: POST_FAVORITE,
+        payload: dataOptions,
+      });
+    } catch (error) {
+      dispatch({
+        type: POST_FAVORITE,
+        payload: [],
+      });
+    }
+  };
+  
 // export const getAsmosphere = () => {
 //     return async function (dispatch) {
 //         try {

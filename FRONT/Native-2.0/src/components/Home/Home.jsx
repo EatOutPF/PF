@@ -24,6 +24,7 @@ import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
 import { useSelector, useDispatch,  } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
+import SearchBar from '../NavBar/SearchBar.jsx';
 
 
 const Home = () => {
@@ -44,7 +45,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#efe4dc"}}>
-
+      <SearchBar/>
       <RestosList />   
       <BottonSheetFilters/>
     </View>

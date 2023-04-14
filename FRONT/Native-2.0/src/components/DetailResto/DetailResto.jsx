@@ -1,26 +1,39 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, PostsOptions } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
-
+import { onAuthStateChanged } from 'firebase/auth'
+import {auth} from "../../../firebase-config.js"
+import { Toast } from 'react-native-easy-toast'
 import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
-
+import { Icon } from 'react-native-elements'
+import { removeFavorite } from '../../redux/actions.js'
 
 const DetailResto = ({ route }) => {
   // const { _id } = useParams();
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
+  const toastRef= useRef()
+
   const [loading, setLoading] = useState(true)
+  const [isFavorite ,setIsFavorite ]= useState(false)
+  const [userLogged, setuserLogged]= useState(false)
+  
+
+ auth.onAuthStateChanged(user=>{
+    user? setuserLogged(true) : setuserLogged(false)
+  })
+
   console.log("SOY DETAIL: ", _id);
   const dispatch = useDispatch();
 
@@ -50,6 +63,13 @@ const DetailResto = ({ route }) => {
     '12:00',
   ]
 
+  
+  useEffect(() => {
+    // Comprobar si el restaurante ya está en favoritos
+    if (detail && detail.favorite) {
+      setIsFavorite(true);
+    }
+  }, [detail]);
 
   useEffect(() => {
     if (Object?.keys(detail)?.length === 0) {
@@ -83,13 +103,42 @@ const DetailResto = ({ route }) => {
     navigation.navigate("Checkout", checkout)
   }
 
+  const handleAddFavorite = () => {
+    if (!userLogged) {
+      alert('Para agregar el restaurante debes estar logeado');
+      return;
+    }
+    console.log(detail._id);
+    dispatch(PostsOptions(detail._id));
+    setIsFavorite();
+    alert('Restaurante agregado a favoritos');
+  };
+const handleRemoveFavorite = () => {
+    dispatch(removeFavorite(detail.id));
+    setIsFavorite();
+  alert('Restaurante eliminado de favoritos');
+  };
+
   return (
     <ScrollView>
 
       {loading ? <Loading /> :
+      
         <View>
+         
           <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+          <View style={styles.viewFavortires}>
+          <Icon 
+          type= "material-community"
+          name= {isFavorite ? "heart-outline" : "heart"}
+          onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
+          color= { '#FF0000'}
+          size= {35}
+          underlayColor="tranparent">
 
+          </Icon>
+          
+        </View>
           <View style={styles.titleContainer}>
             <Text style={styles.superTitle}>{detail?.name}</Text>
           </View>
@@ -350,6 +399,15 @@ const styles = StyleSheet.create({
     // backgroundColor: 'grey',
 
 
+  },
+  viewFavortires: {
+    position:"absolute",
+    top: 0,
+    right:0,
+    backgroundColor:"#fff",
+    borderBottomLeftRadius:100,
+    padding:5,
+    paddingLeft:15,
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",
