@@ -8,9 +8,9 @@ const admin = require("./firebaseConfig");
       if (decodeToken) {
         return decodeToken.email
       }
-      throw new Error('')
+      throw new Error('TOKEN no recibido')
     } catch (err) {
-      throw new Error('')
+      throw new Error(err.message)
     }
   }
 
