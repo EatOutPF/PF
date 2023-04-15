@@ -11,9 +11,7 @@ const reserveSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Restaurant'
   }],
-  date: {
-    type: Date,
-  },
+  date: String,
   payment:  [{
     type: Schema.Types.ObjectId,
     ref: 'Payment'
