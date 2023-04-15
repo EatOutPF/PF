@@ -12,11 +12,13 @@ const reserveSchema = new Schema({
     ref: 'Restaurant'
   }],
   date: String,
+  time: String,
   payment:  [{
     type: Schema.Types.ObjectId,
     ref: 'Payment'
   }],
   table: Number,
+  
 
 })
 
