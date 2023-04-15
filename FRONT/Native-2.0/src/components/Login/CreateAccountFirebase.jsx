@@ -9,11 +9,39 @@ import { firebaseConfig } from '../../../firebase-config';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 function CreateAccountFirebase({ navigation }) {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
+
 
   const app = initializeApp(firebaseConfig);
   const authF = getAuth(app);
+
+
+  function createAccount(value) {
+    // console.log("soy el action:", value);
+    // console.log("-------------------------------------------");
+    return async () => {
+        axios
+            .post(`https://eatout.onrender.com"/users`, value)
+            .then((response) => {
+                console.log("RESPONSE del action -> ", response);
+                // dispatch({
+                //     type: GET_LINK_MERCADOPAGO,
+                //     payload: response.data,
+                // });
+            })
+            .catch((error) => {
+                console.log("Error axion: ", error.message);
+                // dispatch({
+                //     type: GET_LINK_MERCADOPAGO,
+                //     payload: error.message,
+                // });
+            });
+    };
+}
 
   const handleCreateAccount = () => {
     // createUserWithEmailAndPassword(authF, email, password)
@@ -28,6 +56,7 @@ function CreateAccountFirebase({ navigation }) {
     //     console.log(error);
     //     Alert.alert(error.message);
     //   });
+
 
   };
 
@@ -53,11 +82,11 @@ function CreateAccountFirebase({ navigation }) {
             />
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Nombre</Text>
-                <TextInput onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="nombre" />
+                <TextInput onChangeText={(text) => setName(text)} style={styles.input} placeholder="nombre" />
               </View>
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Telefono</Text>
-                <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="telefono" secureTextEntry={true}/>
+                <TextInput onChangeText={(text) => setPhone(text)} style={styles.input} placeholder="telefono" secureTextEntry={true}/>
               </View>
               <View>
                 <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>E-mail</Text>
@@ -69,10 +98,10 @@ function CreateAccountFirebase({ navigation }) {
               </View>
               <View>
                 <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Repetir Password</Text>
-                <TextInput onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="password" />
+                <TextInput onChangeText={(text) => setPasswordRepeat(text)} style={styles.input} placeholder="password" />
               </View>
               
-              <TouchableOpacity  style={[styles.button, {backgroundColor: '#512e2e'}]}>
+              <TouchableOpacity  onPress={handleCreateAccount}style={[styles.button, {backgroundColor: '#512e2e'}]}>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Crear Cuenta</Text>
               </TouchableOpacity>
             </View>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
+import axios from "axios";
+
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
@@ -55,6 +57,16 @@ const CheckoutState = ({route}) => {
         //     checkoutLinkMP = "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
         //     setReadyToPay(true)
         // }, 3000);
+
+        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
+
+        // axios
+        //     .get(
+        //     "https://eatout.onrender.com/paymentstatus",
+        //     )
+        //     .then((res) => console.log("PAYMENT STATUS:", res))
+        //     // .catch(error){ console.log();}
+        // }, 15000);
 
     }, )
 

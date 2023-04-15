@@ -11,7 +11,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",
     "@mercadopago/sdk-react": "^0.0.3",
-    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-firebase/app": "^17.4.1",
     "@react-native-firebase/auth": "^17.4.1",
     "@react-native-google-signin/google-signin": "^9.0.2",
@@ -56,7 +56,8 @@
     "react-redux": "^8.0.5",
     "react-router-native": "^6.10.0",
     "redux": "^4.2.1",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
