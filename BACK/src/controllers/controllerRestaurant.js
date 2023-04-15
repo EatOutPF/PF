@@ -7,8 +7,7 @@ const {
   Atmosphere,
   Extra,
   Section,
-  User
-
+  User,
 } = require("../db");
 
 async function postRestaurant({
@@ -19,7 +18,6 @@ async function postRestaurant({
   tables,
   schedule,
   advance,
-  // review,
   menu,
   diets,
   paymentMethods,
@@ -28,13 +26,8 @@ async function postRestaurant({
   section,
   idUser,
 }) {
-
   if (!name || !address || !contact || !tables || !schedule)
     throw new Error("Hay datos obligatorios sin completar");
-
-  // const reviewObjects = await Review.find
-
-  const userObject = await User.findById(user);
 
   const menuOjects = await Menu.find({ title: { $in: menu } });
   const dietObjects = await Diet.find({ title: { $in: diets } });
@@ -47,7 +40,6 @@ async function postRestaurant({
   const extraObjects = await Extra.find({ title: { $in: extras } });
   const sectionObjects = await Section.find({ title: { $in: section } });
 
-  // Crear un nuevo objeto de receta con los campos especificados
   const newRestaurant = new Restaurant({
     name,
     address,
@@ -56,7 +48,6 @@ async function postRestaurant({
     tables,
     schedule,
     advance,
-    // review,
     menu: menuOjects,
     diets: dietObjects,
     paymentMethods: paymentMethodObjects,
@@ -66,13 +57,11 @@ async function postRestaurant({
     user: userObject,
   });
 
-  // Guardar la receta en la base de datos
   const resultado = await newRestaurant.save();
 
-  const user = await User.findById(idUser)
-  user.restaurant.push(resultado._id.toString())
+  const user = await User.findById(idUser);
+  user.restaurant.push(resultado._id.toString());
   const resuser = await user.save();
-
 
   return `El restaurant ${resultado.name} fue creado`;
 }
@@ -82,17 +71,28 @@ async function getRestaurant(props) {
     if (!mongoose.Types.ObjectId.isValid(props)) {
       const restaurant = await Restaurant.find({
         name: { $regex: new RegExp(props, "i") },
-      });
+      })
+        .populate("reserve")
+        .populate("payment")
+        .populate("review");
+
       return restaurant;
     }
 
     if (mongoose.Types.ObjectId.isValid(props)) {
-      const restaurant = await Restaurant.findById(props);
+      const restaurant = await Restaurant.findById(props)
+        .populate("reserve")
+        .populate("payment")
+        .populate("review");
+
       return restaurant;
     }
   }
 
-  const restaurants = await Restaurant.find();
+  const restaurants = await Restaurant.find()
+    .populate("reserve")
+    .populate("payment")
+    .populate("review");
 
   return restaurants;
 }
@@ -107,7 +107,6 @@ async function putRestaurant(
     tables,
     schedule,
     advance,
-    // review,
     menu,
     diets,
     paymentMethods,
@@ -120,7 +119,6 @@ async function putRestaurant(
   const restaurant = await Restaurant.findByIdAndUpdate(
     id,
     {
-      // _id: id,
       name,
       address,
       images,

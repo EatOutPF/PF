@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } fr
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
@@ -52,8 +52,12 @@ const DetailResto = ({ route }) => {
 
 
   useEffect(() => {
+    dispatch(clearLinkMercadoPago());
+
+
     if (Object?.keys(detail)?.length === 0) {
       dispatch(searchRestorantById(_id));
+
     }
     else
       if (Object?.keys(detail)?.length !== 0) {
@@ -74,10 +78,11 @@ const DetailResto = ({ route }) => {
     const checkout = {
       resto: detail,
       reserve: {
-        userId: "aaaaa", // Chequear el stado global del usuario logeado
-        cantPersons: 2,
-        cantTables: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
-        schedule: "schedule", // la fecha y hora de la reserva
+        user: "aaaaa", // Chequear el stado global del usuario logeado
+        date: "schedule",
+        time: "schedule", // la fecha y hora de la reserva
+        table: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
+
       }
     }
     navigation.navigate("Checkout", checkout)
@@ -469,7 +474,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     flexDirection: 'row',
-    backgroundColor: 'grey',
+    backgroundColor: '#ff5b4f',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,

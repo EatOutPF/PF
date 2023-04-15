@@ -53,13 +53,13 @@ form {
 }
 
 label {
-  font-size: 18px;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 
 input {
   padding: 8px;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 15px;
   border: 1px solid gray;
   margin-bottom: 20px;
@@ -71,7 +71,7 @@ button {
   color: white;
   border: none;
   border-radius: 15px;
-  font-size: 18px;
+  font-size: 15px;
   padding: 6px 11px;
   cursor: pointer;
   margin: 3px;

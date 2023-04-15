@@ -6,9 +6,21 @@ import {
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
+
     FILTER_CARDS,
     ORDER_CARDS,
+
     GET_LINK_MERCADOPAGO,
+    CLEAR_LINK_MERCADOPAGO,
+
+    CREATE_USER,
+
+    SET_USER_TOKEN,
+    CLEAR_USER_TOKEN,
+
+    GET_USER_INFO,
+    CLEAR_USER_INFO,
+
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -27,11 +39,14 @@ const initialState = {
     restorantsFiltered: [],
 
     userInfo: {},
+    userToken: {},
 
     restorantById: {},
     restorantByString: [],
 
     checkoutLinkMP: "",
+    checkoutLinkMPResponse: {},
+
 
     searchText: "",
 
@@ -46,22 +61,22 @@ const initialState = {
 
 // ---------- REDUCER ----------
 export default function rootReducer(state = initialState, action) {
-    switch (action.type) {
+    switch (action?.type) {
 
 //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
             // console.log("HOLAA : ", action.payload);
             return {
                 ...state,
-                allRestorants: action.payload,
-                allRestorantsCopy: action.payload,
-                restorantsFound: action.payload,
+                allRestorants: action?.payload,
+                allRestorantsCopy: action?.payload,
+                restorantsFound: action?.payload,
             }
         }
 //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
-            return { ...state, restorantById: action.payload, }
+            return { ...state, restorantById: action?.payload, }
         }
 //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
@@ -71,12 +86,12 @@ export default function rootReducer(state = initialState, action) {
 //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return { ...state, restorantsFound: action.payload }
+            return { ...state, restorantsFound: action?.payload }
         }
 //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return { ...state, restorantsFound: state.allRestorants, }
+            return { ...state, restorantsFound: state?.allRestorants, }
         }
 //------------------------------------------------------------------------- 
         case CLEAR_SEARCH_TEXT: {
@@ -86,28 +101,34 @@ export default function rootReducer(state = initialState, action) {
 //------------------------------------------------------------------------- 
         case SET_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
-            return { ...state, searchText: action.payload }
+            return { ...state, searchText: action?.payload }
         }
 //-------------------------------------------------------------------------    
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
-            console.log("soy el reducer de mp");
+            // console.log("soy el reducer de mp: ", action.payload);
+            console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMP: action.payload }
+            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
 
+        }
+//------------------------------------------------------------------------- 
+        case CLEAR_LINK_MERCADOPAGO: {
+            //console.log("reducer: ", action.payload);
+            return { ...state, checkoutLinkMPResponse: {}, checkoutLinkMP: "" }
         }
 //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
             // state.filterByExtras = action.payload;
-            const auxAllRestorants = [...state.allRestorants];
+            const auxAllRestorants = [...state?.allRestorants];
             // state.restorantsFiltered = [...state.allRestorants]
 
             const filteredRestorants = auxAllRestorants.filter(resto =>
-                (resto.menu.includes(state.filterByMenu) || resto.menu === 'All') &&
-                (resto.atmosphere.includes(state.filterByAtmosphere) || resto.atmosphere === 'All') &&
-                (resto.section.includes(state.filterBySection) || resto.section === 'All') &&
-                (resto.diets.includes(state.filterByDiets) || resto.diets === 'All') &&
-                (resto.extras.includes(state.filterByExtras) || resto.extras === 'All')
+                (resto.menu.includes(state?.filterByMenu) || resto?.menu === 'All') &&
+                (resto.atmosphere.includes(state?.filterByAtmosphere) || resto?.atmosphere === 'All') &&
+                (resto.section.includes(state?.filterBySection) || resto?.section === 'All') &&
+                (resto.diets.includes(state?.filterByDiets) || resto?.diets === 'All') &&
+                (resto.extras.includes(state?.filterByExtras) || resto?.extras === 'All')
             );
             return {
                 ...state, restorantsFiltered: filteredRestorants,
@@ -117,15 +138,15 @@ export default function rootReducer(state = initialState, action) {
 
 //-------------------------------------------------------------------------              
         case ORDER_CARDS:
-            switch (action.payload) {
+            switch (action?.payload) {
 
                 //---------- A - Z ----------
                 case "az": {    
                     const updatedState = {
                         ...state,
-                        orderState: action.payload,
-                        allRestorants: sortAsc([...state.allRestorants]),
-                        restorantsFound: sortAsc([...state.restorantsFound]),
+                        orderState: action?.payload,
+                        allRestorants: sortAsc([...state?.allRestorants]),
+                        restorantsFound: sortAsc([...state?.restorantsFound]),
                     };
                     return updatedState;
                 }
@@ -134,9 +155,9 @@ export default function rootReducer(state = initialState, action) {
                 case "za": {
                     const updatedState = {
                         ...state,
-                        orderState: action.payload,
-                        allRestorants: sortDes([...state.allRestorants]),
-                        restorantsFound: sortDes([...state.restorantsFound]),
+                        orderState: action?.payload,
+                        allRestorants: sortDes([...state?.allRestorants]),
+                        restorantsFound: sortDes([...state?.restorantsFound]),
                     };
                     return updatedState;
                 }
@@ -145,9 +166,9 @@ export default function rootReducer(state = initialState, action) {
                 case "rk": {
                     const updatedState = {
                         ...state,
-                        orderState: action.payload,
-                        allRestorants: [...state.allRestorants].sort((a, b) => b.ranking - a.ranking),
-                        restorantsFound: [...state.restorantsFound].sort((a, b) => b.ranking - a.ranking),
+                        orderState: action?.payload,
+                        allRestorants: [...state?.allRestorants]?.sort((a, b) => b.ranking - a.ranking),
+                        restorantsFound: [...state?.restorantsFound]?.sort((a, b) => b.ranking - a.ranking),
                     };
                     return updatedState;
                 }
@@ -156,9 +177,9 @@ export default function rootReducer(state = initialState, action) {
                 case "hp": {
                     const updatedState = {
                         ...state,
-                        orderState: action.payload,
-                        allRestorants: [...state.allRestorants].sort((a, b) => b.ranking - a.ranking),
-                        restorantsFound: [...state.restorantsFound].sort((a, b) => b.ranking - a.ranking),
+                        orderState: action?.payload,
+                        allRestorants: [...state?.allRestorants]?.sort((a, b) => b.ranking - a.ranking),
+                        restorantsFound: [...state?.restorantsFound]?.sort((a, b) => b.ranking - a.ranking),
                     };
                     return updatedState;
                 }
@@ -167,9 +188,9 @@ export default function rootReducer(state = initialState, action) {
                 case "lp": {
                     const updatedState = {
                         ...state,
-                        orderState: action.payload,
-                        allRestorants: [...state.allRestorants].sort((a, b) => a.ranking - b.ranking),
-                        restorantsFound: [...state.restorantsFound].sort((a, b) => a.ranking - b.ranking),
+                        orderState: action?.payload,
+                        allRestorants: [...state?.allRestorants]?.sort((a, b) => a.ranking - b.ranking),
+                        restorantsFound: [...state?.restorantsFound]?.sort((a, b) => a.ranking - b.ranking),
                     };
                     return updatedState;
                 }
@@ -189,36 +210,37 @@ export default function rootReducer(state = initialState, action) {
         case GET_TYPES_FOODS: {
             return {
                 ...state,
-                typesOfFoods: action.payload,
+                typesOfFoods: action?.payload,
             }
         }
 //-----------------------------------------------------------------------------------------
         case GET_ATMOSPHERE: {
             return {
                 ...state,
-                typesOfAtmosphere: action.payload,
+                typesOfAtmosphere: action?.payload,
             }
         }
         case GET_SECTIONS: {
             return {
                 ...state,
-                typesOfSections: action.payload,
+                typesOfSections: action?.payload,
             }
         }
 //-----------------------------------------------------------------------------------------
         case GET_DIET: {
             return {
                 ...state,
-                typesOfDiet: action.payload,
+                typesOfDiet: action?.payload,
             }
         }
 //-----------------------------------------------------------------------------------------
         case GET_EXTRA: {
             return {
                 ...state,
-                typesOfExtras: action.payload,
+                typesOfExtras: action?.payload,
             }
         }
+//-----------------------------------------------------------------------------------------
 
         case FILTER_RESTORANTS: {
             const {
@@ -254,6 +276,42 @@ export default function rootReducer(state = initialState, action) {
         }
 
 
+
+//-----------------------------------------------------------------------------------------
+        case SET_USER_TOKEN: {
+            console.log("*************************************");
+            console.log("token user: ", action.payload);
+            return {
+                ...state,
+                userToken: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case CLEAR_USER_TOKEN: {
+            return {
+                ...state,
+                userToken: {},
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case GET_USER_INFO: {
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            console.log(" user INFO: ", action.payload);
+            return {
+                ...state,
+                userInfo: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case CLEAR_USER_INFO: {
+            return {
+                ...state,
+                userInfo: {},
+            }
+        }
+
+
+//-----------------------------------------------------------------------------------------
         default:
             return state;
 }
