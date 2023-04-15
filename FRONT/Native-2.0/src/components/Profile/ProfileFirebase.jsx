@@ -10,16 +10,16 @@ import { firebaseConfig } from '../../../firebase-config';
 import 'expo-dev-client';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_USER_INFO } from '../../redux/type';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 
-export default function ProfileFirebase({route}) {
+export default function ProfileFirebase() {
     const navigation = useNavigation();
     const dispatch = useDispatch()
-
-    const { user } = route?.params;
+    const user = useSelector(state => state?.userInfo)
+    // const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
     console.log("USER DE PROFILE: ", user?.user?.photoURL);
     console.log("keys user, ", Object.keys(user));
@@ -65,7 +65,7 @@ export default function ProfileFirebase({route}) {
             ></Image>
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>
-                  Bienvenido {user?.displayName}</Text>
+                  Bienvenido {user?.name}</Text>
               </View>
               {/* <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Password</Text>
