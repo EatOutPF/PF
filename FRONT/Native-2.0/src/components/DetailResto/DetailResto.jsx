@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
+import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,7 +21,6 @@ const DetailResto = ({ route }) => {
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const [loading, setLoading] = useState(true)
-  console.log("SOY DETAIL: ", _id);
   const dispatch = useDispatch();
 
   // Cuantas personas?
@@ -51,12 +50,15 @@ const DetailResto = ({ route }) => {
   ]
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
+
+  //Header----------------------------------------------
+  const [headerHeight, setHeaderHeight] = useState(new Animated.Value(300));
   const scrollViewRef = useRef();
   const handlePress = () => {
     scrollViewRef.current.scrollTo({ y: 500, animated: true });
   };
 
-
+ //----------------------------------------------------- 
   useEffect(() => {
     if (Object?.keys(detail)?.length === 0) {
       dispatch(searchRestorantById(_id));
@@ -91,331 +93,350 @@ const DetailResto = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-      // contentContainerStyle={styles.contentContainer}
-      >
-        {loading ? (
-          <Loading />
-        ) : (
-          detail &&
-          <View>
+      {loading ? (
+        <Loading />
+      ) : (
+        detail &&
+        <View style={styles.container}>
+          <Animated.View
+            style={[styles.header, { height: headerHeight }]}>
             <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+            <Text style={styles.superTitle}>{detail?.name}</Text>
 
-            <View style={styles.titleContainer}>
-              <Text style={styles.superTitle}>{detail?.name}</Text>
-            </View>
+          </Animated.View>
 
-            <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
 
-            <View style={styles.container2}>
-              <View style={styles.iconText}>
-                <IonicIcon
-                  name="star-outline"
-                  size={20} />
-                <Text style={styles.text1}>{detail?.ranking}</Text>
-              </View>
-              <View style={styles.iconText}>
-                <IonicIcon
-                  name="pin-outline"
-                  size={20}
-                />
-                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
-              </View>
-            </View>
 
-            <View style={styles.containerReserva}>
-              <Text style={styles.subTitle}> Hacé tu reserva</Text>
-            </View>
-            <View style={styles.containerPerCalHor}>
+          <ScrollView
+            ref={scrollViewRef} 
+            style={styles.containerReserva}
+            onScroll={(event) => {
+              const scrollPosition = event.nativeEvent.contentOffset.y;
+              if (scrollPosition < 0) {
+                // El usuario está haciendo scroll hacia arriba
+                setHeaderHeight(Animated.add(200, scrollPosition));
+              } else {
+                // El usuario está haciendo scroll hacia abajo
+                setHeaderHeight(Animated.subtract(200, scrollPosition));
+              }
+            }}
+            scrollEventThrottle={16}
+          >
+            <View>
 
-              {/* ----------------------Cuantas personas ----------------------*/}
-              <View style={styles.containerPersons}>
-                <IonicIcon
-                  name="people-outline"
-                  size={50}
-                  margin={10}
+              <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
 
-                />
-
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
-                  <Text style={styles.textReservDetail}> {contador} personas</Text>
+              <View style={styles.container2}>
+                <View style={styles.iconText}>
+                  <IonicIcon
+                    name="star-outline"
+                    size={20} />
+                  <Text style={styles.text1}>{detail?.ranking}</Text>
                 </View>
-
-                <View style={styles.containerButtonsPerson}>
-
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={styles.buttonPersons}
-                      name="remove-circle-outline"
-                      size={37}
-                      onPress={() => {
-                        if (contador === 2) {
-                          setContador(2)
-                        } else {
-                          setContador(contador - 1)
-                        }
-                      }}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={styles.buttonPersons}
-                      name="add-circle-outline"
-                      size={37}
-                      onPress={() => {
-                        if (contador === 30) {
-                          setContador(30)
-                        } else {
-                          setContador(contador + 1)
-                        }
-                      }}
-                    />
-                  </TouchableOpacity>
+                <View style={styles.iconText}>
+                  <IonicIcon
+                    name="pin-outline"
+                    size={20}
+                  />
+                  <Text style={styles.text1}>{detail?.address?.streetName}</Text>
                 </View>
               </View>
 
-
-
-              {/* ------------------------¿Que dia ?------------------------ */}
-
-              <View style={styles.containerPersons}>
-                <IonicIcon
-                  name="calendar-outline"
-                  size={45}
-                  margin={15}
-                />
-
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
-                  <Text style={styles.textReservDetail}>{showDate}</Text>
-                </View>
-
-                <View style={styles.containerButtonsPerson}>
-
-
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={{ marginLeft: 70, }}
-                      name="chevron-down-circle-outline"
-                      size={37}
-                      onPress={() => setShowModal(true)}
-                    />
-                  </TouchableOpacity>
-                  <Modal visible={showModal} animationType='fade'>
-                    <Calendar
-                      // style=
-                      onDayPress={date => {
-                        setShowModal(false)
-                        handleDate(date)
-                      }}
-                      initialDate={formattedDate}
-                      // maxDate=''
-                      markedDates={{
-                        formattedDate: { marked: true },
-                      }}
-
-                    />
-                  </Modal>
-                </View>
+              <View style={styles.containerReserva}>
+                <Text style={styles.subTitle}> Hacé tu reserva</Text>
               </View>
+              <View style={styles.containerPerCalHor}>
 
-              {/*----------------- Qué horario?------------------------ */}
-              <View style={styles.containerPersons}>
-                <IonicIcon
-                  name="time-outline"
-                  size={50}
-                  margin={10}
-                />
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                  <Text>9:30 hs</Text>
+                {/* ----------------------Cuantas personas ----------------------*/}
+                <View style={styles.containerPersons}>
+                  <IonicIcon
+                    name="people-outline"
+                    size={50}
+                    margin={10}
+
+                  />
+
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
+                    <Text style={styles.textReservDetail}> {contador} personas</Text>
+                  </View>
+
+                  <View style={styles.containerButtonsPerson}>
+
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={styles.buttonPersons}
+                        name="remove-circle-outline"
+                        size={37}
+                        onPress={() => {
+                          if (contador === 2) {
+                            setContador(2)
+                          } else {
+                            setContador(contador - 1)
+                          }
+                        }}
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={styles.buttonPersons}
+                        name="add-circle-outline"
+                        size={37}
+                        onPress={() => {
+                          if (contador === 30) {
+                            setContador(30)
+                          } else {
+                            setContador(contador + 1)
+                          }
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={styles.buttonPersons}>
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={{ marginLeft: 70, }}
-                      name="chevron-down-circle-outline"
-                      size={37}
 
-                    // onPress={() => setPickerVisible(true)} 
-                    />
-                  </TouchableOpacity>
+
+
+                {/* ------------------------¿Que dia ?------------------------ */}
+
+                <View style={styles.containerPersons}>
+                  <IonicIcon
+                    name="calendar-outline"
+                    size={45}
+                    margin={15}
+                  />
+
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
+                    <Text style={styles.textReservDetail}>{showDate}</Text>
+                  </View>
+
+                  <View style={styles.containerButtonsPerson}>
+
+
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={{ marginLeft: 70, }}
+                        name="chevron-down-circle-outline"
+                        size={37}
+                        onPress={() => setShowModal(true)}
+                      />
+                    </TouchableOpacity>
+                    <Modal visible={showModal} animationType='fade'>
+                      <Calendar
+                        // style=
+                        onDayPress={date => {
+                          setShowModal(false)
+                          handleDate(date)
+                        }}
+                        initialDate={formattedDate}
+                        // maxDate=''
+                        markedDates={{
+                          formattedDate: { marked: true },
+                        }}
+
+                      />
+                    </Modal>
+                  </View>
+                </View>
+
+                {/*----------------- Qué horario?------------------------ */}
+                <View style={styles.containerPersons}>
+                  <IonicIcon
+                    name="time-outline"
+                    size={50}
+                    margin={10}
+                  />
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                    <Text>9:30 hs</Text>
+                  </View>
+                  <View style={styles.buttonPersons}>
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={{ marginLeft: 70, }}
+                        name="chevron-down-circle-outline"
+                        size={37}
+
+                      // onPress={() => setPickerVisible(true)} 
+                      />
+                    </TouchableOpacity>
+
+                  </View>
+
 
                 </View>
 
+                {/* Boton 'CONFIRMAR RESERVA' */}
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleCheckOut()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
 
-              </View>
-
-              {/* Boton 'CONFIRMAR RESERVA' */}
-              <TouchableOpacity style={styles.confirmButton}
-                onPress={() => handleCheckOut()}>
-                <IonicIcon
-                  name="checkmark-outline"
-                  size={20}
-                  color={'white'}
-
-                />
-                {/* {showWebview && (
+                  />
+                  {/* {showWebview && (
                             <WebView
                               source={{ uri: 'https://google.com' }}
                               style={{ flex: 1 }}
                             />
                           )} */}
-                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
-              </TouchableOpacity>
-            </View>
-            {/* ---------- Scroll Horizontal ------------ */}
-
-
-            <View style={{ margin: 8, }}>
-              <ScrollView
-                horizontal={true}
-                ref={scrollViewRef}>
-
-
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={handlePress}>
-                  <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
-                </TouchableOpacity>
-
-              </ScrollView>
-            </View>
-
-            {/*------------------ Sobre Nosotros------------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Sobre Nosotros</Text>
-            </View>
-            <View style={styles.textAbout}>
-              <Text style={styles.textReserv2}> {detail?.about} </Text>
-            </View>
+              </View>
+              {/* ---------- Scroll Horizontal ------------ */}
 
 
-            {/* ---------------- menu --> link a la carta del resto ----- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> MENU --- Link a la carta</Text>
-            </View>
+              <View style={{ margin: 8, }}>
+                <ScrollView
+                  horizontal={true}
+                  ref={scrollViewRef}>
 
-            {/*-------------- categorias ------------------------------ */}
 
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Categorías</Text>
-            </View>
+                  <TouchableOpacity
+                    style={styles.buttonHorizontalScroll}
+                    onPress={handlePress}>
+                    <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
+                  </TouchableOpacity>
 
-            <View>
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
+                  </TouchableOpacity>
 
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Tipo de comida: </Text>
-                <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
+                  </TouchableOpacity>
+
+                </ScrollView>
+              </View>
+
+              {/*------------------ Sobre Nosotros------------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Sobre Nosotros</Text>
+              </View>
+              <View style={styles.textAbout}>
+                <Text style={styles.textReserv2}> {detail?.about} </Text>
               </View>
 
 
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="beer-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Ambiente: </Text>
-                <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
+              {/* ---------------- menu --> link a la carta del resto ----- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> MENU --- Link a la carta</Text>
               </View>
 
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Espacios: </Text>
-                <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+              {/*-------------- categorias ------------------------------ */}
+
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Categorías</Text>
               </View>
 
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="leaf-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Cuenta con: </Text>
-                <Text style={styles.aboutCategories}>{detail?.diets[0]}</Text>
+              <View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Tipo de comida: </Text>
+                  <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
+                </View>
+
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="beer-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Ambiente: </Text>
+                  <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Espacios: </Text>
+                  <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="leaf-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Cuenta con: </Text>
+                  <Text style={styles.aboutCategories}>{detail?.diets[0]}</Text>
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="paw-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Otros: </Text>
+                  <Text style={styles.aboutCategories}>{detail?.extras[0]}</Text>
+                </View>
+
               </View>
 
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="paw-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Otros: </Text>
-                <Text style={styles.aboutCategories}>{detail?.extras[0]}</Text>
+              {/*-------------------- Horarios -------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}>Horarios</Text>
+                <Text style={{ fontFamily: 'Inria-Sans-Regular', fontWeight: 'bold', fontSize: 15 }}>
+                  Horarios de apertura y cierre</Text>
+              </View>
+              <View>
+                <Text style={styles.aboutCategories}>
+                  ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
+                  {detail?.schedule[0]?.monday?.close}hs
+                </Text>
+
+                <Text style={styles.aboutCategories}>
+                  ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
+                  {detail?.schedule[0]?.tuesday?.close}hs
+                </Text>
+                <Text style={styles.aboutCategories}>
+                  ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
+                  {detail?.schedule[0]?.wednesday?.close}hs
+                </Text>
+                <Text style={styles.aboutCategories}>
+                  ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
+                  {detail?.schedule[0]?.thursday?.close}hs
+                </Text>
+                <Text style={styles.aboutCategories}>
+                  ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
+                  {detail?.schedule[0]?.friday?.close}hs
+                </Text>
+                <Text style={styles.aboutCategories}>
+                  ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
+                  {detail?.schedule[0]?.saturday?.close}hs
+                </Text>
+                <Text style={styles.aboutCategories}>
+                  ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
+                  {detail?.schedule[0]?.sunday?.close}hs
+                </Text>
               </View>
 
-            </View>
+              {/*--------------- sobre nosotros -------------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}>Sobre Nosotros</Text>
+              </View>
 
-            {/*-------------------- Horarios -------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}>Horarios</Text>
-              <Text style={{ fontFamily: 'Inria-Sans-Regular', fontWeight: 'bold', fontSize: 15 }}>
-                Horarios de apertura y cierre</Text>
+              {/* ------------Medios de pago ------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Metodos de Pago </Text>
+              </View>
+              <View >
+                <Text >
+                  {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
+                  {detail?.paymentMethods[2]}
+                </Text>
+              </View>
             </View>
-            <View>
-              <Text style={styles.aboutCategories}>
-                ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
-                {detail?.schedule[0]?.monday?.close}hs
-              </Text>
+          </ScrollView >
+        </View>
 
-              <Text style={styles.aboutCategories}>
-                ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
-                {detail?.schedule[0]?.tuesday?.close}hs
-              </Text>
-              <Text style={styles.aboutCategories}>
-                ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
-                {detail?.schedule[0]?.wednesday?.close}hs
-              </Text>
-              <Text style={styles.aboutCategories}>
-                ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
-                {detail?.schedule[0]?.thursday?.close}hs
-              </Text>
-              <Text style={styles.aboutCategories}>
-                ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
-                {detail?.schedule[0]?.friday?.close}hs
-              </Text>
-              <Text style={styles.aboutCategories}>
-                ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
-                {detail?.schedule[0]?.saturday?.close}hs
-              </Text>
-              <Text style={styles.aboutCategories}>
-                ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
-                {detail?.schedule[0]?.sunday?.close}hs
-              </Text>
-            </View>
-
-            {/*--------------- sobre nosotros -------------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}>Sobre Nosotros</Text>
-            </View>
-
-            {/* ------------Medios de pago ------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Metodos de Pago </Text>
-            </View>
-            <View >
-              <Text >
-                {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-                {detail?.paymentMethods[2]}
-              </Text>
-            </View>
-          </View>
-        )
-        }
-      </ScrollView >
+      )
+      }
     </View>
 
   );
@@ -426,9 +447,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  contentContainer: {
-    padding: 5,
-    backgroundColor: '#F5FCFF',
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 0,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd'
   },
   titleContainer: {
     // backgroundColor: 'grey',
@@ -462,12 +487,15 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   containerReserva: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
     // backgroundColor: 'orange',
   },
   containerPerCalHor: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '19%',
+    height: '25%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
