@@ -122,9 +122,9 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  review: [{
+  reserve: [{
     type: Schema.Types.ObjectId,
-    ref: "Review",
+    ref: "Reserve",
   }],
   user: [{
     type: Schema.Types.ObjectId,
