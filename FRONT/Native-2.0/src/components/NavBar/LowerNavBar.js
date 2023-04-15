@@ -18,6 +18,7 @@ import Filters from '../Filters/Filters.jsx';
 import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
 import CheckoutState from '../CheckoutPayment/CheckoutState';
+import MyComponent from '../CheckoutPayment/prueba1.jsx';
 
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';

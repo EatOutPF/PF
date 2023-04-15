@@ -78,10 +78,11 @@ const DetailResto = ({ route }) => {
     const checkout = {
       resto: detail,
       reserve: {
-        userId: "aaaaa", // Chequear el stado global del usuario logeado
-        cantPersons: 2,
-        cantTables: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
-        schedule: "schedule", // la fecha y hora de la reserva
+        user: "aaaaa", // Chequear el stado global del usuario logeado
+        date: "schedule",
+        time: "schedule", // la fecha y hora de la reserva
+        table: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
+
       }
     }
     navigation.navigate("Checkout", checkout)
@@ -473,7 +474,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     flexDirection: 'row',
-    backgroundColor: 'grey',
+    backgroundColor: '#ff5b4f',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
