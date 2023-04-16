@@ -22,11 +22,11 @@ router.post("/", (req, res) => {
       },
     ],
     back_urls: {
-      success: "",
-      failure: "",
-      pending: "",
+      success: "https://eatout-lac.vercel.app/paymentstatus",
+      failure: "https://eatout-lac.vercel.app/paymentstatus",
+      pending: "https://eatout-lac.vercel.app/paymentstatus",
     },
-  //  auto_return: "approved",
+    auto_return: "approved",
     binary_mode: true,
   };
   mercadopago.preferences
