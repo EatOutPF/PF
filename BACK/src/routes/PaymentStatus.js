@@ -1,29 +1,36 @@
 const { Router } = require("express");
 const express = require("express");
 const webhook = require("../controllers/controllerPaymentSatus");
+const cors = require("cors");
+const corsOptions = {
+    origin: "*",
+    optionSuccessStatus: 200,
+  };
 require("dotenv").config();
 
 const router = Router();
 router.use(express.json());
-
-let resultado
-
+router.use(cors(corsOptions));
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", async (req, res) => {
-    var data = req.body
-    console.log(`** El ID de pago es: ${data} **`)
+        console.log(req.query)
+        resultado = await webhook(req.query)  
+        res.sendStatus(200)
+});
+
+router.get("/:id", async (req, res) => {
+    let { id } = req.params
+
+    console.log(`** El ID de pago es: ${id} **`)
     try {
-    resultado = await webhook(data)  
-    res.sendStatus(200)
+    resultado = await webhook(id)  
+    res.status(200).json(resultado)
     } catch (error) {
        console.log(error) 
     }
-});
-
-router.get("/", async (req, res) => {
-    res.status(200).json(resultado)
 })
+
 
 
 module.exports = router
