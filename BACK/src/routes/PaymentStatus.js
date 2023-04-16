@@ -14,7 +14,7 @@ router.use(cors(corsOptions));
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", async (req, res) => {
-        
+        console.log(req)
        let resultado = await webhook(req.body)  
         res.sendStatus(200)
 });
