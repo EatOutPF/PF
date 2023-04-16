@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Button } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from "react-native"
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker'

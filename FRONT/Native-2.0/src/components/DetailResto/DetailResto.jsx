@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated } from 'react-native'
+import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated, SafeAreaView } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,32 +14,57 @@ import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
+import RBSheet from "react-native-raw-bottom-sheet";
+
 
 
 const DetailResto = ({ route }) => {
   // const { _id } = useParams();
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
+  const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
 
-  // Cuantas personas?
+  // --------Cuantas personas?--------
   const [contador, setContador] = useState(2)
 
-  //Que dia?
+  //--------------Que dia?---------------
   const [showModal, setShowModal] = useState(false);
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().split('T')[0];
   const dateToString = moment(currentDate).locale('es').format('ddd, D [de] MMM');
   const [showDate, setShowDate] = useState(dateToString)
+  // ------------reserva-----------
+  const [reserve, setReserve] = useState({
+    user: null,
+    date: null,
+    time: null,
+    table: 0,
+  })
+  const handlePersons = (persons) => {
+    const operation = Math.ceil(persons / 2);
+    setReserve({ ...reserve, table: operation });
+  }
+  //-----Que dia?---------------
+  const [calendarioVisible, setCalendarioVisible] = useState(false);
+
+  const expandir = () => {
+    setCalendarioVisible(false);
+  }
 
   const handleDate = (date) => {
+    console.log('FECHA SELECCIONADA',date)
     const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     setShowDate(newDate)
+    // const fechaReserva = new Date();
+    // const fechaString = fechaReserva.toISOString()
+    // console.log('FECHA RESERVA', fechaString.slice(0, 10))
+    setReserve({ ...reserve, date: date.dateString});
   }
 
   //A que hora ? -Horarios
-  const horarios = [
+  const [horarios, setHorarios] = useState([
     '9:00',
     '9:30',
     '10:00',
@@ -47,18 +72,57 @@ const DetailResto = ({ route }) => {
     '11:00',
     '11:30',
     '12:00',
-  ]
+    '12:30',
+    '13:00',
+    '13:30',
+    '14:00',
+    '14:30',
+    '15:00',
+    '15:30',
+    '16:00',
+    '16:30',
+    '17:00',
+    '17:30',
+    '18:00',
+    '18:30',
+    '19:00',
+    '19:30',
+    '20:00',
+    '20:30',
+    '21:00',
+    '21:30',
+    '22:00',
+    '22:30',
+    '23:00',
+    '23:30',
+  ])
+  const bottomSheetRef = useRef();
+
+  const openBottomSheet = () => {
+    bottomSheetRef.current.open();
+  };
+
+  const closeBottomSheet = () => {
+    bottomSheetRef.current.close();
+  };
+  const [showHorario, setShowHorario] = useState(horarios[0])
+
+  const handleHorario = (item) => {
+    setReserve({ ...reserve, time: item });
+    // console.log('horario RESERVA', showHorario)
+
+  }
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
 
-  //Header----------------------------------------------
+  //----------------------------------Header------------------------------
   const [headerHeight, setHeaderHeight] = useState(new Animated.Value(300));
   const scrollViewRef = useRef();
   const handlePress = () => {
     scrollViewRef.current.scrollTo({ y: 500, animated: true });
   };
 
- //----------------------------------------------------- 
+  //----------------------------------------------------- 
   useEffect(() => {
     dispatch(clearLinkMercadoPago());
 
@@ -82,19 +146,23 @@ const DetailResto = ({ route }) => {
 
   const navigation = useNavigation();
   function handleCheckOut() {
-    console.log("QUIERO IR A MERCADOPAGO");
     const checkout = {
       resto: detail,
+      user: user,
       reserve: {
-        user: "aaaaa", // Chequear el stado global del usuario logeado
-        date: "schedule",
-        time: "schedule", // la fecha y hora de la reserva
-        table: 1, // pasar la cantidad de mesas reservadas (cant de personas/2 - redondear para arriba)
-
+        cantPersons: contador,
+        date: reserve.date,
+        time: reserve.time,
+        table: reserve.table,
       }
     }
-    navigation.navigate("Checkout", checkout)
+    console.log('soy el user', checkout.user)
+    console.log('FECHAAAAAA', reserve.date)
+    console.log('HORAAAAA', reserve.time)
+
+    navigation.navigate("Checkout", { checkout: checkout })
   }
+
 
   return (
     <View style={styles.container}>
@@ -113,7 +181,7 @@ const DetailResto = ({ route }) => {
 
 
           <ScrollView
-            ref={scrollViewRef} 
+            ref={scrollViewRef}
             style={styles.containerReserva}
             onScroll={(event) => {
               const scrollPosition = event.nativeEvent.contentOffset.y;
@@ -176,8 +244,10 @@ const DetailResto = ({ route }) => {
                         onPress={() => {
                           if (contador === 2) {
                             setContador(2)
+                            handlePersons(contador)
                           } else {
                             setContador(contador - 1)
+                            handlePersons(contador)
                           }
                         }}
                       />
@@ -191,8 +261,10 @@ const DetailResto = ({ route }) => {
                         onPress={() => {
                           if (contador === 30) {
                             setContador(30)
+                            handlePersons(contador)
                           } else {
                             setContador(contador + 1)
+                            handlePersons(contador)
                           }
                         }}
                       />
@@ -231,8 +303,8 @@ const DetailResto = ({ route }) => {
                       <Calendar
                         // style=
                         onDayPress={date => {
-                          setShowModal(false)
                           handleDate(date)
+                          setShowModal(false)
                         }}
                         initialDate={formattedDate}
                         // maxDate=''
@@ -254,19 +326,55 @@ const DetailResto = ({ route }) => {
                   />
                   <View style={styles.reservDetail}>
                     <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                    <Text>9:30 hs</Text>
+                    <Text style={styles.textReservDetail}>{showHorario}hs</Text>
                   </View>
+
                   <View style={styles.buttonPersons}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={openBottomSheet}
+                    >
                       <IonicIcon
                         style={{ marginLeft: 70, }}
                         name="chevron-down-circle-outline"
                         size={37}
 
-                      // onPress={() => setPickerVisible(true)} 
                       />
-                    </TouchableOpacity>
+                      <RBSheet
+                        ref={bottomSheetRef}
+                        closeOnDragDown={true}
+                        closeOnPressMask={true}
+                        customStyles={{
+                          wrapper: {
+                            backgroundColor: "transparent"
+                          },
+                          draggableIcon: {
+                            backgroundColor: "#000"
+                          }
+                        }}
+                      >
+                        <View style={styles.containerHorarios}>
+                          <ScrollView>
+                            {horarios.map((item) => (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  handleHorario(item);
+                                  closeBottomSheet();
+                                }}>
 
+                                <View style={styles.horariosButtons}>
+                                  <Text
+                                    // style=
+                                    key={item}>{item}
+                                  </Text>
+                                </View>
+
+                              </TouchableOpacity>
+                            ))}
+                          </ScrollView>
+                        </View>
+
+                      </RBSheet>
+                    </TouchableOpacity>
                   </View>
 
 
@@ -391,33 +499,33 @@ const DetailResto = ({ route }) => {
               </View>
               <View>
                 <Text style={styles.aboutCategories}>
-                  ---- Lunes --- {detail?.schedule[0]?.monday?.open}hs a{" "}
-                  {detail?.schedule[0]?.monday?.close}hs
+                  ---- Lunes --- {detail?.schedule?.monday?.open}hs a{" "}
+                  {detail?.schedule?.monday?.close}hs
                 </Text>
 
                 <Text style={styles.aboutCategories}>
-                  ---- Martes --- {detail?.schedule[0]?.tuesday?.open}hs a{" "}
-                  {detail?.schedule[0]?.tuesday?.close}hs
+                  ---- Martes --- {detail?.schedule?.tuesday?.open}hs a{" "}
+                  {detail?.schedule?.tuesday?.close}hs
                 </Text>
                 <Text style={styles.aboutCategories}>
-                  ---- Miercoles --- {detail?.schedule[0]?.wednesday?.open}hs a{" "}
-                  {detail?.schedule[0]?.wednesday?.close}hs
+                  ---- Miercoles --- {detail?.schedule?.wednesday?.open}hs a{" "}
+                  {detail?.schedule?.wednesday?.close}hs
                 </Text>
                 <Text style={styles.aboutCategories}>
-                  ---- Jueves --- {detail?.schedule[0]?.thursday?.open}hs a{" "}
-                  {detail?.schedule[0]?.thursday?.close}hs
+                  ---- Jueves --- {detail?.schedule?.thursday?.open}hs a{" "}
+                  {detail?.schedule?.thursday?.close}hs
                 </Text>
                 <Text style={styles.aboutCategories}>
-                  ---- Viernes --- {detail?.schedule[0]?.friday?.open}hs a{" "}
-                  {detail?.schedule[0]?.friday?.close}hs
+                  ---- Viernes --- {detail?.schedule?.friday?.open}hs a{" "}
+                  {detail?.schedule?.friday?.close}hs
                 </Text>
                 <Text style={styles.aboutCategories}>
-                  ---- Sabado --- {detail?.schedule[0]?.saturday?.open}hs a{" "}
-                  {detail?.schedule[0]?.saturday?.close}hs
+                  ---- Sabado --- {detail?.schedule?.saturday?.open}hs a{" "}
+                  {detail?.schedule?.saturday?.close}hs
                 </Text>
                 <Text style={styles.aboutCategories}>
-                  ---- Domingo --- {detail?.schedule[0]?.sunday?.open}hs a{" "}
-                  {detail?.schedule[0]?.sunday?.close}hs
+                  ---- Domingo --- {detail?.schedule?.sunday?.open}hs a{" "}
+                  {detail?.schedule?.sunday?.close}hs
                 </Text>
               </View>
 
@@ -532,20 +640,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 15,
     marginLeft: 12,
-
   },
   buttonPersons: {
     alignSelf: 'center',
     margin: 8,
     // backgroundColor: 'orange',
   },
-
   textReserv2: {
     fontFamily: "Inria-Sans-Regular",
     fontSize: 20,
     // backgroundColor: 'yellow',
-
-
   },
   reservDetail: {
     // backgroundColor: 'green',
@@ -588,7 +692,6 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
 
   },
-
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
@@ -631,6 +734,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Inria-Sans-Light',
     fontSize: 18,
     marginLeft: 10,
+  },
+  //Horarios
+
+  horarioModal: {
+    width: '50%',
+    height: '80%',
+    backgroundColor: 'red',
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
+  },
+  BTsheet: {
+    borderRadius: 10,
+  },
+  containerHorarios: {
+    alignItems: 'center',
+  },
+  horariosButtons: {
+    height: 20,
+    width: 50,
+
   }
+
 });
 export default DetailResto
