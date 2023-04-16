@@ -5,7 +5,10 @@ import * as Location from "expo-location"
 import { Marker } from 'react-native-maps';
 import { mapStyle } from './mapStyle';
 import restorantsJson from '../../../data/restaurants'
-import { StyleSheet, View, Dimensions, Text, Emoji } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, Emoji, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-elements';
 
 // function initMap() {
 //     const myLatLng = { lat: -25.363, lng: 131.044 };
@@ -22,7 +25,8 @@ import { StyleSheet, View, Dimensions, Text, Emoji } from 'react-native';
 //   }
 
 export default function App() {
-
+    const restos = useSelector(state => state.allRestorants)
+    const navigation = useNavigation()
     const [origin, setOrigen] = useState({
         latitude : -33.744014, 
         longitude : -61.958717
@@ -52,9 +56,38 @@ export default function App() {
         setOrigen(current)
     }
 
+    function handlerToDetail(value){
+
+        //const _id = value       
+        return(
+            <Text onPress={()=>navigation.navigate("Detalle Restaurant", {_id:value})}>
+                Ir al detalle
+            </Text>
+        )
+    }
     // const mark = [{ id: 1, title: 'Marker 1', coordinate: { latitude: -38.011193, longitude: -57.554361 } },
     // { id: 2, title: 'Marker 2', coordinate: { latitude: -38.011273, longitude: -57.554571 } },
     // { id: 3, title: 'Marker 3', coordinate: { latitude: -38.011583, longitude: -57.554991 } },]
+    const markerDescription = (
+        // <TouchableOpacity onPress={() => navigation.navigate('AnotherComponent')}>
+          <Text>Este eres tu.</Text>
+        // </TouchableOpacity>
+      );
+
+      const [lastPress, setLastPress] = useState(0);
+
+      const handleDoublePress = (value) => {
+        const currentTime = new Date().getTime();
+        const timeDelta = currentTime - lastPress;
+        const doublePressDelay = 300; // milliseconds
+    
+        if (timeDelta < doublePressDelay) {
+          console.log('Double Pressed!');
+          navigation.navigate("Detalle Restaurant", {_id: value})
+        }
+    
+        setLastPress(currentTime);
+      };
 
 
 return (
@@ -77,12 +110,16 @@ return (
        
 
         {
-            restorantsJson.map(item => (
+            restos.map(item => (
                 <Marker 
-                    key={item._id} 
-                    coordinate={item.address.coordinate}
-                    title={item.name}
+                    key={item?._id} 
+                    coordinate={item?.address.coordinate}
+                    title={item?.name}
+                    description={item?.menu?.[0]}
                     pinColor='pink'
+                    tappable={true}
+                    onLongPress={()=> navigation.navigate("Detalle Restaurant", {_id: item?._id})}
+  
                 />
                 )
             )

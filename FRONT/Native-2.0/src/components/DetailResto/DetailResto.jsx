@@ -156,10 +156,6 @@ const DetailResto = ({ route }) => {
         table: reserve.table,
       }
     }
-    console.log('soy el user', checkout.user)
-    console.log('FECHAAAAAA', reserve.date)
-    console.log('HORAAAAA', reserve.time)
-
     navigation.navigate("Checkout", { checkout: checkout })
   }
 

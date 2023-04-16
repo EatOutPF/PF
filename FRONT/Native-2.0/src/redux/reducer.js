@@ -45,8 +45,8 @@ const initialState = {
     restorantByString: [],
 
     checkoutLinkMP: "",
+    checkoutIdPaymentMP: "",
     checkoutLinkMPResponse: {},
-
 
     searchText: "",
 
@@ -107,9 +107,14 @@ export default function rootReducer(state = initialState, action) {
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
             console.log("soy el reducer de mp: ", action.payload);
+            console.log("ID PAYMENT: ", action?.payload?.body?.id);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
+            return { ...state, 
+                checkoutLinkMPResponse: action?.payload, 
+                checkoutLinkMP: action?.payload?.body?.init_point,
+                checkoutIdPaymentMP: action?.payload?.body?.id,
+            }
 
         }
 //------------------------------------------------------------------------- 

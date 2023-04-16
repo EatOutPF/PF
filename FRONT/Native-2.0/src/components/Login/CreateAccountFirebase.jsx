@@ -9,15 +9,16 @@ import { firebaseConfig } from '../../../firebase-config';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 function CreateAccountFirebase({ navigation }) {
+
+  const app = initializeApp(firebaseConfig);
+  const authF = getAuth(app);
+
+// ---------------------- Validations of Inputs ----------------------
   const [name, setName] = useState('');
   const [phone, setPhone] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
-
-
-  const app = initializeApp(firebaseConfig);
-  const authF = getAuth(app);
 
   const [isValidName, setIsValidName] = useState(true);
   const [isValidPhone, setIsValidPhone] = useState(true);
@@ -27,15 +28,15 @@ function CreateAccountFirebase({ navigation }) {
 
   const validateName = (text) => {
     // Name validation logic
-    const regex = /^[0-9]{10}$/;
-    const isValidPhone = regex.test(text);
-    setPhone(text);
-    setIsValidPhone(isValidPhone);
+    const regex = /^[a-zA-Z\s]{5,}$/;
+    const isValidName = regex.test(text);
+    setName(text);
+    setIsValidName(isValidName);
   };
 
   const validatePhone = (text) => {
     // Phone number validation logic
-    const regex = /^[0-9]{10}$/;
+    const regex = /^[0-9]{10,}$/;
     const isValidPhone = regex.test(text);
     setPhone(text);
     setIsValidPhone(isValidPhone);
@@ -63,6 +64,7 @@ function CreateAccountFirebase({ navigation }) {
     setIsValidPasswordRepeat(isValidPasswordRepeat);
 
   };
+// ---------------------- Validations of Inputs ----------------------
 
   function createAccount(value) {
     // console.log("soy el action:", value);
@@ -88,6 +90,14 @@ function CreateAccountFirebase({ navigation }) {
 }
 
   const handleCreateAccount = () => {
+    // https://eatout.onrender.com/users
+    // {
+    //   "name": "santiago",
+    //   "phone": 12344321,
+    //   "email": "santi@gmail.com",
+    //   "password": "123456"
+    // }
+
     // createUserWithEmailAndPassword(authF, email, password)
     //   .then((userCredential) => {
     //     console.log('Account created!');
@@ -131,7 +141,7 @@ function CreateAccountFirebase({ navigation }) {
                   value={name}
                   autoCapitalize="words"
                 />
-                {!isValidName && <Text style={styles.error}>El nombre debe tener minimo 5 caracteres.</Text>}
+                {!isValidName && <Text style={styles.error}>El nombre debe tener minimo 5 letras.</Text>}
               </View>
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Telefono</Text>
@@ -186,25 +196,6 @@ function CreateAccountFirebase({ navigation }) {
           </BlurView>
         </ScrollView>
       </View>
-        // <View style={styles.container}>
-        //   <BlurView intensity={100}>
-        //     <View style={styles.login}>
-        //       <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
-
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>E-mail</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="usuario@mail.com" />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Password</Text>
-        //       <TextInput onChangeText={(text) => setPassword(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="password" secureTextEntry={true} />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Nombre</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="nombre" />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Apellido</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="apellido" />
-        //       <TouchableOpacity onPress={handleCreateAccount} style={{ backgroundColor: '#512e2e', padding: 10, borderRadius: 5 }}>
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Create Account</Text>
-        //       </TouchableOpacity>
-        //     </View>
-        //   </BlurView>
-        // </View>
     );
 }
 
