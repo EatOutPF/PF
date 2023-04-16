@@ -13,13 +13,12 @@ router.use(express.json());
 router.use(cors(corsOptions));
 /* ----------MERCADOPAGO---------- */
 
-// router.post("/", async (req, res) => {
-//         console.log(req.body)
-//         resultado = await webhook(req.body)  
-//         res.sendStatus(200)
-// });
+router.post("/", async (req, res) => {
+        
+       let resultado = await webhook(req.body)  
+        res.sendStatus(200)
+});
 
-router.post("/", webhook)
 
 router.get("/:id", async (req, res) => {
     let { id } = req.params
