@@ -8,17 +8,20 @@ router.use(express.json());
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", (req, res) => {
-  const chosenRestaurant = req.body;
+  const restaurant = req.body.resto;
+  const user = req.body.user;
+  const reserve = req.body.reserve;
+  
   let preference = {
     items: [
       {
-        id: chosenRestaurant._id,
-        title: chosenRestaurant.name,
+        id: restaurant._id,
+        title: restaurant.name,
         currency_id: "ARS",
-        description: chosenRestaurant.menu[0],
+        description: restaurant.menu[0],
         category_id: "art",
         quantity: 1,
-        unit_price: chosenRestaurant.advance,
+        unit_price: restaurant.advance,
       },
     ],
     back_urls: {
@@ -26,6 +29,7 @@ router.post("/", (req, res) => {
       failure: "https://eatout-lac.vercel.app/paymentstatus",
       pending: "https://eatout-lac.vercel.app/paymentstatus",
     },
+    metadata : {user: user._id, resto: restaurant._id, reserve}
     auto_return: "approved",
     binary_mode: true,
   };
