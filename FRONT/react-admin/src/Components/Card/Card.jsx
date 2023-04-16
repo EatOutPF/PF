@@ -49,7 +49,7 @@ const Card = (props) => {
         <tr key={props._id} className={!props.active ? style.disable : null}>
           <td>{props.name}</td>
           <td>{props.menu}</td>
-          <td>{props.diets.map((d) => `${d} `)}</td>
+          <td>{props?.diets?.map((d) => `${d} `)}</td>
 
           <td>
             {props.address?.streetName} - {props.address?.streetNumber}
