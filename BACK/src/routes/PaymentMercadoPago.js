@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
   const restaurant = req.body.resto;
   const user = req.body.user;
   const reserve = req.body.reserve;
-  
+  console.log(restaurant, user, reserve)
   let preference = {
     items: [
       {
@@ -25,7 +25,7 @@ router.post("/", (req, res) => {
       },
     ],
     back_urls: {
-      success: "https://eatout-lac.vercel.app/paymentstatus",
+      success: "com.eatoutpf.EatOut",
       failure: "https://eatout-lac.vercel.app/paymentstatus",
       pending: "https://eatout-lac.vercel.app/paymentstatus",
     },
