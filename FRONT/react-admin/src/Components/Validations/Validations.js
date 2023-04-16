@@ -3,8 +3,11 @@ export default function Validation(data) {
   /*   const regexSpecialCharacters = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; */
   const regexCoordinate = /^([-?\d\d\d+][0-9]{0,3}[.]{1}[0-9]{6,10})$/g;
   const regexCoordinateLatitude = /^([-?\d\d\d+][0-9]{0,2}[.]{1}[0-9]{6,10})$/g;
-  const regexNumber = /^[0-9,$]*$/;
-  const regexPhoneNumber = /^[0-9,$]*$/;
+  const regexNumber = /^[0-9]+$/;
+  const regexPhoneNumber =
+    /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/g;
+  const regexWpp =
+    /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/g;
   const regexLetras = /^[a-zA-Z ]*$/;
   const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const regexHoraMonday = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
@@ -26,10 +29,10 @@ export default function Validation(data) {
 
   !data?.streetName && (errors.streetName = "Diligencie el nombre de la calle");
   data?.streetName &&
-    data?.streetName.length <= 4 &&
-    (errors.streetName = "El nombre debe contener mas de 4 caracteres");
+    /*  data?.streetName?.length < 4 &&
+    (errors.streetName = "El nombre debe contener mas de 5 caracteres"); */
 
-  !data?.streetNumber &&
+    !data?.streetNumber &&
     (errors.streetNumber = "Diligencie el numero de la calle");
   if (data?.streetNumber) {
     !regexNumber.test(data?.streetNumber) &&
@@ -51,7 +54,7 @@ export default function Validation(data) {
   !data?.longitude && (errors.longitude = "Diligencia la coordenada-longitud");
 
   if (data?.longitude) {
-    if (data?.longitude > 180 || data?.longitude < -180)
+    if (data?.longitude >= 180 || data?.longitude <= -180)
       errors.longitude = "la longitud debe estar entre 180 y -180";
 
     if (!regexCoordinate.test(data?.longitude))
@@ -61,7 +64,7 @@ export default function Validation(data) {
   !data?.latitude && (errors.latitude = "Diligencia la coordenada-latitud");
 
   if (data?.latitude) {
-    if (data?.latitude > 90 || data?.latitude < -90)
+    if (data?.latitude >= 90 || data?.latitude <= -90)
       errors.latitude = "la latitud debe estar entre 90 y -90";
 
     if (!regexCoordinateLatitude.test(data?.latitude))
@@ -70,9 +73,18 @@ export default function Validation(data) {
 
   !data?.phoneNumber &&
     (errors.phoneNumber = "Diligencie un numero de teléfono");
+  if (data?.phoneNumber <= 1000000000)
+    errors.phoneNumber = "Debe contener minimo 10 numeros";
   if (data?.phoneNumber) {
     !regexPhoneNumber.test(data?.phoneNumber) &&
-      (errors.phoneNumber = "Debe ser un numero");
+      (errors.phoneNumber = "Diligencie un numero de teléfono válido");
+  }
+
+  !data?.wpp && (errors.wpp = "Diligencie un numero de teléfono");
+  if (data?.wpp <= 1000000000)
+    errors.phoneNumber = "Debe contener minimo 10 numeros";
+  if (data?.wpp) {
+    !regexWpp.test(data?.wpp) && (errors.wpp = "Debe ser un numero");
   }
 
   !data?.email && (errors.email = "Diligenciar un email");

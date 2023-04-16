@@ -5,6 +5,9 @@ import {
   searchByRestaurantByUser,
 } from "../Redux/Actions";
 import sweetAlert from "sweetalert";
+import search from "../assets/lupa.png";
+import styles from "../Styles/General.module.css";
+import { BiSearchAlt } from "react-icons/bi";
 
 function Searchbar() {
   const [state, setState] = useState("");
@@ -29,17 +32,26 @@ function Searchbar() {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        padding: 5,
+        flexGrow: 1,
+      }}
+    >
       <input
         type="text"
         placeholder="Inserta nombre"
         onChange={handleChange}
         value={state}
         onClick={(e) => e.key === "Enter" && handleSubmit(e)}
+        className={styles.inputSearch}
       />
 
-      <button type="submit" onClick={handleSubmit}>
-        <samp>Buscar</samp>
+      <button type="submit" onClick={handleSubmit} className={styles.btnSearch}>
+        {/*  <img src={search} alt="lupa" style={{ width: 20 }} /> */}
+        <BiSearchAlt size={25} />
       </button>
     </div>
   );

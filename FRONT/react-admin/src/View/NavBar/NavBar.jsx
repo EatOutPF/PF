@@ -6,6 +6,7 @@ import styleGeneral from "../../Styles/General.module.css";
 import home from "../../assets/logo.png";
 import { useSelector } from "react-redux";
 import style from "./NavBar.module.css";
+import { FaUserAlt } from "react-icons/fa";
 
 const NavBar = () => {
   const [order, setOrder] = useState("");
@@ -14,6 +15,7 @@ const NavBar = () => {
   return (
     <>
       <div className={style.containerHeader}>
+        <FaUserAlt size={15} />
         {user?.name}
         <NavLink to="/">
           <Logout />
@@ -34,7 +36,12 @@ const NavBar = () => {
             <button className={styleGeneral.btnGost}>Ver Restaurantes</button>
           </NavLink>
           <NavLink to="/Users">
-            <button className={styleGeneral.btnGost}>Ver Usuarios</button>
+            <button
+              className={styleGeneral.btnGost}
+              style={{ padding: "14px 17px" }}
+            >
+              Ver Usuarios
+            </button>
           </NavLink>
         </>
       )}

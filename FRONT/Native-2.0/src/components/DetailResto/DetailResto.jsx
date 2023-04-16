@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } fr
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
@@ -52,8 +52,12 @@ const DetailResto = ({ route }) => {
 
 
   useEffect(() => {
+    dispatch(clearLinkMercadoPago());
+
+
     if (Object?.keys(detail)?.length === 0) {
       dispatch(searchRestorantById(_id));
+
     }
     else
       if (Object?.keys(detail)?.length !== 0) {

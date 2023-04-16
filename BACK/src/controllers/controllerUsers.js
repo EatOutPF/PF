@@ -85,7 +85,7 @@ async function activeUsers(id, active) {
   user.active = !active;
   user.save();
 
-  await admin.auth().updateUser(id, { disabled: !active });
+  await admin.auth().updateUser(id, { disabled: active });
 
   return `Se ha modificado el estado del user ${user.name}`;
 }
