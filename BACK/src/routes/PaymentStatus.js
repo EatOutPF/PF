@@ -20,12 +20,13 @@ router.post("/", async (req, res) => {
 });
 
 
-router.get("/:id", async (req, res) => {
-    let { id } = req.params
+router.get("/:reference?", async (req, res) => {
+   
+    let reference = req.params.reference
 
-    console.log(`** El ID de pago es: ${id} **`)
+   // console.log(`** El ID de pago es: ${id} **`)
     try {
-    resultado = await webhook(id)  
+    resultado = await webhook(reference)  
     res.status(200).json(resultado)
     } catch (error) {
        console.log(error) 
