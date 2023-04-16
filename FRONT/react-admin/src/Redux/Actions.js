@@ -1,5 +1,6 @@
 import axios from "axios";
 import { updateMapper } from "./utils";
+import sweetAlert from "sweetalert";
 export const GET_ALL_RESTAURANTS = "GET_ALL_RESTAURANTS";
 export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
@@ -24,6 +25,7 @@ export const DELETE_USER = "DELETE_USER";
 export const POST_OPTIONS = "POST_OPTIONS";
 export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
+export const UP_CLOUDINARY = "UP_CLOUDINARY";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -125,6 +127,7 @@ export const deleteRestaurant = (dataToUpdate) => {
         active: dataToUpdate.active,
       })
       .then((response) => {
+        sweetAlert(response.data);
         dispatch({ type: DELETE_RESTAURANT, payload: response.data });
         dispatch(getAllRestaurants());
       })
@@ -144,10 +147,11 @@ export const deleteUser = (user) => {
         active: user.active,
       })
       .then((response) => {
-        dispatch({
+        /*  dispatch({
           type: DELETE_USER,
           payload: response.data,
-        });
+        }); */
+        if (response.data) sweetAlert(response.data);
         dispatch(getAllUsers());
       })
       .catch((error) => {
@@ -164,14 +168,16 @@ export const postRestaurant = (create) => async (dispatch) => {
     const response = await axios.post(`/restaurant`, create);
     const restaurant = response.data;
     console.log({ restaurant });
-    alert(restaurant);
+    sweetAlert(restaurant);
     dispatch({
       type: "POST_RESTAURANT",
       payload: restaurant,
     });
     dispatch(getAllRestaurantsByUser());
   } catch (error) {
-    alert(error.response.data.error);
+    if (error) {
+      sweetAlert(error.response.data.error);
+    }
 
     dispatch({
       type: "POST_RESTAURANT",
@@ -324,3 +330,36 @@ export const getUserById = (user) => {
       });
   };
 };
+
+/* export const UpCloudinary = (event) => {
+  return (dispatch) => {
+    try {
+      const files = event.target.files;
+      const arrayImages = [];
+
+      Object.keys(files).forEach((i) => {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "EatOut");
+
+        fetch("https://api.cloudinary.com/v1_1/dkqxubvyj/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((result) => result.json())
+          .then((res) => {
+            const dataImg = { id: res.asset_id, url: res.secure_url };
+            arrayImages.push(dataImg);
+          });
+      });
+      console.log(arrayImages);
+      dispatch({
+        type: UP_CLOUDINARY,
+        payload: arrayImages,
+      });
+    } catch (error) {
+      return error;
+    }
+  };
+}; */

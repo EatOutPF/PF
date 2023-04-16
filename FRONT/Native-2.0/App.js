@@ -1,8 +1,10 @@
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text } from 'react-native';
 import React, { useRef, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { store } from './src/redux/store'
+
+import { PersistGate } from 'redux-persist/integration/react'
+import { store, persistor } from './src/redux/store'
 import { Provider } from 'react-redux'
 
 import { LowerNavbar } from './src/components/NavBar/LowerNavBar';
@@ -29,13 +31,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      
-      <NavigationContainer>
-        <BottomSheetModalProvider>
-          <LowerNavbar/>
-        </BottomSheetModalProvider>
-      </NavigationContainer>
-      
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <NavigationContainer>
+          <BottomSheetModalProvider>
+            <LowerNavbar/>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }

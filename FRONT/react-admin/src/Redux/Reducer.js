@@ -20,7 +20,8 @@ import {
   DELETE_USER,
   POST_OPTIONS,
   SEARCH_BY_RESTAURANT_BY_USER,
-  GET_USER_BY_ID
+  GET_USER_BY_ID,
+  UP_CLOUDINARY,
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -60,7 +61,8 @@ const initialState = {
   currentUsers: [],
   currentListRestaurantsByUser: [],
   allRestaurantsByUser: [],
-  currentUser: {}
+  currentUser: {},
+  currentImagesCloudinary: [],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -86,20 +88,20 @@ const Reducer = (state = initialState, { type, payload }) => {
           : state.allRestaurantsByUser;
 
       if (payload.diets) {
-        filters = filters.filter((restaurant) =>
-          restaurant.diets.includes(payload.diets)
+        filters = filters?.filter((restaurant) =>
+          restaurant.diets?.includes(payload.diets)
         );
       }
       if (payload.menu) {
-        filters = filters.filter((restaurant) =>
-          restaurant.menu.includes(payload.menu)
+        filters = filters?.filter((restaurant) =>
+          restaurant.menu?.includes(payload.menu)
         );
       }
       if (payload.active === "active") {
-        filters = filters.filter((restaurant) => restaurant.active);
+        filters = filters?.filter((restaurant) => restaurant.active);
       }
       if (payload.active === "inactive") {
-        filters = filters.filter((restaurant) => !restaurant.active);
+        filters = filters?.filter((restaurant) => !restaurant.active);
       }
 
       return state.user?.role === "superadmin"
@@ -153,11 +155,11 @@ const Reducer = (state = initialState, { type, payload }) => {
     case ORDER_BY_NAME:
       let sorted;
       payload === "asc"
-        ? (sorted = state.currentListRestaurants.sort((a, z) =>
+        ? (sorted = state.currentListRestaurants?.sort((a, z) =>
             a.name > z.name ? 1 : -1
           ))
         : payload === "desc"
-        ? (sorted = state.currentListRestaurants.sort((a, z) =>
+        ? (sorted = state.currentListRestaurants?.sort((a, z) =>
             a.name < z.name ? 1 : -1
           ))
         : (sorted = state.stateToSorted);
@@ -169,11 +171,11 @@ const Reducer = (state = initialState, { type, payload }) => {
     case ORDER_BY_POPULARITY:
       let data;
       payload === "max"
-        ? (data = state.currentListRestaurants.sort((a, b) =>
+        ? (data = state.currentListRestaurants?.sort((a, b) =>
             a.ranking < b.ranking ? 1 : -1
           ))
         : payload === "min"
-        ? (data = state.currentListRestaurants.sort((a, b) =>
+        ? (data = state.currentListRestaurants?.sort((a, b) =>
             a.ranking > b.ranking ? 1 : -1
           ))
         : (data = state.stateToSorted);
@@ -215,11 +217,11 @@ const Reducer = (state = initialState, { type, payload }) => {
     case SORT_BY_POPULARITY_BY_RESTAURANT_USER:
       let sortedByPopularity = state.currentListRestaurantsByUser;
       if (sortedByPopularity && payload === "max")
-        sortedByPopularity = sortedByPopularity.sort((a, b) =>
+        sortedByPopularity = sortedByPopularity?.sort((a, b) =>
           a.ranking < b.ranking ? 1 : -1
         );
       if (sortedByPopularity && payload === "min")
-        sortedByPopularity = sortedByPopularity.sort((a, b) =>
+        sortedByPopularity = sortedByPopularity?.sort((a, b) =>
           a.ranking > b.ranking ? 1 : -1
         );
       return {
@@ -234,8 +236,8 @@ const Reducer = (state = initialState, { type, payload }) => {
       };
 
     case SEARCH_BY_RESTAURANT_BY_USER:
-      let searchRestaurant = state.allRestaurantsByUser.filter((r) =>
-        r.name.toLowerCase().includes(payload.toLowerCase())
+      let searchRestaurant = state.allRestaurantsByUser?.filter((r) =>
+        r.name?.toLowerCase().includes(payload.toLowerCase())
       );
 
       if (searchRestaurant)
@@ -245,11 +247,16 @@ const Reducer = (state = initialState, { type, payload }) => {
         };
       break;
 
-      case GET_USER_BY_ID:
-        return {
-          ...state,
-          currentUser: payload
-        }
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+    case UP_CLOUDINARY:
+      return {
+        ...state,
+        currentImagesCloudinary: payload,
+      };
     default:
       return { ...state };
   }

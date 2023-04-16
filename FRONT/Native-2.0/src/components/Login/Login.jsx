@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
@@ -35,13 +35,14 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
 
   function LoginScreen() {
 
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
+    const [log, setLogin] = useState({})
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const navigation = useNavigation();
     // const utoken = useSelector(state => state.userToken?.stsTokenManager?.accessToken)
     const dispatch = useDispatch();
     const logUser = useSelector(state => state?.userInfo)
-
+    console.log("LOGIN, user lof ??: ", logUser);
     const app = initializeApp(firebaseConfig);
     const authF = getAuth(app);
 
@@ -82,7 +83,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       })
     }
 
-    const onGoogleButtonPress = async() => {
+    const onGoogleButtonPress = async() => { // ESTO ANDA PERO NO ES VALIDO EL TOKEN QUE LLEGA
       // // Check if your device supports Google Play
       // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       // // Get the users ID token
@@ -112,13 +113,16 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
 
 
     return (
-      <View style={styles.container}>
-      
-       {/* logUser ? navigation.navigate('Bienvenido', {logUser}) : */}
+      <>
+      {
+       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Perfil de Usuario', {logUser})
+       : (
+        
+        <View style={styles.container}>
         <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
         {/* <View style={{width: 100, height: 100, backgroundColor: 'purple', position: 'absolute' }}></View>
-        <View style={{width: 100, height: 100, backgroundColor: 'blue', top: 120, position: 'absolute', transform: [{rotate: '25deg'}] }}></View>
-        <View style={{width: 100, height: 100, backgroundColor: 'red', bottom: 120 ,position: 'absolute', borderRadius: 50, transform: [{rotate: '50deg'}] }}></View> */}
+        // <View style={{width: 100, height: 100, backgroundColor: 'blue', top: 120, position: 'absolute', transform: [{rotate: '25deg'}] }}></View>
+        // <View style={{width: 100, height: 100, backgroundColor: 'red', bottom: 120 ,position: 'absolute', borderRadius: 50, transform: [{rotate: '50deg'}] }}></View> */}
         <ScrollView contentContainerStyle= {{
           flex: 1,
           width: '100%',
@@ -166,7 +170,9 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
             </View>
           </BlurView>
         </ScrollView>
-      </View>
+        </View>
+        )}
+    </>
     );
   }
 

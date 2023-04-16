@@ -7,6 +7,7 @@ import { postRestaurant } from "../../Redux/Actions";
 import Validations from "../Validations/Validations";
 import { useNavigate } from "react-router-dom";
 import sweetAlert from "sweetalert";
+import { readMultifilesUpCloudinary } from "../../Redux/utils";
 
 export default function Form() {
   const msg = useSelector((stage) => stage.msg);
@@ -14,13 +15,14 @@ export default function Form() {
   const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
   const user = useSelector((state) => state.user);
+  const [upCloudinaryImages, setUpCloudinaryImages] = useState([]);
   const [errorName, setErrorName] = useState({
     name: "",
   });
 
   const [errorAddress, setErrorAddress] = useState({
     streetName: "",
-    streetNumber: 0,
+    streetNumber: "",
     /*  neighborhood: "", */
     city: "",
     state: "",
@@ -28,18 +30,18 @@ export default function Form() {
   });
 
   const [errorCoordinate, setErrorCoordinate] = useState({
-    longitude: 0,
-    latitude: 0,
+    longitude: "",
+    latitude: "",
   });
 
   const [errorContact, setErrorContact] = useState({
-    phoneNumber: 0,
+    phoneNumber: "",
     email: "",
   });
   const [errorSocialMedia, setErrorSocialMedia] = useState({
     /*   instagram: "",
     facebook: "", */
-    wpp: 0,
+    wpp: "",
   });
 
   /*  const [errorSchedule, setErrorShedule] = useState({
@@ -128,6 +130,7 @@ export default function Form() {
       })
     );
   };
+
   useEffect(() => {
     console.log("Input:", input);
     // console.log('Social Media Errors:', errorName);
@@ -370,22 +373,9 @@ export default function Form() {
         [time]: value,
       },
     }));
-    /* setErrorShedule((prevErrors) => ({
-      ...prevErrors,
-      [day]: {
-        ...prevErrors[day],
-        [time]: Validations(value) ? "" : "Invalid time format",
-      },
-    }));
-    console.log(schedule); */
   };
 
-  useEffect(() => {
-    console.log("Schedule:", schedule);
-    // console.log("Errors:", errorSchedule);
-  }, [schedule]);
-
-  const handleImages = async (event) => {
+  /*  const handleImages = async (event) => {
     const file = event.target.files[0];
 
     const formData = new FormData();
@@ -398,10 +388,32 @@ export default function Form() {
         method: "POST",
         body: formData,
       }
-    );
+    ); */
 
-    const result = await response.json();
-    setImages([...images, result.secure_url]);
+  const handleImages = async (event) => {
+    console.log(1);
+    const result = await readMultifilesUpCloudinary(event);
+    console.log(4);
+    if (result) setImages([...images, ...result]);
+    console.log(5);
+  };
+
+  useEffect(() => {
+    if (!Array.isArray(images)) {
+      console.error("No imagenes adjuntas");
+      return;
+    }
+  }, [images]);
+
+  useEffect(() => {
+    console.log({ images });
+  });
+
+  const deleteImages = (id) => (e) => {
+    e.preventDefault();
+
+    const arrayImages = images?.filter((img) => img.id !== id);
+    setImages(arrayImages);
   };
 
   const handleTable = (event) => {
@@ -447,8 +459,8 @@ export default function Form() {
           {stage === 1 && (
             <div>
               <h2>Step 1</h2>
-              <div className={styles.divInt}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Name:
                     <input
@@ -458,14 +470,14 @@ export default function Form() {
                       onChange={handleInput}
                     />
                   </label>
+                  {errorName.name && (
+                    <span className={styles.danger}>{errorName.name}</span>
+                  )}
                 </div>
-                {errorName.name && (
-                  <span className={styles.danger}>{errorName.name}</span>
-                )}
               </div>
               <h3>Contact</h3>
-              <div className={styles.divInt}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Phone Number:
                     <input
@@ -475,15 +487,15 @@ export default function Form() {
                       onChange={handleContact}
                     />
                   </label>
+                  {errorContact.phoneNumber && (
+                    <span className={styles.danger}>
+                      {errorContact.phoneNumber}
+                    </span>
+                  )}
                 </div>
-                {errorContact.phoneNumber && (
-                  <span className={styles.danger}>
-                    {errorContact.phoneNumber}
-                  </span>
-                )}
               </div>
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Email:
                     <input
@@ -493,38 +505,42 @@ export default function Form() {
                       onChange={handleContact}
                     />
                   </label>
+                  {errorContact.email && (
+                    <span className={styles.danger}>{errorContact.email}</span>
+                  )}
                 </div>
-                {errorContact.email && (
-                  <span className={styles.danger}>{errorContact.email}</span>
-                )}
               </div>
               <h3>Social Media</h3>
-              <div className={styles.div}>
-                <label>
-                  Instagram:
-                  <input
-                    type="text"
-                    name="instagram"
-                    value={socialMedia.instagram}
-                    onChange={handleInstagram}
-                  />
-                </label>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
+                  <label>
+                    Instagram:
+                    <input
+                      type="text"
+                      name="instagram"
+                      value={socialMedia.instagram}
+                      onChange={handleInstagram}
+                    />
+                  </label>
+                </div>
               </div>
 
-              <div className={styles.div}>
-                <label>
-                  Facebook:
-                  <input
-                    type="text"
-                    name="facebook"
-                    value={socialMedia.facebook}
-                    onChange={handleFacebook}
-                  />
-                </label>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
+                  <label>
+                    Facebook:
+                    <input
+                      type="text"
+                      name="facebook"
+                      value={socialMedia.facebook}
+                      onChange={handleFacebook}
+                    />
+                  </label>
+                </div>
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Wpp:
                     <input
@@ -534,10 +550,12 @@ export default function Form() {
                       onChange={handleWpp}
                     />
                   </label>
+                  {errorSocialMedia.wpp && (
+                    <span className={styles.danger}>
+                      {errorSocialMedia.wpp}
+                    </span>
+                  )}
                 </div>
-                {errorSocialMedia.wpp && (
-                  <span className={styles.danger}>{errorSocialMedia.wpp}</span>
-                )}
               </div>
 
               <button className={styles.buttons} onClick={handleNext}>
@@ -550,8 +568,8 @@ export default function Form() {
               <h2>Step 2</h2>
               <h3>Address</h3>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Street Name:
                     <input
@@ -561,16 +579,16 @@ export default function Form() {
                       onChange={handleAddress}
                     />
                   </label>
+                  {errorAddress.streetName && (
+                    <span className={styles.danger}>
+                      {errorAddress.streetName}
+                    </span>
+                  )}
                 </div>
-                {errorAddress.streetName && (
-                  <span className={styles.danger}>
-                    {errorAddress.streetName}
-                  </span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Street Number:
                     <input
@@ -580,16 +598,16 @@ export default function Form() {
                       onChange={handleAddress}
                     />
                   </label>
+                  {errorAddress.streetNumber && (
+                    <span className={styles.danger}>
+                      {errorAddress.streetNumber}
+                    </span>
+                  )}
                 </div>
-                {errorAddress.streetNumber && (
-                  <span className={styles.danger}>
-                    {errorAddress.streetNumber}
-                  </span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Neighborhood:
                     <input
@@ -602,8 +620,8 @@ export default function Form() {
                 </div>
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     City:
                     <input
@@ -613,14 +631,14 @@ export default function Form() {
                       onChange={handleAddress}
                     />
                   </label>
+                  {errorAddress.city && (
+                    <span className={styles.danger}>{errorAddress.city}</span>
+                  )}
                 </div>
-                {errorAddress.city && (
-                  <span className={styles.danger}>{errorAddress.city}</span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     State:
                     <input
@@ -630,14 +648,14 @@ export default function Form() {
                       onChange={handleAddress}
                     />
                   </label>
+                  {errorAddress.state && (
+                    <span className={styles.danger}>{errorAddress.state}</span>
+                  )}
                 </div>
-                {errorAddress.state && (
-                  <span className={styles.danger}>{errorAddress.state}</span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Country:
                     <input
@@ -647,30 +665,58 @@ export default function Form() {
                       onChange={handleAddress}
                     />
                   </label>
+                  {errorAddress.country && (
+                    <span className={styles.danger}>
+                      {errorAddress.country}
+                    </span>
+                  )}
                 </div>
-                {errorAddress.country && (
-                  <span className={styles.danger}>{errorAddress.country}</span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <label htmlFor="imageUrl">
-                  Image Url Images:
-                  <input
-                    type="file"
-                    id="imageUrl"
-                    name="imageUrl"
-                    onChange={handleImages}
-                  />
-                  <button type="submit">Add Image</button>
-                </label>
-                {images.map((image, index) => (
-                  <img key={index} src={image.url} alt={image.name} />
-                ))}
+              <div className={styles.containerImages}>
+                <div className={styles.containerModifydiv}>
+                  <div className={styles.containerModifydiv}>
+                    <label className={styles.containerSub}>
+                      <span> Seleccionar imagenes </span>
+                      <input
+                        hidden
+                        type="file"
+                        multiple
+                        onChange={handleImages}
+                      ></input>
+                    </label>
+                  </div>
+                  <div className={styles.containerSchedule} style={{ gap: 10 }}>
+                    {images.length &&
+                      images?.map((img, index) => (
+                        <div
+                          key={`img${index}`}
+                          className={styles.containerImagen}
+                        >
+                          <button
+                            onClick={() => deleteImages(img.id)}
+                            className={styles.containerButtonImagen}
+                            style={{
+                              backgroundColor: "red",
+                              fontSize: 10,
+                              padding: 4,
+                            }}
+                          >
+                            X
+                          </button>
+                          <img
+                            alt="imagen"
+                            src={img.url}
+                            className={styles.containerImg}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Longitude:
                     <input
@@ -680,16 +726,16 @@ export default function Form() {
                       onChange={handleLongitude}
                     />
                   </label>
+                  {errorCoordinate.longitude && (
+                    <span className={styles.danger}>
+                      {errorCoordinate.longitude}
+                    </span>
+                  )}
                 </div>
-                {errorCoordinate.longitude && (
-                  <span className={styles.danger}>
-                    {errorCoordinate.longitude}
-                  </span>
-                )}
               </div>
 
-              <div className={styles.div}>
-                <div>
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
                   <label>
                     Latitude:
                     <input
@@ -699,12 +745,12 @@ export default function Form() {
                       onChange={handleLatitude}
                     />
                   </label>
+                  {errorCoordinate.latitude && (
+                    <span className={styles.danger}>
+                      {errorCoordinate.latitude}
+                    </span>
+                  )}
                 </div>
-                {errorCoordinate.latitude && (
-                  <span className={styles.danger}>
-                    {errorCoordinate.latitude}
-                  </span>
-                )}
               </div>
 
               <button className={styles.buttons} onClick={handleBack}>
@@ -720,7 +766,7 @@ export default function Form() {
               <h2>Step 3</h2>
 
               <h3>Schedule</h3>
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="monday">
                   Monday :
                   <input
@@ -738,7 +784,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="Tuesday">
                   {" "}
                   Tuesday
@@ -757,7 +803,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="Wednesday">
                   {" "}
                   Wednesday
@@ -776,7 +822,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="Thursday">
                   {" "}
                   Thursday
@@ -795,7 +841,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="Friday">
                   {" "}
                   Friday
@@ -814,7 +860,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="Saturday">
                   {" "}
                   Saturday
@@ -833,7 +879,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className={styles.div}>
+              <div className={styles.inputSchedule}>
                 <label htmlFor="sunday">
                   {" "}
                   Sunday
@@ -852,33 +898,39 @@ export default function Form() {
                 </label>
               </div>
 
-              <h3>Select Diets options:</h3>
-              <div className={styles.div}>
-                {optionsDiets.map((diet) => (
-                  <label key={diet}>
-                    <input
-                      type="checkbox"
-                      value={diet}
-                      checked={selectDiets.includes(diet)}
-                      onChange={handleDiets}
-                    />
-                    {diet}
-                  </label>
-                ))}
+              <div>
+                <div className={styles.containersOptions}>
+                  <h3>Select Diets options:</h3>
+                  <div className={styles.div}>
+                    {optionsDiets.map((diet) => (
+                      <label key={diet}>
+                        <input
+                          type="checkbox"
+                          value={diet}
+                          checked={selectDiets.includes(diet)}
+                          onChange={handleDiets}
+                        />
+                        {diet}
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
-                <h3>Select Menu options:</h3>
-                <div className={styles.div}>
-                  {optionsMenu.map((menu) => (
-                    <label key={menu}>
-                      <input
-                        type="checkbox"
-                        value={menu}
-                        checked={selectMenu.includes(menu)}
-                        onChange={handleMenu}
-                      />
-                      {menu}
-                    </label>
-                  ))}
+                <div className={styles.containersOptions}>
+                  <h3>Select Menu options:</h3>
+                  <div className={styles.div}>
+                    {optionsMenu.map((menu) => (
+                      <label key={menu}>
+                        <input
+                          type="checkbox"
+                          value={menu}
+                          checked={selectMenu.includes(menu)}
+                          onChange={handleMenu}
+                        />
+                        {menu}
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
                 <button className={styles.buttons} onClick={handleBack}>
@@ -894,7 +946,7 @@ export default function Form() {
             <div>
               <h2>Step 4</h2>
               <h3>Mesas</h3>
-
+              <div className={styles.div}></div>
               <label>
                 <input
                   type="number"
@@ -905,58 +957,75 @@ export default function Form() {
                 />
                 <span>(min: 1)</span>
               </label>
+              <div />
 
-              <h2>Select your Payment Method:</h2>
-              {optionpaymentMethods?.map((pm) => (
-                <label key={pm}>
-                  <input
-                    type="checkbox"
-                    value={pm}
-                    checked={selectPaymentMethods.includes(pm)}
-                    onChange={handlePaymentMethods}
-                  />
-                  {pm}
-                </label>
-              ))}
+              <div className={styles.containersOptions}>
+                <h2>Select your Payment Method:</h2>
+                <div className={styles.div}>
+                  {optionpaymentMethods?.map((pm) => (
+                    <label key={pm}>
+                      <input
+                        type="checkbox"
+                        value={pm}
+                        checked={selectPaymentMethods.includes(pm)}
+                        onChange={handlePaymentMethods}
+                      />
+                      {pm}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-              <h2>Select your Atmosphere:</h2>
-              {optionsAtmosphere.map((atmospheres) => (
-                <label key={atmospheres}>
-                  <input
-                    type="checkbox"
-                    value={atmospheres}
-                    checked={selectAtmosphere.includes(atmospheres)}
-                    onChange={handleAtmosphere}
-                  />
-                  {atmospheres}
-                </label>
-              ))}
+              <div className={styles.containersOptions}>
+                <h2>Select your Atmosphere:</h2>
+                <div className={styles.div}>
+                  {optionsAtmosphere.map((atmospheres) => (
+                    <label key={atmospheres}>
+                      <input
+                        type="checkbox"
+                        value={atmospheres}
+                        checked={selectAtmosphere.includes(atmospheres)}
+                        onChange={handleAtmosphere}
+                      />
+                      {atmospheres}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-              <h2>Select your Extras:</h2>
-              {optionsExtras.map((extras) => (
-                <label key={extras}>
-                  <input
-                    type="checkbox"
-                    value={extras}
-                    checked={selectExtra.includes(extras)}
-                    onChange={handleExtras}
-                  />
-                  {extras}
-                </label>
-              ))}
+              <div className={styles.containersOptions}>
+                <h2 className={styles.div}>Select your Extras:</h2>
+                <div>
+                  {optionsExtras.map((extras) => (
+                    <label key={extras}>
+                      <input
+                        type="checkbox"
+                        value={extras}
+                        checked={selectExtra.includes(extras)}
+                        onChange={handleExtras}
+                      />
+                      {extras}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-              <h2>Select your Section:</h2>
-              {optionsSection.map((sections) => (
-                <label key={sections}>
-                  <input
-                    type="checkbox"
-                    value={sections}
-                    checked={selectSection.includes(sections)}
-                    onChange={handleSection}
-                  />
-                  {sections}
-                </label>
-              ))}
+              <div className={styles.containersOptions}>
+                <h2>Select your Section:</h2>
+                <div className={styles.div}>
+                  {optionsSection.map((sections) => (
+                    <label key={sections}>
+                      <input
+                        type="checkbox"
+                        value={sections}
+                        checked={selectSection.includes(sections)}
+                        onChange={handleSection}
+                      />
+                      {sections}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               <div>
                 <div />

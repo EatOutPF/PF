@@ -36,7 +36,7 @@ const ModifyRestaurant = (props) => {
     latitude: "",
     longitude: "",
     streetName: "",
-    streetNumber: 0,
+    streetNumber: "",
     neighborhood: "",
     city: "",
     state: "",
@@ -60,7 +60,7 @@ const ModifyRestaurant = (props) => {
     sundayOpen: "",
     sundayClose: "",
   });
-  const [upCloudinaryImages, setUpCloudinaryImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handlerChange = (e) => {
     const { name, value } = e.target;
@@ -68,20 +68,14 @@ const ModifyRestaurant = (props) => {
     setErrors(Validation({ ...input, [name]: value }));
   };
 
-  const onChangeImages = (e) => {
-    const result = readMultifilesUpCloudinary(e);
-    setUpCloudinaryImages(result);
-
-    console.log({ upCloudinaryImages });
-    /*     if (upCloudinaryImages) */
-    setSelectedImages([...selectedImages, ...upCloudinaryImages]);
+  const onChangeImages = async (e) => {
+    setLoading(true);
+    const result = await readMultifilesUpCloudinary(e);
+    if (result) {
+      setSelectedImages([...selectedImages, ...result]);
+      setLoading(false);
+    }
   };
-
-  useEffect(() => {
-    if (upCloudinaryImages)
-      setSelectedImages([...selectedImages, ...upCloudinaryImages]);
-    console.log({ selectedImages });
-  }, [upCloudinaryImages]);
 
   /*   const readmultifiles = (e, indexInitial) => {
     const files = e.target.files;
@@ -102,9 +96,10 @@ const ModifyRestaurant = (props) => {
     return arrayImages;
   }; */
 
-  const deleteImages = (index) => {
-    const arrayImages = selectedImages?.filter((img) => img.idx !== index);
-    setSelectedImages(arrayImages);
+  const deleteImages = (id) => (e) => {
+    e.preventDefault();
+    const newArrayImages = selectedImages?.filter((img) => img.id !== id);
+    setSelectedImages(newArrayImages);
   };
 
   const handlerCheckBox = (value, array, setArray) => {
@@ -120,15 +115,17 @@ const ModifyRestaurant = (props) => {
   const handlerSubmit = (e) => {
     e.preventDefault();
     if (input) {
-      input.images = selectedImages.map((img) => img.url);
+      input.images = selectedImages?.map((img) => img.url);
 
-      input.diets = selectedDiets.filter((d) => d.checked).map((d) => d.name);
+      input.diets = selectedDiets?.filter((d) => d.checked).map((d) => d.name);
 
       input.atmosphere = selectedAtmosphere
         .filter((a) => a.checked)
         .map((a) => a.name);
 
-      input.extras = selectedExtras.filter((e) => e.checked).map((e) => e.name);
+      input.extras = selectedExtras
+        ?.filter((e) => e.checked)
+        .map((e) => e.name);
 
       input.section = selectedSection
         .filter((s) => s.checked)
@@ -168,7 +165,7 @@ const ModifyRestaurant = (props) => {
   const initImages = () => {
     if (detailRestaurant.images.length > 0) {
       let initImages = detailRestaurant?.images?.map((img, idx) => ({
-        idx,
+        id: idx,
         url: img,
       }));
 
@@ -309,12 +306,128 @@ const ModifyRestaurant = (props) => {
                   )}
                 </div>
 
-                <div className={style.container}>
+                <div>
                   <div>Direccion</div>
+                  <div className={style.container}>
+                    <div className={style.formCol}>
+                      <div className={style.formRow}>
+                        <label htmlFor="streetName">Calle</label>
+                        <input
+                          type="text"
+                          id="streetName"
+                          name="streetName"
+                          value={input.streetName}
+                          onChange={handlerChange}
+                        />
+                        {errors.streetName && (
+                          <span className={style.danger}>
+                            {errors.streetName}
+                          </span>
+                        )}
+                      </div>
 
+                      <div className={style.formRow}>
+                        <label htmlFor="streetNumber">#</label>
+                        <input
+                          type="number"
+                          id="streetNumber"
+                          name="streetNumber"
+                          value={input.streetNumber}
+                          onChange={handlerChange}
+                        />
+                        {errors.streetNumber && (
+                          <span className={style.danger}>
+                            {errors.streetNumber}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={style.formCol}>
+                      <div className={style.formRow}>
+                        <label htmlFor="neighborhood">Barrio</label>
+                        <input
+                          type="text"
+                          id="neighborhood"
+                          name="neighborhood"
+                          value={input.neighborhood}
+                          onChange={handlerChange}
+                        />
+                      </div>
+
+                      <div className={style.formRow}>
+                        <label htmlFor="state">Estado</label>
+                        <input
+                          type="text"
+                          id="state"
+                          name="state"
+                          value={input.state}
+                          onChange={handlerChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={style.formCol}>
+                      <div className={style.formRow}>
+                        <label htmlFor="latitude" style={{ width: 150 }}>
+                          Coordenadas - latitud
+                        </label>
+                        <input
+                          type="text"
+                          id="latitude"
+                          name="latitude"
+                          value={input.latitude}
+                          onChange={handlerChange}
+                        />
+                        {errors.latitude && (
+                          <span className={style.danger}>
+                            {errors.latitude}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className={style.formRow}>
+                        <label htmlFor="longitude" style={{ width: 155 }}>
+                          Coordenadas -longitud
+                        </label>
+                        <input
+                          type="text"
+                          id="longitude"
+                          name="longitude"
+                          value={input.longitude}
+                          onChange={handlerChange}
+                        />
+                        {errors.longitude && (
+                          <span className={style.danger}>
+                            {errors.longitude}
+                          </span>
+                        )}
+                      </div>
+                      <div className={style.formCol}>
+                        <div className={style.formRow}>
+                          <label htmlFor="country">Pais</label>
+                          <input
+                            type="text"
+                            id="country"
+                            name="country"
+                            value={input.country}
+                            onChange={handlerChange}
+                          />
+                          {errors.country && (
+                            <span className={style.danger}>
+                              {errors.country}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={style.container}>
                   <div className={style.containerSection}>
                     <div className={style.containerDataSection}>
-                      <div>
+                      {/*                       <div>
                         <label htmlFor="streetName">Calle</label>
                         <input
                           type="text"
@@ -378,36 +491,9 @@ const ModifyRestaurant = (props) => {
                           <span className={style.danger}>{errors.city}</span>
                         )}
                       </div>
+ */}
 
-                      <div>
-                        <label htmlFor="country">Pais</label>
-                        <input
-                          type="text"
-                          id="country"
-                          name="country"
-                          value={input.country}
-                          onChange={handlerChange}
-                        />
-                        {errors.country && (
-                          <span className={style.danger}>{errors.country}</span>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="longitude">Coordenadas -longitud</label>
-                        <input
-                          type="text"
-                          id="longitude"
-                          name="longitude"
-                          value={input.longitude}
-                          onChange={handlerChange}
-                        />
-                        {errors.longitude && (
-                          <span className={style.danger}>
-                            {errors.longitude}
-                          </span>
-                        )}
-                      </div>
+                      {/*  <div></div>
 
                       <div>
                         <label htmlFor="latitude">Coordenadas - latitud</label>
@@ -423,7 +509,7 @@ const ModifyRestaurant = (props) => {
                             {errors.latitude}
                           </span>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -492,50 +578,56 @@ const ModifyRestaurant = (props) => {
                 </div>
 
                 <div className={style.container}>
-                  <div className={style.containerModifydiv}>
-                    <div className={style.containerModifydiv}>
-                      <label className={style.containerSub}>
-                        <span> Seleccionar imagenes </span>
-                        <input
-                          hidden
-                          type="file"
-                          multiple
-                          onChange={onChangeImages} //{uploadImage}
-                        ></input>
-                      </label>
-                    </div>
-                    <div
-                      className={style.containerSchedule}
-                      style={{ gap: 10 }}
-                    >
-                      {selectedImages?.map((img, index) => (
-                        <div
-                          key={`img${index}`}
-                          className={style.containerImagen}
-                        >
-                          <button
-                            onClick={() => deleteImages(img.idx)}
-                            className={style.containerButtonImagen}
-                            style={{
-                              backgroundColor: "red",
-                              fontSize: 10,
-                              padding: 4,
-                            }}
-                          >
-                            X
-                          </button>
-                          <img
-                            alt="imagen"
-                            src={img.url}
-                            className={style.containerImg}
-                            data-toggle="modal"
-                            data-target="#ModalPreviewImg"
-                          />
+                  {loading ? (
+                    <div>Cargando Imagenes...</div>
+                  ) : (
+                    <>
+                      <div className={style.containerModifydiv}>
+                        <div className={style.containerModifydiv}>
+                          <label className={style.containerSub}>
+                            <span> Seleccionar imagenes </span>
+                            <input
+                              hidden
+                              type="file"
+                              multiple
+                              onChange={onChangeImages} //{uploadImage}
+                            ></input>
+                          </label>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* {errors.images && <p>*{errors.images}</p>} */}
+                        <div
+                          className={style.containerSchedule}
+                          style={{ gap: 10, alignSelf: "baseline" }}
+                        >
+                          {selectedImages?.map((img, index) => (
+                            <div
+                              key={`img${index}`}
+                              className={style.containerImagen}
+                            >
+                              <button
+                                onClick={deleteImages(img.id)}
+                                className={style.containerButtonImagen}
+                                style={{
+                                  backgroundColor: "red",
+                                  fontSize: 10,
+                                  padding: 4,
+                                }}
+                              >
+                                X
+                              </button>
+                              <img
+                                alt="imagen"
+                                src={img.url}
+                                className={style.containerImg}
+                                data-toggle="modal"
+                                data-target="#ModalPreviewImg"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      {/* {errors.images && <p>*{errors.images}</p>} */}
+                    </>
+                  )}
                 </div>
 
                 <div className={style.container}>
@@ -821,13 +913,12 @@ const ModifyRestaurant = (props) => {
                   <div className={style.containerDataSection}>
                     {selectedDiets?.map((diet, index) => {
                       return (
-                        <div>
+                        <div key={`${diet}${index}`}>
                           <input
                             type="checkbox"
                             id="diets"
                             name="diets"
                             value={diet.name}
-                            key={`${diet}${index}`}
                             checked={diet.checked}
                             onChange={(e) =>
                               handlerCheckBox(
@@ -851,9 +942,8 @@ const ModifyRestaurant = (props) => {
                   <div className={style.containerDataSection}>
                     {selectedPaymentMethods?.map((paymentMethod, index) => {
                       return (
-                        <div>
+                        <div key={`${paymentMethod}${index}`}>
                           <input
-                            key={`${paymentMethod}${index}`}
                             type="checkbox"
                             id="paymentMethods"
                             name="paymentMethods"
@@ -881,9 +971,8 @@ const ModifyRestaurant = (props) => {
                   <div className={style.containerDataSection}>
                     {selectedAtmosphere?.map((at, index) => {
                       return (
-                        <div>
+                        <div key={`${at}${index}`}>
                           <input
-                            key={`${at}${index}`}
                             type="checkbox"
                             id="atmosphere"
                             name="atmosphere"
@@ -909,9 +998,8 @@ const ModifyRestaurant = (props) => {
                   <div className={style.containerDataSection}>
                     {selectedExtras?.map((extra, index) => {
                       return (
-                        <div>
+                        <div key={`${extra}${index}`}>
                           <input
-                            key={`${extra}${index}`}
                             type="checkbox"
                             id="extras"
                             name="extras"
@@ -937,9 +1025,8 @@ const ModifyRestaurant = (props) => {
                   <div className={style.containerDataSection}>
                     {selectedSection?.map((sect, index) => {
                       return (
-                        <div>
+                        <div key={`${sect}${index}`}>
                           <input
-                            key={`${sect}${index}`}
                             type="checkbox"
                             id="section"
                             name="section"

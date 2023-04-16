@@ -11,7 +11,7 @@ const Reviews = (props) => {
 
   useEffect(() => {
     dispatch(findDetailRestaurant(id));
-  }, [detailRestaurant]);
+  }, [id]);
 
   return (
     <div className={style.containerCards}>
