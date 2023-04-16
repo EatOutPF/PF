@@ -78,14 +78,21 @@ async function putUsers(id, { name, phone, email, role }) {
 }
 
 async function activeUsers(id, active) {
+  
   if (!id) throw new Error("El id debe ser valido");
   const user = await User.findOne({ _id: id });
+
 
   if (!user) throw new Error(`No se encuentran user con el id ${id}`);
   user.active = !active;
   user.save();
+<<<<<<< HEAD
 
   await admin.auth().updateUser(id, { disabled: active });
+=======
+console.log(user)
+  await admin.auth().updateUser(id, { disabled: !active });
+>>>>>>> df538c0d3f820bb4b9d10bc01bb869058414960f
 
   return `Se ha modificado el estado del user ${user.name}`;
 }

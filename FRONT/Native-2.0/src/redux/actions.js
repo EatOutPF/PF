@@ -11,6 +11,15 @@ import {
     SET_SEARCH_TEXT,
     GET_LINK_MERCADOPAGO,
     CLEAR_LINK_MERCADOPAGO,
+
+    CREATE_USER,
+
+    SET_USER_TOKEN,
+    CLEAR_USER_TOKEN,
+
+    GET_USER_INFO,
+    CLEAR_USER_INFO,
+
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -18,6 +27,7 @@ import {
     GET_EXTRA,
     FILTER_RESTORANTS,
 } from "./type";
+import { log } from "react-native-reanimated";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
 // ya que es diferente a la IP del Celular
@@ -251,177 +261,61 @@ export const filterRestorant = (payload) => {
     };
 };
 
-// export const getAsmosphere = () => {
-//     return async function (dispatch) {
-//         try {
-//             let response = await axios.get(`${DB_HOST}/menu`);
-//             return dispatch ({
-//                 type: GET_TYPES_FOODS,
-//                 payload: response.data,
-//             });
-//         } catch (error) {
-//             return {
-//                 error: 'No se encontraron tipos de comida',
-//                 originalError: error,
-//             }
-//         }
-//     }
-// }
+export const createUser = (payload) => {
 
-//   export function saveCurrentePage (id){
-//       return {
-//           type: SAVE_PERPAGE,
-//           payload: id
-//       }
-//   };
+}
 
-//   export function clearState (id){
-//       return {
-//           type: CLEAR_STATE,
-//           payload: id
-//       }
-//   };
+export const setUserToken = (payload) => {
+    console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
+    // getUserInfo(payload?.stsTokenManager?.accessToken)
+    return {
+        type: SET_USER_TOKEN,
+        payload: payload,
+    };
 
-//   export function clearError (status){
-//       return {
-//           type: CLEAR_STATE,
-//           payload: status
-//       }
-//   };
+};
 
-//   export function setFilterByContinent (id){
-//       return {
-//           type: SET_FILTER_BY_CONTINENT,
-//           payload: id
-//       }
-//   };
+export const clearUserToken = (payload) => {
+    return {
+        type: CLEAR_USER_TOKEN,
+        payload: {},
+    };
+};
 
-//   export function setFilterByActivity (id){
-//       return {
-//           type: SET_FILTER_BY_ACTIVITY,
-//           payload: id
-//       }
-//   };
+export const getUserInfo = (token) => {
+    console.log("GETUSERINFO: ", token);
+    setUserToken(token)
+    console.log("GETUSERINFO2222: ", token?.stsTokenManager?.accessToken);
+    
+    return async (dispatch) => {
+        axios
+            .get(`${DB_HOST}/users`, {
+                headers:{
+                    Authorization: "Bearer " + token?.stsTokenManager?.accessToken,
+                }
+            })
+            .then((response) => {
+                // console.log("RESPONSE del action -> ", response);
+                dispatch({
+                    type: GET_USER_INFO,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_USER_INFO,
+                    payload: error.message,
+                });
+            });
+    };
 
-//   export function getAllCountries (){
-//     return async (dispatch) => {
-//         await fetch("http://localhost:3001/api/countries/")
-//         .then((r)=> r.json())
-//         .then((data) => {
-//             dispatch({
-//                 type: GET_ALL,
-//                 payload: data
-//             })
-//         })
-//         .catch(error => {
-//             dispatch(apiError(error.message))
-//         })
-//     }
-// };
+};
 
-// export function getCountryDetailByID(id){
-//     return async (dispatch) => {
-//         await fetch(`http://localhost:3001/api/countries/id/${id}`)
-//             .then((r)=> r.json())
-//             .then((data) => {
-//                 dispatch({
-//                     type: GET_COUNTRY_DETAIL_BY_ID,
-//                     payload: data
-//                 })
-//                 dispatch(apiError(null));
-//             })
-//             .catch(error => {
-//                 dispatch(apiError(error.message))
-//             })
-//         }
-// };
+export const clearUserInfo = (payload) => {
+    return {
+        type: CLEAR_USER_INFO,
+        payload: {},
+    };
+    
+};
 
-// export function getCountryDetailByString(string){
-//     return async (dispatch) => {
-//         await fetch(`http://localhost:3001/api/countries/s?name=${string}`)
-//             .then((r)=> r.json())
-//             .then((data) => {
-//                 dispatch({
-//                     type: GET_COUNTRY_DETAIL_BY_STRING,
-//                     payload: data
-//                 })
-//                 dispatch(apiError(null));
-//             })
-//             .catch(error => {
-//                 console.error('Error:', error);
-//                 dispatch(apiError("Country doesn't found"))
-//             })
-//     }
-// };
-
-// export function getActivities(){
-//     return async (dispatch) => {
-//         await fetch("http://localhost:3001/api/activities/")
-//         .then((r)=> r.json())
-//         .then((data) => {
-//             dispatch({
-//                 type: GET_ACTIVITIES,
-//                 payload: data
-//             })
-//             dispatch(apiError(null));
-//         })
-//         .catch(error => {
-//             dispatch(apiError(error.message))
-//         })
-//     }
-// };
-
-// export function createActivity(activity) {
-//     return async (dispatch) => {
-//       await fetch("http://localhost:3001/api/activities/CreateActivity", {
-//         method: "POST",
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(activity),
-//       })
-//         .then((r) => r.json())
-//         .then((result) => {
-//           dispatch({
-//             type: CREATE_ACTIVITY,
-//             payload: activity });
-//           dispatch(apiError(result));
-//         })
-//         .catch(error => {
-//             console.log("***********",Object.keys(error));
-//             dispatch(apiError(error.message))
-//         })
-
-//     };
-//   }
-
-//   export function createAdvancedActivity(activities) {
-//     return async (dispatch) => {
-//       await fetch("http://localhost:3001/api/activities/AddExistingActivitiesToCountries", {
-//         method: "POST",
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(activities),
-//       })
-//         .then((r) => r.json())
-//         .then((result) => {
-//           dispatch({
-//             type: CREATE_ADVANCED_ACTIVITY,
-//             payload: activities });
-//           dispatch(apiError(null));
-//         })
-//         .catch(error => {
-//             dispatch(apiError(error.message))
-
-//         })
-
-//     };
-//   }
-
-// export function filterCardsByActivity (status){
-//     return {
-//         type: FILTER_CARDS_BY_ACTIVITY,
-//         payload: status
-//     }
-// };

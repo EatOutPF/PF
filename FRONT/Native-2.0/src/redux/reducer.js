@@ -6,10 +6,21 @@ import {
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
+
     FILTER_CARDS,
     ORDER_CARDS,
+
     GET_LINK_MERCADOPAGO,
     CLEAR_LINK_MERCADOPAGO,
+
+    CREATE_USER,
+
+    SET_USER_TOKEN,
+    CLEAR_USER_TOKEN,
+
+    GET_USER_INFO,
+    CLEAR_USER_INFO,
+
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
@@ -28,6 +39,7 @@ const initialState = {
     restorantsFiltered: [],
 
     userInfo: {},
+    userToken: {},
 
     restorantById: {},
     restorantByString: [],
@@ -97,7 +109,7 @@ export default function rootReducer(state = initialState, action) {
             // console.log("soy el reducer de mp: ", action.payload);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.sandbox_init_point }
+            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
 
         }
 //------------------------------------------------------------------------- 
@@ -228,6 +240,7 @@ export default function rootReducer(state = initialState, action) {
                 typesOfExtras: action?.payload,
             }
         }
+//-----------------------------------------------------------------------------------------
 
         case FILTER_RESTORANTS: {
             const {
@@ -263,6 +276,42 @@ export default function rootReducer(state = initialState, action) {
         }
 
 
+
+//-----------------------------------------------------------------------------------------
+        case SET_USER_TOKEN: {
+            console.log("*************************************");
+            console.log("token user: ", action.payload);
+            return {
+                ...state,
+                userToken: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case CLEAR_USER_TOKEN: {
+            return {
+                ...state,
+                userToken: {},
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case GET_USER_INFO: {
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            console.log(" user INFO: ", action.payload);
+            return {
+                ...state,
+                userInfo: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case CLEAR_USER_INFO: {
+            return {
+                ...state,
+                userInfo: {},
+            }
+        }
+
+
+//-----------------------------------------------------------------------------------------
         default:
             return state;
 }

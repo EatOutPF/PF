@@ -80,7 +80,7 @@ const CheckoutPayment = ({route}) => {
         const checkout = {
             resto: resto,
             reserve: reserve,
-          }
+        }
         navigation?.navigate("Estado de la Reserva", checkout)
     };
 
