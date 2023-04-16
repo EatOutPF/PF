@@ -1,11 +1,27 @@
 button.active {
-  background-color: rgb(23, 32, 70);
+  background-color: #008cba;
   color: antiquewhite;
-  padding: 5px 13px;
-  font-size: 16px;
+  padding: 2px 8px;
+  font-size: 15px;
+  border-radius: 0;
+  margin: 0;
+  font-weight: 600;
 }
 
 .buttonPagination {
-  padding: 5px 13px;
-  font-size: 16px;
+  padding: 0px 8px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 0;
+  color: black;
+  margin: 0;
+  background-color: transparent;
+}
+
+.containerPagination {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 8px 20px 8px 8px;
+  justify-content: end;
 }

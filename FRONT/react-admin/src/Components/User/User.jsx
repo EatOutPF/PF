@@ -8,11 +8,13 @@ import recuperar from "../../assets/desarchivar.png";
 
 import sweetAlert from "sweetalert";
 import { deleteUser, getAllUsers } from "../../Redux/Actions";
+import { useEffect } from "react";
 
 const User = (props) => {
   const [openEdit, setOpen] = useState(false);
   const [closeEdit, setClose] = useState(true);
   const { message } = useSelector((state) => state.message);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handlerClick = () => {
@@ -21,14 +23,10 @@ const User = (props) => {
   };
 
   const handlerDelete = () => {
+    setLoading(true);
+
     if (props?.id) {
       dispatch(deleteUser(props));
-      return props.active
-        ? sweetAlert(
-            "Se inactivó",
-            `Se ha deshabilitado el Usuario ${props.name}`
-          )
-        : sweetAlert("Se activó", `Se ha habilitado el Usuario ${props.name}`);
     }
   };
 

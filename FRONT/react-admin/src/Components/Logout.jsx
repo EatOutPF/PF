@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../Redux/Actions";
 import closeSesion from "../assets/cerrar-sesion.png";
+import styles from "../Styles/General.module.css";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
@@ -50,7 +51,7 @@ function Logout() {
           src={closeSesion}
           alt="cerrarSesion"
           onClick={handleSignOut}
-          style={{ width: 25, paddingTop: 1, paddingRight: 7 }}
+          style={{ width: 25, padding: 5, paddingRight: 15 }}
         />
       )}
     </>
