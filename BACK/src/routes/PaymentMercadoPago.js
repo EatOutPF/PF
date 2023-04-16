@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       failure: "https://eatout-lac.vercel.app/paymentstatus",
       pending: "https://eatout-lac.vercel.app/paymentstatus",
     },
-    metadata : {user: user._id, resto: restaurant._id, reserve}
+    metadata : {user: user._id, resto: restaurant._id, reserve},
     auto_return: "approved",
     binary_mode: true,
   };
