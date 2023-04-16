@@ -54,7 +54,6 @@ async function postRestaurant({
     atmosphere: atmosphereObjects,
     extras: extraObjects,
     section: sectionObjects,
-    user: userObject,
   });
 
   const resultado = await newRestaurant.save();

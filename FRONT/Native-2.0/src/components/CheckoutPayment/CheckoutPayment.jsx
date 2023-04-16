@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { log } from 'react-native-reanimated';
 import { getLinkMercadoPago } from '../../redux/actions';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from "react-native";
+import { WebView } from 'react-native-webview';
 
 
 
@@ -80,6 +82,10 @@ const CheckoutPayment = ({route}) => {
         navigation.navigate("Estado de la Reserva", checkout)
     };
 
+    const handleClaudio = () => {
+        navigation.navigate("Claudio")
+    }
+
 
     return (
         <View style={styles.container}>
@@ -102,6 +108,10 @@ const CheckoutPayment = ({route}) => {
                     <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva con Mercado Pago </Text>
 
             </TouchableOpacity>
+            <TouchableOpacity onPress={handleClaudio}>
+                <Text>Claudio</Text>
+            </TouchableOpacity>
+
                         <Text>{result && JSON.stringify(result)}</Text>
         </View>
     );

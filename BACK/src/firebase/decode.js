@@ -4,7 +4,7 @@ const admin = require("./firebaseConfig");
     
     try {
       const decodeToken = await admin.auth().verifyIdToken(token);
-      
+      console.log(decodeToken);
       if (decodeToken) {
         return decodeToken.email
       }

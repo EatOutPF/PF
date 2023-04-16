@@ -8,26 +8,33 @@ router.use(express.json());
 /* ----------MERCADOPAGO---------- */
 
 router.post("/", (req, res) => {
-  const chosenRestaurant = req.body;
+  
+  const restaurant = req.body.resto;
+  const user = req.body.user;
+  const reserve = req.body.reserve;
   let preference = {
     items: [
       {
-        id: chosenRestaurant._id,
-        title: chosenRestaurant.name,
+        id: restaurant._id,
+        title: restaurant.name,
         currency_id: "ARS",
-        description: chosenRestaurant.menu[0],
-        category_id: "art",
         quantity: 1,
-        unit_price: chosenRestaurant.advance,
+        unit_price: restaurant.advance,
       },
     ],
-    back_urls: {
-      success: "",
-      failure: "",
-      pending: "",
+    payer: {
+      "name": user.name,
+      "email": user.email,
     },
-  //  auto_return: "approved",
+    back_urls: {
+      success: "localhost:3000/paymentstatus",
+      failure: "localhost:3000/paymentstatus",
+      pending: "localhost:3000/paymentstatus",
+    },
+   auto_return: "approved",
     binary_mode: true,
+    metadata : {user: user._id, restaurant: restaurant._id, reserve},
+    external_reference : `${restaurant.name}__${user.name}__${reserve.date}`
   };
   mercadopago.preferences
     .create(preference)
