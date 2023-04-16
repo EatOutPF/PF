@@ -19,6 +19,50 @@ function CreateAccountFirebase({ navigation }) {
   const app = initializeApp(firebaseConfig);
   const authF = getAuth(app);
 
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidPhone, setIsValidPhone] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidPasswordRepeat, setIsValidPasswordRepeat] = useState(true);
+
+  const validateName = (text) => {
+    // Name validation logic
+    const regex = /^[0-9]{10}$/;
+    const isValidPhone = regex.test(text);
+    setPhone(text);
+    setIsValidPhone(isValidPhone);
+  };
+
+  const validatePhone = (text) => {
+    // Phone number validation logic
+    const regex = /^[0-9]{10}$/;
+    const isValidPhone = regex.test(text);
+    setPhone(text);
+    setIsValidPhone(isValidPhone);
+  };
+
+  const validateEmail = (text) => {
+    // Regular expression for email validation
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = regex.test(text);
+    setEmail(text);
+    setIsValidEmail(isValidEmail);
+  };
+
+  const validatePassword = (text) => {
+    // Password validation logic
+    const isValidPassword = text.length >= 6;
+    setPassword(text);
+    setIsValidPassword(isValidPassword);
+  };
+
+  const validatePasswordRepeat = (text) => {
+    // Password validation logic
+    const isValidPasswordRepeat = (text === password);
+    setPasswordRepeat(text.value);
+    setIsValidPasswordRepeat(isValidPasswordRepeat);
+
+  };
 
   function createAccount(value) {
     // console.log("soy el action:", value);
@@ -56,8 +100,6 @@ function CreateAccountFirebase({ navigation }) {
     //     console.log(error);
     //     Alert.alert(error.message);
     //   });
-
-
   };
 
     return (
@@ -82,23 +124,59 @@ function CreateAccountFirebase({ navigation }) {
             />
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Nombre</Text>
-                <TextInput onChangeText={(text) => setName(text)} style={styles.input} placeholder="nombre" />
+                <TextInput
+                  onChangeText={validateName}
+                  style={[styles.input, !isValidName && styles.inputInvalid]}
+                  placeholder="nombre"
+                  value={name}
+                  autoCapitalize="words"
+                />
+                {!isValidName && <Text style={styles.error}>El nombre debe tener minimo 5 caracteres.</Text>}
               </View>
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Telefono</Text>
-                <TextInput onChangeText={(text) => setPhone(text)} style={styles.input} placeholder="telefono" secureTextEntry={true}/>
+                <TextInput
+                  onChangeText={validatePhone}
+                  style={[styles.input, !isValidPhone && styles.inputInvalid]}
+                  placeholder="(555) 555-5555"
+                  value={phone}
+                  keyboardType="phone-pad"
+                />
+                {!isValidPhone && <Text style={styles.error}>Ingresar un numero de telefono valido.</Text>}
               </View>
               <View>
                 <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>E-mail</Text>
-                <TextInput onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="usuario@mail.com" />
+                <TextInput
+                  onChangeText={validateEmail}
+                  style={[styles.input, !isValidEmail && styles.inputInvalid]}
+                  placeholder="example@mail.com"
+                  value={email}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+                {!isValidEmail && <Text style={styles.error}>Ingrese un email valido.</Text>}
               </View>
               <View>
-                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Password</Text>
-                <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="password" secureTextEntry={true} />
+                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Contraseña</Text>
+                <TextInput
+                  onChangeText={validatePassword}
+                  style={[styles.input, !isValidPassword && styles.inputInvalid]}
+                  placeholder="********"
+                  value={password}
+                  secureTextEntry={true}
+                />
+                {!isValidPassword && <Text style={styles.error}>La contraseña debe tener minimo 6 caracteres.</Text>}
               </View>
               <View>
-                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Repetir Password</Text>
-                <TextInput onChangeText={(text) => setPasswordRepeat(text)} style={styles.input} placeholder="password" />
+                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Repetir Contraseña</Text>
+                <TextInput
+                  onChangeText={validatePasswordRepeat}
+                  style={[styles.input, !isValidPasswordRepeat && styles.inputInvalid]}
+                  placeholder="********"
+                  value={passwordRepeat}
+                  secureTextEntry={true}
+                />
+                {!isValidPasswordRepeat && <Text style={styles.error}>Las contraseñas deben coincidir. </Text>}
               </View>
               
               <TouchableOpacity  onPress={handleCreateAccount}style={[styles.button, {backgroundColor: '#512e2e'}]}>
@@ -167,9 +245,16 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 10,
       padding: 10,
-      marginVertical: 10,
+      marginVertical: 5,
       backgroundColor: '#ffffff90',
-      marginBottom: 20
+      marginBottom: 5
+    },
+    inputInvalid: {
+      borderColor: 'red',
+    },
+    error: {
+      color: 'red',
+      fontSize: 12,
     },
     button: {
       width: 250,
