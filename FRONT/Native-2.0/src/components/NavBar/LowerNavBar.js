@@ -20,6 +20,8 @@ import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
 import CheckoutState from '../CheckoutPayment/CheckoutState';
 import ListReviews from '../Reviews/ListReviews.jsx'
 import AddReviews from '../Reviews/AddReviews.jsx';
+import MyComponent from '../CheckoutPayment/prueba1.jsx';
+
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
 // import MercadoPago1 from '../MercadoPago/MercadoPago.js';

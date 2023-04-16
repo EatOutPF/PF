@@ -11,7 +11,7 @@ tr.disable {
 }
 
 .rows button {
-  padding: 5px 10px;
+  padding: 3px 6px;
   font-size: small;
   border-radius: 16px;
   background-color: #e3960a;
@@ -19,7 +19,7 @@ tr.disable {
 }
 
 button.rowsActive {
-  padding: 5px 10px;
+  padding: 3px 6px;
   font-size: small;
   border-radius: 16px;
   background-color: rgb(156 4 67);
@@ -27,7 +27,7 @@ button.rowsActive {
 }
 
 button.rowsInactive {
-  padding: 5px 10px;
+  padding: 3px 6px;
   font-size: small;
   border-radius: 16px;
   background-color: rgb(83, 185, 24);
