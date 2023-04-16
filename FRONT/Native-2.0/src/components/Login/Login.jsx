@@ -115,12 +115,12 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     return (
       <>
       {
-       logUser ? navigation.navigate('Perfil de Usuario', {logUser})
+       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Perfil de Usuario', {logUser})
        : (
         
         <View style={styles.container}>
         <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
-        // {/* <View style={{width: 100, height: 100, backgroundColor: 'purple', position: 'absolute' }}></View>
+        {/* <View style={{width: 100, height: 100, backgroundColor: 'purple', position: 'absolute' }}></View>
         // <View style={{width: 100, height: 100, backgroundColor: 'blue', top: 120, position: 'absolute', transform: [{rotate: '25deg'}] }}></View>
         // <View style={{width: 100, height: 100, backgroundColor: 'red', bottom: 120 ,position: 'absolute', borderRadius: 50, transform: [{rotate: '50deg'}] }}></View> */}
         <ScrollView contentContainerStyle= {{
