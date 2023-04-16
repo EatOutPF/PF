@@ -1,20 +1,32 @@
 const express = require('express')
 const dotenv = require('dotenv')
 
-async function webhook(data) {
-
-    var id_venta = data.id
+async function webhook(props) {
+    console.log(props)
     const token = process.env.MERCADOPAGO_KEY
-
-        let url = `https://api.mercadopago.com/v1/payments/${id_venta}?access_token=${token}`;
-        let response = await axios(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    
+    let id = props.payment_id === 'null' ? props.preference_id : props.payment_id
+    let data
+    
+    try {
+        if(!id.includes('-')) {
+        let url = `https://api.mercadopago.com/v1/payments/${id}?access_token=${token}`;
+        let response = await axios 
+        .get(url)
+        .then(res => data = res.data )
+        axios.post(`/sendemail`, { email: "cditoro@gmail.com", name : data, price: 1200})
+        } else {
+            let url =   `https://api.mercadopago.com/checkout/preferences/${id}?access_token=${token}` 
+            let response = await axios 
+        .get(url)
+        .then(res => data = res.data )
+        
+        console.log(data);
         }
-        let myJson = await response.json();
-        console.log(myJson);
 
-        return [myJson]
+        return data
+    } catch (err) {
+        throw new Error(err)
     }
-
+    }
 module.exports =  webhook 
