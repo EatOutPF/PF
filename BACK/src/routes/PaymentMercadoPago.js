@@ -40,21 +40,21 @@ router.post("/", (req, res) => {
     .create(preference)
 
     .then((response) => {
-  //    res.redirect(`/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
-  //    );
-     res.status(200).send(response);
+      //    res.redirect(`/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
+      //    );
+      res.status(200).send(response);
     })
 
     .catch((error) => {
       res.status(404).send(error.message);
-    })
+    });
 
-   // .then((response) => {
-   //   res.status(200).send(response);
+  // .then((response) => {
+  //   res.status(200).send(response);
   //  })
   //  .catch((error) => {
   //    res.status(404).send(error.message);
- //   });
+  //   });
 });
 
 module.exports = router;

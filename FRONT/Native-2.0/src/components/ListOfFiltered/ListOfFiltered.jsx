@@ -23,7 +23,6 @@ const ListOfFiltered = () => {
       Alert.alert("Nada para mostrar.", "", [
         {text: "OK", 
         onPress: () => {
-            console.log("SALIENDOOO: ");
           }
         } 
       ]);

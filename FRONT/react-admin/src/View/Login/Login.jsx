@@ -111,14 +111,16 @@ function Login() {
           onChange={(event) => setPasswordLogin(event.target.value)}
         />
         <ul>
-          <button type="submit">Login</button>
-          <button type="button" onClick={handleOnClick}>
+          <button type="submit" style={{ width: 192 }}>
+            Login
+          </button>
+          <button type="button" onClick={handleOnClick} style={{ width: 192 }}>
             Login with Google
           </button>
         </ul>
         {error && <p>{error}</p>}
         <NavLink to="/createUsers">
-          <button>Registrese</button>
+          <button style={{ width: 192 }}>Registrese</button>
         </NavLink>
       </form>
       <div className={style.containerImagenLogin}>

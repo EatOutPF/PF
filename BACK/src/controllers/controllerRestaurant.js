@@ -152,9 +152,9 @@ async function activeRestaurant(id, active) {
   restaurant.save();
 
   if (active) {
-    return `Se ha dehabilitado el restaurant ${restaurant.name}`;
-  } else {
     return `Se ha habilitado el restaurant ${restaurant.name}`;
+  } else {
+    return `Se ha deshabilitado el restaurant ${restaurant.name}`;
   }
 }
 

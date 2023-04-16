@@ -10,15 +10,18 @@ import { firebaseConfig } from '../../../firebase-config';
 import 'expo-dev-client';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
+import { CLEAR_USER_INFO } from '../../redux/type';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 
 export default function Profile({route}) {
     const navigation = useNavigation();
+    const dispatch = useDispatch()
 
-    const { user } = route.params;
+    const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
-    console.log("USER DE PROFILE: ", user.user.photoURL);
+    console.log("USER DE PROFILE: ", user?.user?.photoURL);
     console.log("keys user, ", Object.keys(user));
 
     const logOut = () => {
@@ -26,6 +29,7 @@ export default function Profile({route}) {
         // auth()
         //     .singOut()
         //     .then(()=> console.log("User sined out!"))
+        // dispatch(clearUser)
         navigation.navigate("Login")
         
     }

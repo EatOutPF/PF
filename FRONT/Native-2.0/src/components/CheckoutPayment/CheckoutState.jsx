@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import queryString from 'query-string';
+import axios from "axios";
+
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -56,9 +58,19 @@ const CheckoutState = ({route}) => {
         //     setReadyToPay(true)
         // }, 3000);
 
+        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
+
+        // axios
+        //     .get(
+        //     "https://eatout.onrender.com/paymentstatus",
+        //     )
+        //     .then((res) => console.log("PAYMENT STATUS:", res))
+        //     // .catch(error){ console.log();}
+        // }, 15000);
+
     }, )
 
-    console.log("Soy el checkout, ", resto);
+    // console.log("Soy el checkout, ", resto);
     console.log("Soy el checkout-reserve, ", reserve);
 
     const navigation = useNavigation();
