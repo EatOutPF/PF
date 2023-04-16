@@ -17,7 +17,9 @@ import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Filters from '../Filters/Filters.jsx';
 import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
-import ListReviews from '../Reviews/Reviews.jsx';
+import CheckoutState from '../CheckoutPayment/CheckoutState';
+import ListReviews from '../Reviews/ListReviews.jsx'
+import AddReviews from '../Reviews/AddReviews.jsx';
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
 // import MercadoPago1 from '../MercadoPago/MercadoPago.js';
@@ -52,6 +54,10 @@ function HomeScreenStack(){
         component={CheckoutPayment}
       />
       <HomeStackNavigator.Screen
+        name="Estado de la Reserva"
+        component={CheckoutState}
+      />
+      <HomeStackNavigator.Screen
         name="Filtrados"
         component={ListOfFiltered}
       />
@@ -60,8 +66,14 @@ function HomeScreenStack(){
         component={Map}
       />
       <HomeStackNavigator.Screen
+        name="Ranking"
+        component={ListReviews} 
+      
+      />
+        <HomeStackNavigator.Screen
         name="Reseñas"
-        component={HomeChiquito}   // aca va el componente Reviews
+        component={AddReviews} 
+      
       />
 
     </HomeStackNavigator.Navigator>

@@ -43,6 +43,21 @@ const RestosItem = (props) => {
       </TouchableOpacity>
     {/* </Link> */}
     {/* <RepositoryStats {...props} /> */}
+
+
+    <TouchableOpacity>
+      
+      <Text
+      style={styles.buttonLog}
+      onPress={()=> navigation.navigate("Reseñas", _id)}
+      >
+           <Text style={styles.login}>
+          Add Opinion
+           </Text>
+      </Text>
+
+
+     </TouchableOpacity>
   </View>
 )}
 

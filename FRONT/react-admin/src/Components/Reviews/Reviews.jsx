@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { findDetailRestaurant } from "../../Redux/Actions";
+import style from "./Reviews.module.css";
 
 const Reviews = (props) => {
   const { id } = useParams();
@@ -13,21 +14,25 @@ const Reviews = (props) => {
   }, [detailRestaurant]);
 
   return (
-    <div>
-      <NavLink to="/home">
+    <div className={style.containerCards}>
+      <NavLink to="/home" className={style.containerBack}>
         <button>Volver</button>
       </NavLink>
-      <h1>Calificaciones Restaurante {detailRestaurant.name}</h1>
+      <h1>Calificaciones Restaurante {detailRestaurant?.name}</h1>
       {detailRestaurant && (
         <table>
-          <thead>
-            <tr>
+          <thead className={style.containerThead}>
+            <tr className={style.containerTitle}>
               <th>Review</th>
+              <th>Puntaje</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={style.containerBodyTable}>
             {detailRestaurant?.review?.map((r) => {
-              return <td>{r}</td>;
+              <>
+                <td>{r.review}</td>
+                <td>{r.score}</td>
+              </>;
             })}
           </tbody>
         </table>

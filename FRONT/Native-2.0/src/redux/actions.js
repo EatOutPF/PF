@@ -9,12 +9,14 @@ import {
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
+    GET_LINK_MERCADOPAGO,
     GET_TYPES_FOODS,
     GET_ATMOSPHERE,
     GET_SECTIONS,
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    POST_REVIEWS,
 } from "./type";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
@@ -127,6 +129,27 @@ export function searchRestorantByString(string) {
     };
 }
 
+export function getLinkMercadoPago(value) {
+    // console.log("soy el action:", string);
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/payment`, value)
+            .then((response) => {
+                // console.log("RESPONSE del action -> ", response);
+                dispatch({
+                    type: GET_LINK_MERCADOPAGO,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: GET_LINK_MERCADOPAGO,
+                    payload: error.message,
+                });
+            });
+    };
+}
+
 export const getTypesOfFoods = () => {
     return async function (dispatch) {
         try {
@@ -216,6 +239,25 @@ export const filterRestorant = (payload) => {
     return {
         type: FILTER_RESTORANTS,
         payload,
+    };
+};
+
+export const postListReviews = (reseñas) => {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`${DB_HOST}/reviews`, reseñas);
+            const restaurant = response.data
+             dispatch({
+                type: POST_REVIEWS,
+                payload: restaurant,
+            });
+        
+        } catch (error) {
+            return {
+                error: "No se agregaron reseñas",
+                originalErrorMessage: error,
+            };
+        }
     };
 };
 
