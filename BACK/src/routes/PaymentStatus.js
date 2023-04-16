@@ -26,7 +26,8 @@ router.get("/:reference?", async (req, res) => {
 
    // console.log(`** El ID de pago es: ${id} **`)
     try {
-    resultado = await webhook(reference)  
+    resultado = await webhook(reference) 
+        console.log(resultado)
     res.status(200).json(resultado)
     } catch (error) {
        console.log(error) 
