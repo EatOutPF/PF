@@ -36,6 +36,10 @@
   background-color: #891330;
 }
 
+.containerModify span:hover {
+  color: grey;
+}
+
 .containerModify label,
 input,
 select {
@@ -87,7 +91,6 @@ select {
 @media (max-width: 750px) {
   .containerModify {
     flex-direction: column;
-    width: max-content;
   }
 }
 
@@ -140,8 +143,21 @@ select {
   border: solid 1px azure;
   border-radius: 1rem;
   width: -webkit-fill-available;
-  gap: 8px;
+  justify-content: space-between;
   margin: 17px;
+}
+
+.formCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.formRow {
+  display: flex;
+}
+
+.formRow > label {
+  width: 50px;
 }
 
 @media (max-width: 750px) {
@@ -164,10 +180,10 @@ select {
 }
 
 .containerSub {
-  background-color: yellowgreen;
-  border-radius: 15px;
+  text-decoration: underline;
+  color: magenta;
   padding: 5px 10px;
-  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+
   cursor: pointer;
 }
 
