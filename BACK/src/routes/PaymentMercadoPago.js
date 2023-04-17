@@ -33,16 +33,9 @@ router.post("/", (req, res) => {
     .create(preference)
 
     .then((response) => {
-<<<<<<< HEAD
       //    res.redirect(`/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
       //    );
       res.status(200).send(response);
-=======
-
-      res.redirect(
-        `/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
-      );
->>>>>>> df538c0d3f820bb4b9d10bc01bb869058414960f
     })
 
     .catch((error) => {
