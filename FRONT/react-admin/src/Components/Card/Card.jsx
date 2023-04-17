@@ -25,26 +25,21 @@ const Card = (props) => {
     dispatch(deleteRestaurant(props));
     console.log(message);
 
-    if(message){
-    return props?.active
-      ? sweetAlert(
-          "Se inactivó",
-          message
-        )
-      : sweetAlert("Se activó", message);}
+    if (message) {
+      return props?.active
+        ? sweetAlert("Se inactivó", message)
+        : sweetAlert("Se activó", message);
+    }
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-    const handlerPayment = () => {
+  const handlerPayment = () => {
     axios
-      .post(
-       "https://eatout.onrender.com/mercadopago",
-        props
-      )
+      .post("https://eatout.onrender.com/mercadopago", props)
       .then((res) => (window.location.href = res.data.response.init_point));
   };
- 
+
   return (
     <>
       {props && (
@@ -57,6 +52,7 @@ const Card = (props) => {
           </td>
           <td>{props.address?.city}</td>
           <td>{props.address?.country}</td>
+          <td>{props.balance}</td>
           <td>{props.ranking}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
@@ -102,7 +98,7 @@ const Card = (props) => {
             )}
 
             {/* -----------MERCADOPAGO--------- */}
-               <button onClick={handlerPayment}> Pagar Reserva </button>
+            {/* <button onClick={handlerPayment}> Pagar Reserva </button> */}
           </td>
         </tr>
       )}

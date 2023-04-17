@@ -14,6 +14,7 @@ import HomeUsers from "./View/HomeUser/HomeUser.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js";
 import { setUser } from "./Redux/Actions.js";
+import Reserve from "./Components/Reserve/Reserve.jsx";
 
 axios.defaults.baseURL =
   /*   "https://eatout.onrender.com/" */
@@ -75,6 +76,7 @@ function App() {
                   element={<Reviews></Reviews>}
                 ></Route>
                 <Route exact path="/landing" element={<Landing />}></Route>
+                <Route exact path="/reserve" element={<Reserve />}></Route>
               </>
             )}
             <Route exact path="/" element={<Login />}></Route>
