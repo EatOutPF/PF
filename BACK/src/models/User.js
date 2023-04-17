@@ -40,7 +40,7 @@ const userSchema = new Schema({
     ref: 'Notification'
     }],
   review: [{
-    tiype: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Review'
   }]
 
