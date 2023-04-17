@@ -3,22 +3,21 @@ const { Schema } = mongoose
 
 
 const reserveSchema = new Schema({
-  user: [{
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  restaurant: [{
+  },
+  restaurant: {
     type: Schema.Types.ObjectId,
     ref: 'Restaurant'
-  }],
+  },
   date: String,
   time: String,
-  payment:  [{
+  payment:  {
     type: Schema.Types.ObjectId,
     ref: 'Payment'
-  }],
+  },
   table: Number,
-  
 
 })
 
