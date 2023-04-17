@@ -15,6 +15,12 @@ const paymentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Reserve"
       }],
+      date: {
+        type: Date,
+        default: function() {
+          return new Date()
+        }
+      }
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);

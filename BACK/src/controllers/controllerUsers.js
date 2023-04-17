@@ -10,7 +10,9 @@ async function getUsers(props) {
         .populate("restaurant")
         .populate("favorite")
         .populate("reserve")
-        .populate("payment");
+        .populate("payment")
+        .populate("reserve")
+        .populate("review")
 
       if (users === null) throw new Error("No existen usuarios con ese Id");
       users.login = true;
@@ -22,7 +24,9 @@ async function getUsers(props) {
         .populate("restaurant")
         .populate("favorite")
         .populate("reserve")
-        .populate("payment");
+        .populate("payment")
+        .populate("reserve")
+        .populate("review")
 
       if (users === null)
         throw new Error("No existen usuarios con ese E-Mail registrado");
@@ -37,7 +41,10 @@ async function getUsers(props) {
     .populate("restaurant")
     .populate("favorite")
     .populate("reserve")
-    .populate("payment");
+    .populate("payment")
+    .populate("reserve")
+    .populate("review")
+    
   return users;
 }
 

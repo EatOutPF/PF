@@ -12,10 +12,10 @@ const corsOptions = {
 router.use(express.json());
 router.use(cors(corsOptions));
 router.post("/", async (req, res) => {
-  const { email, name, price } = req.body;
+  const { email, subject, message } = req.body;
   try {
 
-     await sendConfirmationEmail(email, name, price);
+     await sendConfirmationEmail(email, subject, message);
     res.status(200).json("Se envio la confirmacion");
   } catch (error) {
     res.status(400).json({ error: error.message });

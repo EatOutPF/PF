@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
   let preference = {
     items: [
       {
-        id: restaurant._id,
+        id: restaurant.id,
         title: restaurant.name,
         currency_id: "ARS",
         quantity: 1,
