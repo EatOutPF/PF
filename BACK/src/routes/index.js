@@ -17,6 +17,7 @@ const favoriteRouter = require("./Favorite")
 const reserveRouter =  require("./Reserve")
 const paymentRouter = require("./Payment")
 const paymentstatusRouter = require("./PaymentStatus")
+const notificationRouter = require("./Notification")
 
 
 /* --------MERCADOPAGO------- */
@@ -38,6 +39,7 @@ router.use("/favorite", favoriteRouter);
 router.use("/reserve", reserveRouter)
 router.use("/payment", paymentRouter)
 router.use("/paymentstatus", paymentstatusRouter)
+router.use("/notification", notificationRouter)
 
 /* --------MERCADOPAGO------- */
 router.use("/mercadopago", paymentMercadoPagoRouter);

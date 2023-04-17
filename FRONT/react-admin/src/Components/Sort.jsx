@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   getAllRestaurants,
   getAllRestaurantsByUser,
@@ -10,16 +10,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import style from "../Styles/General.module.css";
+import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
+import { BiSortAlt2 } from "react-icons/bi";
 
 function Sort({ setOrder, setCurrentPage, resetFilter }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [visibility, setVisibility] = useState();
 
   useEffect(() => {
     user.role === "superadmin"
       ? dispatch(getAllRestaurants())
       : dispatch(getAllRestaurantsByUser(user));
   }, [dispatch]);
+
+  const onChangeVisibility = () => {
+    setVisibility(!visibility);
+  };
 
   function handleSortByName(e) {
     e.preventDefault();
@@ -48,30 +55,37 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
   }
 
   return (
-    <div className={style.containerGeneral}>
-      <h3>Ordenar</h3>
-      <div>
-        <select
-          defaultValue={resetFilter}
-          onChange={(e) => handleSortByName(e)}
-          className="form-selected"
-        >
-          <option value="">Order by alphabetical</option>
-          <option value="asc"> A to Z</option>
-          <option value="desc"> Z to A</option>
-        </select>
-      </div>
-      <div>
-        <select
-          defaultValue={resetFilter}
-          onChange={(e) => handleOrderByPopularity(e)}
-          className="form-selected"
-        >
-          <option value="">Order by ranking</option>
-          <option value="max">Ascendent popularity</option>
-          <option value="min">Descendent popularity</option>
-        </select>
-      </div>
+    <div className={style.containerGeneral} style={{ justifyContent: "start" }}>
+      <button onClick={onChangeVisibility}>
+        <BiSortAlt2 size={15} /> Ordenar
+      </button>
+      {visibility && (
+        <div className={style.containerVisibility}>
+          <div>
+            <select
+              defaultValue={resetFilter}
+              onChange={(e) => handleSortByName(e)}
+              className="form-selected"
+            >
+              <option value="">Por nombre</option>
+              <option value="asc"> A to Z</option>
+              <option value="desc"> Z to A</option>
+            </select>
+          </div>
+
+          <div>
+            <select
+              defaultValue={resetFilter}
+              onChange={(e) => handleOrderByPopularity(e)}
+              className="form-selected"
+            >
+              <option value="">Por ranking</option>
+              <option value="max">Ranking de mayor a menor</option>
+              <option value="min">Ranking de menor a mayor</option>
+            </select>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

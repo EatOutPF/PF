@@ -68,14 +68,19 @@ const Home = () => {
   }, [restaurants]);
 
   return (
-  
     <div className={style.containerHome}>
       {!loaded ? (
         <Loading />
       ) : (
         <>
           <div className={style.containerSearchBar}>
-            <Searchbar setCurrentPage={setCurrentPage} />
+            <Sort
+              setOrder={setOrder}
+              setSort={setSort}
+              setCurrentPage={setCurrentPage}
+              resetFilter={resetFilter}
+            />
+
             <>
               <Filter
                 setOrder={setOrder}
@@ -85,24 +90,19 @@ const Home = () => {
                 restaurants={restaurants}
               />
             </>
-
-            <Sort
-              setOrder={setOrder}
-              setSort={setSort}
+          </div>
+          <div className={style.containerSearchPag}>
+            <Searchbar setCurrentPage={setCurrentPage} />
+            <Paginate
+              restaurantsPerPage={restaurantsPerPage}
+              restaurants={
+                searchResults ? searchResults?.length : restaurants?.length
+              }
+              paginado={paginate}
+              currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              resetFilter={resetFilter}
             />
           </div>
-
-          <Paginate
-            restaurantsPerPage={restaurantsPerPage}
-            restaurants={
-              searchResults ? searchResults?.length : restaurants?.length
-            }
-            paginado={paginate}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
 
           <div className={style.containterTable}>
             {currentRestaurants && (

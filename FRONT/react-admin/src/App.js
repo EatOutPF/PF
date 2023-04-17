@@ -4,7 +4,7 @@ import Login from "./View/Login/Login.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./View/NavBar/NavBar.jsx";
 import "./App.css";
-import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
+import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestaurant.jsx";
 import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
 import Landing from "./View/Landing/Landing.jsx";
 import axios from "axios";
@@ -16,8 +16,8 @@ import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js";
 import { setUser } from "./Redux/Actions.js";
 
 axios.defaults.baseURL =
-  "https://eatout.onrender.com/"
-  /* "http://localhost:5001/"; */
+  /*   "https://eatout.onrender.com/" */
+  "http://localhost:5001/";
 
 function App() {
   const location = useLocation().pathname;

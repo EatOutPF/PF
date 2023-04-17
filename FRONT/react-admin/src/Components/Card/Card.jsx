@@ -24,12 +24,14 @@ const Card = (props) => {
   const handlerDelete = () => {
     dispatch(deleteRestaurant(props));
     console.log(message);
-    return props.active
+
+    if(message){
+    return props?.active
       ? sweetAlert(
           "Se inactivó",
-          `Se ha deshabilitado el restaurant ${props.name}`
+          message
         )
-      : sweetAlert("Se activó", `Se ha habilitado el restaurant ${props.name}`);
+      : sweetAlert("Se activó", message);}
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
@@ -50,7 +52,6 @@ const Card = (props) => {
           <td>{props.name}</td>
           <td>{props.menu}</td>
           <td>{props?.diets?.map((d) => `${d} `)}</td>
-
           <td>
             {props.address?.streetName} - {props.address?.streetNumber}
           </td>
@@ -59,7 +60,7 @@ const Card = (props) => {
           <td>{props.ranking}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
-            {props.active && user.role === "admin" ? (
+            {props.active && user?.role === "admin" ? (
               <>
                 <NavLink to={`/modify/${props.id}`}>
                   <button onClick={handlerClick}>

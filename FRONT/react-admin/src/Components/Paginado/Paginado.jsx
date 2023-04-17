@@ -30,11 +30,17 @@ function Paginate({
       setCurrentPage(Math.ceil(restaurants / restaurantsPerPage));
     }
   }
+  console.log({ currentPage }, pageNumbers[0]);
 
   return (
-    <div className="pagination">
-      <button onClick={() => handlePrev()} className={style.buttonPagination}>
-        Prev
+    <div className={style.containerPagination}>
+      <button
+        onClick={() => handlePrev()}
+        className={style.buttonPagination}
+        disabled={currentPage === pageNumbers[0]}
+        name="prev"
+      >
+        {"<"}
       </button>
       {pageNumbers &&
         pageNumbers.map((number) => (
@@ -52,8 +58,9 @@ function Paginate({
         onClick={() => handleNext()}
         disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
         className={style.buttonPagination}
+        name="next"
       >
-        Next
+        {">"}
       </button>
     </div>
   );
