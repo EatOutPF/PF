@@ -1,16 +1,16 @@
 const { Router } = require("express");
 const express = require("express");
 const webhook = require("../controllers/controllerPaymentSatus");
-const cors = require("cors");
-const corsOptions = {
-    origin: "*",
-    optionSuccessStatus: 200,
-  };
-require("dotenv").config();
+//const cors = require("cors");
+// const corsOptions = {
+//     origin: "*",
+//     optionSuccessStatus: 200,
+//   };
+//require("dotenv").config();
 
 const router = Router();
 router.use(express.json());
-router.use(cors(corsOptions));
+//router.use(cors(corsOptions));
 
 /* ----------MERCADOPAGO---------- */
 
