@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const { Reserve, Restaurant, User } = require("../db");
 
-async function postReserve(user, table, date, idRestaurant) {
-  const dat = parseInt(date);
-
+async function postReserve({idUser, table, date, time, idRestaurant}) {
+ // const dat = parseInt(date);
+ 
   const restaurant = await Restaurant.findOne({ _id: idRestaurant });
   //console.log(restaurant)
-  const users = await User.findOne({ _id: user });
+  const users = await User.findOne({ _id: idUser });
 
   let reserves = await Restaurant.findById(idRestaurant)
     .populate({
@@ -58,22 +58,26 @@ async function postReserve(user, table, date, idRestaurant) {
     console.log(availableTables);
     //Crear la reserva
     const newReserve = new Reserve({
-      user: users,
+      user: idUser,
       restaurant: idRestaurant,
       table: table,
       date: date,
+      time: time
     });
 
+  await newReserve.save();
     console.log(newReserve);
     restaurant.reserve.push(newReserve._id);
     await restaurant.save();
 
-    await newReserve.save();
+    users.reserve.push(newReserve._id);
+    await users.save();
+  
 
     console.log(reservedTablesForDate);
     console.log(availableTables);
     
-    return "Reserva creada exitosamente";
+    return newReserve;
   } else {
     return "No hay disponibilidad para esa fecha";
   }
