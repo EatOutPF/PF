@@ -38,6 +38,10 @@ const userSchema = new Schema({
   notificacion: [{
     type: Schema.Types.ObjectId,
     ref: 'Notification'
+    }],
+  review: [{
+    tiype: Schema.Types.ObjectId,
+    ref: 'Review'
   }]
 
 })
