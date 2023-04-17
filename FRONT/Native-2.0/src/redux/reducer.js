@@ -63,7 +63,7 @@ const initialState = {
 export default function rootReducer(state = initialState, action) {
     switch (action?.type) {
 
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
             // console.log("HOLAA : ", action.payload);
             return {
@@ -73,37 +73,37 @@ export default function rootReducer(state = initialState, action) {
                 restorantsFound: action?.payload,
             }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
             return { ...state, restorantById: action?.payload, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
             return { ...state, restorantById: {}, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
             return { ...state, restorantsFound: action?.payload }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
             return { ...state, restorantsFound: state?.allRestorants, }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
             return { ...state, searchText: "", }
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case SET_SEARCH_TEXT: {
             //console.log("reducer: ", action.payload);
             return { ...state, searchText: action?.payload }
         }
-//-------------------------------------------------------------------------    
+        //-------------------------------------------------------------------------    
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
             // console.log("soy el reducer de mp: ", action.payload);
@@ -112,12 +112,12 @@ export default function rootReducer(state = initialState, action) {
             return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
 
         }
-//------------------------------------------------------------------------- 
+        //------------------------------------------------------------------------- 
         case CLEAR_LINK_MERCADOPAGO: {
             //console.log("reducer: ", action.payload);
             return { ...state, checkoutLinkMPResponse: {}, checkoutLinkMP: "" }
         }
-//-------------------------------------------------------------------------    
+        //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
             // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state?.allRestorants];
@@ -136,12 +136,12 @@ export default function rootReducer(state = initialState, action) {
 
         }
 
-//-------------------------------------------------------------------------              
+        //-------------------------------------------------------------------------              
         case ORDER_CARDS:
             switch (action?.payload) {
 
                 //---------- A - Z ----------
-                case "az": {    
+                case "az": {
                     const updatedState = {
                         ...state,
                         orderState: action?.payload,
@@ -206,14 +206,14 @@ export default function rootReducer(state = initialState, action) {
                 //     return updatedState;
                 // }
             }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_TYPES_FOODS: {
             return {
                 ...state,
                 typesOfFoods: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_ATMOSPHERE: {
             return {
                 ...state,
@@ -226,21 +226,21 @@ export default function rootReducer(state = initialState, action) {
                 typesOfSections: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_DIET: {
             return {
                 ...state,
                 typesOfDiet: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_EXTRA: {
             return {
                 ...state,
                 typesOfExtras: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
 
         case FILTER_RESTORANTS: {
             const {
@@ -249,8 +249,9 @@ export default function rootReducer(state = initialState, action) {
                 spaces,
                 diet,
                 extra
-            } = action?.payload
-            let arrayFiltered = [...state?.restorantsFound];
+            } = action?.payload;
+
+            let arrayFiltered = [...state.restorantsFound];
 
             if (menu) {
                 arrayFiltered = arrayFiltered?.filter(el => el?.menu?.[0] === menu)
@@ -277,7 +278,7 @@ export default function rootReducer(state = initialState, action) {
 
 
 
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case SET_USER_TOKEN: {
             console.log("*************************************");
             console.log("token user: ", action.payload);
@@ -286,14 +287,14 @@ export default function rootReducer(state = initialState, action) {
                 userToken: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case CLEAR_USER_TOKEN: {
             return {
                 ...state,
                 userToken: {},
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             console.log(" user INFO: ", action.payload);
@@ -302,7 +303,7 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case CLEAR_USER_INFO: {
             return {
                 ...state,
@@ -311,10 +312,10 @@ export default function rootReducer(state = initialState, action) {
         }
 
 
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         default:
             return state;
-}
+    }
 
 
 

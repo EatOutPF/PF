@@ -59,6 +59,8 @@ export default Filters = (props) => {
         diet: null,
         extra: null,
     });
+    
+    console.log(filters)
 
     const atmosphereOptions = typesOfAtmosphere?.map(e => {
         return {
@@ -98,8 +100,8 @@ export default Filters = (props) => {
 
 
     const handlerFilters = () => {
-        navigation.navigate("Filtrados")
         dispatch(filterRestorant(filters));
+        navigation.navigate("Filtrados")
         //despues me tiene que llevar a una nueva pestaña con todos los filtros aplicados
     }
     const handleOrderByRating = (value) => {

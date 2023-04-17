@@ -257,7 +257,7 @@ export const getExtras = () => {
 export const filterRestorant = (payload) => {
     return {
         type: FILTER_RESTORANTS,
-        payload: "",
+        payload: payload,
     };
 };
 
