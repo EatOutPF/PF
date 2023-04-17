@@ -35,6 +35,14 @@ const userSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  notificacion: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Notification'
+    }],
+  review: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Review'
+  }]
 
 })
 

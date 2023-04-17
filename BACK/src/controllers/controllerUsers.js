@@ -10,7 +10,9 @@ async function getUsers(props) {
         .populate("restaurant")
         .populate("favorite")
         .populate("reserve")
-        .populate("payment");
+        .populate("payment")
+        .populate("reserve")
+        .populate("review")
 
       if (users === null) throw new Error("No existen usuarios con ese Id");
       users.login = true;
@@ -22,7 +24,9 @@ async function getUsers(props) {
         .populate("restaurant")
         .populate("favorite")
         .populate("reserve")
-        .populate("payment");
+        .populate("payment")
+        .populate("reserve")
+        .populate("review")
 
       if (users === null)
         throw new Error("No existen usuarios con ese E-Mail registrado");
@@ -37,7 +41,10 @@ async function getUsers(props) {
     .populate("restaurant")
     .populate("favorite")
     .populate("reserve")
-    .populate("payment");
+    .populate("payment")
+    .populate("reserve")
+    .populate("review")
+    
   return users;
 }
 
@@ -78,14 +85,16 @@ async function putUsers(id, { name, phone, email, role }) {
 }
 
 async function activeUsers(id, active) {
+  
   if (!id) throw new Error("El id debe ser valido");
   const user = await User.findOne({ _id: id });
+
 
   if (!user) throw new Error(`No se encuentran user con el id ${id}`);
   user.active = !active;
   user.save();
 
-  await admin.auth().updateUser(id, { disabled: !active });
+  await admin.auth().updateUser(id, { disabled: active });
 
   return `Se ha modificado el estado del user ${user.name}`;
 }

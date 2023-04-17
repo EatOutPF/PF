@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { log } from 'react-native-reanimated';
 import { getLinkMercadoPago, clearLinkMercadoPago } from '../../redux/actions';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from "react-native";
+import { WebView } from 'react-native-webview';
 
 
 
 const CheckoutPayment = ({route}) => {  
-    const { resto, reserve } = route.params;
+    const { checkout } = route.params;
     const [readyToPay, setReadyToPay] = useState(false);
     const [result, setResult] = useState(null);
 
@@ -59,7 +61,7 @@ const CheckoutPayment = ({route}) => {
 
         if(linkMercadoPago === ""){
             console?.log("ESTOY EN EL IF LINK VACIO,");
-            dispatch(getLinkMercadoPago(resto));
+            dispatch(getLinkMercadoPago(checkout));
         }
         else{
 
@@ -77,20 +79,24 @@ const CheckoutPayment = ({route}) => {
         let result = await WebBrowser.openBrowserAsync(linkMercadoPago);
             // "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
         setResult(result);
-        const checkout = {
-            resto: resto,
-            reserve: reserve,
-          }
+        // const checkout = {
+        //     resto: resto,
+        //     reserve: reserve,
+        // }
         navigation?.navigate("Estado de la Reserva", checkout)
     };
+
+    const handleClaudio = () => {
+        navigation.navigate("Claudio")
+    }
 
 
     return (
         <View style={styles.container}>
-            <Text>Reservar en:  {resto?.name}</Text>
-            <Text>Cantidad de Personas: {reserve?.cantPersons}</Text>
-            <Text>Fecha / Hora : {reserve?.schedule}</Text>
-            <Text>Monto a Pagar: {resto?.advance}</Text>
+            <Text>Reservar en: {checkout?.resto?.name}</Text>
+            <Text>Cantidad de Personas: {checkout?.reserve?.cantPersons}</Text>
+            <Text>Fecha / Hora : {checkout?.reserve?.date} / {checkout?.reserve?.time}</Text>
+            <Text>Monto a Pagar: {checkout?.resto?.advance}</Text>
             <TouchableOpacity 
                 style={styles.confirmButton} 
                 title="Open WebBrowser" 

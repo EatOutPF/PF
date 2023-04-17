@@ -44,15 +44,10 @@ const CarouselAux = (props) => {
   // };
   function handlePress (value) {
     // Alert.alert('Aca va el Detail', 'Con todos los datos del resto.');
-    console.log("quiero entrar al detail, ", value);
     
     const _id = value
-    console.log("quiero entrar, ", {_id: value});
 
     navigation.navigate("Detalle Restaurant", {_id})
-    
-    // dispatch(clearStateRestauranteById());
-    // Navigate(`/detail/${value}`);
 
   };
 
@@ -72,12 +67,10 @@ const CarouselAux = (props) => {
               <ImageBackground  style={styles.image} source={{ uri: restoImg }}>
                 <Text style={[styles.itemTitle]}>{item?.name}</Text> 
                 <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text>
-                 
-                  {/* styles.itemTitle, isActive && styles.activeItemTitle */}
-
+          
               </ImageBackground >
             </TouchableOpacity>
-          {/* </Link> */}
+       
           
         </View>
       );

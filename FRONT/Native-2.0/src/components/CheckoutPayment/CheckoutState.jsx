@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
+import axios from "axios";
+
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 
 
@@ -11,7 +14,6 @@ const CheckoutState = ({route}) => {
     const { resto, reserve } = route.params;
     const [readyToPay, setReadyToPay] = useState(false);
     const [result, setResult] = useState("Pendiente");
-
     const dispatch = useDispatch();
     // const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
 
@@ -56,6 +58,16 @@ const CheckoutState = ({route}) => {
         //     setReadyToPay(true)
         // }, 3000);
 
+        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
+
+        // axios
+        //     .get(
+        //     "https://eatout.onrender.com/paymentstatus",
+        //     )
+        //     .then((res) => console.log("PAYMENT STATUS:", res))
+        //     // .catch(error){ console.log();}
+        // }, 15000);
+
     }, )
 
     // console.log("Soy el checkout, ", resto);
@@ -66,6 +78,14 @@ const CheckoutState = ({route}) => {
         navigation.navigate("Eat Out")
 
     };
+
+    const claudio = async () => {
+        let algo = await axios.get("https://eatout.onrender.com/paymentstatus/10")
+        .then(res => {console.log('RES ' + (res.data.results[0].status))
+                setResult(res.data.results[0].status)})
+        .then(error => console.log('ERROR ' + error))
+
+    }
 
     return (
         <View style={styles.container}>
@@ -83,6 +103,13 @@ const CheckoutState = ({route}) => {
                 <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Volver a Inicio </Text>
 
             </TouchableOpacity>
+            <TouchableOpacity   style={styles.confirmButton} 
+                title="claudio" 
+                
+                onPress={claudio}>
+            
+                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Claudio </Text>
+                </TouchableOpacity>
                         {/* <Text>{result && JSON.stringify(result)}</Text> */}
         </View>
     );

@@ -32,8 +32,10 @@ const Home = () => {
   const restorantes = useSelector(state => state.allRestorants);
   const dispatch = useDispatch();
   const restorantById = useSelector(state => state.restorantById);
-  // dispatch(clearStateResatorantById())
+  const userInfo = useSelector(state => state.userInfo);
 
+  // dispatch(clearStateResatorantById())
+  console.log("HOME USER INFO: ", userInfo?.name);
   // useEffect(() => {
   //   // if(restorantes?.length !== 0) { setLoading(false) }
   // //   // await AsyncStorage.setItem()
