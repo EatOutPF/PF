@@ -23,7 +23,7 @@ router.post("/", (req, res) => {
   let preference = {
     items: [
       {
-        id: restaurant.id,
+        id: restaurant._id,
         title: restaurant.name,
         currency_id: "ARS",
         quantity: 1,
@@ -41,8 +41,8 @@ router.post("/", (req, res) => {
     },
    auto_return: "approved",
     binary_mode: true,
-    metadata : {user: user._id, restaurant: restaurant.id, reserve},
-    external_reference : `${restaurant.id}__${user._id}__${Date.now()}`
+    metadata : {user: user._id, restaurant: restaurant._id, reserve},
+    external_reference : `${restaurant._id}__${user._id}__${Date.now()}`
   };
   console.log(preference.external_reference)
 
