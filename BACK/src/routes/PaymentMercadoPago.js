@@ -48,7 +48,8 @@ router.post("/", (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then((response) => {
-    
+      //    res.redirect(`/SENDEMAIL?email=${chosenRestaurant.contact.email}&name=${chosenRestaurant.name}&price=${chosenRestaurant.advance}`
+      //    );
       res.status(200).send(response);
     })
     .catch((error) => {
