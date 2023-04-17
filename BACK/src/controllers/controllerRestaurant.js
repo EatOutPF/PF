@@ -71,27 +71,118 @@ async function getRestaurant(props) {
       const restaurant = await Restaurant.find({
         name: { $regex: new RegExp(props, "i") },
       })
-        .populate("reserve")
-        .populate("payment")
-        .populate("review");
+      .populate({
+        path: "reserve",
+        populate: [
+          {
+          path: "user",
+          select: "_id name phone email",
+          },
+          {
+          path: "payment",
+          select: "amount date"
+          },
+      ],
+      })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+            path: "user",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "user",
+            select: "_id name",
+          },
+        });
 
       return restaurant;
     }
 
     if (mongoose.Types.ObjectId.isValid(props)) {
       const restaurant = await Restaurant.findById(props)
-        .populate("reserve")
-        .populate("payment")
-        .populate("review");
+      .populate({
+        path: "reserve",
+        populate: [
+          {
+          path: "user",
+          select: "_id name phone email",
+          },
+          {
+          path: "payment",
+          select: "amount date"
+          },
+      ],
+      })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+            path: "user",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "user",
+            select: "_id name",
+          },
+        });
 
       return restaurant;
     }
   }
 
   const restaurants = await Restaurant.find()
-    .populate("reserve")
-    .populate("payment")
-    .populate("review");
+  .populate({
+    path: "reserve",
+    populate: [
+      {
+      path: "user",
+      select: "_id name phone email",
+      },
+      {
+      path: "payment",
+      select: "amount date"
+      },
+  ],
+  })
+    .populate({
+      path: "payment",
+      populate: [
+        {
+        path: "user",
+        select: "_id name"
+      },
+      {
+        path: "reserve",
+        select: "_id date"
+      }
+    ]
+    })
+    .populate({
+      path: "review",
+      populate: {
+        path: "user",
+        select: "_id name",
+      },
+    });
+
 
   return restaurants;
 }

@@ -24,6 +24,15 @@ const notificationRouter = require("./Notification")
 const paymentMercadoPagoRouter = require("./PaymentMercadoPago");
 
 
+router.use("/restaurant", restaurantRouter)
+router.use("/section", sectionRouter)
+router.use("/paymentMethods", paymentMethodsRouter)
+router.use("/users", usersRouter)
+router.use("/menu", menuRouter)
+router.use("/diet", dietRouter)
+router.use("/extra", extraRouter)
+router.use("/atmosphere", atmosphereRouter)
+router.use("/payment",  paymentRouter)
 
 router.use("/restaurant", restaurantRouter);
 router.use("/section", sectionRouter);

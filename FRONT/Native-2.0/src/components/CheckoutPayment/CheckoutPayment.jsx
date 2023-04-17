@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { log } from 'react-native-reanimated';
 import { getLinkMercadoPago, clearLinkMercadoPago } from '../../redux/actions';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from "react-native";
-import { WebView } from 'react-native-webview';
 
 
 
@@ -86,9 +84,6 @@ const CheckoutPayment = ({route}) => {
         navigation?.navigate("Estado de la Reserva", checkout)
     };
 
-    const handleClaudio = () => {
-        navigation.navigate("Claudio")
-    }
 
 
     return (
