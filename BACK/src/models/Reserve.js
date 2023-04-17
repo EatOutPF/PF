@@ -4,24 +4,30 @@ const { Schema } = mongoose
 
 const reserveSchema = new Schema({
   user: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'User'
   }],
   restaurant: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Restaurant'
   }],
-  date: {
-    type: Date,
-  },
-  time: {
-    type: String,
-  },
-  payment: Number,
+  date: String,
+  time: String,
+  payment:  [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
   table: Number,
+  
 
 })
+
+
+
 
 const Reserve = mongoose.model('Reserve', reserveSchema)
 
 module.exports = Reserve
+
+
+

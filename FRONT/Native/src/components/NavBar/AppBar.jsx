@@ -55,7 +55,7 @@ const AppBar = () => {
         <AppBarTab to='/'>Inicio</AppBarTab>
         <AppBarTab to='/restorantslist'>Listado</AppBarTab>
         <AppBarTab to='/mapview'>Mapa</AppBarTab>
-        <AppBarTab to='/signin'>EJ1</AppBarTab>
+        <AppBarTab to='/signin'>Login</AppBarTab>
         <AppBarTab to='/pagerview'>EJ2</AppBarTab>
 
       </ScrollView>

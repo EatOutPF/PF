@@ -2,94 +2,78 @@ import {
     GET_ALL_RESTORANTS,
     GET_RESTORANT_BY_ID,
     GET_RESTORANT_BY_STRING,
-
     CLEAR_STATE_RESTORANT_BY_ID,
     CLEAR_STATE_RESTORANT_BY_STRING,
     CLEAR_SEARCH_TEXT,
     SET_SEARCH_TEXT,
-
     FILTER_CARDS,
     ORDER_CARDS,
-
     GET_TYPES_FOODS,
+    GET_ATMOSPHERE,
+    GET_SECTIONS,
+    GET_DIET,
+    GET_EXTRA,
+    FILTER_RESTORANTS,
+    CLEAR_FILTERS,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
 
 const initialState = {
-
     allRestorants: [],
+    allRestorantsCopy: [],
     restorantsFound: [],
     restorantsFiltered: [],
-
     userInfo: {},
-
     restorantById: {},
     restorantByString: [],
     searchText: "",
-
     typesOfFoods: [],
-    filterByAtmosphere: "All",
-    filterBySection: "All",
-    filterByDiets: "All",
-    filterByExtras: "All",
-
+    typesOfSections: [],
+    typesOfAtmosphere: [],
+    typesOfDiet: [],
+    typesOfExtras: [],
     orderState: "az",
-
 }
 
-// REDUCER
+// ---------- REDUCER ----------
 export default function rootReducer(state = initialState, action) {
-
-
-
     switch (action.type) {
         //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
-            // console.log("HOLAA : ", action.payload);
             return {
                 ...state,
                 allRestorants: action.payload,
-                restorantsFound: action.payload
+                restorantsFound: action.payload,
             }
         }
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID: {
-            // console.log(restorantsJson);
             return { ...state, restorantById: action.payload, }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
-            // console.log(restorantsJson);
             return { ...state, restorantById: {}, }
         }
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
-            //console.log("reducer: ", action.payload);
-            return{ ...state, restorantsFound: action.payload }
+            return { ...state, restorantsFound: action.payload }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
-            //console.log("reducer: ", action.payload);
-            return{ ...state, restorantsFound: state.allRestorants, }
+            return { ...state, restorantsFound: state.allRestorants, }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_SEARCH_TEXT: {
-            //console.log("reducer: ", action.payload);
-            return{ ...state, searchText: "", }
+            return { ...state, searchText: "", }
         }
         //------------------------------------------------------------------------- 
         case SET_SEARCH_TEXT: {
-            //console.log("reducer: ", action.payload);
-            return{ ...state, searchText: action.payload }
+            return { ...state, searchText: action.payload }
         }
-
         //-------------------------------------------------------------------------    
         case FILTER_CARDS: {
-            // state.filterByExtras = action.payload;
             const auxAllRestorants = [...state.allRestorants];
-            // state.restorantsFiltered = [...state.allRestorants]
-
             const filteredRestorants = auxAllRestorants.filter(resto =>
                 (resto.menu.includes(state.filterByMenu) || resto.menu === 'All') &&
                 (resto.atmosphere.includes(state.filterByAtmosphere) || resto.atmosphere === 'All') &&
@@ -100,27 +84,31 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state, restorantsFiltered: filteredRestorants,
             }
-
         }
-
         //-------------------------------------------------------------------------              
         case ORDER_CARDS:
-            // let filtradoOrder = [];
             switch (action.payload) {
-
+                //---------- A - Z ----------
                 case "az": {
-                    state.orderState = action.payload
-                    const all = sortAsc([...state.allRestorants], "name")
-                    const found = sortAsc([...state.restorantsFound], "name")
-                    return { ...state, allRestorants: all, restorantsFound: found }
+                    const updatedState = {
+                        ...state,
+                        orderState: action.payload,
+                        allRestorants: sortAsc([...state.allRestorants]),
+                        restorantsFound: sortAsc([...state.restorantsFound]),
+                    };
+                    return updatedState;
                 }
+                //---------- Z - A ----------
                 case "za": {
-                    state.orderState = action.payload
-                    const all = sortDes([...state.allRestorants],)
-                    const found = sortDes([...state.restorantsFound],)
-                    return { ...state, allRestorants: all, restorantsFound: found }
+                    const updatedState = {
+                        ...state,
+                        orderState: action.payload,
+                        allRestorants: sortDes([...state.allRestorants]),
+                        restorantsFound: sortDes([...state.restorantsFound]),
+                    };
+                    return updatedState;
                 }
-
+                //---------- Mayor Ranking a Menor Ranking ----------
                 case "rk": {
                     const updatedState = {
                         ...state,
@@ -129,21 +117,109 @@ export default function rootReducer(state = initialState, action) {
                         restorantsFound: [...state.restorantsFound].sort((a, b) => b.ranking - a.ranking),
                     };
                     return updatedState;
-                    // state.orderState = action.payload
-                    // console.log("estado order: ",state.orderState);
-                    // const all = [...state.allRestorants].sort((a, b) => a.ranking - b.ranking)
-                    // const found = [...state.restorantsFound].sort((a, b) => a.ranking - b.ranking)
-                    // console.log("soy el All ordenado: ", all);
-                    // return{ ...state, allRestorants: all, restorantsFound: found }
                 }
-
+                //---------- Mayor Precio a Menor Precio ----------
+                case "hp": {
+                    const updatedState = {
+                        ...state,
+                        orderState: action.payload,
+                        allRestorants: [...state.allRestorants].sort((a, b) => b.ranking - a.ranking),
+                        restorantsFound: [...state.restorantsFound].sort((a, b) => b.ranking - a.ranking),
+                    };
+                    return updatedState;
+                }
+                //---------- Menor Precio a Mayor Precio ----------
+                case "lp": {
+                    const updatedState = {
+                        ...state,
+                        orderState: action.payload,
+                        allRestorants: [...state.allRestorants].sort((a, b) => a.ranking - b.ranking),
+                        restorantsFound: [...state.restorantsFound].sort((a, b) => a.ranking - b.ranking),
+                    };
+                    return updatedState;
+                }
+                //---------- Menor Distancia a Mayor Distancia ----------
+                // case "km": {
+                //     const updatedState = {
+                //         ...state,
+                //         orderState: action.payload,
+                //         allRestorants: [...state.allRestorants].sort((a, b) => a.ranking - b.ranking),
+                //         restorantsFound: [...state.restorantsFound].sort((a, b) => a.ranking - b.ranking),
+                //     };
+                //     return updatedState;
+                // }
             }
-
         //-----------------------------------------------------------------------------------------
         case GET_TYPES_FOODS: {
             return {
                 ...state,
                 typesOfFoods: action.payload,
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        case GET_ATMOSPHERE: {
+            return {
+                ...state,
+                typesOfAtmosphere: action.payload,
+            }
+        }
+        case GET_SECTIONS: {
+            return {
+                ...state,
+                typesOfSections: action.payload,
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        case GET_DIET: {
+            return {
+                ...state,
+                typesOfDiet: action.payload,
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        case GET_EXTRA: {
+            return {
+                ...state,
+                typesOfExtras: action.payload,
+            }
+        }
+        case FILTER_RESTORANTS: {
+            const {
+                menu, // => string
+                ambiences,
+                spaces,
+                diet,
+                extra
+            } = action.payload
+            let arrayFiltered = [...state.restorantsFound];
+
+            if (menu) {
+                arrayFiltered = arrayFiltered.filter(el => el.menu[0] === menu)
+            }
+            if (ambiences) {
+                arrayFiltered = arrayFiltered.filter(el => el.atmosphere[0] === ambiences)
+            }
+            if (spaces) {
+                arrayFiltered = arrayFiltered.filter(el => el.section[0] === spaces)
+            }
+            if (diet) {
+                arrayFiltered = arrayFiltered.filter(el => el.diet[0] === diet)
+            }
+            if (extra) {
+                arrayFiltered = array.arrayFiltered.filter(el => el.extra[0] === extra)
+            }
+
+            return {
+                ...state,
+                restorantsFound: arrayFiltered,
+                allRestorants: arrayFiltered,
+            }
+        }
+        case CLEAR_FILTERS: {
+            return {
+                ...state,
+                allRestorants: action.payload,
+                restorantsFound: action.payload,
             }
         }
         default:
@@ -179,7 +255,5 @@ export default function rootReducer(state = initialState, action) {
             return a.ranking - b.ranking;
         });
     }
-
-
 };
 

@@ -1,0 +1,72 @@
+.btnGost {
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  color: white;
+  padding: 14px 9px;
+}
+
+.btnGost:hover {
+  background: transparent;
+  color: magenta;
+  text-decoration: underline;
+}
+
+.containerGeneral {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding-left: 20px;
+  padding-bottom: 15px;
+}
+
+h3 {
+  margin: 0px;
+}
+
+button:hover {
+  box-shadow: rgba(255, 255, 255, 0.2) 0 3px 15px inset,
+    rgba(0, 0, 0, 0.1) 0 3px 5px, rgba(0, 0, 0, 0.1) 0 10px 13px;
+  transform: scale(1.05);
+}
+
+.btnSearch {
+  border-radius: 0px 15px 15px 0px;
+  margin: 0;
+  padding: 0 11px;
+}
+
+.inputSearch {
+  border-radius: 15px 0px 0px 15px;
+  margin: auto 0;
+  flex-grow: 0.7;
+}
+
+input {
+  border-color: #80808075;
+  outline-color: rgb(206 34 34 / 32%);
+}
+
+.containerColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.containerVisibility {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  padding: 5px;
+  z-index: 1;
+  position: absolute;
+  top: 95px;
+  box-shadow: 8px 6px 5px 3px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.containerHidden {
+  display: none;
+}

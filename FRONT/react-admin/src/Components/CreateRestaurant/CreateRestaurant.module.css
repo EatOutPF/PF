@@ -1,46 +1,191 @@
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Lobster&family=PT+Sans&family=Spartan:wght@300&display=swap");
 
-
-
-
-.formContainer {
-    margin-top: 15em;
-    padding: 1.3em 3em;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    font-weight: 800;
-    color: #000;
-    background-color: #fff;
-    border: none;
-    border-radius: 45px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+  overflow: auto;
 }
 
-.formContainer:hover {
-    background-color: #5c0951;
-    box-shadow: 0px 15px 20px rgba(139, 8, 85, 0.4);
-    color: #fff;
-    transform: translateY(-7px);
+.danger {
+  font-size: 8px;
+  color: rgb(206, 34, 34);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.formContainer {
+  padding: 1.3em 3em;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 800;
+  color: #000;
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 9px 14px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  margin: 60px;
+}
+
+.divInt {
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  font-family: "Spartan", sans-serif;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.buttons {
+  font-size: 17px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  background-color: #d1575d;
+}
+
+.buttons:hover {
+  background-color: #891330;
 }
 
 .formContainer:active {
-    transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
-.title{
+.title {
+  /* text-transform: uppercase;
     text-align: center;
-    font-weight: 900;
+    font-weight: 900; */
 }
 
-.terminos{
+.terminos {
+  /* text-align: center; */
+}
+
+.titles {
+  /* font-weight: 1000; */
+}
+
+.div {
+  /* text-transform: uppercase;
     text-align: center;
+    font-weight: 500;
+    font-size: 8px; */
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 10px;
 }
 
-.titles{
-    font-weight: 1000;
+.divValidations {
+  /* text-transform: uppercase;
+    text-align: center;
+    font-weight: 500;
+    font-size: 8px; */
+  display: flex;
+  flex-direction: column;
 
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
 }
 
+.labelValidations {
+  flex-direction: column;
+  display: flex;
+  height: 40px;
+  justify-content: space-around;
+  padding: 5px;
+}
+
+.labelValidations label {
+  margin: 0;
+}
+/* .div:active {
+  transform: translateY(-1px);
+} */
+
+.inputSchedule input {
+  text-align: center;
+}
+
+@media screen and (max-width: 830px) {
+  .inputSchedule input {
+    width: 60px;
+  }
+}
+
+.containersOptions {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.containerImages {
+  padding: 8px 30px;
+  border: 1 solid black;
+  display: flex;
+  flex-wrap: wrap;
+  border: solid 1px azure;
+  border-radius: 1rem;
+  width: -webkit-fill-available;
+  gap: 8px;
+  margin: 17px;
+}
+
+.containerModifydiv {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.containerSub {
+  background-color: yellowgreen;
+  border-radius: 15px;
+  padding: 5px 10px;
+  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+.containerImagen {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.containerSchedule {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-content: center;
+  justify-content: center;
+}
+
+.containerButtonImagen {
+  position: absolute;
+  z-index: 1;
+
+  left: 27px;
+  font-size: 9px;
+  padding: 3px 5px;
+  font-size: 10px;
+  padding: 5px;
+  font-weight: 600;
+}
+
+.containerImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  position: relative;
+}

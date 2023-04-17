@@ -19,18 +19,21 @@ const restaurantSchema = new Schema({
       type: String,
       required: [true, "El nombre de la calle es obligatorio"],
     },
-    streetNumber: Number,
+    streetNumber: {
+      type: Number,
+      required: [true, "El número de la calle es obligatorio"],
+    },
     neighborhood: String,
-    city: String,
+    city: {
+      type: String,
+      required: [true, "El nombre de la ciudad es obligatorio"],
+    },
     state: String,
     country: String,
     coordinate: {
       latitude: {
         type: Number,
-        required: [
-          true,
-          "La latitud es obligatoria. El formato debe ser ##.######",
-        ],
+        required: [true, "La latitud es obligatoria"],
         min: [-89.999999, "La latitud mínima es de -89.999999"],
         max: [89.999999, "La latitud máxima es de 89.999999"],
       },
@@ -67,8 +70,12 @@ const restaurantSchema = new Schema({
     saturday: { open: String, close: String },
     sunday: { open: String, close: String },
   },
-  ranking: Number,
+  ranking: {
+    type: Number,
+    default: 0,
+  },
   advance: Number,
+  about: String,
   review: [
     {
       type: Schema.Types.ObjectId,
@@ -115,6 +122,26 @@ const restaurantSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  reserve: [{
+    type: Schema.Types.ObjectId,
+    ref: "Reserve",
+  }],
+  user: [{
+    type: Schema.Types.ObjectId,
+    ref: "User",
+
+  }],
+  favorite: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Favorite'
+  }],
+  payment : [{
+    type: Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
+
+  balance: Number,
+  about: String,
 });
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);

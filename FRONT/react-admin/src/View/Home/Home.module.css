@@ -1,5 +1,28 @@
 .containerHome {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  overflow: auto;
+  padding: 0px;
+  flex-grow: 1;
+}
+
+.containerSearchBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  padding-top: 60px;
+}
+
+.containterTable {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.containerSearchPag {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px;
 }

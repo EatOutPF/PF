@@ -1,9 +1,26 @@
 .containerCards {
-  padding: 1rem 4rem;
+  flex-grow: 1;
+  padding-top: 40px;
+  padding: 0rem 20px;
 }
-
 
 .containerTitle {
   background-color: #fa6b6b;
   color: #ffffff;
+}
+
+.containerBodyTable {
+  overflow: auto;
+}
+
+.containerThead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2px;
+}
+
+th {
+  text-transform: uppercase;
+  font-size: 14px;
+  text-shadow: 2px 2px 5px #101010f7;
 }
