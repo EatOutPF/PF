@@ -11,6 +11,7 @@ const User = require("./models/User");
 const Review = require("./models/Review");
 const Favorite = require("./models/Favorite");
 const Payment = require("./models/Payment");
+const Notification = require("./models/Notification")
 const { ATLAS_URI } = process.env;
 const mongoose = require("mongoose");
 
@@ -38,4 +39,5 @@ module.exports = {
   Review,
   Favorite,
   Payment,
+  Notification
 };
