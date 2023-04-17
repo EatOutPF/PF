@@ -29,6 +29,7 @@
     "expo-font": "^11.1.1",
     "expo-location": "^15.1.1",
     "expo-random": "^13.1.1",
+    "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
     "expo-web-browser": "^12.1.1",
@@ -39,6 +40,7 @@
     "react-dom": "^18.2.0",
     "react-native": "0.71.6",
     "react-native-calendars": "^1.1294.0",
+    "react-native-double-tap": "^1.0.1",
     "react-native-eject": "^0.2.0",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "^2.9.0",
@@ -53,13 +55,13 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.10",
+    "react-native-webview": "11.26.0",
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.5",
     "react-router-native": "^6.10.0",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-persist": "^6.0.0",
-    "expo-splash-screen": "~0.18.1"
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

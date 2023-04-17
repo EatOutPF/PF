@@ -40,9 +40,9 @@ const DetailResto = ({ route }) => {
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
     user: null,
-    date: null,
-    time: null,
-    table: 0,
+    date: "2023-04-18",
+    time: "17:30",
+    table: 1,
   })
   const handlePersons = (persons) => {
     const operation = Math.ceil(persons / 2);
@@ -87,7 +87,10 @@ const DetailResto = ({ route }) => {
     }
     return horarios;
   }
+  // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
 
+
+  
   const handleDate = (date) => {
     console.log(date)
     //Obtengo el año, mes y día
@@ -100,7 +103,6 @@ const DetailResto = ({ route }) => {
     const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
     const restoHorarios = detail?.schedule; //horarios semanales del restaurant
     const result = restoHorarios[today]; // Esto selcciona el dia del restaurante dentro del restaurante
-
     const openTime = new Date(`${year}-${month}-${day}T${result.open}`); // Este es el horario de apertura del restaurante
     const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
     const horarios = generateHorarios(openTime, closeTime);

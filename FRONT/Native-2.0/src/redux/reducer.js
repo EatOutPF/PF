@@ -45,6 +45,7 @@ const initialState = {
     restorantByString: [],
 
     checkoutLinkMP: "",
+    checkoutExternalReferenceMP: "",
     checkoutLinkMPResponse: {},
 
 
@@ -109,7 +110,11 @@ export default function rootReducer(state = initialState, action) {
             // console.log("soy el reducer de mp: ", action.payload);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
+            return { ...state, 
+                checkoutLinkMPResponse: action?.payload, 
+                checkoutLinkMP: action?.payload?.body?.init_point,
+                checkoutExternalReferenceMP: action?.payload?.body?.external_reference,
+            }
 
         }
         //------------------------------------------------------------------------- 
@@ -281,7 +286,7 @@ export default function rootReducer(state = initialState, action) {
         //-----------------------------------------------------------------------------------------
         case SET_USER_TOKEN: {
             console.log("*************************************");
-            console.log("token user: ", action.payload);
+            console.log("SET_USER_TOKEN REDUCER ", action.payload);
             return {
                 ...state,
                 userToken: action?.payload,
@@ -297,7 +302,7 @@ export default function rootReducer(state = initialState, action) {
         //-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            console.log(" user INFO: ", action.payload);
+            console.log("GET_USER_INFO REDUCER: ", action.payload);
             return {
                 ...state,
                 userInfo: action?.payload,

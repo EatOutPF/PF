@@ -266,7 +266,7 @@ export const createUser = (payload) => {
 }
 
 export const setUserToken = (payload) => {
-    console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
+    // console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
     // getUserInfo(payload?.stsTokenManager?.accessToken)
     return {
         type: SET_USER_TOKEN,
@@ -285,7 +285,7 @@ export const clearUserToken = (payload) => {
 export const getUserInfo = (token) => {
     console.log("GETUSERINFO: ", token);
     setUserToken(token)
-    console.log("GETUSERINFO2222: ", token?.stsTokenManager?.accessToken);
+    console.log("GETUSERINFO TOKEN: ", token?.stsTokenManager?.accessToken);
     
     return async (dispatch) => {
         axios
