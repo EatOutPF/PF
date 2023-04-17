@@ -16,7 +16,7 @@ router.use(cors(corsOptions));
 router.post("/", (req, res) => {
 
  
-  const restaurant = req.body.props;
+  const restaurant = req.body.resto;
   const user = req.body.user;
   const reserve = req.body.reserve;
   console.log(restaurant, user, reserve)
