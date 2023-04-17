@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const express = require("express");
 const webhook = require("../controllers/controllerPaymentSatus");
+
 //const cors = require("cors");
 // const corsOptions = {
 //     origin: "*",
@@ -23,11 +24,13 @@ router.get("/:reference?", async (req, res) => {
 
     try {
     let resultado = await webhook(reference)  
+
     res.status(200).json(resultado)
     } catch (error) {
        console.log(error) 
     }
 })
+
 
 
 module.exports = router
