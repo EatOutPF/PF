@@ -1,11 +1,18 @@
 const { Router } = require("express");
 const express = require("express");
 const { sendConfirmationEmail } = require("../controllers/controllerEmail");
-const router = Router();
-router.use(express.json());
+const cors = require("cors");
 
+const router = Router();
+
+const corsOptions = {
+    origin: "*",
+    optionSuccessStatus: 200,
+  };
+router.use(express.json());
+router.use(cors(corsOptions));
 router.post("/", async (req, res) => {
-  const { email, name, price } = req.query;
+  const { email, name, price } = req.body;
   try {
 
      await sendConfirmationEmail(email, name, price);
