@@ -56,7 +56,7 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
           onChange={(e) => handleSortByName(e)}
           className="form-selected"
         >
-          <option value="">Order by alphabetical</option>
+          <option value="">Ordenar por nombre</option>
           <option value="asc"> A to Z</option>
           <option value="desc"> Z to A</option>
         </select>
@@ -67,9 +67,9 @@ function Sort({ setOrder, setCurrentPage, resetFilter }) {
           onChange={(e) => handleOrderByPopularity(e)}
           className="form-selected"
         >
-          <option value="">Order by ranking</option>
-          <option value="max">Ascendent popularity</option>
-          <option value="min">Descendent popularity</option>
+          <option value="">Ordenar por ranking</option>
+          <option value="max">Ranking de mayor a menor</option>
+          <option value="min">Ranking de menor a mayor</option>
         </select>
       </div>
     </div>

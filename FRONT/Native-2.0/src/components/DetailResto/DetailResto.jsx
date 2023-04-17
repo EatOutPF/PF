@@ -1,18 +1,14 @@
 
 import React, { useState, useEffect,useRef } from 'react'
 import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal } from 'react-native'
-import StyledText from '../../styles/StyledText/StyledText.jsx'
-import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById, PostsOptions } from '../../redux/actions.js'
+import {  PostsFavorite, PostsOptions } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import * as WebBrowser from 'expo-web-browser';
-import { onAuthStateChanged } from 'firebase/auth'
 import {auth} from "../../../firebase-config.js"
-import { Toast } from 'react-native-easy-toast'
 import Loading from "../Loading/Loading"
-import theme from '../../styles/theme.js'
+
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
@@ -23,16 +19,27 @@ const DetailResto = ({ route }) => {
   // const { _id } = useParams();
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
-  const toastRef= useRef()
+ 
 
   const [loading, setLoading] = useState(true)
   const [isFavorite ,setIsFavorite ]= useState(false)
   const [userLogged, setuserLogged]= useState(false)
   
+  
+  const [userId, setUserId] = useState(null);
 
- auth.onAuthStateChanged(user=>{
-    user? setuserLogged(true) : setuserLogged(false)
-  })
+  // Obtener el ID del usuario desde el estado de Redux
+  const user = useSelector(state => state.user);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      user ? setuserLogged(true) : setuserLogged(false);
+      // Guardar el ID del usuario en el estado local
+      setUserId(user.uid);
+      // Agregar un console.log para ver el valor del ID del usuario
+      console.log(`ID del usuario: ${user.uid}`);
+    });
+  }, []);
 
   console.log("SOY DETAIL: ", _id);
   const dispatch = useDispatch();
@@ -72,8 +79,12 @@ const DetailResto = ({ route }) => {
   }, [detail]);
 
   useEffect(() => {
+    dispatch(clearLinkMercadoPago());
+
+
     if (Object?.keys(detail)?.length === 0) {
       dispatch(searchRestorantById(_id));
+
     }
     else
       if (Object?.keys(detail)?.length !== 0) {
@@ -108,16 +119,20 @@ const DetailResto = ({ route }) => {
       alert('Para agregar el restaurante debes estar logeado');
       return;
     }
-    console.log(detail._id);
-    dispatch(PostsOptions(detail._id));
+    const restaurant = detail._id;
+    const user = userId; 
+    dispatch(PostsFavorite(restaurant, user));
     setIsFavorite();
     alert('Restaurante agregado a favoritos');
+    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+
   };
 const handleRemoveFavorite = () => {
     dispatch(removeFavorite(detail.id));
     setIsFavorite();
   alert('Restaurante eliminado de favoritos');
   };
+  
 
   return (
     <ScrollView>

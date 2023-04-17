@@ -16,7 +16,7 @@ import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js";
 import { setUser } from "./Redux/Actions.js";
 
 axios.defaults.baseURL =
-  /* "https://eatout.onrender.com/" */
+  /*   "https://eatout.onrender.com/" */
   "http://localhost:5001/";
 
 function App() {

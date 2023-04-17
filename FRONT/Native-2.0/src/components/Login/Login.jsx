@@ -16,17 +16,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Logo from "../../img/logo-eatout.jpeg"
 import Profile from '../Profile/Profile';
+import CreateAccountFirebase from './CreateAccountFirebase';
 
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 // import profilePicture from '../../img/png/eatout-logo-name.png'
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+// function HomeScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>Home Screen</Text>
+//     </View>
+//   );
+// }
 
   function LoginScreen() {
 
@@ -42,17 +43,18 @@ function HomeScreen() {
     });
 
     const handleCreateAccount = () => {
-      createUserWithEmailAndPassword(authF, email, password)
-      .then((userCredential) => {
-        console.log('Account created!')
-        Alert.alert('Account created!')
-        const user = userCredential.user;
-        console.log(user)
-      })
-      .catch(error => {
-        console.log(error)
-        Alert.alert(error.message)
-      })
+      // createUserWithEmailAndPassword(authF, email, password)
+      // .then((userCredential) => {
+      //   console.log('Account created!')
+      //   Alert.alert('Account created!')
+      //   const user = userCredential.user;
+      //   console.log(user)
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      //   Alert.alert(error.message)
+      // })
+      navigation.navigate('Crear Cuenta');
     }
 
     const handleSignIn = () => {
@@ -148,6 +150,8 @@ function HomeScreen() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Bienvenido" component={Profile} />
+        <Stack.Screen name="Crear Cuenta" component={CreateAccountFirebase} />
+
       </Stack.Navigator>
   );
 }
