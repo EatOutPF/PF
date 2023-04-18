@@ -22,6 +22,7 @@ import CheckoutState from '../CheckoutPayment/CheckoutState';
 import MyComponent from '../CheckoutPayment/prueba1.jsx';
 import ProfileFirebase from '../Profile/ProfileFirebase.jsx';
 import Notifications from '../Notifications/Notifications.jsx';
+import { useSelector } from 'react-redux';
 
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
@@ -35,6 +36,7 @@ import Notifications from '../Notifications/Notifications.jsx';
 // -------------------- HomeScreenStack --------------------
 const HomeStackNavigator = createNativeStackNavigator();
 function HomeScreenStack(){
+
   return(
     <HomeStackNavigator.Navigator
       initialRouteName='Eat Out'
@@ -79,11 +81,34 @@ function HomeScreenStack(){
 }
 // -------------------- HomeScreenStack --------------------
 
+// ----------------- NotificationsScreenStack -----------------
+const NotificationsStackNavigator = createNativeStackNavigator();
+function NotificationsScreenStack(){
+  return(
+    <NotificationsStackNavigator.Navigator
+      initialRouteName='Eat Out'
+      screenOptions={{
+        screenBackground: 'transparent',
+        headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+        headerTintColor: '#fff',
+      }}
+    >
+      
+      <NotificationsStackNavigator.Screen
+        name="Notificaciones"
+        component={Notifications}   // aca va el componente Reviews
+      />
+
+    </NotificationsStackNavigator.Navigator>
+  )
+
+}
+// -------------------- HomeScreenStack --------------------
 
 // -------------------- Tab Navigator --------------------
 const Tab = createBottomTabNavigator();
 export const LowerNavbar = () => {
-
+  const notificationCounter= useSelector(state => state?.notificationCounter)
   return (
     <Tab.Navigator    
     //  -------------------- CSS Tab Navigator --------------------
@@ -178,9 +203,9 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Notificaciones" 
-          component={Notifications} 
+          component={NotificationsScreenStack} 
           options={{
-            tabBarBadge: 10,
+            tabBarBadge: notificationCounter,
           }}
       />
       <Tab.Screen 

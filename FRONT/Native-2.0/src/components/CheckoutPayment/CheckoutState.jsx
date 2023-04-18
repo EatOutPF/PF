@@ -89,16 +89,16 @@ const CheckoutState = ({route}) => {
             // console.log("res.data-status: ", res?.data[0]);
             // console.log("res.data-user: ", res?.data[1]);
             if(Array.isArray(res?.data)){
-                setResult(res?.data[0])
-                dispatch(setUserInfo(res?.data[1]))
+                setResult(res?.data?.[0])
+                dispatch(setUserInfo(res?.data?.[1]))
             }
             // console.log("res.status: ", res?.status);
             // console.log("res.statustext: ", res?.statusText);
             // console.log("res.keys: ", Object?.keys(res));
             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-            setResult(res.data.results)})
-        .then(error => console.log('ERROR ' + error))
+            setResult(res?.data?.[0])})
+        .then(error => console.log('ERROR boton claudio ' + error))
             
     }
 
@@ -108,7 +108,7 @@ const CheckoutState = ({route}) => {
             <Text>Reservar en:  {resto?.name}</Text>
             <Text>Cantidad de Personas: {reserve?.cantPersons}</Text>
             <Text>Cantidad de mesas: {reserve?.table}</Text>
-            <Text>Fecha / Hora : {reserve?.schedule}</Text>
+            <Text>Fecha / Hora : {reserve?.date} / {reserve?.time}</Text>
             <Text>Monto a Pagar: {resto?.advance}</Text>
             <TouchableOpacity 
                 style={styles.confirmButton} 

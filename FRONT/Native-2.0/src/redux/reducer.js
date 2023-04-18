@@ -15,6 +15,8 @@ import {
 
     CREATE_USER,
 
+    SET_NOTIFICATION_NUMBER,
+
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
 
@@ -41,6 +43,9 @@ const initialState = {
 
     userInfo: {},
     userToken: {},
+
+    notificationsUser: [],
+    notificationCounter: 0,
 
     restorantById: {},
     restorantByString: [],
@@ -310,11 +315,25 @@ export default function rootReducer(state = initialState, action) {
             }
         }
 //-----------------------------------------------------------------------------------------
+        case SET_NOTIFICATION_NUMBER: {
+            // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            // console.log("GET_USER_INFO REDUCER: ", action.payload);
+            return {
+                ...state,
+                notificationCounter: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
         case SET_USER_INFO: {
             console.log("SET_USER_INFO - REDUCER" , action.payload);
+            console.log("SET_USER_INFO - REDUCER reserve" , action?.payload?.reserve);
+            console.log("SET_USER_INFO - REDUCER not leng" , action?.payload?.notificacion);
+
             return {
                 ...state,
                 userInfo: action?.payload,
+                notificationsUser: action?.payload?.notificacion,
+                // notificationCounter: action?.payload?.notificacion?.length(),
             }
         }
 //-----------------------------------------------------------------------------------------
