@@ -42,6 +42,7 @@ async function getUsers(props) {
             select: "_id name",
           },
         })
+        .populate("notificacion")
 
       if (users === null) throw new Error("No existen usuarios con ese Id");
       users.login = true;
@@ -85,6 +86,7 @@ async function getUsers(props) {
           select: "_id name",
         },
       })
+      .populate("notificacion")
 
       if (users === null)
         throw new Error("No existen usuarios con ese E-Mail registrado");
@@ -131,6 +133,7 @@ async function getUsers(props) {
       select: "_id name",
     },
   })
+  .populate("notificacion")
     
   return users;
 }

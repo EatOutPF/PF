@@ -7,6 +7,7 @@ const { getRestaurant } = require("./controllerRestaurant");
 const { getUsers } = require("./controllerUsers");
 const { sendConfirmationEmail } = require("./controllerEmail");
 const { postNotification } = require("./controllerNotification");
+const { postPayment } = require("./controllerPayment");
 
 async function webhook(reference) {
   const token = process.env.MERCADOPAGO_KEY;
@@ -24,7 +25,7 @@ async function webhook(reference) {
     let amount = data.transaction_amount;
     console.log(idResto, idUser, reserve, amount);
     let postReserva;
-    let postPayment;
+    let postPay;
     let restaurant = await getRestaurant(idResto);
     let user = await getUsers(idUser);
 
@@ -92,6 +93,8 @@ async function webhook(reference) {
     if (data.status_detail === "accredited") {
       restaurant.balance += amount;
       restaurant.save();
+      let date = new Date().toISOString().slice(0,10)
+      postPay = postPayment({idUser, idRestaurant: idResto, amount, idReserve: postReserva._id, date: date })
 
       let notificacionPago = await postNotification(messagePago, idUser);
 
@@ -107,7 +110,9 @@ async function webhook(reference) {
       });
     }
     let useract = await getUsers(idUser);
-    return useract;
+
+    return [data.status, useract];
+
   } catch (err) {
     throw new Error(err);
   }
