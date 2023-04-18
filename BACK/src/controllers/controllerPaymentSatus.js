@@ -107,7 +107,7 @@ async function webhook(reference) {
       });
     }
     let useract = await getUsers(idUser);
-   return [data.status, useract];
+   return useract;
   } catch (err) {
     throw new Error(err);
   }
