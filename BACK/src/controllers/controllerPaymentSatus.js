@@ -111,8 +111,9 @@ async function webhook(reference) {
     }
     let useract = await getUsers(idUser);
 
+    console.log(useract)
     return [data.status, useract];
-
+    
   } catch (err) {
     throw new Error(err);
   }
