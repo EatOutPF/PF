@@ -109,7 +109,7 @@ async function webhook(reference) {
         message: { text: textPago, html: htmlPagoUser },
       });
     }
-    let useract = await getUsers(idUser)
+    let useract = await getUsers(idUser);
 
     return [data.status, useract];
 
