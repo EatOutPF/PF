@@ -23,5 +23,5 @@ button.active {
   flex-direction: row;
   margin: 0;
   padding: 8px 20px 8px 8px;
-  justify-content: end;
+  justify-content: flex-end;
 }
