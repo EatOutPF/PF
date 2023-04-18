@@ -109,7 +109,43 @@ async function webhook(reference) {
         message: { text: textPago, html: htmlPagoUser },
       });
     }
-    let useract = await getUsers(idUser);
+    let useract = await getUsers(idUser)
+         .populate("restaurant")
+        .populate({
+          path: "favorite",
+          populate: {
+            path: "restaurant",
+            select: "name _id",
+          },
+        })
+        .populate({
+          path: "reserve",
+          populate: {
+            path: "restaurant",
+            select: "_id name address contact",
+          },
+        })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+            path: "restaurant",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "restaurant",
+            select: "_id name",
+          },
+        })
+        .populate("notificacion")
 
     return [data.status, useract];
 
