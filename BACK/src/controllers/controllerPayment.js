@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Payment, User, Restaurant, Reserve } = require("../db");
 
 
-async function postPayment(idUser, idRestaurant, amount, idReserve, date) {
+async function postPayment({idUser, idRestaurant, amount, idReserve, date}) {
     console.log(idReserve)
     if (!idUser, !idRestaurant, !amount, !idReserve, !date) throw new Error("Faltan campos obligatorios")
 
