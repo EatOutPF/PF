@@ -30,72 +30,90 @@ const DetailResto = ({ route }) => {
   const [contador, setContador] = useState(2)
 
   //--------------Que dia?---------------
+  const [calendarioVisible, setCalendarioVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().split('T')[0];
   const dateToString = moment(currentDate).locale('es').format('ddd, D [de] MMM');
   const [showDate, setShowDate] = useState(dateToString)
+  const [isSelected, setIsSelected] = useState(true);
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
     user: null,
-    date: null,
-    time: null,
-    table: 0,
+    date: "2023-04-18",
+    time: "17:30",
+    table: 1,
   })
   const handlePersons = (persons) => {
     const operation = Math.ceil(persons / 2);
     setReserve({ ...reserve, table: operation });
   }
-  //-----Que dia?---------------
-  const [calendarioVisible, setCalendarioVisible] = useState(false);
 
+  //-----Que dia?---------------
   const expandir = () => {
     setCalendarioVisible(false);
   }
+  //----------------------------------------------------- 
+  useEffect(() => {
+    dispatch(clearLinkMercadoPago());
+    if (Object?.keys(detail)?.length === 0) {
+      dispatch(searchRestorantById(_id));
+    }
+    else
+      if (Object?.keys(detail)?.length !== 0) {
+        if (detail?._id !== _id) {
+          // dispatch(clearStateResatorantById())
+          dispatch(searchRestorantById(_id));
+          setLoading(true)
+        }
+        else setLoading(false)
+      }
 
+  }, [detail, loading])
+
+
+  //--------------A que hora ? -Horarios-----------------
+  const [hours, setHours] = useState([]);
+  const [showHours, setShowHours] = useState(hours[0]);
+
+
+  const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
+    const horarios = [];
+    let current = new Date(openTime);
+    while (current <= closeTime) {
+      const time = moment(current).format('HH:mm')
+      horarios.push(time);
+      current.setMinutes(current.getMinutes() + 30);
+    }
+    return horarios;
+  }
+  // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
+
+
+  
   const handleDate = (date) => {
-    console.log('FECHA SELECCIONADA',date)
+    console.log(date)
+    //Obtengo el año, mes y día
+    const selectedDate = new Date(date.dateString);
+    const day = selectedDate.getDate();
+    const month = selectedDate.getMonth() + 1;
+    const year = selectedDate.getFullYear();
+
+    //la siguiente linea guarda el nombre del dia selcccionado en inglés    
+    const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
+    const restoHorarios = detail?.schedule; //horarios semanales del restaurant
+    const result = restoHorarios[today]; // Esto selcciona el dia del restaurante dentro del restaurante
+    const openTime = new Date(`${year}-${month}-${day}T${result.open}`); // Este es el horario de apertura del restaurante
+    const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
+    const horarios = generateHorarios(openTime, closeTime);
+    //  convierte la fecha en un texto en español y setea la fecha de la reserva
     const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     setShowDate(newDate)
-    // const fechaReserva = new Date();
-    // const fechaString = fechaReserva.toISOString()
-    // console.log('FECHA RESERVA', fechaString.slice(0, 10))
-    setReserve({ ...reserve, date: date.dateString});
+    setReserve({ ...reserve, date: date.dateString });
+    setHours(horarios)
+    setIsSelected(false)
   }
-
-  //A que hora ? -Horarios
-  const [horarios, setHorarios] = useState([
-    '9:00',
-    '9:30',
-    '10:00',
-    '10:30',
-    '11:00',
-    '11:30',
-    '12:00',
-    '12:30',
-    '13:00',
-    '13:30',
-    '14:00',
-    '14:30',
-    '15:00',
-    '15:30',
-    '16:00',
-    '16:30',
-    '17:00',
-    '17:30',
-    '18:00',
-    '18:30',
-    '19:00',
-    '19:30',
-    '20:00',
-    '20:30',
-    '21:00',
-    '21:30',
-    '22:00',
-    '22:30',
-    '23:00',
-    '23:30',
-  ])
+  //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
 
   const openBottomSheet = () => {
@@ -105,44 +123,21 @@ const DetailResto = ({ route }) => {
   const closeBottomSheet = () => {
     bottomSheetRef.current.close();
   };
-  const [showHorario, setShowHorario] = useState(horarios[0])
 
   const handleHorario = (item) => {
+    console.log(item)
     setReserve({ ...reserve, time: item });
-    // console.log('horario RESERVA', showHorario)
-
+    // setHours(item)
+    setShowHours(item)
   }
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
-
   //----------------------------------Header------------------------------
   const [headerHeight, setHeaderHeight] = useState(new Animated.Value(300));
   const scrollViewRef = useRef();
   const handlePress = () => {
     scrollViewRef.current.scrollTo({ y: 500, animated: true });
   };
-
-  //----------------------------------------------------- 
-  useEffect(() => {
-    dispatch(clearLinkMercadoPago());
-
-
-    if (Object?.keys(detail)?.length === 0) {
-      dispatch(searchRestorantById(_id));
-
-    }
-    else
-      if (Object?.keys(detail)?.length !== 0) {
-        if (detail?._id !== _id) {
-          // dispatch(clearStateResatorantById())
-          dispatch(searchRestorantById(_id));
-          setLoading(true)
-
-        }
-        else setLoading(false)
-      }
-
-  }, [detail, loading])
 
   const navigation = useNavigation();
   function handleCheckOut() {
@@ -159,7 +154,6 @@ const DetailResto = ({ route }) => {
     navigation.navigate("Checkout", { checkout: checkout })
   }
 
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -173,9 +167,6 @@ const DetailResto = ({ route }) => {
             <Text style={styles.superTitle}>{detail?.name}</Text>
 
           </Animated.View>
-
-
-
           <ScrollView
             ref={scrollViewRef}
             style={styles.containerReserva}
@@ -267,11 +258,7 @@ const DetailResto = ({ route }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-
-
-
                 {/* ------------------------¿Que dia ?------------------------ */}
-
                 <View style={styles.containerPersons}>
                   <IonicIcon
                     name="calendar-outline"
@@ -285,8 +272,6 @@ const DetailResto = ({ route }) => {
                   </View>
 
                   <View style={styles.containerButtonsPerson}>
-
-
                     <TouchableOpacity>
                       <IonicIcon
                         style={{ marginLeft: 70, }}
@@ -303,16 +288,13 @@ const DetailResto = ({ route }) => {
                           setShowModal(false)
                         }}
                         initialDate={formattedDate}
-                        // maxDate=''
                         markedDates={{
-                          formattedDate: { marked: true },
+                          formattedDate: { marked: false },
                         }}
-
                       />
                     </Modal>
                   </View>
                 </View>
-
                 {/*----------------- Qué horario?------------------------ */}
                 <View style={styles.containerPersons}>
                   <IonicIcon
@@ -322,18 +304,18 @@ const DetailResto = ({ route }) => {
                   />
                   <View style={styles.reservDetail}>
                     <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                    <Text style={styles.textReservDetail}>{showHorario}hs</Text>
+                    <Text style={styles.textReservDetail}>{showHours}hs</Text>
                   </View>
 
                   <View style={styles.buttonPersons}>
                     <TouchableOpacity
                       onPress={openBottomSheet}
+                      disabled={isSelected}
                     >
                       <IonicIcon
                         style={{ marginLeft: 70, }}
                         name="chevron-down-circle-outline"
                         size={37}
-
                       />
                       <RBSheet
                         ref={bottomSheetRef}
@@ -350,12 +332,13 @@ const DetailResto = ({ route }) => {
                       >
                         <View style={styles.containerHorarios}>
                           <ScrollView>
-                            {horarios.map((item) => (
+                            {hours?.map((item) => (
                               <TouchableOpacity
                                 onPress={() => {
                                   handleHorario(item);
                                   closeBottomSheet();
-                                }}>
+                                }}
+                              >
 
                                 <View style={styles.horariosButtons}>
                                   <Text
@@ -372,8 +355,6 @@ const DetailResto = ({ route }) => {
                       </RBSheet>
                     </TouchableOpacity>
                   </View>
-
-
                 </View>
 
                 {/* Boton 'CONFIRMAR RESERVA' */}
@@ -395,8 +376,6 @@ const DetailResto = ({ route }) => {
                 </TouchableOpacity>
               </View>
               {/* ---------- Scroll Horizontal ------------ */}
-
-
               <View style={{ margin: 8, }}>
                 <ScrollView
                   horizontal={true}
@@ -439,8 +418,6 @@ const DetailResto = ({ route }) => {
               <View style={styles.textAbout}>
                 <Text style={styles.textReserv2}> {detail?.about} </Text>
               </View>
-
-
               {/* ---------------- menu --> link a la carta del resto ----- */}
               <View style={styles.containerTitle}>
                 <Text style={styles.title}> MENU --- Link a la carta</Text>

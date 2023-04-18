@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
-
+// import { WebView } from 'react-native-webview';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
+// import axios from 'axios';
 
 
 
@@ -13,11 +14,11 @@ const CheckoutState = ({route}) => {
     const { resto, reserve } = route.params;
     const [readyToPay, setReadyToPay] = useState(false);
     const [result, setResult] = useState("Pendiente");
-
     const dispatch = useDispatch();
+    const external_reference = useSelector(state=> state?.checkoutExternalReferenceMP)
     // const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
-
-
+    // const [url,setUrl] = useState("https://www.google.com/");
+    
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -79,11 +80,23 @@ const CheckoutState = ({route}) => {
 
     };
 
+    const claudio = async () => {
+        console.log("SOY CLAUDIO");
+        console.log("ESTERNAL REFERENCE", external_reference);
+        let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
+        .then(res => {console.log('RES ' + (res.data.results[0].status))
+            console.log("RESULTADO AXIOS CLAUDIO: ", res.data.results[0].status);
+                setResult(res.data.results)})
+        .then(error => console.log('ERROR ' + error))
+
+    }
+
     return (
         <View style={styles.container}>
             <Text style={{backgroundColor: "yellow"}}>Estado de la reserva:  {result?.toUpperCase()}</Text>
             <Text>Reservar en:  {resto?.name}</Text>
             <Text>Cantidad de Personas: {reserve?.cantPersons}</Text>
+            <Text>Cantidad de mesas: {reserve?.table}</Text>
             <Text>Fecha / Hora : {reserve?.schedule}</Text>
             <Text>Monto a Pagar: {resto?.advance}</Text>
             <TouchableOpacity 
@@ -95,7 +108,30 @@ const CheckoutState = ({route}) => {
                 <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Volver a Inicio </Text>
 
             </TouchableOpacity>
+            <TouchableOpacity   style={styles.confirmButton} 
+                title="claudio" 
+                
+                onPress={claudio}>
+            
+                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Claudio </Text>
+                </TouchableOpacity>
                         {/* <Text>{result && JSON.stringify(result)}</Text> */}
+                        {/* <View style={css.container}> */}
+            {/* {url &&
+                <WebView
+                        originWhitelist={['*']}
+                        source={{uri: url}}
+                        style={css.checkoutmp}
+                        // startInLoadingState={true}
+                        // onNavigationStateChange={state=>stateChange(state)}
+                />
+            } 
+             <WebView
+                source={{ uri: "https://www.google.com/" }}
+                style={{ marginTop: 20 }}
+            /> */}
+
+    {/* </View> */}
         </View>
     );
 };
