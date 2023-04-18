@@ -255,3 +255,4 @@ module.exports = {
   putRestaurant,
   activeRestaurant,
 };
+
