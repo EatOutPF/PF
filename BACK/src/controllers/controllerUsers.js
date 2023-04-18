@@ -8,11 +8,41 @@ async function getUsers(props) {
     if (mongoose.Types.ObjectId.isValid(props)) {
       const users = await User.findById(props)
         .populate("restaurant")
-        .populate("favorite")
-        .populate("reserve")
-        .populate("payment")
-        .populate("reserve")
-        .populate("review")
+        .populate({
+          path: "favorite",
+          populate: {
+            path: "restaurant",
+            select: "name _id",
+          },
+        })
+        .populate({
+          path: "reserve",
+          populate: {
+            path: "restaurant",
+            select: "_id name address contact",
+          },
+        })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+            path: "restaurant",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "restaurant",
+            select: "_id name",
+          },
+        })
+        .populate("notificacion")
 
       if (users === null) throw new Error("No existen usuarios con ese Id");
       users.login = true;
@@ -21,12 +51,42 @@ async function getUsers(props) {
       return users;
     } else {
       const users = await User.findOne({ email: { $regex: props } })
-        .populate("restaurant")
-        .populate("favorite")
-        .populate("reserve")
-        .populate("payment")
-        .populate("reserve")
-        .populate("review")
+      .populate("restaurant")
+      .populate({
+        path: "favorite",
+        populate: {
+          path: "restaurant",
+          select: "name _id",
+        },
+      })
+      .populate({
+        path: "reserve",
+        populate: {
+          path: "restaurant",
+          select: "_id name address contact",
+        },
+      })
+      .populate({
+        path: "payment",
+        populate: [
+          {
+          path: "restaurant",
+          select: "_id name"
+        },
+        {
+          path: "reserve",
+          select: "_id date"
+        }
+      ]
+      })
+      .populate({
+        path: "review",
+        populate: {
+          path: "restaurant",
+          select: "_id name",
+        },
+      })
+      .populate("notificacion")
 
       if (users === null)
         throw new Error("No existen usuarios con ese E-Mail registrado");
@@ -38,12 +98,42 @@ async function getUsers(props) {
   }
 
   const users = await User.find()
-    .populate("restaurant")
-    .populate("favorite")
-    .populate("reserve")
-    .populate("payment")
-    .populate("reserve")
-    .populate("review")
+  .populate("restaurant")
+  .populate({
+    path: "favorite",
+    populate: {
+      path: "restaurant",
+      select: "name _id",
+    },
+  })
+  .populate({
+    path: "reserve",
+    populate: {
+      path: "restaurant",
+      select: "_id name address contact",
+    },
+  })
+  .populate({
+    path: "payment",
+    populate: [
+      {
+      path: "restaurant",
+      select: "_id name"
+    },
+    {
+      path: "reserve",
+      select: "_id date"
+    }
+  ]
+  })
+  .populate({
+    path: "review",
+    populate: {
+      path: "restaurant",
+      select: "_id name",
+    },
+  })
+  .populate("notificacion")
     
   return users;
 }
@@ -68,6 +158,7 @@ async function postUsers({ name, phone, email, password, role}) {
     role,
     password,
   });
+
   return `El usuario ${resultado.name} fue creado con exito`;
 }
 

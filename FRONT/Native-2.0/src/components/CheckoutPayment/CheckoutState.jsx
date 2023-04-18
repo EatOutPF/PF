@@ -6,7 +6,6 @@ import axios from "axios";
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 
 
 
@@ -79,13 +78,7 @@ const CheckoutState = ({route}) => {
 
     };
 
-    const claudio = async () => {
-        let algo = await axios.get("https://eatout.onrender.com/paymentstatus/10")
-        .then(res => {console.log('RES ' + (res.data.results[0].status))
-                setResult(res.data.results[0].status)})
-        .then(error => console.log('ERROR ' + error))
-
-    }
+ 
 
     return (
         <View style={styles.container}>
@@ -103,14 +96,7 @@ const CheckoutState = ({route}) => {
                 <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Volver a Inicio </Text>
 
             </TouchableOpacity>
-            <TouchableOpacity   style={styles.confirmButton} 
-                title="claudio" 
-                
-                onPress={claudio}>
-            
-                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Claudio </Text>
-                </TouchableOpacity>
-                        {/* <Text>{result && JSON.stringify(result)}</Text> */}
+         
         </View>
     );
 };
