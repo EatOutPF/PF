@@ -18,6 +18,7 @@ import {
     CLEAR_USER_TOKEN,
 
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -309,6 +310,14 @@ export const getUserInfo = (token) => {
             });
     };
 
+};
+
+export const setUserInfo = (payload) => {
+    return {
+        type: SET_USER_INFO,
+        payload: payload,
+    };
+    
 };
 
 export const clearUserInfo = (payload) => {

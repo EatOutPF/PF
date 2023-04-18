@@ -19,6 +19,7 @@ export const SET_USER_TOKEN = "GET_USER_TOKEN";
 export const CLEAR_USER_TOKEN = "CLEAR_USER_TOKEN";
 
 export const GET_USER_INFO = "GET_USER_INFO";
+export const SET_USER_INFO = "SET_USER_INFO";
 export const CLEAR_USER_INFO = "CLEAR_USER_INFO";
 
 export const GET_TYPES_FOODS = "GET_TYPES_FOODS";

@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
+import { setUserInfo } from '../../redux/actions';
 // import axios from 'axios';
 
 
@@ -84,16 +85,26 @@ const CheckoutState = ({route}) => {
         console.log("SOY CLAUDIO");
         console.log("ESTERNAL REFERENCE", external_reference);
         let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
-        .then(res => {console.log('RES ' + (res.data.results[0].status))
-            console.log("RESULTADO AXIOS CLAUDIO: ", res.data.results[0].status);
-                setResult(res.data.results)})
+        .then(res => {console.log('RES ' + (res))
+            // console.log("res.data-status: ", res?.data[0]);
+            // console.log("res.data-user: ", res?.data[1]);
+            if(Array.isArray(res?.data)){
+                setResult(res?.data[0])
+                dispatch(setUserInfo(res?.data[1]))
+            }
+            // console.log("res.status: ", res?.status);
+            // console.log("res.statustext: ", res?.statusText);
+            // console.log("res.keys: ", Object?.keys(res));
+            // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
+            // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
+            setResult(res.data.results)})
         .then(error => console.log('ERROR ' + error))
-
+            
     }
 
     return (
         <View style={styles.container}>
-            <Text style={{backgroundColor: "yellow"}}>Estado de la reserva:  {result?.toUpperCase()}</Text>
+            <Text style={{backgroundColor: "yellow"}}>Estado de la reserva:  {result}</Text>
             <Text>Reservar en:  {resto?.name}</Text>
             <Text>Cantidad de Personas: {reserve?.cantPersons}</Text>
             <Text>Cantidad de mesas: {reserve?.table}</Text>

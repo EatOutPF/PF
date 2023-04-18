@@ -6,12 +6,14 @@ import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { firebaseConfig } from '../../../firebase-config';
 
+import axios from "axios"
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 function CreateAccountFirebase({ navigation }) {
 
   const app = initializeApp(firebaseConfig);
   const authF = getAuth(app);
+
 
 // ---------------------- Validations of Inputs ----------------------
   const [name, setName] = useState('');
@@ -70,10 +72,12 @@ function CreateAccountFirebase({ navigation }) {
     // console.log("soy el action:", value);
     // console.log("-------------------------------------------");
     return async () => {
+        console.log("LLEGUE AL CREATE ACOUNT");
         axios
-            .post(`https://eatout.onrender.com"/users`, value)
+            .post(`https://eatout.onrender.com/users`, value)
             .then((response) => {
-                console.log("RESPONSE del action -> ", response);
+                console.log("RESPONSE CREATE USER -> ", response);
+                Alert.alert(response)
                 // dispatch({
                 //     type: GET_LINK_MERCADOPAGO,
                 //     payload: response.data,
@@ -81,6 +85,7 @@ function CreateAccountFirebase({ navigation }) {
             })
             .catch((error) => {
                 console.log("Error axion: ", error.message);
+                Alert.alert(error.message)
                 // dispatch({
                 //     type: GET_LINK_MERCADOPAGO,
                 //     payload: error.message,
@@ -89,7 +94,7 @@ function CreateAccountFirebase({ navigation }) {
     };
 }
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async() => {
     // https://eatout.onrender.com/users
     // {
     //   "name": "santiago",
@@ -97,7 +102,38 @@ function CreateAccountFirebase({ navigation }) {
     //   "email": "santi@gmail.com",
     //   "password": "123456"
     // }
+  //   name, setName] = useState('');
+  // const [phone, setPhone] = useState(0);
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [passwordRepeat
+    const user = {
+      name: name,
+      phone: phone,
+      email: email,
+      password: password,
+    }
+    console.log("USER CREATE" , user);
+    // createAccount(user)
 
+    let algo = await axios.post(`https://eatout.onrender.com/users`, user)
+          .then((response) => {
+              console.log("RESPONSE CREATE USER -> ", response?.data);
+              Alert.alert("Usuario creado con exito")
+              // dispatch({
+              //     type: GET_LINK_MERCADOPAGO,
+              //     payload: response.data,
+              // });
+          })
+          .catch((error) => {
+              console.log("Error axion: ", error.message);
+              Alert.alert("Error al crear el usuario")
+              // dispatch({
+              //     type: GET_LINK_MERCADOPAGO,
+              //     payload: error.message,
+              // });
+          });
+  
     // createUserWithEmailAndPassword(authF, email, password)
     //   .then((userCredential) => {
     //     console.log('Account created!');
@@ -189,7 +225,7 @@ function CreateAccountFirebase({ navigation }) {
                 {!isValidPasswordRepeat && <Text style={styles.error}>Las contraseñas deben coincidir. </Text>}
               </View>
               
-              <TouchableOpacity  onPress={handleCreateAccount}style={[styles.button, {backgroundColor: '#512e2e'}]}>
+              <TouchableOpacity  onPress={()=>handleCreateAccount()}style={[styles.button, {backgroundColor: '#512e2e'}]}>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Crear Cuenta</Text>
               </TouchableOpacity>
             </View>

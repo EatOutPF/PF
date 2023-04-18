@@ -19,6 +19,7 @@ import {
     CLEAR_USER_TOKEN,
 
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -299,7 +300,7 @@ export default function rootReducer(state = initialState, action) {
                 userToken: {},
             }
         }
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             console.log("GET_USER_INFO REDUCER: ", action.payload);
@@ -308,7 +309,15 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: action?.payload,
             }
         }
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+        case SET_USER_INFO: {
+            console.log("SET_USER_INFO - REDUCER" , action.payload);
+            return {
+                ...state,
+                userInfo: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
         case CLEAR_USER_INFO: {
             return {
                 ...state,
@@ -317,7 +326,7 @@ export default function rootReducer(state = initialState, action) {
         }
 
 
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
         default:
             return state;
     }

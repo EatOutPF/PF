@@ -23,7 +23,8 @@ export default function ProfileFirebase() {
     const profilePicture = user?.user?.photoURL
     console.log("ProfileFirebase COMPONENT -------------", user);
     console.log(typeof(user));
-    console.log("ProfileFirebase COMPONENT keys -------------", Object.keys(user));
+    console.log("ProfileFirebase COMPONENT keys -------------", Object?.keys(user));
+    console.log("ProfileFirebase COMPONENT RESERVE-------------", user?.reserve);
 
     const imageSources = [
       require('../../img/profile-pic/0.png'),

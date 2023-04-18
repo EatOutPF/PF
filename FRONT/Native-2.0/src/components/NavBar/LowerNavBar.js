@@ -12,6 +12,7 @@ import DetailResto from '../DetailResto/DetailResto.jsx';
 import Login from '../Login/Login.jsx';
 import Map from "../Map/Map"
 import HomeChiquito from './Navigation/HomeChiquito.jsx';
+import Schedule from '../Schedule/Schedule.jsx';
 import RestosList from '../Restos/RestosList.jsx'
 import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Filters from '../Filters/Filters.jsx';
@@ -19,6 +20,8 @@ import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
 import CheckoutState from '../CheckoutPayment/CheckoutState';
 import MyComponent from '../CheckoutPayment/prueba1.jsx';
+import ProfileFirebase from '../Profile/ProfileFirebase.jsx';
+import Notifications from '../Notifications/Notifications.jsx';
 
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
@@ -171,13 +174,13 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Calendario" 
-          component={HomeChiquito} 
+          component={Schedule} 
       />
       <Tab.Screen 
           name="Notificaciones" 
-          component={HomeChiquito} 
+          component={Notifications} 
           options={{
-            tabBarBadge: 29,
+            tabBarBadge: 10,
           }}
       />
       <Tab.Screen 

@@ -22,6 +22,7 @@ const DetailResto = ({ route }) => {
   // const { _id } = useParams();
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
+  console.log("RESTO DETAIL ---------- ", detail);
   const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
@@ -518,6 +519,18 @@ const DetailResto = ({ route }) => {
                 </Text>
               </View>
             </View>
+            <Text>_________</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+            <Text>HOLA HOLA</Text>
+
+
+
           </ScrollView >
         </View>
 
