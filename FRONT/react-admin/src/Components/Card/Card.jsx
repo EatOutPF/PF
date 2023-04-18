@@ -7,8 +7,8 @@ import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
-import axios from "axios";
-import sweetAlert from "sweetalert";
+import schedule from "../../assets/schedule.png";
+/* import sweetAlert from "sweetalert"; */
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -25,20 +25,20 @@ const Card = (props) => {
     dispatch(deleteRestaurant(props));
     console.log(message);
 
-    if (message) {
+    /* if (message) {
       return props?.active
         ? sweetAlert("Se inactivó", message)
         : sweetAlert("Se activó", message);
-    }
+    } */
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-  const handlerPayment = () => {
+  /*   const handlerPayment = () => {
     axios
       .post("https://eatout.onrender.com/mercadopago", props)
       .then((res) => (window.location.href = res.data.response.init_point));
-  };
+  }; */
 
   return (
     <>
@@ -70,18 +70,30 @@ const Card = (props) => {
               <></>
             )}
 
-            <NavLink to={`/reviews/${props.id}`}>
-              <button onClick={handlerClick} className={style.rowsInactive}>
-                <div title="Ver Reviews">
-                  <img src={showReviews} alt="reviews" />
-                </div>
-              </button>
-            </NavLink>
+            {props.active && (
+              <>
+                <NavLink to={`/reviews/${props.id}`}>
+                  <button onClick={handlerClick} className={style.rowsInactive}>
+                    <div title="Ver Reviews">
+                      <img src={showReviews} alt="reviews" />
+                    </div>
+                  </button>
+                </NavLink>
+
+                <NavLink to={`/reserves/${props.id}`}>
+                  <button onClick={handlerClick} className={style.rowsSchedule}>
+                    <div title="Ver Reservas">
+                      <img src={schedule} alt="reserve" />
+                    </div>
+                  </button>
+                </NavLink>
+              </>
+            )}
 
             {user.role === "superadmin" && (
               <button
                 onClick={handlerDelete}
-                className={props.active ? style.rowsActive : style.rowsInactive}
+                className={props.active ? style.rowsActive : style.rowsSchedule}
               >
                 {props.active ? (
                   <>
