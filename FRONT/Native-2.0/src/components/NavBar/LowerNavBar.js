@@ -19,6 +19,7 @@ import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
 import CheckoutState from '../CheckoutPayment/CheckoutState';
 import MyComponent from '../CheckoutPayment/prueba1.jsx';
+import FavoritesScreen from '../Favorites/Favorites.jsx'
 
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
@@ -38,7 +39,7 @@ function HomeScreenStack(){
       screenOptions={{
         screenBackground: 'transparent',
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
-        headerTintColor: '#fff',
+        headerTintColor: '#fff'
       }}
     >
       <HomeStackNavigator.Screen
@@ -69,7 +70,10 @@ function HomeScreenStack(){
         name="Reseñas"
         component={HomeChiquito}   // aca va el componente Reviews
       />
-
+<HomeStackNavigator.Screen
+        name="Favoritos"
+        component={FavoritesScreen}   // aca va el componente Reviews
+      />
     </HomeStackNavigator.Navigator>
   )
 
@@ -167,7 +171,7 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Favoritos" 
-          component={HomeChiquito} 
+          component={FavoritesScreen} 
       />
       <Tab.Screen 
           name="Calendario" 

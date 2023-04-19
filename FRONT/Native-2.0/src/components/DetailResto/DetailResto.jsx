@@ -4,16 +4,17 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Ani
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
+import {  PostsFavorite, PostsOptions } from '../../redux/actions.js'
 import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import * as WebBrowser from 'expo-web-browser';
-
+import {auth} from "../../../firebase-config.js"
 import Loading from "../Loading/Loading"
-import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
+import { Icon } from 'react-native-elements'
+import { removeFavorite } from '../../redux/actions.js'
 import RBSheet from "react-native-raw-bottom-sheet";
 
 
@@ -22,6 +23,23 @@ const DetailResto = ({ route }) => {
   // const { _id } = useParams();
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
+  const [isFavorite ,setIsFavorite ]= useState(false)
+  const [userLogged, setuserLogged]= useState(false)
+  
+  
+  const [userId, setUserId] = useState(null);
+
+
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      user ? setuserLogged(true) : setuserLogged(false);
+      setUserId(user.uid);
+      console.log(`ID del usuario: ${user.uid}`);
+    });
+  }, []);
+
+  console.log("SOY DETAIL: ", _id);
   const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
@@ -48,6 +66,12 @@ const DetailResto = ({ route }) => {
     const operation = Math.ceil(persons / 2);
     setReserve({ ...reserve, table: operation });
   }
+  useEffect(() => {
+    // Comprobar si el restaurante ya está en favoritos
+    if (detail && detail.favorite) {
+      setIsFavorite(true);
+    }
+  }, [detail]);
 
   //-----Que dia?---------------
   const expandir = () => {
@@ -155,6 +179,32 @@ const DetailResto = ({ route }) => {
 
     navigation.navigate("Checkout", { checkout: checkout })
   }
+//-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
+  const handleAddFavorite = () => {
+    if (!userLogged) {
+      alert('Para agregar el restaurante debes estar logeado');
+      return;
+    }
+    const restaurant = detail._id;
+    const user = userId; 
+    dispatch(PostsFavorite(restaurant, user));
+    setIsFavorite();
+    alert('Restaurante agregado a favoritos');
+    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+
+  };
+const handleRemoveFavorite = () => {
+  if (!userLogged) {
+    return;
+  }
+  const restaurant = detail._id;
+  const user = userId; 
+  dispatch(PostsFavorite(restaurant, user));
+  setIsFavorite();
+  alert('eliminado');
+  console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -164,8 +214,20 @@ const DetailResto = ({ route }) => {
         ) : (
           detail &&
           <View>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} /> 
+            {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
+          <View style={styles.viewFavortires}>
+          <Icon 
+            type= "material-community"
+            name= {isFavorite ? "heart-outline" : "heart"}
+            onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
+            color= { '#FF0000'}
+            size= {35}
+            underlayColor="tranparent">
 
+         </Icon>
+           
+       </View>
             <View style={styles.titleContainer}>
               <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
@@ -549,6 +611,15 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     // backgroundColor: 'grey',
+  },
+  viewFavortires: {
+    position:"absolute",
+    top: 0,
+    right:0,
+    backgroundColor:"#fff",
+    borderBottomLeftRadius:100,
+    padding:5,
+    paddingLeft:15,
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",

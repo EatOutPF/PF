@@ -11,7 +11,7 @@ const CreateUserForm = () => {
     phone: "",
     email: "",
     password: "",
-    role: "admin",
+    role: "",
   });
 
   const handleChange = (event) => {
@@ -28,7 +28,7 @@ const CreateUserForm = () => {
       phone: "",
       email: "",
       password: "",
-      role: "admin",
+      role: "",
     });
   };
 

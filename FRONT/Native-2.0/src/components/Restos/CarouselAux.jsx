@@ -6,6 +6,13 @@ import { Link, useLocation, Navigate } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearStateRestauranteById } from '../../redux/actions';
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements'
+import {auth} from "../../../firebase-config.js"
+
+
+
+
+
 
 
 // const repositories = restorantsJson;
@@ -21,6 +28,13 @@ const CarouselAux = (props) => {
   const navigation = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
+
+  const [isFavorite ,setisFavorite ]= useState(false)
+  const [userLogged, setuserLogged]= useState(false)
+
+ auth.onAuthStateChanged(user=>{
+    user? setuserLogged(true) : setuserLogged(false)
+  })
   // const handlePrev = () => {
   //   setActiveIndex(activeIndex === 0 ? repositories.length - 1 : activeIndex - 1);
   // };
@@ -39,6 +53,7 @@ const CarouselAux = (props) => {
 
 
   const renderItem = ({ item, index }) => {
+    
 
     {
       const isActive = index === activeIndex;
