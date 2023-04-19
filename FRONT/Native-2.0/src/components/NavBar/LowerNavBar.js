@@ -76,10 +76,10 @@ function HomeScreenStack(){
         name="Reseñas"
         component={HomeChiquito}   // aca va el componente Reviews
       />
-<HomeStackNavigator.Screen
+{/* <HomeStackNavigator.Screen
         name="Favoritos"
         component={FavoritesScreen}   // aca va el componente Reviews
-      />
+      /> */}
     </HomeStackNavigator.Navigator>
   )
 

@@ -9,13 +9,23 @@ import RenderNotification from './RenderNotifications';
 
 const Notifications = () => {
     const userData = useSelector(state=>state?.userInfo)
-    const dataNotificationsReversed = [...userData?.notificacion]?.reverse();
+    
+    const dataNotificationsReversed = userData.notificacion && [...userData?.notificacion]?.reverse();
+    const [userLog, setUserLog] = useState(false);
     const renderItem = ({ item }) => (
       <RenderNotification item={item} />
     );
+
+      useEffect(() => {
+
+        userData.login ? setUserLog(true) : setUserLog(false)
+        
+      }, [userData])
+
     
   return (
-
+    <View style={{ backgroundColor: "#efe4dc"}}>
+    {!userLog ? <Text>NO HAY USER LOG</Text> : 
     <View style={{ backgroundColor: "#efe4dc"}}>
       <Text style={styles.notificationSubtitle}> 
         {CapitalizeString( userData?.name)} estas son tus notificaciones:
@@ -33,7 +43,8 @@ const Notifications = () => {
 
 
     </View>
-    
+}
+</View>
 
   )
 }
