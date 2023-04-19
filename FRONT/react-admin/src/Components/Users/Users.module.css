@@ -16,3 +16,63 @@
   position: sticky;
   top: 2px;
 }
+
+.containerFormModify {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.containerFormModify {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.containerModify {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+}
+
+.containerButton {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 13px 0 13px;
+}
+
+.danger {
+  font-size: 0.8rem;
+  color: rgb(206, 34, 34);
+}
+
+.containerForm2 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  box-shadow: 9px 14px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 5rem;
+  padding: 20px;
+}
+
+.containerButton {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.containerModify button {
+  padding: 5px 10px;
+  /* text-decoration-line: none; */
+  font-size: 17px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  background-color: #d1575d;
+}
+
+.containerModify button:hover {
+  background-color: #891330;
+}

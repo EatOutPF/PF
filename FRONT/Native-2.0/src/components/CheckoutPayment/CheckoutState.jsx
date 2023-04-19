@@ -13,7 +13,6 @@ const CheckoutState = ({route}) => {
     const { resto, reserve } = route.params;
     const [readyToPay, setReadyToPay] = useState(false);
     const [result, setResult] = useState("Pendiente");
-
     const dispatch = useDispatch();
     // const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
 
@@ -79,6 +78,8 @@ const CheckoutState = ({route}) => {
 
     };
 
+ 
+
     return (
         <View style={styles.container}>
             <Text style={{backgroundColor: "yellow"}}>Estado de la reserva:  {result?.toUpperCase()}</Text>
@@ -95,7 +96,7 @@ const CheckoutState = ({route}) => {
                 <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Volver a Inicio </Text>
 
             </TouchableOpacity>
-                        {/* <Text>{result && JSON.stringify(result)}</Text> */}
+         
         </View>
     );
 };

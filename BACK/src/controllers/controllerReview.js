@@ -4,6 +4,7 @@ const { Review, Restaurant, User } = require("../db");
 async function postReviews(review, score, user, idRestaurant) {
 
   const restaurant = await Restaurant.findById(idRestaurant);
+  console.log(restaurant.review)
   const users = await User.findById(user)
 
   if (!restaurant) throw new Error("Restaurante no encontrado");
@@ -14,16 +15,33 @@ async function postReviews(review, score, user, idRestaurant) {
     restaurant: restaurant._id,
     user: users._id
   });
-  const resultado = await newReview.save();
+  console.log(newReview)
+  await newReview.save();
+
 
   restaurant.review.push(newReview._id);
-  const restreview = await restaurant.save();
+  await restaurant.save();
+
+  const reviews = await Review.find({ restaurant: restaurant._id });
+  console.log(reviews)
+  const scores = reviews.map(review => review.score);
+  console.log(scores)
+  const percentage = scores.reduce((acc, score) => acc + score, 0) / (scores.length);
+  console.log(percentage)
+
+  const percentajeOneDecimal = percentage.toFixed(1)
+  restaurant.ranking = percentage;
+  await restaurant.save();
   
   return `El review fue creado con exito`;
 }
 
-async function getReviews() {
-  
+async function getReviews(id) {
+  console.log(id)
+  if(id) {
+    const review = await Review.find( { restaurant : id})
+    console.log(review)
+  }
   const review = await Review.find()
   .populate("restaurant", "name")
   .populate("user", "name")

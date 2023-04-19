@@ -32,8 +32,10 @@ const RestosList = () => {
     if(resto?.length !== 0) { 
       setRestorantes([...resto])
       setLoading(false) }
-    
-    if(Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+    if(restorantById){
+      if(Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+
+    }
 
   },[resto])
 

@@ -258,17 +258,17 @@ export const getExtras = () => {
 export const filterRestorant = (payload) => {
     return {
         type: FILTER_RESTORANTS,
-        payload: "",
+        payload: payload,
     };
 };
 
 export const postListReviews = (value) => {
-    console.log({value})
+
     return async (dispatch) => {
         axios
             .post(`${DB_HOST}/reviews/${value?.resto}`, value)
             .then((response) => {
-             console.log({response})
+            
                 dispatch({
                     type: POST_REVIEWS,
                     payload: response.data,

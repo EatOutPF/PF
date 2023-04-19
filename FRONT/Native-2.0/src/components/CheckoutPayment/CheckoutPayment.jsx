@@ -85,6 +85,7 @@ const CheckoutPayment = ({route}) => {
     };
 
 
+
     return (
         <View style={styles.container}>
             <Text>Reservar en: {checkout?.resto?.name}</Text>

@@ -12,33 +12,19 @@ let transporter = nodemailer.createTransport({
 });
 
 const sendConfirmationEmail = async (
-    email, name, price
+   { mail, subject, message}
 ) => {
-    const date = "4 de febrero"
-    const time = "11:50am"
 
-//   const userMessage = {
-//     from: EMAIL,
-//     to:  email,   //user.email,
-//     subject: "Confirmación de reserva",
-//     text: `¡Hola ${user.name}! Tu reserva en ${restaurant.name} ha sido confirmada.`,
-//     html: `<p>¡Hola ${user.name}!</p><p>Tu reserva en ${restaurant.name} para el ${date} a las ${time} ha sido confirmada.</p>`,
-//   };
-
-  const restaurantMessage = {
+  const sendemail = {
     from: EMAIL,
-    to: email,
-    subject: "Nueva reserva",
-    text: `¡Hola! Has recibido una nueva reserva para ${name}.`,
-    html: `<p>¡Hola!</p><p>Has recibido una nueva reserva para ${name}.</p>
-            <li>
-            <ul>Precio : ${price}</ul>
-            <ul> Fecha y hora: ${date}, ${time}</ul>
-            </li>`,
-  };
+    to: mail,
+    subject: subject,
+    text: message.text,
+    html: message.html
+  }
 
-  // await transporter.sendMail(userMessage);
-  await transporter.sendMail(restaurantMessage);
+  console.log(sendConfirmationEmail)
+  await transporter.sendMail(sendemail);
 };
 
 module.exports = { sendConfirmationEmail };

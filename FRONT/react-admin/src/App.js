@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React /* , { useEffect, useState } */ from "react";
 import Home from "./View/Home/Home.jsx";
 import Login from "./View/Login/Login.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./View/NavBar/NavBar.jsx";
 import "./App.css";
-import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestautant.jsx";
+import ModifyRestaurant from "./Components/ModifyRestaurant/ModifyRestaurant.jsx";
 import Form from "./Components/CreateRestaurant/CreateRestaurant.jsx";
 import Landing from "./View/Landing/Landing.jsx";
 import axios from "axios";
 import Reviews from "./Components/Reviews/Reviews.jsx";
 import CreateUsers from "./View/CreateUsers/CreateUsers.jsx";
 import HomeUsers from "./View/HomeUser/HomeUser.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js";
-import { setUser } from "./Redux/Actions.js";
+import { /* useDispatch, */ useSelector } from "react-redux";
+import Reserves from "./Components/Reserves/Reserves.jsx";
+import Successful from "./Components/Successful/Successful.jsx";
+import ModifyUsers from "./Components/Users/ModifyUsers.jsx";
+/* import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js"; */
+/* import { setUser } from "./Redux/Actions.js"; */
 
 axios.defaults.baseURL =
   /*   "https://eatout.onrender.com/" */
@@ -57,6 +60,16 @@ function App() {
                   element={<Reviews></Reviews>}
                 ></Route>
                 <Route exact path="/home" element={<Home />}></Route>
+                <Route
+                  exact
+                  path="/reserves/:id"
+                  element={<Reserves />}
+                ></Route>
+                <Route
+                  exact
+                  path="/modifyUser/:id"
+                  element={<ModifyUsers />}
+                ></Route>
               </>
             )}
 
@@ -75,8 +88,19 @@ function App() {
                   element={<Reviews></Reviews>}
                 ></Route>
                 <Route exact path="/landing" element={<Landing />}></Route>
+                <Route
+                  exact
+                  path="/reserves/:id"
+                  element={<Reserves />}
+                ></Route>
               </>
             )}
+            <Route
+              exact
+              path="/successfulPayment"
+              element={<Successful />}
+            ></Route>
+
             <Route exact path="/" element={<Login />}></Route>
           </>
         )}

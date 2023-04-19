@@ -25,7 +25,8 @@ export const DELETE_USER = "DELETE_USER";
 export const POST_OPTIONS = "POST_OPTIONS";
 export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
-export const UP_CLOUDINARY = "UP_CLOUDINARY";
+export const DETAIL_USER = "DETAIL_USER";
+export const UPDATE_USER = "UPDATE_USER";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -79,6 +80,27 @@ export const findDetailRestaurant = (id) => {
           payload: err.response.data,
         });
       });
+  };
+};
+
+export const findDetailUser = (id) => {
+  console.log({ id });
+  return (dispatch) => {
+    axios
+      .get(`/users/${id}`)
+      .then((result) => {
+        console.log(1, result.data);
+        dispatch({
+          type: DETAIL_USER,
+          payload: result.data,
+        });
+      })
+      .catch((error) =>
+        dispatch({
+          type: DETAIL_RESTAURANT,
+          payload: error.response.data,
+        })
+      );
   };
 };
 
@@ -173,15 +195,15 @@ export const postRestaurant = (create) => async (dispatch) => {
       type: "POST_RESTAURANT",
       payload: restaurant,
     });
-    dispatch(getAllRestaurantsByUser());
+    dispatch(getAllUsers());
   } catch (error) {
     if (error) {
-      sweetAlert(error.response.data.error);
+      sweetAlert(error.response?.data?.error);
     }
 
     dispatch({
       type: "POST_RESTAURANT",
-      payload: error.response.data.error,
+      payload: error.response?.data?.error,
     });
   }
 };
@@ -250,6 +272,7 @@ export const postUsers = (create) => async (dispatch) => {
       const users = await axios.post(`/users`, create);
       const userdata = users.data;
       console.log(userdata);
+      alert(userdata);
       dispatch({
         type: POST_USERS,
         payload: userdata,
@@ -258,11 +281,14 @@ export const postUsers = (create) => async (dispatch) => {
       throw new Error("El argumento create no es válido");
     }
   } catch (error) {
-    alert(error.response.data);
-    dispatch({
-      type: POST_USERS,
-      payload: [],
-    });
+    console.log(error);
+    alert(error.response?.data?.error);
+    if (error) {
+      dispatch({
+        type: POST_USERS,
+        payload: [],
+      });
+    }
   }
 };
 
@@ -331,35 +357,24 @@ export const getUserById = (user) => {
   };
 };
 
-/* export const UpCloudinary = (event) => {
+export const updateUser = (user) => {
+  console.log({ user });
   return (dispatch) => {
-    try {
-      const files = event.target.files;
-      const arrayImages = [];
-
-      Object.keys(files).forEach((i) => {
-        const file = files[i];
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "EatOut");
-
-        fetch("https://api.cloudinary.com/v1_1/dkqxubvyj/upload", {
-          method: "POST",
-          body: formData,
-        })
-          .then((result) => result.json())
-          .then((res) => {
-            const dataImg = { id: res.asset_id, url: res.secure_url };
-            arrayImages.push(dataImg);
-          });
+    axios
+      .put(`/users/${user._id}`, user)
+      .then((result) => {
+        let data = result.data;
+        console.log({ data });
+        data && sweetAlert(data);
+        dispatch({
+          type: UPDATE_USER,
+          dispatch: data,
+        });
+        dispatch(getAllUsers());
+      })
+      .catch((error) => {
+        console.log(error);
+        return sweetAlert(error);
       });
-      console.log(arrayImages);
-      dispatch({
-        type: UP_CLOUDINARY,
-        payload: arrayImages,
-      });
-    } catch (error) {
-      return error;
-    }
   };
-}; */
+};

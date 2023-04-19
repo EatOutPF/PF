@@ -13,10 +13,10 @@ router.use(express.json());
 router.post("/:id", async (req, res) => {
   const  idRestaurant  = req.params.id;
   
-  const { user, table, date } = req.body;
+  const { idUser, table, date, time } = req.body;
 
   try {
-    let resultado = await postReserve(user, table, date, idRestaurant);
+    let resultado = await postReserve(idUser, table, date, time, idRestaurant);
     res.status(200).json(resultado);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -24,6 +24,9 @@ export default function Validation(data) {
   const regexSaturdayClose = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
   const regexSundayOpen = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
   const regexSundayClose = /^(0[0-9]|1\d|2[0-3]):([0-5]\d)$/g;
+  const regexPhone =
+    /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/g;
+  /*  const regexPassword = /^(?=.*\d)(?=.*[a-zA-Z]).{6,10}$/; */
 
   !data?.name && (errors.name = "Diligencie el nombre del Restaurante");
 
@@ -73,18 +76,19 @@ export default function Validation(data) {
 
   !data?.phoneNumber &&
     (errors.phoneNumber = "Diligencie un numero de teléfono");
-  if (data?.phoneNumber <= 1000000000)
-    errors.phoneNumber = "Debe contener minimo 10 numeros";
+  if (+data?.phoneNumber <= 1000000000)
+    errors.phoneNumber = "Teléfono debe contener minimo 10 numeros";
   if (data?.phoneNumber) {
-    !regexPhoneNumber.test(data?.phoneNumber) &&
+    console.log(data.phoneNumber);
+    !regexPhoneNumber.test(+data?.phoneNumber) &&
       (errors.phoneNumber = "Diligencie un numero de teléfono válido");
   }
 
-  !data?.wpp && (errors.wpp = "Diligencie un numero de teléfono");
-  if (data?.wpp <= 1000000000)
-    errors.phoneNumber = "Debe contener minimo 10 numeros";
+  !data?.wpp && (errors.wpp = "Diligencie un numero de whatsapp");
+  if (+data?.wpp <= 1000000000)
+    errors.wpp = "Whatsapp debe contener minimo 10 numeros";
   if (data?.wpp) {
-    !regexWpp.test(data?.wpp) && (errors.wpp = "Debe ser un numero");
+    !regexWpp.test(+data?.wpp) && (errors.wpp = "Debe ser un numero");
   }
 
   !data?.email && (errors.email = "Diligenciar un email");
@@ -161,6 +165,23 @@ export default function Validation(data) {
     (errors.sundayClose = "Diligenciar la hora de apertura");
   !regexSundayClose.test(data?.sundayClose) &&
     (errors.sundayClose = "Diligenciar en formato 00:00");
+
+  !data?.phone && (errors.phone = "Diligencie un numero de teléfono");
+  if (+data?.phone <= 1000000000)
+    errors.phone = "Teléfono debe contener minimo 10 numeros";
+  if (data?.phone) {
+    console.log(data.phone);
+    !regexPhone.test(+data?.phone) &&
+      (errors.phone = "Diligencie un numero de teléfono válido");
+  }
+
+  if (
+    /* !regexPassword.test(data.password) || */
+    data?.password?.length > 10 ||
+    data?.password?.length < 6
+  ) {
+    errors.password = "Password debe tener entre 6 a 10 caracteres";
+  }
 
   return errors;
 }
