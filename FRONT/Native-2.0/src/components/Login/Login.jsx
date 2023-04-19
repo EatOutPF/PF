@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert, ActivityIndicator } from 'react-native';
 import { BlurView } from 'expo-blur';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,9 +42,10 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     // const utoken = useSelector(state => state.userToken?.stsTokenManager?.accessToken)
     const dispatch = useDispatch();
     const logUser = useSelector(state => state?.userInfo)
-    console.log("LOGIN, user lof ??: ", logUser);
+    console.log("LOGIN, user logeado ??: ", logUser);
     const app = initializeApp(firebaseConfig);
     const authF = getAuth(app);
+    const [readyToPay, setReadyToPay] = useState(false);
 
     GoogleSignin.configure({
       webClientId: "716033457346-uiqt23knlrpkkcp12d8da9qmp4pptfja.apps.googleusercontent.com",
@@ -66,6 +67,24 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       navigation.navigate('Crear Cuenta');
     }
 
+    async function miFuncion() {
+      // Esperar a que se complete el dispatch de Redux
+      setReadyToPay(true)
+      await new Promise(resolve => {
+        // dispatch(miAction());
+        dispatch(getUserInfo(user))
+        resolve();
+      });
+      navigation.navigate('Perfil de Usuario', {user});
+    
+      // // Esperar 10 segundos
+      // await new Promise(resolve => {
+      //   setTimeout(resolve, 10000);
+      // });
+    
+      // Código que quiero ejecutar después de esperar
+    }
+
     const handleSignIn = () => {
       
       signInWithEmailAndPassword(authF, email, password)
@@ -74,6 +93,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
         const user = userCredential.user;
         console.log(user)
         // dispatch(setUserToken(user))
+        // miFuncion()
         dispatch(getUserInfo(user))
         navigation.navigate('Perfil de Usuario', {user});
       })
@@ -144,7 +164,10 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Password</Text>
                 <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="password" secureTextEntry={true}/>
               </View>
-              <TouchableOpacity onPress={handleSignIn} style={[styles.button, {backgroundColor: '#ff9383'}]}>
+              <TouchableOpacity onPress={handleSignIn} style={[styles.button, {backgroundColor: '#ff9383', flexDirection: "row"}]}>
+                {readyToPay &&  
+                <ActivityIndicator style={styles.loading} size="small" color="white" /> 
+                }
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Iniciar sesion</Text>
               </TouchableOpacity>
               

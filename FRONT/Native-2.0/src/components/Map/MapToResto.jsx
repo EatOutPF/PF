@@ -5,6 +5,7 @@ import * as Location from "expo-location"
 import { Marker } from 'react-native-maps';
 import { mapStyle } from './mapStyle';
 import { StyleSheet, View, Dimensions, Text, Emoji } from 'react-native';
+import Loading from '../Loading/Loading';
 
 // function initMap() {
 //     const myLatLng = { lat: -25.363, lng: 131.044 };
@@ -20,21 +21,30 @@ import { StyleSheet, View, Dimensions, Text, Emoji } from 'react-native';
 //     });
 //   }
 
-export default function App() {
+export default function MapToResto({route}) {
+    const { resto } = route.params;
+    const [loading, setLoading] = useState(true)
 
     const [origin, setOrigen] = useState({
-        latitude : -33.744014, 
-        longitude : -61.958717
-    
+        latitude : 0, 
+        longitude : 0
     })
     const [destination, setDestination] = useState({ 
-        latitude : -33.744789, 
-        longitude : -61.985766
+        latitude : resto?.coordinate?.latitude, 
+        longitude : resto?.coordinate?.longitude
     })
+    // setDestination(resto?.coordinate)
 
     useEffect( () => {
-        getLocationPermission()
-    },[])
+        // setOrigen({latitude : 0,longitude : 0})
+
+        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
+            if(origin?.latitude === 0)
+                getLocationPermission()
+            else
+                setLoading(false)
+        // }, 3000);
+    },[origin])
 
     async function getLocationPermission(){ // esto se puede aplicar en un useEffect para hcerlo en tiempo real
         let { status } = await Location.requestForegroundPermissionsAsync(); 
@@ -53,35 +63,38 @@ export default function App() {
 
 return (
     <View style={styles.container}>
-      {/* <MapView style={styles.map} /> */}
+        {loading ? <Loading text="Cargando las coordenadas en el mapa..."/> :
+
+      <View>
         <MapView
             customMapStyle={mapStyle}
             // provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
-                latitude: -33.745326,
-                longitude: -61.968774,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
+                latitude: origin?.latitude,
+                longitude: origin?.longitude,
+                latitudeDelta: 0.040,
+                longitudeDelta: 0.040,
             }}
             mapType="standard"
         >
         <Marker
             key="ClaudioCasa"
             coordinate={ origin }
-            title="Casa de claudio"
-            description="aca vive claudio"
+            title="Usted esta aqui."
+            // description="aca vive claudio"
             draggable
             onDragEnd={(direction) => setOrigen(direction.nativeEvent.coordinate)}
         >
-            <Text style={{fontSize:30}}>🏠</Text>
+            <Text style={{fontSize:20}}>🏠</Text>
         </Marker>
 
         <Marker
-            key="ClaudioTrabajo"
+            key={resto?._id}
             coordinate={ destination }
-            title="El trabajo de claudio"
-            description="aca trabaja claudio di toro" 
+            title={resto?.name}
+            description={`${resto?.address?.streetName} `} 
+            
             //TA y estudiante de Henry en la modalidad Part-time de la cohorte pt10a "
 
             draggable  // ESTA OPCION NOS PEMITE DRAGEAR UN MARKER Y POSICIONARLO EN OTRO LADO
@@ -96,12 +109,14 @@ return (
             strokeWidth={5}
         />
 
-        <Polyline // crea una poligono
+        {/* <Polyline // crea una poligono
             coordinates={[origin, destination, {latitude : -33.744689,longitude : -61.986766}, {latitude : -33.744589,longitude : -61.985766}]}
             strokeColor="orange"
             strokeWidth={5}
-        />
+        /> */}
       </MapView>
+      </View>
+       }
     </View>
 
 

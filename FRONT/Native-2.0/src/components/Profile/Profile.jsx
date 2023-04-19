@@ -21,8 +21,9 @@ export default function Profile({route}) {
 
     const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
-    console.log("USER DE PROFILE: ", user?.user?.photoURL);
-    console.log("keys user, ", Object.keys(user));
+    console.log("PROFILE COMPONENt: ------------- ", user);
+    console.log(typeof(user));
+    console.log("PROFILE COMPONENT, keys user ------------- ", Object.keys(user));
 
     const logOut = () => {
         console.log("FLOR");

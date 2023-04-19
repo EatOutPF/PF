@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { log } from 'react-native-reanimated';
 import { getLinkMercadoPago, clearLinkMercadoPago } from '../../redux/actions';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from "react-native";
+// import { WebView } from 'react-native-webview';
 
 
 
 const CheckoutPayment = ({route}) => {  
     const { checkout } = route.params;
+    // console.log("TODAY: ", checkout);
+
     const [readyToPay, setReadyToPay] = useState(false);
     const [result, setResult] = useState(null);
 
@@ -73,6 +77,7 @@ const CheckoutPayment = ({route}) => {
 
     const navigation = useNavigation();
     const handleBackMercadoPago = async () => {
+        // console.log("OBJETO CHECKUT: ", checkout);
         console?.log("link mp: ", linkMercadoPago);
         let result = await WebBrowser.openBrowserAsync(linkMercadoPago);
             // "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
@@ -90,6 +95,7 @@ const CheckoutPayment = ({route}) => {
         <View style={styles.container}>
             <Text>Reservar en: {checkout?.resto?.name}</Text>
             <Text>Cantidad de Personas: {checkout?.reserve?.cantPersons}</Text>
+            <Text>Cantidad de mesas: {checkout?.reserve?.table}</Text>
             <Text>Fecha / Hora : {checkout?.reserve?.date} / {checkout?.reserve?.time}</Text>
             <Text>Monto a Pagar: {checkout?.resto?.advance}</Text>
             <TouchableOpacity 

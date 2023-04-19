@@ -2,7 +2,9 @@
   "expo": {
     "name": "EatOut",
     "slug": "EatOut",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,7 +38,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "345c6669-2cd4-4b70-82ae-4f0633ba4082"
+        "projectId": "ea80b0c3-c7ea-4bb1-9951-c412a2b452e5"
       }
     }
   }

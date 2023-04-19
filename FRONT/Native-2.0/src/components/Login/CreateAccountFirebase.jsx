@@ -6,28 +6,78 @@ import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { firebaseConfig } from '../../../firebase-config';
 
+import axios from "axios"
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 function CreateAccountFirebase({ navigation }) {
+
+  const app = initializeApp(firebaseConfig);
+  const authF = getAuth(app);
+
+
+// ---------------------- Validations of Inputs ----------------------
   const [name, setName] = useState('');
   const [phone, setPhone] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
 
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidPhone, setIsValidPhone] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidPasswordRepeat, setIsValidPasswordRepeat] = useState(true);
 
-  const app = initializeApp(firebaseConfig);
-  const authF = getAuth(app);
+  const validateName = (text) => {
+    // Name validation logic
+    const regex = /^[a-zA-Z\s]{5,}$/;
+    const isValidName = regex.test(text);
+    setName(text);
+    setIsValidName(isValidName);
+  };
 
+  const validatePhone = (text) => {
+    // Phone number validation logic
+    const regex = /^[0-9]{10,}$/;
+    const isValidPhone = regex.test(text);
+    setPhone(text);
+    setIsValidPhone(isValidPhone);
+  };
+
+  const validateEmail = (text) => {
+    // Regular expression for email validation
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = regex.test(text);
+    setEmail(text);
+    setIsValidEmail(isValidEmail);
+  };
+
+  const validatePassword = (text) => {
+    // Password validation logic
+    const isValidPassword = text.length >= 6;
+    setPassword(text);
+    setIsValidPassword(isValidPassword);
+  };
+
+  const validatePasswordRepeat = (text) => {
+    // Password validation logic
+    const isValidPasswordRepeat = (text === password);
+    setPasswordRepeat(text.value);
+    setIsValidPasswordRepeat(isValidPasswordRepeat);
+
+  };
+// ---------------------- Validations of Inputs ----------------------
 
   function createAccount(value) {
     // console.log("soy el action:", value);
     // console.log("-------------------------------------------");
     return async () => {
+        console.log("LLEGUE AL CREATE ACOUNT");
         axios
-            .post(`https://eatout.onrender.com"/users`, value)
+            .post(`https://eatout.onrender.com/users`, value)
             .then((response) => {
-                console.log("RESPONSE del action -> ", response);
+                console.log("RESPONSE CREATE USER -> ", response);
+                Alert.alert(response)
                 // dispatch({
                 //     type: GET_LINK_MERCADOPAGO,
                 //     payload: response.data,
@@ -35,6 +85,7 @@ function CreateAccountFirebase({ navigation }) {
             })
             .catch((error) => {
                 console.log("Error axion: ", error.message);
+                Alert.alert(error.message)
                 // dispatch({
                 //     type: GET_LINK_MERCADOPAGO,
                 //     payload: error.message,
@@ -43,7 +94,46 @@ function CreateAccountFirebase({ navigation }) {
     };
 }
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async() => {
+    // https://eatout.onrender.com/users
+    // {
+    //   "name": "santiago",
+    //   "phone": 12344321,
+    //   "email": "santi@gmail.com",
+    //   "password": "123456"
+    // }
+  //   name, setName] = useState('');
+  // const [phone, setPhone] = useState(0);
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [passwordRepeat
+    const user = {
+      name: name,
+      phone: phone,
+      email: email,
+      password: password,
+    }
+    console.log("USER CREATE" , user);
+    // createAccount(user)
+
+    let algo = await axios.post(`https://eatout.onrender.com/users`, user)
+          .then((response) => {
+              console.log("RESPONSE CREATE USER -> ", response?.data);
+              Alert.alert("Usuario creado con exito")
+              // dispatch({
+              //     type: GET_LINK_MERCADOPAGO,
+              //     payload: response.data,
+              // });
+          })
+          .catch((error) => {
+              console.log("Error axion: ", error.message);
+              Alert.alert("Error al crear el usuario")
+              // dispatch({
+              //     type: GET_LINK_MERCADOPAGO,
+              //     payload: error.message,
+              // });
+          });
+  
     // createUserWithEmailAndPassword(authF, email, password)
     //   .then((userCredential) => {
     //     console.log('Account created!');
@@ -56,8 +146,6 @@ function CreateAccountFirebase({ navigation }) {
     //     console.log(error);
     //     Alert.alert(error.message);
     //   });
-
-
   };
 
     return (
@@ -82,51 +170,68 @@ function CreateAccountFirebase({ navigation }) {
             />
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Nombre</Text>
-                <TextInput onChangeText={(text) => setName(text)} style={styles.input} placeholder="nombre" />
+                <TextInput
+                  onChangeText={validateName}
+                  style={[styles.input, !isValidName && styles.inputInvalid]}
+                  placeholder="nombre"
+                  value={name}
+                  autoCapitalize="words"
+                />
+                {!isValidName && <Text style={styles.error}>El nombre debe tener minimo 5 letras.</Text>}
               </View>
               <View>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Telefono</Text>
-                <TextInput onChangeText={(text) => setPhone(text)} style={styles.input} placeholder="telefono" secureTextEntry={true}/>
+                <TextInput
+                  onChangeText={validatePhone}
+                  style={[styles.input, !isValidPhone && styles.inputInvalid]}
+                  placeholder="(555) 555-5555"
+                  value={phone}
+                  keyboardType="phone-pad"
+                />
+                {!isValidPhone && <Text style={styles.error}>Ingresar un numero de telefono valido.</Text>}
               </View>
               <View>
                 <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>E-mail</Text>
-                <TextInput onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="usuario@mail.com" />
+                <TextInput
+                  onChangeText={validateEmail}
+                  style={[styles.input, !isValidEmail && styles.inputInvalid]}
+                  placeholder="example@mail.com"
+                  value={email}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+                {!isValidEmail && <Text style={styles.error}>Ingrese un email valido.</Text>}
               </View>
               <View>
-                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Password</Text>
-                <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="password" secureTextEntry={true} />
+                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Contraseña</Text>
+                <TextInput
+                  onChangeText={validatePassword}
+                  style={[styles.input, !isValidPassword && styles.inputInvalid]}
+                  placeholder="********"
+                  value={password}
+                  secureTextEntry={true}
+                />
+                {!isValidPassword && <Text style={styles.error}>La contraseña debe tener minimo 6 caracteres.</Text>}
               </View>
               <View>
-                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Repetir Password</Text>
-                <TextInput onChangeText={(text) => setPasswordRepeat(text)} style={styles.input} placeholder="password" />
+                <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Repetir Contraseña</Text>
+                <TextInput
+                  onChangeText={validatePasswordRepeat}
+                  style={[styles.input, !isValidPasswordRepeat && styles.inputInvalid]}
+                  placeholder="********"
+                  value={passwordRepeat}
+                  secureTextEntry={true}
+                />
+                {!isValidPasswordRepeat && <Text style={styles.error}>Las contraseñas deben coincidir. </Text>}
               </View>
               
-              <TouchableOpacity  onPress={handleCreateAccount}style={[styles.button, {backgroundColor: '#512e2e'}]}>
+              <TouchableOpacity  onPress={()=>handleCreateAccount()}style={[styles.button, {backgroundColor: '#512e2e'}]}>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Crear Cuenta</Text>
               </TouchableOpacity>
             </View>
           </BlurView>
         </ScrollView>
       </View>
-        // <View style={styles.container}>
-        //   <BlurView intensity={100}>
-        //     <View style={styles.login}>
-        //       <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
-
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>E-mail</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="usuario@mail.com" />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Password</Text>
-        //       <TextInput onChangeText={(text) => setPassword(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="password" secureTextEntry={true} />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Nombre</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="nombre" />
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Apellido</Text>
-        //       <TextInput onChangeText={(text) => setEmail(text)} style={{ height: 40, width: 250, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }} placeholder="apellido" />
-        //       <TouchableOpacity onPress={handleCreateAccount} style={{ backgroundColor: '#512e2e', padding: 10, borderRadius: 5 }}>
-        //       <Text style={{ fontSize: 17, fontWeight: '400', color: 'white' }}>Create Account</Text>
-        //       </TouchableOpacity>
-        //     </View>
-        //   </BlurView>
-        // </View>
     );
 }
 
@@ -167,9 +272,16 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 10,
       padding: 10,
-      marginVertical: 10,
+      marginVertical: 5,
       backgroundColor: '#ffffff90',
-      marginBottom: 20
+      marginBottom: 5
+    },
+    inputInvalid: {
+      borderColor: 'red',
+    },
+    error: {
+      color: 'red',
+      fontSize: 12,
     },
     button: {
       width: 250,

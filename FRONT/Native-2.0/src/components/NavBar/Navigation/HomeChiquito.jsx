@@ -6,7 +6,7 @@ const HomeChiquito = () => {
   return (
 
     <View style={{ backgroundColor: "red"}}>
-      <Text>SOY EL HOME chiquito</Text>
+      <Text>FAVORITOS que tiene que hacer Will</Text>
     </View>
     
 

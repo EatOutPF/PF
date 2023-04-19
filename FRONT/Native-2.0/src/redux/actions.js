@@ -17,7 +17,10 @@ import {
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
 
+    SET_NOTIFICATION_NUMBER,
+
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -297,7 +300,7 @@ export const createUser = (payload) => {
 }
 
 export const setUserToken = (payload) => {
-    console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
+    // console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
     // getUserInfo(payload?.stsTokenManager?.accessToken)
     return {
         type: SET_USER_TOKEN,
@@ -316,7 +319,7 @@ export const clearUserToken = (payload) => {
 export const getUserInfo = (token) => {
     console.log("GETUSERINFO: ", token);
     setUserToken(token)
-    console.log("GETUSERINFO2222: ", token?.stsTokenManager?.accessToken);
+    console.log("GETUSERINFO TOKEN: ", token?.stsTokenManager?.accessToken);
     
     return async (dispatch) => {
         axios
@@ -340,6 +343,22 @@ export const getUserInfo = (token) => {
             });
     };
 
+};
+
+export const setUserInfo = (payload) => {
+    return {
+        type: SET_USER_INFO,
+        payload: payload,
+    };
+    
+};
+
+export const setNotificationNumber = (payload) => {
+    return {
+        type: SET_NOTIFICATION_NUMBER,
+        payload: payload,
+    };
+    
 };
 
 export const clearUserInfo = (payload) => {
