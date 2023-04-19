@@ -6,6 +6,7 @@ import Validation from "../Validations/Validations";
 import style from "./ModifyRestaurant.module.css";
 import sweetAlert from "sweetalert";
 import { readMultifilesUpCloudinary } from "../../Redux/utils";
+import Loading from "../Loading/Loading";
 
 const ModifyRestaurant = (props) => {
   const { id } = useParams();
@@ -288,37 +289,47 @@ const ModifyRestaurant = (props) => {
 
               <form onSubmit={handlerSubmit}>
                 <div className={style.container}>
-                  <div className={style.containerInput}>
-                    <label htmlFor="name">Restaurante</label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={input.name}
-                      onChange={handlerChange}
-                      style={{ display: "flex", flexGrow: 100 }}
-                    />
-                  </div>
-                  {errors.name && (
-                    <div>
-                      <span className={style.danger}>{errors.name}</span>
+                  <div
+                    className={style.containerInput}
+                    style={{ flexDirection: "column" }}
+                  >
+                    <div className={style.containerInput}>
+                      <label htmlFor="name">Restaurante</label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={input.name}
+                        onChange={handlerChange}
+                        style={{ display: "flex", flexGrow: 100 }}
+                      />
                     </div>
-                  )}
+                    {errors.name && (
+                      <div>
+                        <span className={style.danger}>{errors.name}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div>
+                <div className={style.container}>
                   <div>Direccion</div>
-                  <div className={style.container}>
+                  <div
+                    className={style.container}
+                    style={{ border: "none", padding: 0 }}
+                  >
                     <div className={style.formCol}>
-                      <div className={style.formRow}>
-                        <label htmlFor="streetName">Calle</label>
-                        <input
-                          type="text"
-                          id="streetName"
-                          name="streetName"
-                          value={input.streetName}
-                          onChange={handlerChange}
-                        />
+                      <div>
+                        <div className={style.formRow}>
+                          <label htmlFor="streetName">Calle</label>
+                          <input
+                            type="text"
+                            id="streetName"
+                            name="streetName"
+                            value={input.streetName}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.streetName && (
                           <span className={style.danger}>
                             {errors.streetName}
@@ -326,15 +337,17 @@ const ModifyRestaurant = (props) => {
                         )}
                       </div>
 
-                      <div className={style.formRow}>
-                        <label htmlFor="streetNumber">#</label>
-                        <input
-                          type="number"
-                          id="streetNumber"
-                          name="streetNumber"
-                          value={input.streetNumber}
-                          onChange={handlerChange}
-                        />
+                      <div>
+                        <div className={style.formRow}>
+                          <label htmlFor="streetNumber">#</label>
+                          <input
+                            type="number"
+                            id="streetNumber"
+                            name="streetNumber"
+                            value={input.streetNumber}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.streetNumber && (
                           <span className={style.danger}>
                             {errors.streetNumber}
@@ -368,17 +381,19 @@ const ModifyRestaurant = (props) => {
                     </div>
 
                     <div className={style.formCol}>
-                      <div className={style.formRow}>
-                        <label htmlFor="latitude" style={{ width: 150 }}>
-                          Coordenadas - latitud
-                        </label>
-                        <input
-                          type="text"
-                          id="latitude"
-                          name="latitude"
-                          value={input.latitude}
-                          onChange={handlerChange}
-                        />
+                      <div>
+                        <div className={style.formRow}>
+                          <label htmlFor="latitude" style={{ width: 150 }}>
+                            Coordenadas - latitud
+                          </label>
+                          <input
+                            type="text"
+                            id="latitude"
+                            name="latitude"
+                            value={input.latitude}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.latitude && (
                           <span className={style.danger}>
                             {errors.latitude}
@@ -386,24 +401,29 @@ const ModifyRestaurant = (props) => {
                         )}
                       </div>
 
-                      <div className={style.formRow}>
-                        <label htmlFor="longitude" style={{ width: 155 }}>
-                          Coordenadas -longitud
-                        </label>
-                        <input
-                          type="text"
-                          id="longitude"
-                          name="longitude"
-                          value={input.longitude}
-                          onChange={handlerChange}
-                        />
+                      <div>
+                        <div className={style.formRow}>
+                          <label htmlFor="longitude" style={{ width: 155 }}>
+                            Coordenadas -longitud
+                          </label>
+                          <input
+                            type="text"
+                            id="longitude"
+                            name="longitude"
+                            value={input.longitude}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.longitude && (
                           <span className={style.danger}>
                             {errors.longitude}
                           </span>
                         )}
                       </div>
-                      <div className={style.formCol}>
+                    </div>
+
+                    <div className={style.formCol}>
+                      <div>
                         <div className={style.formRow}>
                           <label htmlFor="country">Pais</label>
                           <input
@@ -413,103 +433,11 @@ const ModifyRestaurant = (props) => {
                             value={input.country}
                             onChange={handlerChange}
                           />
-                          {errors.country && (
-                            <span className={style.danger}>
-                              {errors.country}
-                            </span>
-                          )}
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={style.container}>
-                  <div className={style.containerSection}>
-                    <div className={style.containerDataSection}>
-                      {/*                       <div>
-                        <label htmlFor="streetName">Calle</label>
-                        <input
-                          type="text"
-                          id="streetName"
-                          name="streetName"
-                          value={input.streetName}
-                          onChange={handlerChange}
-                        />
-                        {errors.streetName && (
-                          <span className={style.danger}>
-                            {errors.streetName}
-                          </span>
+                        {errors.country && (
+                          <span className={style.danger}>{errors.country}</span>
                         )}
                       </div>
-                      <div>
-                        <label htmlFor="streetNumber">#</label>
-                        <input
-                          type="number"
-                          id="streetNumber"
-                          name="streetNumber"
-                          value={input.streetNumber}
-                          onChange={handlerChange}
-                        />
-                        {errors.streetNumber && (
-                          <span className={style.danger}>
-                            {errors.streetNumber}
-                          </span>
-                        )}
-                      </div>
-                      <div>
-                        <label htmlFor="neighborhood">Barrio</label>
-                        <input
-                          type="text"
-                          id="neighborhood"
-                          name="neighborhood"
-                          value={input.neighborhood}
-                          onChange={handlerChange}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="state">Estado</label>
-                        <input
-                          type="text"
-                          id="state"
-                          name="state"
-                          value={input.state}
-                          onChange={handlerChange}
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="city">Ciudad</label>
-                        <input
-                          type="text"
-                          id="city"
-                          name="city"
-                          value={input.city}
-                          onChange={handlerChange}
-                        />
-                        {errors.city && (
-                          <span className={style.danger}>{errors.city}</span>
-                        )}
-                      </div>
- */}
-
-                      {/*  <div></div>
-
-                      <div>
-                        <label htmlFor="latitude">Coordenadas - latitud</label>
-                        <input
-                          type="text"
-                          id="latitude"
-                          name="latitude"
-                          value={input.latitude}
-                          onChange={handlerChange}
-                        />
-                        {errors.latitude && (
-                          <span className={style.danger}>
-                            {errors.latitude}
-                          </span>
-                        )}
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -536,24 +464,32 @@ const ModifyRestaurant = (props) => {
                           onChange={handlerChange}
                         />
                       </div>
-                      <div className={style.containerDataSection}>
-                        <label htmlFor="wpp"> wpp </label>
-                        <input
-                          type="number"
-                          name="wpp"
-                          value={input.wpp}
-                          onChange={handlerChange}
-                        />
+
+                      <div style={{ flexDirection: "column" }}>
+                        <div className={style.containerDataSection}>
+                          <label htmlFor="wpp"> wpp </label>
+                          <input
+                            type="number"
+                            name="wpp"
+                            value={input.wpp}
+                            onChange={handlerChange}
+                          />
+                        </div>
+                        {errors.wpp && (
+                          <span className={style.danger}>{errors.wpp}</span>
+                        )}
                       </div>
 
-                      <div className={style.containerDataSection}>
-                        <label htmlFor="phoneNumber"> Telefono </label>
-                        <input
-                          type="number"
-                          name="phoneNumber"
-                          value={input.phoneNumber}
-                          onChange={handlerChange}
-                        />
+                      <div style={{ flexDirection: "column" }}>
+                        <div className={style.containerDataSection}>
+                          <label htmlFor="phoneNumber"> Telefono </label>
+                          <input
+                            type="number"
+                            name="phoneNumber"
+                            value={input.phoneNumber}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.phoneNumber && (
                           <span className={style.danger}>
                             {errors.phoneNumber}
@@ -561,14 +497,16 @@ const ModifyRestaurant = (props) => {
                         )}
                       </div>
 
-                      <div className={style.containerDataSection}>
-                        <label htmlFor="email"> Email </label>
-                        <input
-                          type="text"
-                          name="email"
-                          value={input.email}
-                          onChange={handlerChange}
-                        />
+                      <div style={{ flexDirection: "column" }}>
+                        <div className={style.containerDataSection}>
+                          <label htmlFor="email"> Email </label>
+                          <input
+                            type="text"
+                            name="email"
+                            value={input.email}
+                            onChange={handlerChange}
+                          />
+                        </div>
                         {errors.email && (
                           <span className={style.danger}>{errors.email}</span>
                         )}
@@ -579,7 +517,10 @@ const ModifyRestaurant = (props) => {
 
                 <div className={style.container}>
                   {loading ? (
-                    <div>Cargando Imagenes...</div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Loading></Loading>
+                      <div>Cargando imagenes ... </div>
+                    </div>
                   ) : (
                     <>
                       <div className={style.containerModifydiv}>
@@ -630,33 +571,40 @@ const ModifyRestaurant = (props) => {
                   )}
                 </div>
 
-                <div className={style.container}>
-                  <label htmlFor="tables"># Mesas</label>
-                  <input
-                    type="number"
-                    id="tables"
-                    name="tables"
-                    value={input.tables}
-                    onChange={handlerChange}
-                  />
-                  {errors.tables && (
-                    <span className={style.danger}>{errors.tables}</span>
-                  )}
-                </div>
+                <div
+                  className={style.container}
+                  style={{ justifyContent: "flex-start" }}
+                >
+                  <div>
+                    <div className={style.containerBox}>
+                      <label htmlFor="tables"># Mesas</label>
+                      <input
+                        type="number"
+                        id="tables"
+                        name="tables"
+                        value={input.tables}
+                        onChange={handlerChange}
+                      />
+                    </div>
+                    {errors.tables && (
+                      <span className={style.danger}>{errors.tables}</span>
+                    )}
+                  </div>
 
-                <div className={style.container}>
-                  <label htmlFor="menu">Menú</label>
-                  <select name="menu" onChange={handlerChange}>
-                    <option defaultValue={input.menu}>{input.menu}</option>
-                    {optionsMenu &&
-                      optionsMenu.map((opc, index) => {
-                        return (
-                          <option value={opc} key={`${opc}${index}`}>
-                            {opc}
-                          </option>
-                        );
-                      })}
-                  </select>
+                  <div className={style.containerBox}>
+                    <label htmlFor="menu">Menú</label>
+                    <select name="menu" onChange={handlerChange}>
+                      <option defaultValue={input.menu}>{input.menu}</option>
+                      {optionsMenu &&
+                        optionsMenu.map((opc, index) => {
+                          return (
+                            <option value={opc} key={`${opc}${index}`}>
+                              {opc}
+                            </option>
+                          );
+                        })}
+                    </select>
+                  </div>
                 </div>
 
                 <div className={style.container}>
@@ -1048,46 +996,76 @@ const ModifyRestaurant = (props) => {
                 </div>
 
                 <div className={style.container}>
-                  <label htmlFor="ranking"> Puntaje </label>
-                  <input
-                    type="text"
-                    id="ranking"
-                    name="ranking"
-                    defaultValue={input.ranking}
-                    style={{ backgroundColor: "#c6c5c5" }}
-                  />
+                  <div className={style.containerBox}>
+                    <label htmlFor="ranking"> Puntaje </label>
+                    <input
+                      type="text"
+                      id="ranking"
+                      name="ranking"
+                      defaultValue={input.ranking}
+                      style={{ backgroundColor: "#c6c5c5" }}
+                    />
+                  </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={
-                    errors.name ||
-                    errors.streetName ||
-                    errors.streetNumber ||
-                    errors.city ||
-                    errors.country ||
-                    errors.longitude ||
-                    errors.latitude ||
-                    errors.email ||
-                    errors.tables ||
-                    errors.mondayOpen ||
-                    errors.mondayClose ||
-                    errors.tuesdayOpen ||
-                    errors.tuesdayClose ||
-                    errors.wednesdayOpen ||
-                    errors.wednesdayClose ||
-                    errors.thursdayOpen ||
-                    errors.thursdayClose ||
-                    errors.fridayOpen ||
-                    errors.fridayClose ||
-                    errors.saturdayOpen ||
-                    errors.saturdayClose ||
-                    errors.sundayOpen ||
-                    errors.sundayClose
-                  }
-                >
-                  Guardar
-                </button>
+                {errors.name ||
+                errors.streetName ||
+                errors.streetNumber ||
+                errors.city ||
+                errors.country ||
+                errors.longitude ||
+                errors.latitude ||
+                errors.email ||
+                errors.tables ||
+                errors.mondayOpen ||
+                errors.mondayClose ||
+                errors.tuesdayOpen ||
+                errors.tuesdayClose ||
+                errors.wednesdayOpen ||
+                errors.wednesdayClose ||
+                errors.thursdayOpen ||
+                errors.thursdayClose ||
+                errors.fridayOpen ||
+                errors.fridayClose ||
+                errors.saturdayOpen ||
+                errors.saturdayClose ||
+                errors.sundayOpen ||
+                errors.sundayClose ? (
+                  <div className={style.danger}>
+                    ** Diligencie todos los campos obligatorios
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={
+                      errors.name ||
+                      errors.streetName ||
+                      errors.streetNumber ||
+                      errors.city ||
+                      errors.country ||
+                      errors.longitude ||
+                      errors.latitude ||
+                      errors.email ||
+                      errors.tables ||
+                      errors.mondayOpen ||
+                      errors.mondayClose ||
+                      errors.tuesdayOpen ||
+                      errors.tuesdayClose ||
+                      errors.wednesdayOpen ||
+                      errors.wednesdayClose ||
+                      errors.thursdayOpen ||
+                      errors.thursdayClose ||
+                      errors.fridayOpen ||
+                      errors.fridayClose ||
+                      errors.saturdayOpen ||
+                      errors.saturdayClose ||
+                      errors.sundayOpen ||
+                      errors.sundayClose
+                    }
+                  >
+                    Guardar
+                  </button>
+                )}
               </form>
             </div>
           </div>

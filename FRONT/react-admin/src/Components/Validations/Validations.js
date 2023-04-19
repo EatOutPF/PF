@@ -73,18 +73,19 @@ export default function Validation(data) {
 
   !data?.phoneNumber &&
     (errors.phoneNumber = "Diligencie un numero de teléfono");
-  if (data?.phoneNumber <= 1000000000)
-    errors.phoneNumber = "Debe contener minimo 10 numeros";
+  if (+data?.phoneNumber <= 1000000000)
+    errors.phoneNumber = "Teléfono debe contener minimo 10 numeros";
   if (data?.phoneNumber) {
-    !regexPhoneNumber.test(data?.phoneNumber) &&
+    console.log(data.phoneNumber);
+    !regexPhoneNumber.test(+data?.phoneNumber) &&
       (errors.phoneNumber = "Diligencie un numero de teléfono válido");
   }
 
-  !data?.wpp && (errors.wpp = "Diligencie un numero de teléfono");
-  if (data?.wpp <= 1000000000)
-    errors.phoneNumber = "Debe contener minimo 10 numeros";
+  !data?.wpp && (errors.wpp = "Diligencie un numero de whatsapp");
+  if (+data?.wpp <= 1000000000)
+    errors.wpp = "Whatsapp debe contener minimo 10 numeros";
   if (data?.wpp) {
-    !regexWpp.test(data?.wpp) && (errors.wpp = "Debe ser un numero");
+    !regexWpp.test(+data?.wpp) && (errors.wpp = "Debe ser un numero");
   }
 
   !data?.email && (errors.email = "Diligenciar un email");

@@ -263,7 +263,7 @@ export const filterRestorant = (payload) => {
         payload: payload,
     };
 };
-
+//-----------POST DE FAVORITES-----------------------------
 export const PostsFavorite = (restaurant, user) => {
     return async dispatch => {
       try {

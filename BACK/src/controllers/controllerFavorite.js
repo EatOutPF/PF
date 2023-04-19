@@ -7,7 +7,6 @@ async function favorite(restaurant, user) {
     user: user,
   });
 
-
   if (!favorite) {
     const newFavorite = new Favorite({
       restaurant,
@@ -24,7 +23,7 @@ async function favorite(restaurant, user) {
     rest.favorite.push(newFavorite._id);
     const restfav = await rest.save()
 
-    return favuser
+    return userfav
 
   } else {
     const favdelete = await Favorite.findByIdAndDelete(favorite._id);
@@ -38,8 +37,8 @@ async function favorite(restaurant, user) {
     const restfilter = rest.favorite.filter(favs => favs.toString() !== favorite._id.toString())
     rest.favorite = restfilter
     const restfav = await rest.save()
-    
-    return favuser
+
+    return userfav
   }
 }
 

@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import {auth} from "../../../firebase-config.js"
 import Loading from "../Loading/Loading"
-
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
@@ -54,7 +53,7 @@ const DetailResto = ({ route }) => {
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().split('T')[0];
   const dateToString = moment(currentDate).locale('es').format('ddd, D [de] MMM');
-  const [showDate, setShowDate] = useState(dateToString)
+  const [showDate, setShowDate] = useState('Elige el día')
   const [isSelected, setIsSelected] = useState(true);
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
@@ -99,7 +98,7 @@ const DetailResto = ({ route }) => {
 
   //--------------A que hora ? -Horarios-----------------
   const [hours, setHours] = useState([]);
-  const [showHours, setShowHours] = useState(hours[0]);
+  const [showHours, setShowHours] = useState('Elegir horario');
 
 
   const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
@@ -180,7 +179,7 @@ const DetailResto = ({ route }) => {
 
     navigation.navigate("Checkout", { checkout: checkout })
   }
-
+//-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
   const handleAddFavorite = () => {
     if (!userLogged) {
       alert('Para agregar el restaurante debes estar logeado');
@@ -209,15 +208,14 @@ const handleRemoveFavorite = () => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <Loading />
-      ) : (
-        detail &&
-        <View style={styles.container}>
-          <Animated.View
-            style={[styles.header, { height: headerHeight }]}>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
-            <Text style={styles.superTitle}>{detail?.name}</Text>
+      <ScrollView>
+        {loading ? (
+          <Loading />
+        ) : (
+          detail &&
+          <View>
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} /> 
+            {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
           <View style={styles.viewFavortires}>
           <Icon 
             type= "material-community"
@@ -228,213 +226,197 @@ const handleRemoveFavorite = () => {
             underlayColor="tranparent">
 
          </Icon>
-         
-       </View>
-          </Animated.View>
-          <ScrollView
-            ref={scrollViewRef}
-            style={styles.containerReserva}
-            onScroll={(event) => {
-              const scrollPosition = event.nativeEvent.contentOffset.y;
-              if (scrollPosition < 0) {
-                // El usuario está haciendo scroll hacia arriba
-                setHeaderHeight(Animated.add(200, scrollPosition));
-              } else {
-                // El usuario está haciendo scroll hacia abajo
-                setHeaderHeight(Animated.subtract(200, scrollPosition));
-              }
-            }}
-            scrollEventThrottle={16}
-          >
            
-       
-        
-            
+       </View>
+            <View style={styles.titleContainer}>
+              <Text style={styles.superTitle}>{detail?.name}</Text>
+            </View>
+
+
             <View>
-              
-
               <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
+            </View>
 
-              <View style={styles.container2}>
-                <View style={styles.iconText}>
-                  <IonicIcon
-                    name="star-outline"
-                    size={20} />
-                  <Text style={styles.text1}>{detail?.ranking}</Text>
+            <View style={styles.container2}>
+
+              <View style={styles.iconText}>
+                <IonicIcon
+                  name="star-outline"
+                  size={20} />
+                <Text style={styles.text1}>{detail?.ranking}</Text>
+              </View>
+
+              <View style={styles.iconText}>
+                <IonicIcon
+                  name="pin-outline"
+                  size={20}
+                />
+                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+              </View>
+
+            </View>
+
+
+            {/* --------------------------------------------------------------- */}
+
+            <View style={styles.containerReserva}>
+              <Text style={styles.subTitle}> Hacé tu reserva</Text>
+            </View>
+
+            <View style={styles.containerConfigReserva}>
+
+              {/* ----------------------Cuantas personas ----------------------*/}
+              <View style={styles.containerPersons}>
+
+                <IonicIcon
+                  name="people-outline"
+                  size={50}
+                  margin={10}
+                />
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
+                  <Text style={styles.textReservDetail}> {contador} personas</Text>
                 </View>
-                <View style={styles.iconText}>
-                  <IonicIcon
-                    name="pin-outline"
-                    size={20}
-                  />
-                  <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+
+                <View style={styles.containerButtonsPerson}>
+                  <TouchableOpacity>
+                    <IonicIcon
+                      style={styles.buttonPersons}
+                      name="remove-circle-outline"
+                      size={37}
+                      onPress={() => {
+                        if (contador === 2) {
+                          setContador(2)
+                          handlePersons(contador)
+                        } else {
+                          setContador(contador - 1)
+                          handlePersons(contador)
+                        }
+                      }}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <IonicIcon
+                      style={styles.buttonPersons}
+                      name="add-circle-outline"
+                      size={37}
+                      onPress={() => {
+                        if (contador === 30) {
+                          setContador(30)
+                          handlePersons(contador)
+                        } else {
+                          setContador(contador + 1)
+                          handlePersons(contador)
+                        }
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {/* ------------------------¿Que dia ?------------------------ */}
+              <View style={styles.containerPersons}>
+                <IonicIcon
+                  name="calendar-outline"
+                  size={45}
+                  margin={15}
+                />
+
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
+                  <Text style={styles.textReservDetail}>{showDate}</Text>
+                </View>
+
+                <View style={styles.containerButtonsPerson}>
+                  <TouchableOpacity>
+                    <IonicIcon
+                      style={{ marginLeft: 70, }}
+                      name="chevron-down-circle-outline"
+                      size={37}
+                      onPress={() => setShowModal(true)}
+                    />
+                  </TouchableOpacity>
+                  <Modal visible={showModal} animationType='fade'>
+                    <Calendar
+                      // style=
+                      onDayPress={date => {
+                        handleDate(date)
+                        setShowModal(false)
+                        setIsSelected(false)
+                      }}
+                      initialDate={formattedDate}
+                      markedDates={{
+                        formattedDate: { marked: false },
+                      }}
+                    />
+                  </Modal>
+                </View>
+              </View>
+              {/*----------------- Qué horario?------------------------ */}
+              <View style={styles.containerPersons}>
+                <IonicIcon
+                  name="time-outline"
+                  size={50}
+                  margin={10}
+                />
+                <View style={styles.reservDetail}>
+                  <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                  <Text style={styles.textReservDetail}>{showHours}</Text>
+                </View>
+
+                <View style={styles.buttonPersons}>
+                  <TouchableOpacity
+                    onPress={openBottomSheet}
+                    disabled={isSelected}>
+                    <IonicIcon
+                      style={{ marginLeft: 70, color: isSelected ? 'grey' : 'black' }}
+                      name="chevron-down-circle-outline"
+                      size={37} />
+                    <RBSheet
+                      ref={bottomSheetRef}
+                      closeOnDragDown={true}
+                      closeOnPressMask={true}
+                      customStyles={{
+                        wrapper: {
+                          backgroundColor: "transparent"
+                        },
+                        draggableIcon: {
+                          backgroundColor: "#000"
+                        }
+                      }}>
+                      <View style={styles.containerHorarios}>
+                        <ScrollView>
+                          {hours?.map((item) => (
+                            <TouchableOpacity
+                              onPress={() => {
+                                handleHorario(item);
+                                closeBottomSheet();
+                              }}>
+                              <View style={styles.horariosButtons}>
+                                <Text
+                                style={styles.hora}
+                                  key={item}>{item}
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
+
+                          ))}
+                        </ScrollView>
+                      </View>
+                    </RBSheet>
+                  </TouchableOpacity>
                 </View>
               </View>
 
-              <View style={styles.containerReserva}>
-                <Text style={styles.subTitle}> Hacé tu reserva</Text>
-              </View>
-              <View style={styles.containerPerCalHor}>
-
-                {/* ----------------------Cuantas personas ----------------------*/}
-                <View style={styles.containerPersons}>
-                  <IonicIcon
-                    name="people-outline"
-                    size={50}
-                    margin={10}
-
-                  />
-
-                  <View style={styles.reservDetail}>
-                    <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
-                    <Text style={styles.textReservDetail}> {contador} personas</Text>
-                  </View>
-
-                  <View style={styles.containerButtonsPerson}>
-
-                    <TouchableOpacity>
-                      <IonicIcon
-                        style={styles.buttonPersons}
-                        name="remove-circle-outline"
-                        size={37}
-                        onPress={() => {
-                          if (contador === 2) {
-                            setContador(2)
-                            handlePersons(contador)
-                          } else {
-                            setContador(contador - 1)
-                            handlePersons(contador)
-                          }
-                        }}
-                      />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                      <IonicIcon
-                        style={styles.buttonPersons}
-                        name="add-circle-outline"
-                        size={37}
-                        onPress={() => {
-                          if (contador === 30) {
-                            setContador(30)
-                            handlePersons(contador)
-                          } else {
-                            setContador(contador + 1)
-                            handlePersons(contador)
-                          }
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                {/* ------------------------¿Que dia ?------------------------ */}
-                <View style={styles.containerPersons}>
-                  <IonicIcon
-                    name="calendar-outline"
-                    size={45}
-                    margin={15}
-                  />
-
-                  <View style={styles.reservDetail}>
-                    <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
-                    <Text style={styles.textReservDetail}>{showDate}</Text>
-                  </View>
-
-                  <View style={styles.containerButtonsPerson}>
-                    <TouchableOpacity>
-                      <IonicIcon
-                        style={{ marginLeft: 70, }}
-                        name="chevron-down-circle-outline"
-                        size={37}
-                        onPress={() => setShowModal(true)}
-                      />
-                    </TouchableOpacity>
-                    <Modal visible={showModal} animationType='fade'>
-                      <Calendar
-                        // style=
-                        onDayPress={date => {
-                          handleDate(date)
-                          setShowModal(false)
-                        }}
-                        initialDate={formattedDate}
-                        markedDates={{
-                          formattedDate: { marked: false },
-                        }}
-                      />
-                    </Modal>
-                  </View>
-                </View>
-                {/*----------------- Qué horario?------------------------ */}
-                <View style={styles.containerPersons}>
-                  <IonicIcon
-                    name="time-outline"
-                    size={50}
-                    margin={10}
-                  />
-                  <View style={styles.reservDetail}>
-                    <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                    <Text style={styles.textReservDetail}>{showHours}hs</Text>
-                  </View>
-
-                  <View style={styles.buttonPersons}>
-                    <TouchableOpacity
-                      onPress={openBottomSheet}
-                      disabled={isSelected}
-                    >
-                      <IonicIcon
-                        style={{ marginLeft: 70, }}
-                        name="chevron-down-circle-outline"
-                        size={37}
-                      />
-                      <RBSheet
-                        ref={bottomSheetRef}
-                        closeOnDragDown={true}
-                        closeOnPressMask={true}
-                        customStyles={{
-                          wrapper: {
-                            backgroundColor: "transparent"
-                          },
-                          draggableIcon: {
-                            backgroundColor: "#000"
-                          }
-                        }}
-                      >
-                        <View style={styles.containerHorarios}>
-                          <ScrollView>
-                            {hours?.map((item) => (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  handleHorario(item);
-                                  closeBottomSheet();
-                                }}
-                              >
-
-                                <View style={styles.horariosButtons}>
-                                  <Text
-                                    // style=
-                                    key={item}>{item}
-                                  </Text>
-                                </View>
-
-                              </TouchableOpacity>
-                            ))}
-                          </ScrollView>
-                        </View>
-
-                      </RBSheet>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                {/* Boton 'CONFIRMAR RESERVA' */}
+              {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
+              <View>
                 <TouchableOpacity style={styles.confirmButton}
                   onPress={() => handleCheckOut()}>
                   <IonicIcon
                     name="checkmark-outline"
                     size={20}
-                    color={'white'}
+                    color={'white'} />
 
-                  />
                   {/* {showWebview && (
                             <WebView
                               source={{ uri: 'https://google.com' }}
@@ -444,101 +426,115 @@ const handleRemoveFavorite = () => {
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
               </View>
-              {/* ---------- Scroll Horizontal ------------ */}
-              <View style={{ margin: 8, }}>
-                <ScrollView
-                  horizontal={true}
-                  ref={scrollViewRef}>
+            </View>
 
+            {/* ---------- Scroll Horizontal ------------ */}
+            <View style={{ margin: 8, }}>
+              <ScrollView
+                horizontal={true}
+                ref={scrollViewRef}>
 
-                  <TouchableOpacity
-                    style={styles.buttonHorizontalScroll}
-                    onPress={handlePress}>
-                    <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonHorizontalScroll}
+                  onPress={handlePress}>
+                  <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                    <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                    <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                    <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                    <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                    <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                  <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
+                </TouchableOpacity>
 
-                </ScrollView>
+              </ScrollView>
+            </View>
+
+            {/*------------------ Sobre Nosotros------------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Sobre Nosotros</Text>
+            </View>
+            <View style={styles.textAbout}>
+              <Text style={styles.textReserv2}> {detail?.about} </Text>
+            </View>
+            {/* ---------------- menu --> link a la carta del resto ----- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Menú</Text>
+              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>link a la carta</Text>
+            </View>
+
+            {/*-------------- categorias ------------------------------ */}
+
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Categorías</Text>
+            </View>
+
+            <View>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Tipo de comida: </Text>
+                {detail?.menu.map((el, index) => (
+                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                ))}
               </View>
 
-              {/*------------------ Sobre Nosotros------------------- */}
-              <View style={styles.containerTitle}>
-                <Text style={styles.title}> Sobre Nosotros</Text>
-              </View>
-              <View style={styles.textAbout}>
-                <Text style={styles.textReserv2}> {detail?.about} </Text>
-              </View>
-              {/* ---------------- menu --> link a la carta del resto ----- */}
-              <View style={styles.containerTitle}>
-                <Text style={styles.title}> MENU --- Link a la carta</Text>
+
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="beer-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Ambiente: </Text>
+                {detail?.atmosphere.map((el, index) => (
+                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                ))}
               </View>
 
-              {/*-------------- categorias ------------------------------ */}
-
-              <View style={styles.containerTitle}>
-                <Text style={styles.title}> Categorías</Text>
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Espacios: </Text>
+                {detail?.section.map((el, index) => (
+                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                ))}
               </View>
 
-              <View>
-
-                <View style={styles.containerTypesCategories}>
-                  <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
-                  <Text style={styles.textCategories}>Tipo de comida: </Text>
-                  <Text style={styles.aboutCategories}>{detail?.menu[0]}</Text>
-                </View>
-
-
-                <View style={styles.containerTypesCategories}>
-                  <IonicIcon name="beer-outline" style={styles.iconCategories} />
-                  <Text style={styles.textCategories}>Ambiente: </Text>
-                  <Text style={styles.aboutCategories}>{detail?.atmosphere[0]}</Text>
-                </View>
-
-                <View style={styles.containerTypesCategories}>
-                  <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
-                  <Text style={styles.textCategories}>Espacios: </Text>
-                  <Text style={styles.aboutCategories}>{detail?.section[0]}</Text>
-                </View>
-
-                <View style={styles.containerTypesCategories}>
-                  <IonicIcon name="leaf-outline" style={styles.iconCategories} />
-                  <Text style={styles.textCategories}>Cuenta con: </Text>
-                  <Text style={styles.aboutCategories}>{detail?.diets[0]}</Text>
-                </View>
-
-                <View style={styles.containerTypesCategories}>
-                  <IonicIcon name="paw-outline" style={styles.iconCategories} />
-                  <Text style={styles.textCategories}>Otros: </Text>
-                  <Text style={styles.aboutCategories}>{detail?.extras[0]}</Text>
-                </View>
-
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="leaf-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Cuenta con: </Text>
+                {detail?.diets.map((el, index) => (
+                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                ))}
               </View>
 
-              {/*-------------------- Horarios -------------- */}
+              <View style={styles.containerTypesCategories}>
+                <IonicIcon name="paw-outline" style={styles.iconCategories} />
+                <Text style={styles.textCategories}>Otros: </Text>
+                {detail?.extras.map((el, index) => (
+                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                ))}
+              </View>
+
+            </View>
+
+            {/*-------------------- Horarios -------------- */}
+            <View style={styles.containerCategoriasHorarios}>
               <View style={styles.containerTitle}>
                 <Text style={styles.title}>Horarios</Text>
                 <Text style={{ fontFamily: 'Inria-Sans-Regular', fontWeight: 'bold', fontSize: 15 }}>
                   Horarios de apertura y cierre</Text>
               </View>
+
               <View>
                 <Text style={styles.aboutCategories}>
                   ---- Lunes --- {detail?.schedule?.monday?.open}hs a{" "}
@@ -570,36 +566,39 @@ const handleRemoveFavorite = () => {
                   {detail?.schedule?.sunday?.close}hs
                 </Text>
               </View>
-
-              {/*--------------- sobre nosotros -------------------- */}
-              <View style={styles.containerTitle}>
-                <Text style={styles.title}>Sobre Nosotros</Text>
-              </View>
-
-              {/* ------------Medios de pago ------------- */}
-              <View style={styles.containerTitle}>
-                <Text style={styles.title}> Metodos de Pago </Text>
-              </View>
-              <View >
-                <Text >
-                  {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-                  {detail?.paymentMethods[2]}
-                </Text>
-              </View>
             </View>
-          </ScrollView >
-        </View>
 
-      )
-      }
+            {/*--------------- sobre nosotros -------------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}>Sobre Nosotros</Text>
+            </View>
+
+            {/* ------------Medios de pago ------------- */}
+            <View style={styles.containerTitle}>
+              <Text style={styles.title}> Metodos de Pago </Text>
+            </View>
+
+            <View>
+              <Text>
+                {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
+                {detail?.paymentMethods[2]}
+              </Text>
+            </View>
+          </View>
+
+        )
+        }
+      </ScrollView>
     </View>
 
   );
-}
+};
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // marginBottom: 10,
     backgroundColor: 'white',
   },
   header: {
@@ -646,24 +645,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: 20,
   },
+
   subTitle: {
     fontFamily: "Inria-Sans-Bold",
     fontSize: 25,
   },
   containerReserva: {
-    flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     // backgroundColor: 'orange',
   },
-  containerPerCalHor: {
+  containerConfigReserva: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '25%',
+    height: '20%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
-    margin: 0,
     borderRadius: 20,
     borderWidth: 0.2,
     borderColor: 'black',
@@ -762,6 +760,7 @@ const styles = StyleSheet.create({
   },
   //----------Titulos e informacion---------------------
   containerTitle: {
+
     margin: 10,
   },
   textAbout: {
@@ -799,13 +798,21 @@ const styles = StyleSheet.create({
   BTsheet: {
     borderRadius: 10,
   },
+  containerCategoriasHorarios: {
+    alignItems: 'flex-start',
+  },
   containerHorarios: {
     alignItems: 'center',
   },
   horariosButtons: {
-    height: 20,
+    height: 26,
     width: 50,
-
+    alignItems: 'center',
+    
+  }, 
+  hora : {
+    fontSize: 20,
+   
   }
 
 });

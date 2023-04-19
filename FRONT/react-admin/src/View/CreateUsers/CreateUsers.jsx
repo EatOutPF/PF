@@ -32,7 +32,6 @@ const CreateUserForm = () => {
     });
   };
 
-
   return (
     <div className={style.container}>
       <div className={style.containerCreateUser}>
@@ -84,7 +83,7 @@ const CreateUserForm = () => {
             />
           </div>
           {/* Se usa un select para el rol */}
-          <div>
+          {/*  <div>
             <label htmlFor="role">Role:</label>
             <select
               id="role"
@@ -94,7 +93,7 @@ const CreateUserForm = () => {
             >
               <option value="admin">Admin</option>
             </select>
-          </div>
+          </div> */}
           <button type="submit">Create User</button>
         </form>
       </div>

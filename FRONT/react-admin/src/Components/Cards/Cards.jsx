@@ -17,6 +17,7 @@ const Cards = ({ currentRestaurants }) => {
               <th>Dirección</th>
               <th>Ciudad</th>
               <th>País</th>
+              <th>Saldo Actual</th>
               <th>Puntuación</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -41,6 +42,7 @@ const Cards = ({ currentRestaurants }) => {
                     ranking={r.ranking}
                     active={r.active}
                     advance={r.advance ? r.advance : 0}
+                    balance={r.balance ? r.balance : 0}
                   />
                 )
             )}
