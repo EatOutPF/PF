@@ -9,6 +9,7 @@ import { StyleSheet, View, Dimensions, Text, Emoji, TouchableOpacity } from 'rea
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
+import Loading from '../Loading/Loading';
 
 // function initMap() {
 //     const myLatLng = { lat: -25.363, lng: 131.044 };
@@ -27,9 +28,11 @@ import { Button } from 'react-native-elements';
 export default function App() {
     const restos = useSelector(state => state.allRestorants)
     const navigation = useNavigation()
+    const [loading, setLoading] = useState(true)
+
     const [origin, setOrigen] = useState({
-        latitude : -33.744014, 
-        longitude : -61.958717
+        latitude : 0, 
+        longitude : 0
     
     })
     const [destination, setDestination] = useState({ 
@@ -38,8 +41,11 @@ export default function App() {
     })
 
     useEffect( () => {
-        getLocationPermission()
-    },[])
+        if(origin?.latitude === 0)
+            getLocationPermission()
+        else
+            setLoading(false)
+    },[origin])
 
     async function getLocationPermission(){ // esto se puede aplicar en un useEffect para hcerlo en tiempo real
         let { status } = await Location.requestForegroundPermissionsAsync(); 
@@ -57,7 +63,6 @@ export default function App() {
     }
 
     function handlerToDetail(value){
-
         //const _id = value       
         return(
             <Text onPress={()=>navigation.navigate("Detalle Restaurant", {_id:value})}>
@@ -65,25 +70,23 @@ export default function App() {
             </Text>
         )
     }
-    // const mark = [{ id: 1, title: 'Marker 1', coordinate: { latitude: -38.011193, longitude: -57.554361 } },
-    // { id: 2, title: 'Marker 2', coordinate: { latitude: -38.011273, longitude: -57.554571 } },
-    // { id: 3, title: 'Marker 3', coordinate: { latitude: -38.011583, longitude: -57.554991 } },]
+
     const markerDescription = (
         // <TouchableOpacity onPress={() => navigation.navigate('AnotherComponent')}>
-          <Text>Este eres tu.</Text>
+            <Text>Este eres tu.</Text>
         // </TouchableOpacity>
-      );
+    );
 
-      const [lastPress, setLastPress] = useState(0);
+    const [lastPress, setLastPress] = useState(0);
 
-      const handleDoublePress = (value) => {
+    const handleDoublePress = (value) => {
         const currentTime = new Date().getTime();
         const timeDelta = currentTime - lastPress;
         const doublePressDelay = 300; // milliseconds
     
         if (timeDelta < doublePressDelay) {
-          console.log('Double Pressed!');
-          navigation.navigate("Detalle Restaurant", {_id: value})
+            console.log('Double Pressed!');
+            navigation.navigate("Detalle Restaurant", {_id: value})
         }
     
         setLastPress(currentTime);
@@ -93,16 +96,17 @@ export default function App() {
 return (
     <View style={styles.container}>
       {/* <MapView style={styles.map} /> */}
+      {loading ? <Loading text="Cargando las coordenadas en el mapa..."/> :
+        <View>
         <MapView
             // customMapStyle={mapStyle}            // habilitar esto para poner los colores del mapa
-            // provider={PROVIDER_GOOGLE}
-            apikey={"AIzaSyA8wHVl7x6tJiALwmMYUL5h_l14X74f_A8"}
+            provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
-                latitude: -38.011083,
+                latitude: -38.005003,
                 longitude: -57.554361,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
+                latitudeDelta: 0.030,
+                longitudeDelta: 0.030,
             }}
             mapType="standard"
         >
@@ -137,44 +141,8 @@ return (
             {/* <Text style={{fontSize:30}}>🏠</Text> */}
         </Marker>
 
-
-        {/* <Marker
-            key="ClaudioCasa"
-            coordinate={ origin }
-            title="Casa de claudio"
-            description="aca vive claudio"
-            draggable
-            onDragEnd={(direction) => setOrigen(direction.nativeEvent.coordinate)}
-        >
-            <Text style={{fontSize:30}}>🏠</Text>
-        </Marker>
-
-        <Marker
-            key="ClaudioTrabajo"
-            coordinate={ destination }
-            title="El trabajo de claudio"
-            description="aca trabaja claudio di toro" 
-            //TA y estudiante de Henry en la modalidad Part-time de la cohorte pt10a "
-
-            draggable  // ESTA OPCION NOS PEMITE DRAGEAR UN MARKER Y POSICIONARLO EN OTRO LADO
-            onDragEnd={(direction) => setDestination(direction.nativeEvent.coordinate)}
-    /> */}
-
-        {/* <MapViewDirections 
-            origin={origin}
-            destination={destination}
-            apikey={"AIzaSyA8wHVl7x6tJiALwmMYUL5h_l14X74f_A8"} // apikey de googlemaps de santi
-            strokeColor="blue"
-            strokeWidth={5}
-        /> */}
-
-        {/* <Polyline // crea una poligono
-            coordinates={[origin, destination, {latitude : -33.744689,longitude : -61.986766}, {latitude : -33.744589,longitude : -61.985766}]}
-            strokeColor="orange"
-            strokeWidth={5}
-        /> */}
-
       </MapView>
+      </View>}
     </View>
 
 

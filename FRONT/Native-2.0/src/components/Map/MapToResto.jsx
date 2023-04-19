@@ -23,18 +23,11 @@ import Loading from '../Loading/Loading';
 
 export default function MapToResto({route}) {
     const { resto } = route.params;
-    console.log("llegue acomo llegar",resto);
-    console.log("llegue acomo llegar",resto?.coordinate?.latitude);
-    const restoCordinates = {
-        latitude: resto?.coordinate?.latitude,
-        longitude: resto?.coordinate?.longitude
-    }
     const [loading, setLoading] = useState(true)
 
     const [origin, setOrigen] = useState({
         latitude : 0, 
         longitude : 0
-    
     })
     const [destination, setDestination] = useState({ 
         latitude : resto?.coordinate?.latitude, 
@@ -43,10 +36,14 @@ export default function MapToResto({route}) {
     // setDestination(resto?.coordinate)
 
     useEffect( () => {
-        if(origin?.latitude === 0)
-            getLocationPermission()
-        else
-            setLoading(false)
+        // setOrigen({latitude : 0,longitude : 0})
+
+        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
+            if(origin?.latitude === 0)
+                getLocationPermission()
+            else
+                setLoading(false)
+        // }, 3000);
     },[origin])
 
     async function getLocationPermission(){ // esto se puede aplicar en un useEffect para hcerlo en tiempo real
@@ -74,10 +71,10 @@ return (
             // provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={{
-                latitude: -38.011083,
-                longitude: -57.554361,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
+                latitude: origin?.latitude,
+                longitude: origin?.longitude,
+                latitudeDelta: 0.040,
+                longitudeDelta: 0.040,
             }}
             mapType="standard"
         >

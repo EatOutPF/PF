@@ -114,7 +114,7 @@ const RenderSchedule = ({ item }) => {
             <TouchableOpacity 
               style={{flexDirection:"row",alignItems: "center", marginRight: 5, 
               backgroundColor: "#ff5b4f", padding: 5, paddingRight: 10, borderRadius: 10}}
-              onPress={()=>handleToDetail(item?.restaurant?._id)}
+              onPress={()=>handleToDetail(item?.restaurant?.name)}
             >
               <IonicIcon
                 style={{ marginRight: 5 }}
