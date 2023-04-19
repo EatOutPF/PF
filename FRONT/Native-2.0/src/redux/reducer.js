@@ -27,6 +27,8 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    GET_USER_LOCATION,
+    UBICATION_BY_RESTORANT
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -40,6 +42,8 @@ const initialState = {
 
     userInfo: {},
     userToken: {},
+    userLocation: {},
+    ubicationByRestorant: [],
 
     restorantById: {},
     restorantByString: [],
@@ -310,7 +314,83 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: {},
             }
         }
+        case GET_USER_LOCATION: {
+            return {
+                ...state,
+                userLocation: action.payload
+            }
+        }
 
+        case UBICATION_BY_RESTORANT: {
+            let { restorantes, userLocation } = action.payload;
+
+            const setubicationByRestaurant = () => {
+                let ubicationByRestaurant = restorantes?.map(el => {
+                    return {
+                        id: el._id,
+                        latitud: el.address.coordinate.latitude,
+                        longitud: el.address.coordinate.longitude,
+                    }
+                })
+                return ubicationByRestaurant;
+            }
+
+            console.log('soy el userLocation', userLocation)
+
+            // const calcularDistancia = (latUser, lonUser, latResto, lonResto) => {
+            //     const radioTierra = 6371; // Radio de la Tierra en km
+            //     const dLat = ((latResto - latUser) * Math.PI) / 180;
+            //     const dLon = ((lonResto - lonUser) * Math.PI) / 180;
+            //     const a =
+            //         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            //         Math.cos((latUser * Math.PI) / 180) *
+            //         Math.cos((latResto * Math.PI) / 180) *
+            //         Math.sin(dLon / 2) *
+            //         Math.sin(dLon / 2);
+            //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            //     const distancia = radioTierra * c;
+            //     return distancia; // Devuelve la distancia en km
+            // }
+
+
+            // console.log(userLocation.latitude,
+            //     userLocation.longitude,
+            //     restorantDistance[0].latitude,
+            //     restorantDistance[0].longitude)
+
+            // let ubicacionMasCercana = restorantDistance[0]; // Empieza con la primera ubicación de la lista
+            // let distanciaMasCercana = calcularDistancia(
+            //     userLocation.latitude,
+            //     userLocation.longitude,
+            //     restorantDistance[0].latitude,
+            //     restorantDistance[0].longitude
+            // );
+            // console.log(distanciaMasCercana)
+            // console.log({distanciaMasCercana, ubicacionMasCercana})
+
+
+            // for (let i = 1; i < restorantDistance.length; i++) {
+            //     console.log(restorantDistance[i])
+            //     const distancia = calcularDistancia(
+            //         userLocation.latitude,
+            //         userLocation.longitude,
+            //         restorantDistance[i].latitude,
+            //         restorantDistance[i].longitude
+            //     ); // Calcula la distancia a esta ubicación
+            //     if (distancia < distanciaMasCercana) {
+            //         ubicacionMasCercana = restorantDistance[i];
+            //         distanciaMasCercana = distancia;
+            //     }
+            // }
+
+            // return {
+            //     ...state,
+            //     ubicationByRestorant: {
+            //         ubicacionMasCercana,
+            //         distanciaMasCercana
+            //     }
+            // }
+        }
 
         //-----------------------------------------------------------------------------------------
         default:
@@ -348,7 +428,5 @@ export default function rootReducer(state = initialState, action) {
             return a.ranking - b.ranking;
         });
     }
-
-
 };
 
