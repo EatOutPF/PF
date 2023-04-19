@@ -23,6 +23,8 @@ import MyComponent from '../CheckoutPayment/prueba1.jsx';
 import ProfileFirebase from '../Profile/ProfileFirebase.jsx';
 import Notifications from '../Notifications/Notifications.jsx';
 import { useSelector } from 'react-redux';
+import MapToResto from '../Map/MapToResto.jsx';
+import Favorites from '../Favorites/Favorites.jsx';
 
 
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
@@ -119,8 +121,13 @@ function ScheduleScreenNavigator(){
     >
       
       <ScheduleStackNavigator.Screen
-        name="Calendario"
+        name="📅 Calendario"
         component={Schedule}   // aca va el componente Reviews
+      />
+
+      <ScheduleStackNavigator.Screen
+        name="🗺️ ¿ Comó llegar ?"
+        component={MapToResto}   
       />
 
     </ScheduleStackNavigator.Navigator>
@@ -128,6 +135,31 @@ function ScheduleScreenNavigator(){
 
 }
 // ----------------- ScheduleStackNavigator -----------------
+
+// ----------------- FavoriteStackNavigator -----------------
+const FavoriteStackNavigator = createNativeStackNavigator();
+function FavoriteScreenNavigator(){
+  return(
+    <FavoriteStackNavigator.Navigator
+      initialRouteName='Eat Out'
+      screenOptions={{
+        screenBackground: 'transparent',
+        headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+        headerTintColor: '#fff',
+      }}
+    >
+      
+      <FavoriteStackNavigator.Screen
+        name="Favoritos"
+        component={Favorites}   // aca va el componente Reviews
+      />
+
+
+    </FavoriteStackNavigator.Navigator>
+  )
+
+}
+// ----------------- FavoriteStackNavigator -----------------
 
 
 // -------------------- Tab Navigator --------------------
@@ -170,7 +202,7 @@ export const LowerNavbar = () => {
         },        
         tabBarStyle: [{ 
             backgroundColor: "#FA6B6B",
-            borderTopLeftRadius: 35,
+            // borderTopLeftRadius: 35,
             display: "flex"
             
           },    
@@ -220,7 +252,7 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Favoritos" 
-          component={HomeChiquito} 
+          component={FavoriteScreenNavigator} 
       />
       <Tab.Screen 
           name="Calendario" 

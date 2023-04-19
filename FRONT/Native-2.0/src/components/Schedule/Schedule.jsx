@@ -4,34 +4,56 @@ import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { useDispatch, useSelector } from 'react-redux'
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import CapitalizeString from '../CapitalizeString/CapitalizeString'
-import RenderNotification from './RenderNotifications';
+import RenderSchedule from './RenderSchedule';
 
 
 const Schedule = () => {
+    const [userLog, setUserLog] = useState(true);
     const userData = useSelector(state=>state?.userInfo)
-    const dataNotificationsReversed = [...userData?.reserve]?.reverse();
+ 
     const renderItem = ({ item }) => (
-      <RenderNotification item={item} />
+      <RenderSchedule item={item} />
     );
-    
-  return (
+    useEffect(()=>{
+      // console.log("USER LOG", userLog);
 
+      // if (Object?.keys(userData)?.length === 0) {
+      //   dataNotificationsReversed=[]
+      //   setUserLog(false)
+      // }
+      // else if(userLog || Object?.keys(userData)?.length !== 0) { 
+      //   dataNotificationsReversed = [...userData?.reserve]?.reverse(); }
+      // else{
+      //   console.log("SOY defined ");
+       
+      //   setUserLog(true)
+      // }
+      // else
+      //   if (Object?.keys(detail)?.length !== 0) {
+      //     if (detail?._id !== _id) {
+      //       // dispatch(clearStateResatorantById())
+      //       dispatch(searchRestorantById(_id));
+      //       setLoading(true)
+      //     }
+      //     else setLoading(false)
+      //   }
+    },[userData])
+  return (
     <View style={{ backgroundColor: "#efe4dc"}}>
+      {!userLog ? <Text>NO HAY USER LOG</Text> : 
+      <View>
       <Text style={styles.notificationSubtitle}> 
         {CapitalizeString( userData?.name)} estas son tus RESERVAS :
       </Text>
 
-      {/* {userData?.notificacion?.map((notification) => (
-        <Text key={notification.id}>{notification.message}</Text>
-      ))} */}
       <FlatList
         style={{marginBottom: 28}}
-        data={dataNotificationsReversed}
+        data={[...userData?.reserve]?.reverse()}
         keyExtractor={(item) => item?._id?.toString()}
         renderItem={renderItem}
       />
-
-
+      </View>
+      }
     </View>
     
 

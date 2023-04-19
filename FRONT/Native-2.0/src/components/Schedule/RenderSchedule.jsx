@@ -3,8 +3,10 @@ import { Text, View, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react
 import { useDispatch, useSelector } from 'react-redux'
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import CapitalizeString from '../CapitalizeString/CapitalizeString'
+import { useNavigation } from '@react-navigation/native';
 
-const RenderNotification = ({ item }) => {
+
+const RenderSchedule = ({ item }) => {
     const [isDone, setIsDone] = useState(false);
   
     const toggleIsDone = () => {
@@ -49,8 +51,23 @@ const RenderNotification = ({ item }) => {
         },
       });
 
-    function handleDeleteNotification(){
-        Alert.alert("aca se borra la noti")
+    const navigation = useNavigation();
+    function handleMapToResto(){
+      const resto = {
+        _id: item?.restaurant?._id,
+        name: item?.restaurant?.name,
+        coordinate: item?.restaurant?.address?.coordinate,
+        address: item?.restaurant?.address
+      }
+      navigation.navigate("🗺️ ¿ Comó llegar ?", { resto })
+
+      // Alert.alert("aca se borra la noti")
+    }
+
+    function handleToDetail(value){
+        // Alert.alert("aca se borra la noti")
+        const _id = value
+        navigation.navigate("Detalle Restaurant", {_id})
     }
     
     return (
@@ -67,7 +84,7 @@ const RenderNotification = ({ item }) => {
                         style={{ marginRight: 5 }}
                         name={'restaurant'}
                         size={22}
-                        color={'#2d8497'}
+                        color={'#efe4dc'}
                     />
                     {/* <IonicIcon
                         style={{ marginRight: 5 }}
@@ -87,40 +104,45 @@ const RenderNotification = ({ item }) => {
         )}
       { isDone ? (
         <View>
-          <Text style={styles.notificationTitle}>{item?.restaurant?.name} - {item?.date}</Text>
-          <Text style={styles.notificationSubtitle}>Hora: {item?.time}   -   Mesas: {item?.table} </Text>
-          <Text style={styles.notificationSubtitle}>{item?.restaurant?.name}   -   {item?.time}</Text>
+          <Text style={styles.notificationTitle}>📅 {item?.date}    🕒 {item?.time}</Text>
+          <Text style={styles.notificationTitle}>    {item?.restaurant?.name} </Text>
+          <Text style={styles.notificationSubtitle}>Cantidad de mesas reservadas: {item?.table} </Text>
+          <Text style={styles.notificationSubtitle}>{item?.restaurant?.address?.streetName} - N°: {item?.restaurant?.address?.streetNumber} </Text>
           <Text></Text>
           <View style={{flexDirection: "row",}}>
             
             <TouchableOpacity 
-              style={{flexDirection:"row",alignItems: "center", marginRight: 15, backgroundColor: "#ff5b4f", padding: 5, paddingRight: 10, borderRadius: 10}}
+              style={{flexDirection:"row",alignItems: "center", marginRight: 5, 
+              backgroundColor: "#ff5b4f", padding: 5, paddingRight: 10, borderRadius: 10}}
+              onPress={()=>handleToDetail(item?.restaurant?._id)}
             >
               <IonicIcon
                 style={{ marginRight: 5 }}
                 name={'arrow-redo-sharp'}
                 size={22}
-                color={'#2d8497'}
+                color={'#efe4dc'}
               />
-              <Text>Detalle del Restaurant</Text>
+              <Text style={{color:"#efe4dc"}}>Detalle del Restaurant</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
-              style={{flexDirection:"row", alignItems: "center", backgroundColor: "#ff5b4f", padding: 5, paddingRight: 10, borderRadius: 10}}
+              style={{flexDirection:"row", alignItems: "center", backgroundColor: "#ff5b4f", 
+              padding: 5, paddingRight: 10, borderRadius: 10}}
+              onPress={()=>handleMapToResto()}
             >
               <IonicIcon
               style={{ marginRight: 5 }}
               name={'location-sharp'}
               size={22}
-              color={'#2d8497'}
+              color={'#efe4dc'}
               />
-              <Text>Como llegar</Text>
+              <Text style={{color:"#efe4dc"}}>¿Comó llegar?</Text>
 
             </TouchableOpacity>
           </View>
         </View>
         ) : (
-        <Text style={styles.notificationTitle}>{item?.restaurant?.name} - {item?.date}</Text>
+        <Text style={styles.notificationTitle}>| {item?.date} | {item?.time} | {item?.restaurant?.name.substring(0, 10)}... |</Text>
 
         ) }
 
@@ -129,4 +151,4 @@ const RenderNotification = ({ item }) => {
   };
 
  
-export default RenderNotification
+export default RenderSchedule

@@ -32,6 +32,7 @@ const RenderNotification = ({ item }) => {
         },
         notificationText: {
           fontSize: 16,
+          paddingRight: 30,
           color: '#000',
         },
         notificationSubtitle: {
@@ -50,6 +51,8 @@ const RenderNotification = ({ item }) => {
         style={styles.notificationContainer}
         onPress={toggleIsDone}
       >
+      <View style={{flexDirection:"row"}}>
+
         {isDone ? (
             <View>
                 <TouchableOpacity onPress={()=>handleDeleteNotification()}>
@@ -76,6 +79,7 @@ const RenderNotification = ({ item }) => {
           />
         )}
         <Text style={styles.notificationText}>{item.message}</Text>
+        </View>
 
       </TouchableOpacity>
     );

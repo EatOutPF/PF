@@ -25,6 +25,8 @@ export default function ProfileFirebase() {
     console.log(typeof(user));
     console.log("ProfileFirebase COMPONENT keys -------------", Object?.keys(user));
     console.log("ProfileFirebase COMPONENT RESERVE-------------", user?.reserve);
+    console.log("ProfileFirebase COMPONENT RESERVE restaurant-------------", user?.reserve?.[0]?.restaurant);
+
 
     const imageSources = [
       require('../../img/profile-pic/0.png'),

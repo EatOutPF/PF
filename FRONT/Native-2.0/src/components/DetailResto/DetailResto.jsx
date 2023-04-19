@@ -158,7 +158,7 @@ const DetailResto = ({ route }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loading />
+        <Loading text="Buscando la informacion del restaurante..."/>
       ) : (
         detail &&
         <View style={styles.container}>
