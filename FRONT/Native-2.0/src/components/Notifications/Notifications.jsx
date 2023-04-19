@@ -8,8 +8,8 @@ import RenderNotification from './RenderNotifications';
 
 
 const Notifications = () => {
-    const userData = useSelector(state=>state.userInfo)
-    const dataNotificationsReversed = [...userData?.notificacion].reverse();
+    const userData = useSelector(state=>state?.userInfo)
+    const dataNotificationsReversed = [...userData?.notificacion]?.reverse();
     const renderItem = ({ item }) => (
       <RenderNotification item={item} />
     );
@@ -27,7 +27,7 @@ const Notifications = () => {
       <FlatList
         style={{marginBottom: 28}}
         data={dataNotificationsReversed}
-        keyExtractor={(item) => item._id.toString()}
+        keyExtractor={(item) => item?._id?.toString()}
         renderItem={renderItem}
       />
 

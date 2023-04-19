@@ -103,7 +103,32 @@ function NotificationsScreenStack(){
   )
 
 }
-// -------------------- HomeScreenStack --------------------
+// ----------------- NotificationsScreenStack -----------------
+
+// ----------------- ScheduleStackNavigator -----------------
+const ScheduleStackNavigator = createNativeStackNavigator();
+function ScheduleScreenNavigator(){
+  return(
+    <ScheduleStackNavigator.Navigator
+      initialRouteName='Eat Out'
+      screenOptions={{
+        screenBackground: 'transparent',
+        headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+        headerTintColor: '#fff',
+      }}
+    >
+      
+      <ScheduleStackNavigator.Screen
+        name="Calendario"
+        component={Schedule}   // aca va el componente Reviews
+      />
+
+    </ScheduleStackNavigator.Navigator>
+  )
+
+}
+// ----------------- ScheduleStackNavigator -----------------
+
 
 // -------------------- Tab Navigator --------------------
 const Tab = createBottomTabNavigator();
@@ -199,7 +224,7 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Calendario" 
-          component={Schedule} 
+          component={ScheduleScreenNavigator} 
       />
       <Tab.Screen 
           name="Notificaciones" 
