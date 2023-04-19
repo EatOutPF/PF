@@ -21,9 +21,10 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/:id?", async (req, res) => {
+  const id = req.params.id 
   try {
-    let resultado = await getReviews();
+    let resultado = await getReviews(id);
     res.status(200).json(resultado);
   } catch (error) {
     res.status(404).json({ error: error.message });

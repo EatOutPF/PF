@@ -71,31 +71,31 @@ async function getRestaurant(props) {
       const restaurant = await Restaurant.find({
         name: { $regex: new RegExp(props, "i") },
       })
-        .populate({
-          path: "reserve",
-          populate: [
-            {
-              path: "user",
-              select: "_id name phone email",
-            },
-            {
-              path: "payment",
-              select: "amount date",
-            },
-          ],
-        })
+      .populate({
+        path: "reserve",
+        populate: [
+          {
+          path: "user",
+          select: "_id name phone email",
+          },
+          {
+          path: "payment",
+          select: "amount date"
+          },
+      ],
+      })
         .populate({
           path: "payment",
           populate: [
             {
-              path: "user",
-              select: "_id name",
-            },
-            {
-              path: "reserve",
-              select: "_id date",
-            },
-          ],
+            path: "user",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
         })
         .populate({
           path: "review",
@@ -110,31 +110,31 @@ async function getRestaurant(props) {
 
     if (mongoose.Types.ObjectId.isValid(props)) {
       const restaurant = await Restaurant.findById(props)
-        .populate({
-          path: "reserve",
-          populate: [
-            {
-              path: "user",
-              select: "_id name phone email",
-            },
-            {
-              path: "payment",
-              select: "amount date",
-            },
-          ],
-        })
+      .populate({
+        path: "reserve",
+        populate: [
+          {
+          path: "user",
+          select: "_id name phone email",
+          },
+          {
+          path: "payment",
+          select: "amount date"
+          },
+      ],
+      })
         .populate({
           path: "payment",
           populate: [
             {
-              path: "user",
-              select: "_id name",
-            },
-            {
-              path: "reserve",
-              select: "_id date",
-            },
-          ],
+            path: "user",
+            select: "_id name"
+          },
+          {
+            path: "reserve",
+            select: "_id date"
+          }
+        ]
         })
         .populate({
           path: "review",
@@ -149,31 +149,31 @@ async function getRestaurant(props) {
   }
 
   const restaurants = await Restaurant.find()
-    .populate({
-      path: "reserve",
-      populate: [
-        {
-          path: "user",
-          select: "_id name phone email",
-        },
-        {
-          path: "payment",
-          select: "amount date",
-        },
-      ],
-    })
+  .populate({
+    path: "reserve",
+    populate: [
+      {
+      path: "user",
+      select: "_id name phone email",
+      },
+      {
+      path: "payment",
+      select: "amount date"
+      },
+  ],
+  })
     .populate({
       path: "payment",
       populate: [
         {
-          path: "user",
-          select: "_id name",
-        },
-        {
-          path: "reserve",
-          select: "_id date",
-        },
-      ],
+        path: "user",
+        select: "_id name"
+      },
+      {
+        path: "reserve",
+        select: "_id date"
+      }
+    ]
     })
     .populate({
       path: "review",
@@ -182,6 +182,7 @@ async function getRestaurant(props) {
         select: "_id name",
       },
     });
+
 
   return restaurants;
 }
@@ -242,9 +243,9 @@ async function activeRestaurant(id, active) {
   restaurant.save();
 
   if (active) {
-    return `Se ha deshabilitado el restaurant ${restaurant.name}`;
-  } else {
     return `Se ha habilitado el restaurant ${restaurant.name}`;
+  } else {
+    return `Se ha deshabilitado el restaurant ${restaurant.name}`;
   }
 }
 
