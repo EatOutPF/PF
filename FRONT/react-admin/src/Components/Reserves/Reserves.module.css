@@ -1,8 +1,5 @@
 .containerCards {
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
-  /* padding: 30px; */
   height: 100vh;
   overflow: auto;
 }
@@ -25,5 +22,5 @@
 .containerBack {
   display: flex;
   text-decoration: none;
-  padding-top: 40px;
+  padding-top: 80px;
 }
