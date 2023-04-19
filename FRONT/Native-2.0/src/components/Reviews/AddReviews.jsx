@@ -1,45 +1,50 @@
-import React,{useState, useRef}from "react";
+import React,{useRef, useState}from "react";
 import { StyleSheet, Text, View } from "react-native";
-import {AirbnbRating, Avatar, Button, Input } from "react-native-elements";
+import {AirbnbRating, Button, Input } from "react-native-elements";
 import { Value } from "react-native-reanimated";
 import { getAllRestorants, postListReviews } from "../../redux/actions";
-import ListReviews from "./ListReviews";
+import { firebase } from "@react-native-firebase/auth";
+import { useDispatch,  useSelector  } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import DetailResto from "../DetailResto/DetailResto";
 
+export default function AddReviews ({route})  {
+  const {resto} = route?.params;
+const toast = useRef
+//   console.log("ADDREVIEWS RESTO", resto);
+  const user = useSelector( state => state?.userInfo)
+//   const resto = useSelector( state => state?.restorantsFound)
+  const dispatch = useDispatch();
+  const navigation = useNavigation()
 
-export default function AddReviews ()  {
-  
   const[ranking, setRanking] = useState();
   const[review, setReview] = useState("")
   const[errorReview, setErrorReview] = useState(null)
   const [loading, setLoading] = useState(false)
 
-//   console.log(event.target.value);
-//   setSocialMedia({
-//     ...socialMedia,
-//     facebook: event.target.value,
-//   });
-//   setErrorSocialMedia(
-//     Validations({
-//       ...errorSocialMedia,
-//       facebook: event.target.value,
-//     })
-//   );
-//   console.log(socialMedia);
-
-  const handleAddReviews = () => {
-  
-    if (review.length === 0) {
-      setErrorReview('Por favor realice un comentario');
-    } else {
-      setReview({
-        ...review,
-        review
-      })
-      setLoading(true);
-      
-      setLoading(false);
+ function handleAddReviews ()  {
+    try {
+        const value = {
+            resto: resto?._id,
+            review: review,
+            score: ranking,
+            user: user?._id,
+        }
+    
+        dispatch(postListReviews(value))
+        navigation.navigate("Ranking-Reseñas", {resto})
+        
+    } catch (error) {
+        
     }
-  };
+
+   navigation.goBack()
+   
+  
+
+
+    }
+
 
     return(
         <View style={styles.body}>
@@ -59,18 +64,22 @@ export default function AddReviews ()  {
                    <Input
                   placeholder="Comentario"
                   containerStyle={styles.input}
+                  onChangeText={(text) => setReview(text)}
                   style={styles.texts}
                   multiline
                   errorMessage={errorReview}
+                  
 
                   />
                   <Button
+                  
                   title="Enviar Comentario"
                   containerStyle={styles.buttons}
                   buttonStyle={styles.btn}
-                  onPress={handleAddReviews}
+                  onPress={()=>handleAddReviews()}
                   />
             </View>
+            
             
         </View>
     )
@@ -104,13 +113,14 @@ const styles = StyleSheet.create({
     },
     buttons:{
         flex:1,
-        justifyContent:"flex-end",
-        marginTop:20,
-        marginBottom:10,
+        // justifyContent:"flex-end",
+        // marginTop:20,
+        // marginBottom:10,
         width:"95%",
     },
 
     btn:{
-        backgroundColor:"blue"
+    borderRadius: 20,
+    fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white', backgroundColor: '#ff5b4f',
     }
 })

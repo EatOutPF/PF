@@ -17,18 +17,20 @@ import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
 import RBSheet from "react-native-raw-bottom-sheet";
 import ListReviews from '../Reviews/ListReviews.jsx'
+import AddReviews from '../Reviews/AddReviews.jsx'
+
 
 
 
 const DetailResto = ({ route }) => {
-  // const { _id } = useParams();
+  const { resto } = route.params;
   const { _id } = route.params;
   console.log(_id)
   const detail = useSelector(state => state?.restorantById)
   const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
-
+  const [showReviews, setShowReviews] = useState(false);
   // --------Cuantas personas?--------
   const [contador, setContador] = useState(2)
 
@@ -57,13 +59,13 @@ const DetailResto = ({ route }) => {
   }
 
   const handleDate = (date) => {
-    console.log('FECHA SELECCIONADA',date)
+    console.log('FECHA SELECCIONADA', date)
     const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     setShowDate(newDate)
     // const fechaReserva = new Date();
     // const fechaString = fechaReserva.toISOString()
     // console.log('FECHA RESERVA', fechaString.slice(0, 10))
-    setReserve({ ...reserve, date: date.dateString});
+    setReserve({ ...reserve, date: date.dateString });
   }
 
   //A que hora ? -Horarios
@@ -166,6 +168,21 @@ const DetailResto = ({ route }) => {
     navigation.navigate("Checkout", { checkout: checkout })
   }
 
+
+
+  function handleResenias() {
+    navigation.navigate("Ranking-Reseñas", { resto: detail })
+
+  }
+
+  function handleReviews() {
+    dispatch(searchRestorantById(resto._id));
+    setShowReviews(true);
+
+  }
+  useEffect(() => {
+    dispatch(searchRestorantById(_id));
+  }, [_id]);
 
   return (
     <View style={styles.container}>
@@ -399,10 +416,44 @@ const DetailResto = ({ route }) => {
                             />
                           )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
-                
+
                 </TouchableOpacity>
 
-                <ListReviews/>
+
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleResenias()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
+                </TouchableOpacity>
+
+                  {showReviews && (
+                    <ListReviews route={{ params: { _id: resto._id} }} />
+                  
+
+                  )}
+
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleReviews()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
+
+                </TouchableOpacity>
+
+
+
+
 
               </View>
               {/* ---------- Scroll Horizontal ------------ */}

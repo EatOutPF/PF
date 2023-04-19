@@ -262,48 +262,36 @@ export const filterRestorant = (payload) => {
     };
 };
 
-export const postListReviews = (reseñas) => {
-    return async function (dispatch) {
-        try {
-            let response = await axios.get(`${DB_HOST}/reviews`, reseñas);
-            const restaurant = response.data
-             dispatch({
-                type: POST_REVIEWS,
-                payload: restaurant,
+export const postListReviews = (value) => {
+    console.log({value})
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/reviews/${value?.resto}`, value)
+            .then((response) => {
+             console.log({response})
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log("Error axion post review: ", error.message);
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: error.message,
+                });
             });
-        
-        } catch (error) {
-            return {
-                error: "No se agregaron reseñas",
-                originalErrorMessage: error,
-            };
-        }
     };
 };
 
-// export const getAsmosphere = () => {
-//     return async function (dispatch) {
-//         try {
-//             let response = await axios.get(`${DB_HOST}/menu`);
-//             return dispatch ({
-//                 type: GET_TYPES_FOODS,
-//                 payload: response.data,
-//             });
-//         } catch (error) {
-//             return {
-//                 error: 'No se encontraron tipos de comida',
-//                 originalError: error,
-//             }
-//         }
-//     }
-// }
+
 export const createUser = (payload) => {
 
 }
 
 export const setUserToken = (payload) => {
     console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
-    // getUserInfo(payload?.stsTokenManager?.accessToken)
+
     return {
         type: SET_USER_TOKEN,
         payload: payload,

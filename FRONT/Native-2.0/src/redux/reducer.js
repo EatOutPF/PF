@@ -278,6 +278,7 @@ export default function rootReducer(state = initialState, action) {
         }
 
         case POST_REVIEWS:{
+            console.log("POST REVIEW REDUCER --------- ", action?.payload)
             return{
                 ...state,
                 addReviews: action.payload
