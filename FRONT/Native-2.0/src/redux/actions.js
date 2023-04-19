@@ -27,6 +27,7 @@ import {
     GET_EXTRA,
     FILTER_RESTORANTS,
     POST_FAVORITE,
+    FETCH_FAVORITES,
 
 } from "./type";
 import { log } from "react-native-reanimated";
@@ -348,4 +349,17 @@ export const clearUserInfo = (payload) => {
     };
     
 };
+
+
+
+export function fetchFavorites(_id) {
+  return async dispatch => {
+    const response = await axios.get(`${DB_HOST}/users/${_id}`);
+    const favorites = response.restaurant;
+    dispatch({
+      type: FETCH_FAVORITES,
+      payload:favorites,
+    });
+  };
+}
 

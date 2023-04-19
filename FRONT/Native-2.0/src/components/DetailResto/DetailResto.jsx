@@ -195,9 +195,15 @@ const DetailResto = ({ route }) => {
 
   };
 const handleRemoveFavorite = () => {
-    dispatch(removeFavorite(detail.id));
-    setIsFavorite();
-  alert('Restaurante eliminado de favoritos');
+  if (!userLogged) {
+    return;
+  }
+  const restaurant = detail._id;
+  const user = userId; 
+  dispatch(PostsFavorite(restaurant, user));
+  setIsFavorite();
+  alert('eliminado');
+  console.log(`Enviando restauran: ${restaurant}, user ${user}`);
   };
   
 
@@ -212,7 +218,18 @@ const handleRemoveFavorite = () => {
             style={[styles.header, { height: headerHeight }]}>
             <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             <Text style={styles.superTitle}>{detail?.name}</Text>
+          <View style={styles.viewFavortires}>
+          <Icon 
+            type= "material-community"
+            name= {isFavorite ? "heart-outline" : "heart"}
+            onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
+            color= { '#FF0000'}
+            size= {35}
+            underlayColor="tranparent">
 
+         </Icon>
+         
+       </View>
           </Animated.View>
           <ScrollView
             ref={scrollViewRef}
@@ -230,19 +247,8 @@ const handleRemoveFavorite = () => {
             scrollEventThrottle={16}
           >
            
-         <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
-         <View style={styles.viewFavortires}>
-         <Icon 
-         type= "material-community"
-         name= {isFavorite ? "heart-outline" : "heart"}
-         onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
-         color= { '#FF0000'}
-         size= {35}
-         underlayColor="tranparent">
-
-         </Icon>
-         
-       </View>
+       
+        
             
             <View>
               

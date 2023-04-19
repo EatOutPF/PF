@@ -47,7 +47,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 , width: '100%', backgroundColor: "#efe4dc"}}>
-      <SearchBar/>
+
       <RestosList />   
       <BottonSheetFilters/>
     </View>

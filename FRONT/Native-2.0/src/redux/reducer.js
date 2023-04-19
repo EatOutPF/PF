@@ -28,6 +28,7 @@ import {
     GET_EXTRA,
     FILTER_RESTORANTS,
     POST_FAVORITE,
+    FETCH_FAVORITES,
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -58,6 +59,7 @@ const initialState = {
     typesOfExtras: [],
 
     orderState: "az",
+
     favorites:[],
 }
 
@@ -277,14 +279,20 @@ export default function rootReducer(state = initialState, action) {
                 // allRestorants: arrayFiltered,
             }
         }
-
+//-----------------------------------------------------------------------------------------------//
         
-case POST_FAVORITE:
-    return {
-      ...state,
-      favorites: [... state.favorites, action?.payload]
+         case POST_FAVORITE:
+            return {
+                ...state,
+                favorites: [... state.favorites, action?.payload]
     };
-  
+  //----------------------------------------------------------------------------------------------//
+ 
+      case FETCH_FAVORITES:
+        return {
+          ...state,
+          favorites: action.favorites
+        };
 
 
         //-----------------------------------------------------------------------------------------
