@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../Redux/Actions";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+/* import { getFirestore } from "firebase/firestore"; */
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -10,10 +10,11 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+/* import { getStorage } from "firebase/storage"; */
 import logo from "../../assets/logoNombre.png";
 import style from "./Login.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import sweetAlert from "sweetalert";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlqjw6JkovRLJp8hSh-sG6q1tY1G-RitE",
@@ -31,8 +32,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+/* const db = getFirestore(app);
+const storage = getStorage(app); */
 
 function Login() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const loggedUser = useSelector((state) => state.user);
 
   useEffect(() => {
     setUser(user);
@@ -69,13 +71,25 @@ function Login() {
       setUser(userCredential.user);
       dispatch(setToken(userCredential.user.accessToken));
       setUser(userCredential.user);
-      navigate("/landing");
+
       //window.location.href = "/landing";
     } catch (error) {
       console.error("Sign in failed!", error);
       setError(error.message);
+      sweetAlert(error.message);
     }
   };
+
+  useEffect(() => {
+    console.log(loggedUser);
+    if (loggedUser) {
+      if (loggedUser?.role === "admin" || loggedUser.role === "superadmin") {
+        navigate("/landing");
+      } /* else {
+        sweetAlert("usuario no autorizado");
+      } */
+    }
+  }, [loggedUser]);
 
   const handleOnClick = () => {
     signInWithPopup(auth, new GoogleAuthProvider())

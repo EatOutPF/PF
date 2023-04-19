@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-
+  background-color: #282c34;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
@@ -16,4 +16,5 @@
   font-weight: bold;
   display: flex;
   flex-direction: column;
+  width: 500px;
 }
