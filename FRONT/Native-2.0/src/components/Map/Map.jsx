@@ -26,7 +26,6 @@ export default function App() {
     const [origin, setOrigen] = useState({
         latitude : -33.744014, 
         longitude : -61.958717
-    
     })
     const [destination, setDestination] = useState({ 
         latitude : -33.744789, 

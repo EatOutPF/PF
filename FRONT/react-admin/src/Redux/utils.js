@@ -140,10 +140,20 @@ const readMultifilesUpCloudinary = async (event) => {
   return arrayImages;
 };
 
+function currencyFormatter({ currency, value }) {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    minimumFractionDigits: 2,
+    currency,
+  });
+  return formatter.format(value);
+}
+
 export {
   updateMapper,
   saveLocalStorage,
   getLocalStorage,
   useLocallyPersistedReducer,
   readMultifilesUpCloudinary,
+  currencyFormatter,
 };

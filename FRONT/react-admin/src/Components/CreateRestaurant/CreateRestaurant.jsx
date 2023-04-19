@@ -8,6 +8,7 @@ import Validations from "../Validations/Validations";
 import { useNavigate } from "react-router-dom";
 import sweetAlert from "sweetalert";
 import { readMultifilesUpCloudinary } from "../../Redux/utils";
+import Loading from "../Loading/Loading";
 
 export default function Form() {
   const msg = useSelector((stage) => stage.msg);
@@ -15,11 +16,10 @@ export default function Form() {
   const dispatch = useDispatch();
   const [terminos, setTerminos] = useState("false");
   const user = useSelector((state) => state.user);
-  const [upCloudinaryImages, setUpCloudinaryImages] = useState([]);
   const [errorName, setErrorName] = useState({
     name: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const [errorAddress, setErrorAddress] = useState({
     streetName: "",
     streetNumber: "",
@@ -125,7 +125,7 @@ export default function Form() {
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
     setErrorName(
       Validations({
-        ...errorName,
+        ...name,
         [name]: value,
       })
     );
@@ -282,12 +282,15 @@ export default function Form() {
       [event.target.name]: event.target.value,
     });
 
-    setErrorContact(
-      Validations({
-        ...errorContact,
-        [event.target.name]: event.target.value,
-      })
-    );
+    if (event.target.name === "phoneNumber") {
+      setErrorContact(
+        Validations({ ...contact, phoneNumber: event.target.value })
+      );
+    }
+
+    if (event.target.name === "email") {
+      setErrorContact(Validations({ ...contact, email: event.target.value }));
+    }
   };
 
   const handleAddress = (event) => {
@@ -297,7 +300,7 @@ export default function Form() {
     });
     setErrorAddress(
       Validations({
-        ...errorAddress,
+        ...address,
         address: event.target.value,
       })
     );
@@ -307,7 +310,7 @@ export default function Form() {
     setCoordinate({ ...coordinate, longitude: event.target.value });
     setErrorCoordinate(
       Validations({
-        ...errorCoordinate,
+        ...coordinate,
         longitude: event.target.value,
       })
     );
@@ -317,7 +320,7 @@ export default function Form() {
     setCoordinate({ ...coordinate, latitude: event.target.value });
     setErrorCoordinate(
       Validations({
-        ...errorCoordinate,
+        ...coordinate,
         latitude: event.target.value,
       })
     );
@@ -330,7 +333,7 @@ export default function Form() {
     });
     setErrorSocialMedia(
       Validations({
-        ...errorSocialMedia,
+        ...socialMedia,
         instagram: event.target.value,
       })
     );
@@ -343,7 +346,7 @@ export default function Form() {
     });
     setErrorSocialMedia(
       Validations({
-        ...errorSocialMedia,
+        ...socialMedia,
         facebook: event.target.value,
       })
     );
@@ -356,7 +359,7 @@ export default function Form() {
     });
     setErrorSocialMedia(
       Validations({
-        ...errorSocialMedia,
+        ...socialMedia,
         wpp: event.target.value,
       })
     );
@@ -391,11 +394,12 @@ export default function Form() {
     ); */
 
   const handleImages = async (event) => {
-    console.log(1);
+    setLoading(true);
+
     const result = await readMultifilesUpCloudinary(event);
-    console.log(4);
+
     if (result) setImages([...images, ...result]);
-    console.log(5);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -406,12 +410,11 @@ export default function Form() {
   }, [images]);
 
   useEffect(() => {
-    console.log({ images });
+    console.log({ contact }, { errorContact });
   });
 
   const deleteImages = (id) => (e) => {
     e.preventDefault();
-
     const arrayImages = images?.filter((img) => img.id !== id);
     setImages(arrayImages);
   };
@@ -431,7 +434,7 @@ export default function Form() {
       address,
       contact,
       schedule,
-      images,
+      images: images?.map((i) => i.url),
       tables,
       diets: selectDiets,
       menu: selectMenu,
@@ -443,11 +446,11 @@ export default function Form() {
     };
     console.log(newRestaurant);
     dispatch(postRestaurant(newRestaurant));
+    navigate("/home");
 
     console.log(1, newRestaurant);
     if (msg?.restaurant) {
       sweetAlert("Creación Exitosa", msg.restaurant);
-      navigate("/home");
     }
   };
 
@@ -459,105 +462,108 @@ export default function Form() {
           {stage === 1 && (
             <div>
               <h2>Step 1</h2>
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Name:
-                    <input
-                      type="text"
-                      name="name"
-                      value={input.name}
-                      onChange={handleInput}
-                    />
-                  </label>
-                  {errorName.name && (
-                    <span className={styles.danger}>{errorName.name}</span>
-                  )}
+              <div>
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Name:
+                      <input
+                        type="text"
+                        name="name"
+                        value={input.name}
+                        onChange={handleInput}
+                      />
+                    </label>
+                    {errorName.name && (
+                      <span className={styles.danger}>{errorName.name}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <h3>Contact</h3>
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Phone Number:
-                    <input
-                      type="number"
-                      name="phoneNumber"
-                      value={contact.phoneNumber}
-                      onChange={handleContact}
-                    />
-                  </label>
-                  {errorContact.phoneNumber && (
-                    <span className={styles.danger}>
-                      {errorContact.phoneNumber}
-                    </span>
-                  )}
+                <h3>Contact</h3>
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Phone Number:
+                      <input
+                        type="number"
+                        name="phoneNumber"
+                        value={contact.phoneNumber}
+                        onChange={handleContact}
+                      />
+                    </label>
+                    {errorContact.phoneNumber && (
+                      <span className={styles.danger}>
+                        {errorContact.phoneNumber}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Email:
-                    <input
-                      type="text"
-                      name="email"
-                      value={contact.email}
-                      onChange={handleContact}
-                    />
-                  </label>
-                  {errorContact.email && (
-                    <span className={styles.danger}>{errorContact.email}</span>
-                  )}
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Email:
+                      <input
+                        type="text"
+                        name="email"
+                        value={contact.email}
+                        onChange={handleContact}
+                      />
+                    </label>
+                    {errorContact.email && (
+                      <span className={styles.danger}>
+                        {errorContact.email}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <h3>Social Media</h3>
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Instagram:
-                    <input
-                      type="text"
-                      name="instagram"
-                      value={socialMedia.instagram}
-                      onChange={handleInstagram}
-                    />
-                  </label>
+                <h3>Social Media</h3>
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Instagram:
+                      <input
+                        type="text"
+                        name="instagram"
+                        value={socialMedia.instagram}
+                        onChange={handleInstagram}
+                      />
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Facebook:
-                    <input
-                      type="text"
-                      name="facebook"
-                      value={socialMedia.facebook}
-                      onChange={handleFacebook}
-                    />
-                  </label>
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Facebook:
+                      <input
+                        type="text"
+                        name="facebook"
+                        value={socialMedia.facebook}
+                        onChange={handleFacebook}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div className={styles.divValidations}>
+                  <div className={styles.labelValidations}>
+                    <label>
+                      Wpp:
+                      <input
+                        type="number"
+                        name="wpp"
+                        value={socialMedia.wpp}
+                        onChange={handleWpp}
+                      />
+                    </label>
+                    {errorSocialMedia.wpp && (
+                      <span className={styles.danger}>
+                        {errorSocialMedia.wpp}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              <div className={styles.divValidations}>
-                <div className={styles.labelValidations}>
-                  <label>
-                    Wpp:
-                    <input
-                      type="number"
-                      name="wpp"
-                      value={socialMedia.wpp}
-                      onChange={handleWpp}
-                    />
-                  </label>
-                  {errorSocialMedia.wpp && (
-                    <span className={styles.danger}>
-                      {errorSocialMedia.wpp}
-                    </span>
-                  )}
-                </div>
-              </div>
-
               <button className={styles.buttons} onClick={handleNext}>
                 Next
               </button>
@@ -687,14 +693,20 @@ export default function Form() {
                     </label>
                   </div>
                   <div className={styles.containerSchedule} style={{ gap: 10 }}>
-                    {images.length &&
+                    {loading ? (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Loading></Loading>
+                        <div>Cargando imagenes ... </div>
+                      </div>
+                    ) : (
+                      images.length &&
                       images?.map((img, index) => (
                         <div
                           key={`img${index}`}
                           className={styles.containerImagen}
                         >
                           <button
-                            onClick={() => deleteImages(img.id)}
+                            onClick={deleteImages(img.id)}
                             className={styles.containerButtonImagen}
                             style={{
                               backgroundColor: "red",
@@ -710,7 +722,8 @@ export default function Form() {
                             className={styles.containerImg}
                           />
                         </div>
-                      ))}
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

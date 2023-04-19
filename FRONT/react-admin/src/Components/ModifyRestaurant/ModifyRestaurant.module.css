@@ -145,6 +145,7 @@ select {
   width: -webkit-fill-available;
   justify-content: space-between;
   margin: 17px;
+  width: -webkit-fill-available;
 }
 
 .formCol {
@@ -179,12 +180,24 @@ select {
   margin: 17px;
 }
 
+.containerBox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 17px;
+}
+
 .containerSub {
   text-decoration: underline;
-  color: magenta;
+  color: rgb(4, 0, 255);
   padding: 5px 10px;
 
   cursor: pointer;
+}
+
+.containerSub:hover {
+  color: magenta;
 }
 
 .containerImagen {
@@ -217,8 +230,9 @@ select {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px;
-  align-content: center;
-  justify-content: center;
+
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .containerInput {
