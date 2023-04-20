@@ -129,7 +129,7 @@ const DetailResto = ({ route }) => {
     // setHours(item)
     setShowHours(item)
   }
-
+  
   //Menú, Categorias, Horarios, Medios de Pago, reviews
   //----------------------------------Header------------------------------
   const [headerHeight, setHeaderHeight] = useState(new Animated.Value(300));
@@ -369,7 +369,7 @@ const DetailResto = ({ route }) => {
                           )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
-          {/* --------------Boton 'REVIEWS'------------------------ */}
+                                 {/* --------------Boton 'REVIEWS'------------------------ */}
           <TouchableOpacity style={styles.confirmButton}
                   onPress={() => handleResenias()}>
                   <IonicIcon
