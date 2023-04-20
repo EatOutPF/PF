@@ -20,7 +20,7 @@ import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 const DetailResto = ({ route }) => {
-  const resto = useSelector( state => state?.restorantsFound)
+  const resto = useSelector(state => state?.restorantsFound)
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const user = useSelector(state => state?.userInfo)
@@ -108,7 +108,7 @@ const DetailResto = ({ route }) => {
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
     const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     setShowDate(newDate)
-    setReserve({ ...reserve, date: date.dateString });
+    // setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
     setIsSelected(false)
   }
@@ -124,10 +124,18 @@ const DetailResto = ({ route }) => {
   };
 
   const handleHorario = (item) => {
-    console.log(item)
     setReserve({ ...reserve, time: item });
-    // setHours(item)
     setShowHours(item)
+  }
+
+  const handleReserva = (date, item) => {
+    if (!date || !item) {
+      // console.log('DATE', date, 'HORA', item)
+      alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
+    } else {
+      dispatch(handleCheckOut(reserve))
+      setReserve({ ...reserve, date: date.dateString });
+    }
   }
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
@@ -153,13 +161,13 @@ const DetailResto = ({ route }) => {
     navigation.navigate("Checkout", { checkout: checkout })
   }
 
-  function handleResenias(){
-    navigation.navigate("Ranking-Reseñas", {resto: detail})
-   }
+  function handleResenias() {
+    navigation.navigate("Ranking-Reseñas", { resto: detail })
+  }
 
-   function handleReviews(){
-    navigation.navigate("Reviews-Resto", {resto: _id})
-   }
+  function handleReviews() {
+    navigation.navigate("Reviews-Resto", { resto: _id })
+  }
 
 
   return (
@@ -338,7 +346,7 @@ const DetailResto = ({ route }) => {
                               }}>
                               <View style={styles.horariosButtons}>
                                 <Text
-                                style={styles.hora}
+                                  style={styles.hora}
                                   key={item}>{item}
                                 </Text>
                               </View>
@@ -354,23 +362,21 @@ const DetailResto = ({ route }) => {
 
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
-                <TouchableOpacity style={styles.confirmButton}
-                  onPress={() => handleCheckOut()}>
+                <TouchableOpacity
+                  style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
+                  disabled={!reserve.date && !reserve.time}
+                  onPress={() => {
+                    handleReserva()
+                    handleCheckOut()
+                  }}>
                   <IonicIcon
                     name="checkmark-outline"
                     size={20}
                     color={'white'} />
-
-                  {/* {showWebview && (
-                            <WebView
-                              source={{ uri: 'https://google.com' }}
-                              style={{ flex: 1 }}
-                            />
-                          )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
-          {/* --------------Boton 'REVIEWS'------------------------ */}
-          <TouchableOpacity style={styles.confirmButton}
+                {/* --------------Boton 'REVIEWS'------------------------ */}
+                <TouchableOpacity style={styles.confirmButton}
                   onPress={() => handleResenias()}>
                   <IonicIcon
                     name="checkmark-outline"
@@ -382,7 +388,7 @@ const DetailResto = ({ route }) => {
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
                 </TouchableOpacity>
 
-           
+
 
                 <TouchableOpacity style={styles.confirmButton}
                   onPress={() => handleReviews()}>
@@ -563,8 +569,8 @@ const DetailResto = ({ route }) => {
 
         )
         }
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
 
   );
 };
@@ -705,8 +711,11 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.3,
     shadowRadius: 10,
-
   },
+ disabledConfirmButton:{
+  backgroundColor: 'grey'
+ },
+  
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
@@ -774,11 +783,11 @@ const styles = StyleSheet.create({
     height: 26,
     width: 50,
     alignItems: 'center',
-    
-  }, 
-  hora : {
+
+  },
+  hora: {
     fontSize: 20,
-   
+
   }
 
 });
