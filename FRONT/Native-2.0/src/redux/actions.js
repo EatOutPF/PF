@@ -26,6 +26,7 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    POST_REVIEWS,
     GET_USER_LOCATION,
     UBICATION_BY_RESTORANT,
 } from "./type";
@@ -312,6 +313,30 @@ export const getUserInfo = (token) => {
     };
 
 };
+export const postListReviews = (value) => {
+
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/reviews/${value?.resto}`, value)
+            .then((response) => {
+            
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log("Error axion post review: ", error.message);
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: error.message,
+                });
+            });
+    };
+};
+
+
+
 
 export const clearUserInfo = (payload) => {
     return {
