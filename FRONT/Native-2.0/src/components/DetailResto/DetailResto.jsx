@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Ani
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
@@ -13,14 +13,14 @@ import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
-import 'moment-timezone';
 import 'moment/locale/es'; // Importa el idioma español
 import RBSheet from "react-native-raw-bottom-sheet";
+import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 
 const DetailResto = ({ route }) => {
-  // const { _id } = useParams();
+  const resto = useSelector(state => state?.restorantsFound)
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const user = useSelector(state => state?.userInfo)
@@ -78,7 +78,6 @@ const DetailResto = ({ route }) => {
   const [showHours, setShowHours] = useState('Elegir horario');
 
 
-
   const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
     const horarios = [];
     let current = new Date(openTime);
@@ -91,6 +90,7 @@ const DetailResto = ({ route }) => {
   }
 
   const handleDate = (date) => {
+    console.log(date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -106,19 +106,14 @@ const DetailResto = ({ route }) => {
     const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
     const horarios = generateHorarios(openTime, closeTime);
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
-    // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
-    console.log('soy Date que se convierte despues', date)
-    // const selected = new Date(`${date.year}-${date.month}-${date.day}T00:00:00.000Z`);
-     const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
-    console.log('NEW DATE',newDate)
+    const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     setShowDate(newDate)
-    setReserve({ ...reserve, date: date.dateString });
+    // setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
     setIsSelected(false)
   }
   //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
-  const minDate = new Date()
 
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
@@ -129,10 +124,18 @@ const DetailResto = ({ route }) => {
   };
 
   const handleHorario = (item) => {
-    console.log(item)
     setReserve({ ...reserve, time: item });
-    // setHours(item)
     setShowHours(item)
+  }
+
+  const handleReserva = (date, item) => {
+    if (!date || !item) {
+      // console.log('DATE', date, 'HORA', item)
+      alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
+    } else {
+      dispatch(handleCheckOut(reserve))
+      setReserve({ ...reserve, date: date.dateString });
+    }
   }
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
@@ -155,12 +158,17 @@ const DetailResto = ({ route }) => {
         table: reserve.table,
       }
     }
-    // console.log('soy el user', checkout.user)
-    // console.log('FECHAAAAAA', reserve.date)
-    // console.log('HORAAAAA', reserve.time)
-
     navigation.navigate("Checkout", { checkout: checkout })
   }
+
+  function handleResenias() {
+    navigation.navigate("Ranking-Reseñas", { resto: detail })
+  }
+
+  function handleReviews() {
+    navigation.navigate("Reviews-Resto", { resto: _id })
+  }
+
 
   return (
     <View style={styles.container}>
@@ -283,22 +291,14 @@ const DetailResto = ({ route }) => {
                   <Modal visible={showModal} animationType='fade'>
                     <Calendar
                       // style=
-                      minDate={minDate}
                       onDayPress={date => {
                         handleDate(date)
                         setShowModal(false)
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
-                      // markedDates={{
-                      //   formattedDate: { marked: false },
-                      // }}
                       markedDates={{
-                        [isSelected]: {
-                          selected: true,
-                          disableTouchEvent: true,
-                          selectedDotColor: 'orange',
-                        },
+                        formattedDate: { marked: false },
                       }}
                     />
                   </Modal>
@@ -346,7 +346,7 @@ const DetailResto = ({ route }) => {
                               }}>
                               <View style={styles.horariosButtons}>
                                 <Text
-                                style={styles.hora}
+                                  style={styles.hora}
                                   key={item}>{item}
                                 </Text>
                               </View>
@@ -362,23 +362,52 @@ const DetailResto = ({ route }) => {
 
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
-                <TouchableOpacity style={styles.confirmButton}
-                  onPress={() => handleCheckOut()}>
+                <TouchableOpacity
+                  style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
+                  disabled={!reserve.date && !reserve.time}
+                  onPress={() => {
+                    handleReserva()
+                    handleCheckOut()
+                  }}>
                   <IonicIcon
                     name="checkmark-outline"
                     size={20}
                     color={'white'} />
-
-                  {/* {showWebview && (
-                            <WebView
-                              source={{ uri: 'https://google.com' }}
-                              style={{ flex: 1 }}
-                            />
-                          )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
+                {/* --------------Boton 'REVIEWS'------------------------ */}
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleResenias()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
+                </TouchableOpacity>
+
+
+
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleReviews()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
+
+                </TouchableOpacity>
+
               </View>
             </View>
+
+
+
 
             {/* ---------- Scroll Horizontal ------------ */}
             <View style={{ margin: 8, }}>
@@ -540,8 +569,8 @@ const DetailResto = ({ route }) => {
 
         )
         }
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
 
   );
 };
@@ -682,8 +711,11 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.3,
     shadowRadius: 10,
-
   },
+ disabledConfirmButton:{
+  backgroundColor: 'grey'
+ },
+  
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
@@ -751,11 +783,11 @@ const styles = StyleSheet.create({
     height: 26,
     width: 50,
     alignItems: 'center',
-    
-  }, 
-  hora : {
+
+  },
+  hora: {
     fontSize: 20,
-   
+
   }
 
 });

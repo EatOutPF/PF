@@ -19,8 +19,8 @@ import BottonSheetFilters from '../Filters/BottomSheetFilters.jsx';
 import CheckoutPayment from '../CheckoutPayment/CheckoutPayment';
 import CheckoutState from '../CheckoutPayment/CheckoutState';
 import MyComponent from '../CheckoutPayment/prueba1.jsx';
-
-
+import ListReviews from '../Reviews/ListReviews.jsx'
+import AddReviews from '../Reviews/AddReviews.jsx'
 // import MercadoPago from '../MercadoPago/MercadoPago.js';
 // import MercadoPago1 from '../MercadoPago/MercadoPago.js';
 // import CheckOut from '../MercaPaga/Checkout.js';
@@ -65,9 +65,15 @@ function HomeScreenStack(){
         name="Mapa"
         component={Map}
       />
-      <HomeStackNavigator.Screen
-        name="Reseñas"
-        component={HomeChiquito}   // aca va el componente Reviews
+    <HomeStackNavigator.Screen
+        name="Reviews-Resto"
+        component={ListReviews} 
+      
+      />
+        <HomeStackNavigator.Screen
+        name="Ranking-Reseñas"
+        component={AddReviews} 
+      
       />
 
     </HomeStackNavigator.Navigator>

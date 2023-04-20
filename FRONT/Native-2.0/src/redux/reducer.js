@@ -27,6 +27,7 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    POST_REVIEWS,
     GET_USER_LOCATION,
     UBICATION_BY_RESTORANT
 } from "./type";
@@ -36,6 +37,7 @@ import {
 const initialState = {
     allRestorants: [],
     allRestorantsCopy: [],
+    addReviews:[],
 
     restorantsFound: [],
     restorantsFiltered: [],
@@ -108,6 +110,12 @@ export default function rootReducer(state = initialState, action) {
             return { ...state, searchText: action?.payload }
         }
         //-------------------------------------------------------------------------    
+         //------------------------------------------------------------------------- 
+         case POST_REVIEWS: {
+            //console.log("reducer: ", action.payload);
+            return { ...state, addReviews: action?.payload }
+        }
+        //-------------------------------------------------------------------------   
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
             // console.log("soy el reducer de mp: ", action.payload);
