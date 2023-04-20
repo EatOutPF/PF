@@ -95,7 +95,7 @@ async function webhook(reference) {
       restaurant.save();
       
       let date = new Date().toISOString().slice(0,10)
-      postPay = postPayment({idUser, idRestaurant: idResto, amount, idReserve: postReserva._id, date: date })
+      postPay = await postPayment({idUser, idRestaurant: idResto, amount, idReserve: postReserva._id, date: date })
       postReserva.payment = postPay._id
       postReserva.save()
       let notificacionPago = await postNotification(messagePago, idUser);
