@@ -222,6 +222,8 @@ export const setToken = (token) => {
       dispatch({ type: SET_USER, payload: response.data });
     } catch (error) {
       console.error("Error setting token:", error);
+
+      error.response?.data?.error && sweetAlert(error.response?.data?.error);
     }
   };
 };
