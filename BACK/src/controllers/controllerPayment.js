@@ -28,7 +28,7 @@ async function postPayment({idUser, idRestaurant, amount, idReserve, date}) {
    await user.save()
    reserve.payment = newPayment._id
 
-    return `Payment fue creado `
+    return newPayment
 }
 
 async function getPayment(id) {
