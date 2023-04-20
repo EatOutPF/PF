@@ -180,7 +180,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
           headerTintColor: '#fff',
         })}
       >
-        <Stack.Screen name="Iniciar Sesion" component={LoginScreen} />
+        <Stack.Screen name="Iniciar sesion" component={LoginScreen} />
         <Stack.Screen name="Bienvenido" component={Profile} />
         <Stack.Screen name="Perfil de Usuario" component={ProfileFirebase} />
         <Stack.Screen name="Crear Cuenta" component={CreateAccountFirebase} />

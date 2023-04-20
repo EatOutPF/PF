@@ -15,30 +15,30 @@ export default function AddReviews ({route})  {
   const dispatch = useDispatch();
   const navigation = useNavigation()
 
-  const[ranking, setRanking] = useState();
+  const[ranking, setRanking] = useState(1);
   const[review, setReview] = useState("")
   const[errorReview, setErrorReview] = useState(null)
   const [loading, setLoading] = useState(false)
 
  function handleAddReviews ()  {
-    try {
+    console.log("RANKING VALUE", ranking);
         const value = {
             resto: resto?._id,
             review: review,
             score: ranking,
             user: user?._id,
         }
+        console.log(" VALUE", value);
     
         dispatch(postListReviews(value))
-        navigation.navigate("Ranking-Reseñas", {resto})
+        const _id = resto?._id
+        navigation.navigate("Detalle Restaurant", {_id})
+        // navigation.navigate("Ranking-Reseñas", {resto})
         
-    } catch (error) {
-        
-    }
 
-   navigation.goBack()
-   
-  
+
+//    navigation.goBack()
+
 
 
 }

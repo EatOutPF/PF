@@ -47,7 +47,7 @@ export default function ProfileFirebase() {
         //     .then(()=> console.log("User sined out!"))
         // dispatch(clearUser)
         dispatch(clearUserInfo())
-        navigation.navigate("Perfil")
+        navigation.navigate("Iniciar sesion")
         
     }
 

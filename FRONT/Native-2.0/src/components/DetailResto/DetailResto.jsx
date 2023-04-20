@@ -226,7 +226,7 @@ const handleRemoveFavorite = () => {
   }
 
   function handleReviews() {
-    navigation.navigate("Reviews-Resto", { resto: _id })
+    navigation.navigate("Reviews-Resto", { resto: detail })
   }
 
 
