@@ -35,9 +35,9 @@ router.post("/", (req, res) => {
       "email": user.email,
     },
     back_urls: {
-      success: "eatout-lac.vercel.app/paymentstatus?deep_link=" + encodeURIComponent("eatout://eatout-lac.vercel.app/paymentstatus"),
-      failure: "eatout-lac.vercel.app/paymentstatus",
-      pending: "eatout-lac.vercel.app/paymentstatus",
+      success: com.eatoutpf.EatOut,
+      failure: "",
+      pending: "",
     },
    auto_return: "approved",
     binary_mode: true,
