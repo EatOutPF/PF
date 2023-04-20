@@ -35,7 +35,7 @@ function FavoritesScreen() {
   // }, [dispatch, userId]);
   console.log(favorites)
   return (
-    <View style={{ backgroundColor: "#efe4dc"}}>
+    <View style={{ backgroundColor: "#efe4dc", width: width, height: height}}>
     {!userLog ? 
       <Image source={require('../../img/no-favorites-no-user.jpg')} style={{ width: width }}  resizeMode="contain"/> : 
       (userData?.favorite?.length === 0 ? 

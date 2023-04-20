@@ -11,7 +11,7 @@ const Notifications = () => {
     const userData = useSelector(state=>state?.userInfo)
     const { width } = Dimensions.get('window');
     const { height } = Dimensions.get('window');
-    const dataNotificationsReversed = userData.notificacion && [...userData?.notificacion]?.reverse();
+    const dataNotificationsReversed = userData?.notificacion && [...userData?.notificacion]?.reverse();
     const [userLog, setUserLog] = useState(false);
     const renderItem = ({ item }) => (
       <RenderNotification item={item} />
@@ -25,16 +25,16 @@ const Notifications = () => {
 
     
   return (
-    <View style={{ backgroundColor: "#efe4dc"}}>
+    <View style={{ backgroundColor: "#efe4dc", width: width, height: height, paddingBottom: 80, paddingTop: 5}}>
     {!userLog ? 
     <Image source={require('../../img/no-notificacion-no-user.jpg')} style={{ width: width }}  resizeMode="contain"/> : 
-      (userData?.favorite?.length === 0 ? 
+      (userData?.notificacion?.length === 0 ? 
         <Image source={require('../../img/no-notificacion.jpg')} style={{ width: width }}  resizeMode="contain"/> 
         :
       <View style={{ backgroundColor: "#efe4dc"}}>
-        <Text style={styles.notificationSubtitle}> 
+        {/* <Text style={styles.notificationSubtitle}> 
           {CapitalizeString( userData?.name)} estas son tus notificaciones:
-        </Text>
+        </Text> */}
 
         {/* {userData?.notificacion?.map((notification) => (
           <Text key={notification.id}>{notification.message}</Text>

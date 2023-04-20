@@ -10,6 +10,8 @@ import RenderSchedule from './RenderSchedule';
 const Schedule = () => {
     const [userLog, setUserLog] = useState(false);
     const userData = useSelector(state=>state?.userInfo)
+    const dataNotificationsReversed = userData?.reserve && [...userData?.reserve]?.reverse();
+
   const { width } = Dimensions.get('window');
   const { height } = Dimensions.get('window');
 
@@ -49,20 +51,20 @@ const Schedule = () => {
     }, [userData])
 
   return (
-    <View style={{ backgroundColor: "#efe4dc"}}>
+    <View style={{ backgroundColor: "#efe4dc", width: width, height: height, paddingBottom: 80, paddingTop: 5}}>
       {!userLog ? 
       <Image source={require('../../img/no-reserves-no-user.jpg')} style={{ width: width }}  resizeMode="contain"/> : 
         (userData?.reserve?.length === 0 ? 
           <Image source={require('../../img/no-reserves.jpg')} style={{ width: width }}  resizeMode="contain"/> 
           :
         <View>
-        <Text style={styles.notificationSubtitle}> 
+        {/* <Text style={styles.notificationSubtitle}> 
           {CapitalizeString( userData?.name)} estas son tus RESERVAS :
-        </Text>
+        </Text> */}
 
         <FlatList
           style={{marginBottom: 28}}
-          data={[...userData?.reserve]?.reverse()}
+          data={dataNotificationsReversed}
           keyExtractor={(item) => item?._id?.toString()}
           renderItem={renderItem}
         />

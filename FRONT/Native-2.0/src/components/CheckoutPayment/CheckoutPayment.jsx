@@ -23,7 +23,7 @@ const CheckoutPayment = ({route}) => {
     const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
 
     // const url = linkMercadoPago
-    const redirectUrl = Linking.createURL("https://eatout.onrender.com/paymentstatus")
+    // const redirectUrl = Linking.createURL("https://eatout.onrender.com/paymentstatus")
     
 
     const styles = StyleSheet.create({
@@ -84,7 +84,9 @@ const CheckoutPayment = ({route}) => {
         // console.log("OBJETO CHECKUT: ", checkout);
         console?.log("link mp: ", linkMercadoPago);
 
-        let result = await WebBrowser.openBrowserAsync(Linking.openURL(`${linkMercadoPago}?back_url=${encodeURIComponent(redirectUrl)}`));
+        // let result = await WebBrowser.openBrowserAsync(Linking.openURL(`${linkMercadoPago}?back_url=${encodeURIComponent(redirectUrl)}`));
+        let result = await WebBrowser.openBrowserAsync(linkMercadoPago);
+
             // "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
         setResult(result);
         // const checkout = {

@@ -47,7 +47,7 @@ export default function ProfileFirebase() {
         //     .then(()=> console.log("User sined out!"))
         // dispatch(clearUser)
         dispatch(clearUserInfo())
-        navigation.navigate("Login")
+        navigation.navigate("Perfil")
         
     }
 
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     },
     input: {
       width: 250,
-      height: 70,
+      height: 60,
       borderColor: '#fff',
       borderWidth: 2,
       borderRadius: 10,
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
       marginBottom: 10
     },
     title:{
-      fontSize: 12, 
+      fontSize: 10, 
       fontWeight: '400', 
       color: 'gray'
     },
     subtitle:{
       paddingLeft: 20,
-      fontSize: 20, 
+      fontSize: 15, 
       fontWeight: 'bold',
       fontWeight: '400', 
       color: 'black'

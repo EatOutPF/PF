@@ -168,6 +168,7 @@ function FavoriteScreenNavigator(){
 // -------------------- Tab Navigator --------------------
 const Tab = createBottomTabNavigator();
 export const LowerNavbar = () => {
+  const userData = useSelector(state=>state?.userInfo)
   const notificationCounter= useSelector(state => state?.notificationCounter)
   return (
     <Tab.Navigator    
@@ -270,7 +271,7 @@ export const LowerNavbar = () => {
       />
       <Tab.Screen 
           name="Perfil" 
-          component={Login} 
+          component={userData?.login ? ProfileFirebase : Login} 
       />
 
     </Tab.Navigator>
