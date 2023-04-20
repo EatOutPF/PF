@@ -25,7 +25,7 @@ const DetailResto = ({ route }) => {
   const detail = useSelector(state => state?.restorantById)
   const [isFavorite ,setIsFavorite ]= useState(false)
   const [userLogged, setuserLogged]= useState(false)
-  
+  const userData = useSelector(state=>state?.userInfo)
   
   const [userId, setUserId] = useState(null);
 
@@ -68,10 +68,11 @@ const DetailResto = ({ route }) => {
   }
   useEffect(() => {
     // Comprobar si el restaurante ya está en favoritos
-    if (detail && detail.favorite) {
+    console.log(userData)
+    if (userData && userData.favorite[0].restaurant[0]._id === _id) {
       setIsFavorite(true);
     }
-  }, [detail]);
+  }, [userData]);
 
   //-----Que dia?---------------
   const expandir = () => {
@@ -183,10 +184,9 @@ const DetailResto = ({ route }) => {
       alert('Para agregar el restaurante debes estar logeado');
       return;
     }
-    const restaurant = detail._id;
-    const user = userId; 
+     
     dispatch(PostsFavorite(restaurant, user));
-    setIsFavorite();
+    dispatch(searchRestorantById(_id));
     alert('Restaurante agregado a favoritos');
     console.log(`Enviando restauran: ${restaurant}, user ${user}`);
 
@@ -198,7 +198,7 @@ const handleRemoveFavorite = () => {
   const restaurant = detail._id;
   const user = userId; 
   dispatch(PostsFavorite(restaurant, user));
-  setIsFavorite();
+  dispatch(searchRestorantById(_id));
   alert('eliminado');
   console.log(`Enviando restauran: ${restaurant}, user ${user}`);
   };

@@ -31,7 +31,7 @@ function FavoritesScreen() {
   // useEffect(() => {
   //   dispatch(fetchFavorites(userId));
   // }, [dispatch, userId]);
- 
+  console.log(favorites)
   return (
     <View style={{ backgroundColor: "#efe4dc"}}>
     {!userLog ? <Text>NO HAY USER LOG</Text> : 
