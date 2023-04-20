@@ -9,6 +9,7 @@ import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
 import schedule from "../../assets/schedule.png";
 /* import sweetAlert from "sweetalert"; */
+import axios from "axios"
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -34,11 +35,11 @@ const Card = (props) => {
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-  /*   const handlerPayment = () => {
+    const handlerPayment = () => {
     axios
-      .post("https://eatout.onrender.com/mercadopago", props)
+      .post("/mercadopago", props)
       .then((res) => (window.location.href = res.data.response.init_point));
-  }; */
+  };
 
   return (
     <>
@@ -110,7 +111,7 @@ const Card = (props) => {
             )}
 
             {/* -----------MERCADOPAGO--------- */}
-            {/* <button onClick={handlerPayment}> Pagar Reserva </button> */}
+            <button onClick={handlerPayment}> Pagar Reserva </button>
           </td>
         </tr>
       )}
