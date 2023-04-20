@@ -1,4 +1,4 @@
-import React/* , { useEffect, useState } */ from "react";
+import React /* , { useEffect, useState } */ from "react";
 import Home from "./View/Home/Home.jsx";
 import Login from "./View/Login/Login.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -14,6 +14,7 @@ import HomeUsers from "./View/HomeUser/HomeUser.jsx";
 import { /* useDispatch, */ useSelector } from "react-redux";
 import Reserves from "./Components/Reserves/Reserves.jsx";
 import Successful from "./Components/Successful/Successful.jsx";
+import ModifyUsers from "./Components/Users/ModifyUsers.jsx";
 /* import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js"; */
 /* import { setUser } from "./Redux/Actions.js"; */
 
@@ -64,6 +65,11 @@ function App() {
                   path="/reserves/:id"
                   element={<Reserves />}
                 ></Route>
+                <Route
+                  exact
+                  path="/modifyUser/:id"
+                  element={<ModifyUsers />}
+                ></Route>
               </>
             )}
 
@@ -94,6 +100,7 @@ function App() {
               path="/successfulPayment"
               element={<Successful />}
             ></Route>
+
             <Route exact path="/" element={<Login />}></Route>
           </>
         )}

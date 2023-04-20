@@ -35,11 +35,11 @@ router.post("/", (req, res) => {
       "email": user.email,
     },
     back_urls: {
-      success: "eatout-lac.vercel.app/paymentstatus?deep_link=" + encodeURIComponent("eatout://eatout-lac.vercel.app/paymentstatus"),
-      failure: "eatout-lac.vercel.app/paymentstatus",
-      pending: "eatout-lac.vercel.app/paymentstatus",
+      success: "",
+      failure: "",
+      pending: "",
     },
-   auto_return: "approved",
+   //auto_return: "approved",
     binary_mode: true,
     metadata : {user: user._id, restaurant: restaurant._id, reserve},
     external_reference : `${restaurant._id}__${user._id}__${Date.now()}`
