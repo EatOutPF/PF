@@ -1,4 +1,4 @@
-import { FlatList, Text } from 'react-native';
+import { FlatList, Text, Image, Dimensions  } from 'react-native';
 import React, { useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { View } from 'react-native';
@@ -7,12 +7,14 @@ import { fetchFavorites } from '../../redux/actions';
 
 function FavoritesScreen() {
   const dispatch = useDispatch();
+  const { width } = Dimensions.get('window');
+  const { height } = Dimensions.get('window');
+
   //const favorites = useSelector(state => state.favorites);
   const userData = useSelector(state=>state?.userInfo)
   const [userLog, setUserLog] = useState(false);
   const [userId, setUserId] = useState(null);
   const [favorites, setFavorites] = useState()
-
 
   // useEffect(() => {
   //   auth.onAuthStateChanged(user => {
@@ -23,8 +25,8 @@ function FavoritesScreen() {
   // }, []);
 
   useEffect(() => {
-    userData.login ? setUserLog(true) : setUserLog(false)
-    setFavorites(userData.favorites)
+    userData?.login ? setUserLog(true) : setUserLog(false)
+    setFavorites(userData?.favorites)
   }, [userData])
 
 
@@ -34,12 +36,16 @@ function FavoritesScreen() {
   console.log(favorites)
   return (
     <View style={{ backgroundColor: "#efe4dc"}}>
-    {!userLog ? <Text>NO HAY USER LOG</Text> : 
-    <FlatList
-      data={favorites}
-      renderItem={({ item }) => <Text>{item.name}</Text>}
-      keyExtractor={item => item.id}
-    />
+    {!userLog ? 
+      <Image source={require('../../img/no-favorites-no-user.jpg')} style={{ width: width }}  resizeMode="contain"/> : 
+      (userData?.favorite?.length === 0 ? 
+      <Image source={require('../../img/no-favorites.jpg')} style={{ width: width }}  resizeMode="contain"/> 
+      :
+      <FlatList
+        data={favorites}
+        renderItem={({ item }) => <Text>{item.name}</Text>}
+        keyExtractor={item => item.id}
+      />)
 }
 </View>
   );

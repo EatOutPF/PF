@@ -69,7 +69,7 @@ const DetailResto = ({ route }) => {
   useEffect(() => {
     // Comprobar si el restaurante ya está en favoritos
     console.log(userData)
-    if (userData && userData.favorite[0].restaurant[0]._id === _id) {
+    if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
       setIsFavorite(true);
     }
   }, [userData]);
