@@ -18,9 +18,9 @@ export default function ListReviews({route}) {
      const dispatch = useDispatch();
      const restaurantById = useSelector((state) => state.restaurantById?.reviews);
      
-    //  useEffect(() => {
-    //   dispatch(searchRestorantById(_id));
-    // }, [_id]);
+     useEffect(() => {
+      dispatch(searchRestorantById(_id));
+    }, [_id]);
    
    
  
