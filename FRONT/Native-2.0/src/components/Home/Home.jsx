@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 
 import RestosList from '../Restos/RestosList.jsx'
@@ -22,10 +22,10 @@ import DetailResto from '../DetailResto/DetailResto.jsx';
 
 import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
-import { useSelector, useDispatch,  } from 'react-redux';
+import { useSelector, useDispatch, } from 'react-redux';
 import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
 import SearchBar from '../NavBar/SearchBar.jsx';
-
+import { searchRestorantByString } from '../../redux/actions';
 
 const Home = () => {
   const [loading, setLoading] = useState(true)
@@ -33,9 +33,30 @@ const Home = () => {
   const dispatch = useDispatch();
   const restorantById = useSelector(state => state.restorantById);
   const userInfo = useSelector(state => state.userInfo);
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+  }
+
+  useEffect(() => {
+    if (restorantes?.length === 0) {
+      setSearchText("");
+    }
+  }, [restorantes]);
+
+  useEffect(() => {
+    if(searchText !== ""){
+        dispatch(searchRestorantByString(searchText));
+    }
+    else{
+        dispatch(searchRestorantByString(""));
+    }
+
+  }, [searchText]);
 
   // dispatch(clearStateResatorantById())
-  console.log("HOME USER INFO: ", userInfo?.name);
+  // console.log("HOME USER INFO: ", userInfo?.name);
   // useEffect(() => {
   //   // if(restorantes?.length !== 0) { setLoading(false) }
   // //   // await AsyncStorage.setItem()
@@ -46,12 +67,20 @@ const Home = () => {
 
 
   return (
-    <View style={{ flex: 1 , width: '100%', backgroundColor: "#efe4dc"}}>
-
-      <RestosList />   
-      <BottonSheetFilters/>
+    <View style={{ flex: 1, width: '100%', backgroundColor: "#efe4dc" }}>
+      <Text>Descrubre con EatOut</Text>
+      <View style={styles.searchBar}>
+      <TextInput
+          style={styles.input}
+          placeholder="Buscar..."
+          value={searchText}
+          onChangeText={handleSearch}
+        />
+      </View>
+      <RestosList />
+      <BottonSheetFilters />
     </View>
-    
+
 
   )
 }
@@ -102,6 +131,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     top: -15,
     alignSelf: 'center',
+  },
+  searchBar:{
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  input: {
+    height: 40,
+    paddingHorizontal: 10,
   },
 })
 
