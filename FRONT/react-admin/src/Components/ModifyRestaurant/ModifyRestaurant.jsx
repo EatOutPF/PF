@@ -256,6 +256,7 @@ const ModifyRestaurant = (props) => {
         section: detailRestaurant.section,
         ranking: detailRestaurant.ranking,
         active: detailRestaurant.active,
+        advance: detailRestaurant.advance,
         idUser: user._id,
       });
 
@@ -997,12 +998,22 @@ const ModifyRestaurant = (props) => {
 
                 <div className={style.container}>
                   <div className={style.containerBox}>
+                    <label htmlFor="advance"> Anticipo </label>
+                    <input
+                      type="text"
+                      id="advance"
+                      name="advance"
+                      value={input?.advance ? input.advance : 0}
+                      onChange={handlerChange}
+                    />
+                  </div>
+                  <div className={style.containerBox}>
                     <label htmlFor="ranking"> Puntaje </label>
                     <input
                       type="text"
                       id="ranking"
                       name="ranking"
-                      defaultValue={input.ranking}
+                      value={input.ranking}
                       style={{ backgroundColor: "#c6c5c5" }}
                     />
                   </div>

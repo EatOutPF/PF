@@ -56,6 +56,7 @@ export default function Form() {
 
   const [input, setInput] = useState({
     name: "",
+    advance: 0,
   });
 
   const [address, setAddress] = useState({
@@ -442,6 +443,7 @@ export default function Form() {
       atmosphere: selectAtmosphere,
       extras: selectExtra,
       section: selectSection,
+      advance: input.advance,
       idUser: user._id,
     };
     console.log(newRestaurant);
@@ -1055,6 +1057,21 @@ export default function Form() {
                   />
                 </div>
               </div>
+
+              <div className={styles.divValidations}>
+                <div className={styles.labelValidations}>
+                  <label>
+                    advance:
+                    <input
+                      type="text"
+                      name="advance"
+                      value={address.advance}
+                      onChange={handleInput}
+                    />
+                  </label>
+                </div>
+              </div>
+
               <button className={styles.buttons} onClick={handleBack}>
                 Back
               </button>
