@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Ani
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import * as WebBrowser from 'expo-web-browser';
@@ -15,11 +15,12 @@ import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
 import RBSheet from "react-native-raw-bottom-sheet";
+import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 
 const DetailResto = ({ route }) => {
-  // const { _id } = useParams();
+  const resto = useSelector( state => state?.restorantsFound)
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const user = useSelector(state => state?.userInfo)
@@ -149,12 +150,17 @@ const DetailResto = ({ route }) => {
         table: reserve.table,
       }
     }
-    // console.log('soy el user', checkout.user)
-    // console.log('FECHAAAAAA', reserve.date)
-    // console.log('HORAAAAA', reserve.time)
-
     navigation.navigate("Checkout", { checkout: checkout })
   }
+
+  function handleResenias(){
+    navigation.navigate("Ranking-Reseñas", {resto: detail})
+   }
+
+   function handleReviews(){
+    navigation.navigate("Reviews-Resto", {resto: detail})
+   }
+
 
   return (
     <View style={styles.container}>
@@ -363,8 +369,39 @@ const DetailResto = ({ route }) => {
                           )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
+          {/* --------------Boton 'REVIEWS'------------------------ */}
+          <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleResenias()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
+                </TouchableOpacity>
+
+           
+
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleReviews()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
+
+                </TouchableOpacity>
+
               </View>
             </View>
+
+
+
 
             {/* ---------- Scroll Horizontal ------------ */}
             <View style={{ margin: 8, }}>
