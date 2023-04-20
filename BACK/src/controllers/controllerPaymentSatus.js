@@ -110,7 +110,8 @@ async function webhook(reference) {
       });
     }
     let useract = await getUsers(idUser);
-
+    console.log(postPay)
+    console.log(postReserva)
     console.log(useract)
     return [data.status, useract];
     
