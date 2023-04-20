@@ -6,10 +6,14 @@ const notificationSchema = new Schema({
 message : {
     type: String
 },
-user: [{
+user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-  }]
+  },
+  unread: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const Notification = mongoose.model('Notification', notificationSchema)
