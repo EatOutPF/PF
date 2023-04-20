@@ -13,6 +13,7 @@ import Loading from "../Loading/Loading"
 import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
+import 'moment-timezone';
 import 'moment/locale/es'; // Importa el idioma español
 import RBSheet from "react-native-raw-bottom-sheet";
 import ListReviews from '../Reviews/ListReviews.jsx'
@@ -78,6 +79,7 @@ const DetailResto = ({ route }) => {
   const [showHours, setShowHours] = useState('Elegir horario');
 
 
+
   const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
     const horarios = [];
     let current = new Date(openTime);
@@ -90,7 +92,6 @@ const DetailResto = ({ route }) => {
   }
 
   const handleDate = (date) => {
-    console.log(date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -106,7 +107,11 @@ const DetailResto = ({ route }) => {
     const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
     const horarios = generateHorarios(openTime, closeTime);
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
-    const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
+    // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
+    console.log('soy Date que se convierte despues', date)
+    // const selected = new Date(`${date.year}-${date.month}-${date.day}T00:00:00.000Z`);
+     const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
+    console.log('NEW DATE',newDate)
     setShowDate(newDate)
     setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
@@ -114,6 +119,7 @@ const DetailResto = ({ route }) => {
   }
   //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
+  const minDate = new Date()
 
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
@@ -283,14 +289,22 @@ const DetailResto = ({ route }) => {
                   <Modal visible={showModal} animationType='fade'>
                     <Calendar
                       // style=
+                      minDate={minDate}
                       onDayPress={date => {
                         handleDate(date)
                         setShowModal(false)
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
+                      // markedDates={{
+                      //   formattedDate: { marked: false },
+                      // }}
                       markedDates={{
-                        formattedDate: { marked: false },
+                        [isSelected]: {
+                          selected: true,
+                          disableTouchEvent: true,
+                          selectedDotColor: 'orange',
+                        },
                       }}
                     />
                   </Modal>

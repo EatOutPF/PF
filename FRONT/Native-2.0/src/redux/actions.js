@@ -27,6 +27,8 @@ import {
     GET_EXTRA,
     FILTER_RESTORANTS,
     POST_REVIEWS,
+    GET_USER_LOCATION,
+    UBICATION_BY_RESTORANT,
 } from "./type";
 import { log } from "react-native-reanimated";
 
@@ -287,11 +289,11 @@ export const getUserInfo = (token) => {
     console.log("GETUSERINFO: ", token);
     setUserToken(token)
     console.log("GETUSERINFO2222: ", token?.stsTokenManager?.accessToken);
-    
+
     return async (dispatch) => {
         axios
             .get(`${DB_HOST}/users`, {
-                headers:{
+                headers: {
                     Authorization: "Bearer " + token?.stsTokenManager?.accessToken,
                 }
             })
@@ -341,6 +343,21 @@ export const clearUserInfo = (payload) => {
         type: CLEAR_USER_INFO,
         payload: {},
     };
-    
+
 };
+
+export const getUserLocation = (payload) => {
+    return {
+        type: GET_USER_LOCATION,
+        payload,
+    }
+}
+
+export const getUbicationByRestorant = (payload) => {
+    return {
+        type: UBICATION_BY_RESTORANT,
+        payload,
+    }
+}
+
 
