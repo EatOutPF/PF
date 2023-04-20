@@ -89,9 +89,6 @@ const CheckoutPayment = ({route}) => {
         navigation?.navigate("Estado de la Reserva", checkout)
     };
 
-    const handleClaudio = () => {
-        navigation.navigate("Claudio")
-    }
 
 
     return (

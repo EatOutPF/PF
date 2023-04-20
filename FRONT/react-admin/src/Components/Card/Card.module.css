@@ -60,10 +60,18 @@ button.rowsInactive {
   padding: 3px 6px;
   font-size: small;
   border-radius: 16px;
-  background-color: rgb(83, 185, 24);
+  background-color: #008cba;
   width: fit-content;
 }
 
 .rows img {
   width: 16px;
+}
+
+button.rowsSchedule {
+  padding: 3px 6px;
+  font-size: small;
+  border-radius: 16px;
+  background-color: rgb(62 169 25);
+  width: fit-content;
 }

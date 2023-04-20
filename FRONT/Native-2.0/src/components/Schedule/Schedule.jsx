@@ -8,7 +8,7 @@ import RenderSchedule from './RenderSchedule';
 
 
 const Schedule = () => {
-    const [userLog, setUserLog] = useState(true);
+    const [userLog, setUserLog] = useState(false);
     const userData = useSelector(state=>state?.userInfo)
  
     const renderItem = ({ item }) => (
@@ -38,6 +38,13 @@ const Schedule = () => {
       //     else setLoading(false)
       //   }
     },[userData])
+
+    useEffect(() => {
+
+      userData.login ? setUserLog(true) : setUserLog(false)
+      
+    }, [userData])
+
   return (
     <View style={{ backgroundColor: "#efe4dc"}}>
       {!userLog ? <Text>NO HAY USER LOG</Text> : 

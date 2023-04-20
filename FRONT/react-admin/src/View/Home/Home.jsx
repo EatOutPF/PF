@@ -64,6 +64,10 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    console.log({user});
+  });
+
+  useEffect(() => {
     restaurants.length && setLoaded(true);
   }, [restaurants]);
 

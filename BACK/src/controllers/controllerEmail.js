@@ -23,6 +23,7 @@ const sendConfirmationEmail = async (
     html: message.html
   }
 
+  console.log(sendConfirmationEmail)
   await transporter.sendMail(sendemail);
 };
 

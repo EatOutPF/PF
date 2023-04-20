@@ -45,7 +45,7 @@ function HomeScreenStack(){
       screenOptions={{
         screenBackground: 'transparent',
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
-        headerTintColor: '#fff',
+        headerTintColor: '#fff'
       }}
     >
       <HomeStackNavigator.Screen
@@ -76,7 +76,10 @@ function HomeScreenStack(){
         name="Reseñas"
         component={HomeChiquito}   // aca va el componente Reviews
       />
-
+{/* <HomeStackNavigator.Screen
+        name="Favoritos"
+        component={FavoritesScreen}   // aca va el componente Reviews
+      /> */}
     </HomeStackNavigator.Navigator>
   )
 

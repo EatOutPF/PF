@@ -176,12 +176,12 @@ export const postRestaurant = (create) => async (dispatch) => {
     dispatch(getAllRestaurantsByUser());
   } catch (error) {
     if (error) {
-      sweetAlert(error.response.data.error);
+      sweetAlert(error.response?.data?.error);
     }
 
     dispatch({
       type: "POST_RESTAURANT",
-      payload: error.response.data.error,
+      payload: error.response?.data?.error,
     });
   }
 };
@@ -258,11 +258,13 @@ export const postUsers = (create) => async (dispatch) => {
       throw new Error("El argumento create no es válido");
     }
   } catch (error) {
-    alert(error.response.data);
-    dispatch({
-      type: POST_USERS,
-      payload: [],
-    });
+    if (error) {
+      sweetAlert(error.response?.data);
+      dispatch({
+        type: POST_USERS,
+        payload: [],
+      });
+    }
   }
 };
 

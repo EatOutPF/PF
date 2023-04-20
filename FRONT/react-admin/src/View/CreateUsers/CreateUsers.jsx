@@ -11,7 +11,7 @@ const CreateUserForm = () => {
     phone: "",
     email: "",
     password: "",
-    role: "admin",
+    role: "",
   });
 
   const handleChange = (event) => {
@@ -28,10 +28,9 @@ const CreateUserForm = () => {
       phone: "",
       email: "",
       password: "",
-      role: "admin",
+      role: "",
     });
   };
-
 
   return (
     <div className={style.container}>
@@ -84,7 +83,7 @@ const CreateUserForm = () => {
             />
           </div>
           {/* Se usa un select para el rol */}
-          <div>
+          {/*  <div>
             <label htmlFor="role">Role:</label>
             <select
               id="role"
@@ -94,7 +93,7 @@ const CreateUserForm = () => {
             >
               <option value="admin">Admin</option>
             </select>
-          </div>
+          </div> */}
           <button type="submit">Create User</button>
         </form>
       </div>

@@ -29,13 +29,16 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+    POST_FAVORITE,
+    FETCH_FAVORITES,
+
 } from "./type";
 import { log } from "react-native-reanimated";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
 // ya que es diferente a la IP del Celular
 const DB_HOST = "https://eatout.onrender.com"// ip de la pc con el server corriendo
-// const DB_HOST = "http://192.168.3.206:5001/"// ip de la pc con el server corriendo
+//const DB_HOST = "http://localhost:5001/"// ip de la pc con el server corriendo
 
 
 // ACTION CREATORS
@@ -127,7 +130,7 @@ export function searchRestorantByString(string) {
         axios
             .get(`${DB_HOST}/restaurant?name=${string}`)
             .then((response) => {
-                // console.log("RESPONSE del action -> ", response);
+                //console.log("RESPONSE del action -> ", response);
                 dispatch({
                     type: GET_RESTORANT_BY_STRING,
                     payload: response.data,
@@ -263,7 +266,35 @@ export const filterRestorant = (payload) => {
         payload: payload,
     };
 };
-
+//-----------POST DE FAVORITES-----------------------------
+export const PostsFavorite = (restaurant, user) => {
+    return async dispatch => {
+      try {
+        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant, user});
+        
+        dispatch({ type: POST_FAVORITE, payload: response.data });
+      } catch (error) {
+    
+      }
+    };
+  };
+  
+// export const getAsmosphere = () => {
+//     return async function (dispatch) {
+//         try {
+//             let response = await axios.get(`${DB_HOST}/menu`);
+//             return dispatch ({
+//                 type: GET_TYPES_FOODS,
+//                 payload: response.data,
+//             });
+//         } catch (error) {
+//             return {
+//                 error: 'No se encontraron tipos de comida',
+//                 originalError: error,
+//             }
+//         }
+//     }
+// }
 export const createUser = (payload) => {
 
 }
@@ -337,4 +368,17 @@ export const clearUserInfo = (payload) => {
     };
     
 };
+
+
+
+export function fetchFavorites(_id) {
+  return async dispatch => {
+    const response = await axios.get(`${DB_HOST}/users/${_id}`);
+    const favorites = response.restaurant;
+    dispatch({
+      type: FETCH_FAVORITES,
+      payload:favorites,
+    });
+  };
+}
 

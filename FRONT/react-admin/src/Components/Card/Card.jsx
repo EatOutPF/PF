@@ -7,8 +7,9 @@ import pen from "../../assets/boligrafo-rosa.png";
 import papelera from "../../assets/papelera-de-reciclaje.png";
 import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
-import axios from "axios";
-import sweetAlert from "sweetalert";
+import schedule from "../../assets/schedule.png";
+/* import sweetAlert from "sweetalert"; */
+import axios from "axios"
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
@@ -25,39 +26,34 @@ const Card = (props) => {
     dispatch(deleteRestaurant(props));
     console.log(message);
 
-    if(message){
-    return props?.active
-      ? sweetAlert(
-          "Se inactivó",
-          message
-        )
-      : sweetAlert("Se activó", message);}
+    /* if (message) {
+      return props?.active
+        ? sweetAlert("Se inactivó", message)
+        : sweetAlert("Se activó", message);
+    } */
   };
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-  /*  const handlerPayment = () => {
+    const handlerPayment = () => {
     axios
-      .post(
-       "https://eatout.onrender.com/payment",
-        props
-      )
+      .post("/mercadopago", props)
       .then((res) => (window.location.href = res.data.response.init_point));
   };
- */
+
   return (
     <>
       {props && (
         <tr key={props._id} className={!props.active ? style.disable : null}>
           <td>{props.name}</td>
           <td>{props.menu}</td>
-          <td>{props.diets?.map((d) => `${d} `)}</td>
-
+          <td>{props?.diets?.map((d) => `${d} `)}</td>
           <td>
             {props.address?.streetName} - {props.address?.streetNumber}
           </td>
           <td>{props.address?.city}</td>
           <td>{props.address?.country}</td>
+          <td>{props.balance}</td>
           <td>{props.ranking}</td>
           <td>{props.active ? "Activo" : "Inactivo"}</td>
           <td className={style.rows}>
@@ -75,18 +71,30 @@ const Card = (props) => {
               <></>
             )}
 
-            <NavLink to={`/reviews/${props.id}`}>
-              <button onClick={handlerClick} className={style.rowsInactive}>
-                <div title="Ver Reviews">
-                  <img src={showReviews} alt="reviews" />
-                </div>
-              </button>
-            </NavLink>
+            {props.active && (
+              <>
+                <NavLink to={`/reviews/${props.id}`}>
+                  <button onClick={handlerClick} className={style.rowsInactive}>
+                    <div title="Ver Reviews">
+                      <img src={showReviews} alt="reviews" />
+                    </div>
+                  </button>
+                </NavLink>
+
+                <NavLink to={`/reserves/${props.id}`}>
+                  <button onClick={handlerClick} className={style.rowsSchedule}>
+                    <div title="Ver Reservas">
+                      <img src={schedule} alt="reserve" />
+                    </div>
+                  </button>
+                </NavLink>
+              </>
+            )}
 
             {user.role === "superadmin" && (
               <button
                 onClick={handlerDelete}
-                className={props.active ? style.rowsActive : style.rowsInactive}
+                className={props.active ? style.rowsActive : style.rowsSchedule}
               >
                 {props.active ? (
                   <>
@@ -103,7 +111,7 @@ const Card = (props) => {
             )}
 
             {/* -----------MERCADOPAGO--------- */}
-            {/*   <button onClick={handlerPayment}> Pagar Reserva </button> */}
+            <button onClick={handlerPayment}> Pagar Reserva </button>
           </td>
         </tr>
       )}
