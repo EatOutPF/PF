@@ -14,6 +14,7 @@ import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
+import 'moment-timezone';
 import RBSheet from "react-native-raw-bottom-sheet";
 import ListReviews from '../Reviews/ListReviews.jsx'
 
@@ -106,7 +107,8 @@ const DetailResto = ({ route }) => {
     const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
     const horarios = generateHorarios(openTime, closeTime);
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
-    const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
+    // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
+    const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
     setShowDate(newDate)
     // setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
@@ -114,6 +116,7 @@ const DetailResto = ({ route }) => {
   }
   //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
+  const minDate = new Date()
 
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
@@ -291,15 +294,19 @@ const DetailResto = ({ route }) => {
                   <Modal visible={showModal} animationType='fade'>
                     <Calendar
                       // style=
+                      minDate={minDate}
                       onDayPress={date => {
                         handleDate(date)
                         setShowModal(false)
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
-                      markedDates={{
-                        formattedDate: { marked: false },
-                      }}
+                      markedDates={{ [isSelected]: {
+                        selected: true,
+                        disableTouchEvent: true,
+                        selectedDotColor: 'orange',
+                      },
+                    }}
                     />
                   </Modal>
                 </View>
@@ -712,10 +719,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
   },
- disabledConfirmButton:{
-  backgroundColor: 'grey'
- },
-  
+  disabledConfirmButton: {
+    backgroundColor: 'grey'
+  },
+
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
