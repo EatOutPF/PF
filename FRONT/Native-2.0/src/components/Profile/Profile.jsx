@@ -21,16 +21,17 @@ export default function Profile({route}) {
 
     const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
-    console.log("USER DE PROFILE: ", user?.user?.photoURL);
-    console.log("keys user, ", Object.keys(user));
+    console.log("PROFILE COMPONENt: ------------- ", user);
+    console.log(typeof(user));
+    console.log("PROFILE COMPONENT, keys user ------------- ", Object.keys(user));
 
     const logOut = () => {
-        console.log("FLOR");
-        // auth()
-        //     .singOut()
-        //     .then(()=> console.log("User sined out!"))
-        // dispatch(clearUser)
-        navigation.navigate("Login")
+      console.log("LogOut");
+        auth()
+            .singOut()
+            .then(()=> console.log("User sined out!"))
+        dispatch(clearUser)
+        navigation.navigate("Iniciar sesion")
         
     }
 

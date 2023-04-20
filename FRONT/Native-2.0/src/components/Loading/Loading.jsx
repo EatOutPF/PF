@@ -5,14 +5,14 @@ import StyledText from '../../styles/StyledText/StyledText'
 
 // import logo from "../../img/logo-name-banner-eatout"
 
-const Loading = ({ children, to }) => {
+const Loading = ({ text }) => {
     return (
         <View style={styles.container} > 
             {/* <DualRingLoader /> */}
             <Image style={styles.image} 
                 source={require('../../img/png/eatout-logo-name-eslogan.png')}
             ></Image>
-            <Text>Buscando los Restaurantes cercanos...</Text>
+            <Text> {text} </Text>
             <ActivityIndicator style={styles.loading} size="large" color="#FA6B6B" />
 
         </View>

@@ -15,10 +15,13 @@ import {
 
     CREATE_USER,
 
+    SET_NOTIFICATION_NUMBER,
+
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
 
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -27,8 +30,14 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+
+    POST_FAVORITE,
+    FETCH_FAVORITES,
+
+    POST_REVIEWS,
     GET_USER_LOCATION,
     UBICATION_BY_RESTORANT
+
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
@@ -36,6 +45,7 @@ import {
 const initialState = {
     allRestorants: [],
     allRestorantsCopy: [],
+    addReviews:[],
 
     restorantsFound: [],
     restorantsFiltered: [],
@@ -45,12 +55,15 @@ const initialState = {
     userLocation: {},
     ubicationByRestorant: [],
 
+    notificationsUser: [],
+    notificationCounter: 0,
+
     restorantById: {},
     restorantByString: [],
 
     checkoutLinkMP: "",
+    checkoutExternalReferenceMP: "",
     checkoutLinkMPResponse: {},
-
 
     searchText: "",
 
@@ -61,6 +74,8 @@ const initialState = {
     typesOfExtras: [],
 
     orderState: "az",
+
+    favorites:[],
 }
 
 // ---------- REDUCER ----------
@@ -108,12 +123,23 @@ export default function rootReducer(state = initialState, action) {
             return { ...state, searchText: action?.payload }
         }
         //-------------------------------------------------------------------------    
+         //------------------------------------------------------------------------- 
+         case POST_REVIEWS: {
+            //console.log("reducer: ", action.payload);
+            return { ...state, addReviews: action?.payload }
+        }
+        //-------------------------------------------------------------------------   
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
-            // console.log("soy el reducer de mp: ", action.payload);
+            console.log("soy el reducer de mp: ", action.payload);
+            console.log("ID PAYMENT: ", action?.payload?.body?.external_reference);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
+            return { ...state, 
+                checkoutLinkMPResponse: action?.payload, 
+                checkoutLinkMP: action?.payload?.body?.init_point,
+                checkoutExternalReferenceMP: action?.payload?.body?.external_reference,
+            }
 
         }
         //------------------------------------------------------------------------- 
@@ -279,13 +305,26 @@ export default function rootReducer(state = initialState, action) {
                 // allRestorants: arrayFiltered,
             }
         }
-
+//-----------------------------------------------------------------------------------------------//
+        
+         case POST_FAVORITE:
+            return {
+                ...state,
+                favorites: [... state.favorites, action?.payload]
+    };
+  //----------------------------------------------------------------------------------------------//
+ 
+      case FETCH_FAVORITES:
+        return {
+          ...state,
+          favorites: action.favorites
+        };
 
 
         //-----------------------------------------------------------------------------------------
         case SET_USER_TOKEN: {
             console.log("*************************************");
-            console.log("token user: ", action.payload);
+            console.log("SET_USER_TOKEN REDUCER ", action.payload);
             return {
                 ...state,
                 userToken: action?.payload,
@@ -298,16 +337,38 @@ export default function rootReducer(state = initialState, action) {
                 userToken: {},
             }
         }
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            console.log(" user INFO: ", action.payload);
+            console.log("GET_USER_INFO REDUCER: ", action.payload);
             return {
                 ...state,
                 userInfo: action?.payload,
             }
         }
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+        case SET_NOTIFICATION_NUMBER: {
+            // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            // console.log("GET_USER_INFO REDUCER: ", action.payload);
+            return {
+                ...state,
+                notificationCounter: action?.payload,
+            }
+        }
+//-----------------------------------------------------------------------------------------
+        case SET_USER_INFO: {
+            console.log("SET_USER_INFO - REDUCER" , action.payload);
+            console.log("SET_USER_INFO - REDUCER reserve" , action?.payload?.reserve);
+            console.log("SET_USER_INFO - REDUCER not leng" , action?.payload?.notificacion);
+
+            return {
+                ...state,
+                userInfo: action?.payload,
+                notificationsUser: action?.payload?.notificacion,
+                // notificationCounter: action?.payload?.notificacion?.length(),
+            }
+        }
+//-----------------------------------------------------------------------------------------
         case CLEAR_USER_INFO: {
             return {
                 ...state,
@@ -392,7 +453,7 @@ export default function rootReducer(state = initialState, action) {
             // }
         }
 
-        //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
         default:
             return state;
     }
@@ -429,4 +490,6 @@ export default function rootReducer(state = initialState, action) {
         });
     }
 };
+//-------------------------------------------------------------------------------------------//
+
 

@@ -4,25 +4,49 @@ import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Ani
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago } from '../../redux/actions.js'
+
+import {  PostsFavorite, PostsOptions } from '../../redux/actions.js'
+import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
+
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import * as WebBrowser from 'expo-web-browser';
-
+import {auth} from "../../../firebase-config.js"
 import Loading from "../Loading/Loading"
-import theme from '../../styles/theme.js'
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
-import 'moment-timezone';
 import 'moment/locale/es'; // Importa el idioma español
+
+import { Icon } from 'react-native-elements'
+import { removeFavorite } from '../../redux/actions.js'
+
+import 'moment-timezone';
+
 import RBSheet from "react-native-raw-bottom-sheet";
+import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 
 const DetailResto = ({ route }) => {
-  // const { _id } = useParams();
+  const resto = useSelector(state => state?.restorantsFound)
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
+  const [isFavorite ,setIsFavorite ]= useState(false)
+  const [userLogged, setuserLogged]= useState(false)
+  const userData = useSelector(state=>state?.userInfo)
+  
+  const [userId, setUserId] = useState(null);
+
+
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      user ? setuserLogged(true) : setuserLogged(false);
+      setUserId(user.uid);
+      console.log(`ID del usuario: ${user.uid}`);
+    });
+  }, []);
+
+  console.log("SOY DETAIL: ", _id);
   const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
@@ -41,14 +65,21 @@ const DetailResto = ({ route }) => {
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
     user: null,
-    date: null,
-    time: null,
-    table: 0,
+    date: "2023-04-18",
+    time: "17:30",
+    table: 1,
   })
   const handlePersons = (persons) => {
     const operation = Math.ceil(persons / 2);
     setReserve({ ...reserve, table: operation });
   }
+  useEffect(() => {
+    // Comprobar si el restaurante ya está en favoritos
+    console.log(userData)
+    if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
+      setIsFavorite(true);
+    }
+  }, [userData]);
 
   //-----Que dia?---------------
   const expandir = () => {
@@ -78,7 +109,6 @@ const DetailResto = ({ route }) => {
   const [showHours, setShowHours] = useState('Elegir horario');
 
 
-
   const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
     const horarios = [];
     let current = new Date(openTime);
@@ -89,8 +119,12 @@ const DetailResto = ({ route }) => {
     }
     return horarios;
   }
+  // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
 
+
+  
   const handleDate = (date) => {
+    console.log(date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -101,18 +135,14 @@ const DetailResto = ({ route }) => {
     const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
     const restoHorarios = detail?.schedule; //horarios semanales del restaurant
     const result = restoHorarios[today]; // Esto selcciona el dia del restaurante dentro del restaurante
-
     const openTime = new Date(`${year}-${month}-${day}T${result.open}`); // Este es el horario de apertura del restaurante
     const closeTime = new Date(`${year}-${month}-${day}T${result.close}`); // Este es el horario de cierre del restaurante
     const horarios = generateHorarios(openTime, closeTime);
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
     // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
-    console.log('soy Date que se convierte despues', date)
-    // const selected = new Date(`${date.year}-${date.month}-${date.day}T00:00:00.000Z`);
-     const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
-    console.log('NEW DATE',newDate)
+    const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
     setShowDate(newDate)
-    setReserve({ ...reserve, date: date.dateString });
+    // setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
     setIsSelected(false)
   }
@@ -129,10 +159,18 @@ const DetailResto = ({ route }) => {
   };
 
   const handleHorario = (item) => {
-    console.log(item)
     setReserve({ ...reserve, time: item });
-    // setHours(item)
     setShowHours(item)
+  }
+
+  const handleReserva = (date, item) => {
+    if (!date || !item) {
+      // console.log('DATE', date, 'HORA', item)
+      alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
+    } else {
+      dispatch(handleCheckOut(reserve))
+      setReserve({ ...reserve, date: date.dateString });
+    }
   }
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
@@ -155,12 +193,42 @@ const DetailResto = ({ route }) => {
         table: reserve.table,
       }
     }
-    // console.log('soy el user', checkout.user)
-    // console.log('FECHAAAAAA', reserve.date)
-    // console.log('HORAAAAA', reserve.time)
-
     navigation.navigate("Checkout", { checkout: checkout })
   }
+//-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
+  const handleAddFavorite = () => {
+    if (!userLogged) {
+      alert('Para agregar el restaurante debes estar logeado');
+      return;
+    }
+     
+    dispatch(PostsFavorite(restaurant, user));
+    dispatch(searchRestorantById(_id));
+    alert('Restaurante agregado a favoritos');
+    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+
+  };
+const handleRemoveFavorite = () => {
+  if (!userLogged) {
+    return;
+  }
+  const restaurant = detail._id;
+  const user = userId; 
+  dispatch(PostsFavorite(restaurant, user));
+  dispatch(searchRestorantById(_id));
+  alert('eliminado');
+  console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+  };
+  
+
+  function handleResenias() {
+    navigation.navigate("Ranking-Reseñas", { resto: detail })
+  }
+
+  function handleReviews() {
+    navigation.navigate("Reviews-Resto", { resto: _id })
+  }
+
 
   return (
     <View style={styles.container}>
@@ -170,8 +238,20 @@ const DetailResto = ({ route }) => {
         ) : (
           detail &&
           <View>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} /> 
+            {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
+          <View style={styles.viewFavortires}>
+          <Icon 
+            type= "material-community"
+            name= {isFavorite ? "heart-outline" : "heart"}
+            onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
+            color= { '#FF0000'}
+            size= {35}
+            underlayColor="tranparent">
 
+         </Icon>
+           
+       </View>
             <View style={styles.titleContainer}>
               <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
@@ -290,16 +370,12 @@ const DetailResto = ({ route }) => {
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
-                      // markedDates={{
-                      //   formattedDate: { marked: false },
-                      // }}
-                      markedDates={{
-                        [isSelected]: {
-                          selected: true,
-                          disableTouchEvent: true,
-                          selectedDotColor: 'orange',
-                        },
-                      }}
+                      markedDates={{ [isSelected]: {
+                        selected: true,
+                        disableTouchEvent: true,
+                        selectedDotColor: 'orange',
+                      },
+                    }}
                     />
                   </Modal>
                 </View>
@@ -346,7 +422,7 @@ const DetailResto = ({ route }) => {
                               }}>
                               <View style={styles.horariosButtons}>
                                 <Text
-                                style={styles.hora}
+                                  style={styles.hora}
                                   key={item}>{item}
                                 </Text>
                               </View>
@@ -362,23 +438,52 @@ const DetailResto = ({ route }) => {
 
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
-                <TouchableOpacity style={styles.confirmButton}
-                  onPress={() => handleCheckOut()}>
+                <TouchableOpacity
+                  style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
+                  disabled={!reserve.date && !reserve.time}
+                  onPress={() => {
+                    handleReserva()
+                    handleCheckOut()
+                  }}>
                   <IonicIcon
                     name="checkmark-outline"
                     size={20}
                     color={'white'} />
-
-                  {/* {showWebview && (
-                            <WebView
-                              source={{ uri: 'https://google.com' }}
-                              style={{ flex: 1 }}
-                            />
-                          )} */}
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
+                {/* --------------Boton 'REVIEWS'------------------------ */}
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleResenias()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
+                </TouchableOpacity>
+
+
+
+                <TouchableOpacity style={styles.confirmButton}
+                  onPress={() => handleReviews()}>
+                  <IonicIcon
+                    name="checkmark-outline"
+                    size={20}
+                    color={'white'}
+                  />
+
+
+                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
+
+                </TouchableOpacity>
+
               </View>
             </View>
+
+
+
 
             {/* ---------- Scroll Horizontal ------------ */}
             <View style={{ margin: 8, }}>
@@ -540,8 +645,8 @@ const DetailResto = ({ route }) => {
 
         )
         }
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
 
   );
 };
@@ -563,6 +668,15 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     // backgroundColor: 'grey',
+  },
+  viewFavortires: {
+    position:"absolute",
+    top: 0,
+    right:0,
+    backgroundColor:"#fff",
+    borderBottomLeftRadius:100,
+    padding:5,
+    paddingLeft:15,
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",
@@ -682,8 +796,11 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.3,
     shadowRadius: 10,
-
   },
+  disabledConfirmButton: {
+    backgroundColor: 'grey'
+  },
+
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
@@ -751,11 +868,11 @@ const styles = StyleSheet.create({
     height: 26,
     width: 50,
     alignItems: 'center',
-    
-  }, 
-  hora : {
+
+  },
+  hora: {
     fontSize: 20,
-   
+
   }
 
 });

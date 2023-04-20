@@ -72,8 +72,10 @@ const RestosList = () => {
 
   return (
     <ScrollView>
-      {loading ? <Loading /> : <View>
-        {/* <Text>Rating</Text>
+
+    {loading ? <Loading text="Buscando los Restaurantes cercanos..."/> : <View>
+      {/* <Text>Rating</Text>
+
         <CarouselAux type={"ranking"} title={"fumadores"}></CarouselAux> */}
 
 
