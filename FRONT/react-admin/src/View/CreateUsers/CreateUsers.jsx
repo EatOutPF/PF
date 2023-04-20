@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postUsers } from "../../Redux/Actions";
 import style from "./CreateUsers.module.css";
+import Validation from "../../Components/Validations/Validations";
+import { useNavigate } from "react-router-dom";
 
 const CreateUserForm = () => {
   const dispatch = useDispatch();
@@ -13,10 +15,13 @@ const CreateUserForm = () => {
     password: "",
     role: "",
   });
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    setErrors(Validation({ ...formData, [name]: value }));
   };
 
   const handleSubmit = (event) => {
@@ -30,6 +35,7 @@ const CreateUserForm = () => {
       password: "",
       role: "",
     });
+    navigate("/");
   };
 
   return (
@@ -38,17 +44,22 @@ const CreateUserForm = () => {
         <h1>Create User</h1>
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              minLength={5}
-              maxLength={255}
-            />
+            <div>
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                minLength={5}
+                maxLength={255}
+              />
+            </div>
+            {errors?.name && (
+              <span style={{ color: "red", fontSize: 10 }}>{errors.name}</span>
+            )}
           </div>
           <div>
             <label htmlFor="phone">Phone:</label>
@@ -59,28 +70,43 @@ const CreateUserForm = () => {
               value={formData.phone}
               onChange={handleChange}
             />
+            {errors?.phone && (
+              <span style={{ color: "red", fontSize: 10 }}>{errors.phone}</span>
+            )}
           </div>
           <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {errors?.email && (
+              <span style={{ color: "red", fontSize: 10 }}>{errors.email}</span>
+            )}
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {errors?.password && (
+              <span style={{ color: "red", fontSize: 10 }}>
+                {errors.password}
+              </span>
+            )}
           </div>
           {/* Se usa un select para el rol */}
           {/*  <div>
@@ -94,7 +120,12 @@ const CreateUserForm = () => {
               <option value="admin">Admin</option>
             </select>
           </div> */}
-          <button type="submit">Create User</button>
+
+          {errors.name || errors.email || errors.phone || errors.password ? (
+            <div>**Diligencia todos los datos</div>
+          ) : (
+            <button type="submit">Create User</button>
+          )}
         </form>
       </div>
     </div>

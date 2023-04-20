@@ -21,7 +21,8 @@ import {
   POST_OPTIONS,
   SEARCH_BY_RESTAURANT_BY_USER,
   GET_USER_BY_ID,
-  UP_CLOUDINARY,
+  DETAIL_USER,
+  UPDATE_USER,
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -61,8 +62,8 @@ const initialState = {
   currentUsers: [],
   currentListRestaurantsByUser: [],
   allRestaurantsByUser: [],
-  currentUser: {},
-  currentImagesCloudinary: [],
+  detailUser: {},
+  optionsRole: ["superadmin", "admin", "user"],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -250,13 +251,13 @@ const Reducer = (state = initialState, { type, payload }) => {
     case GET_USER_BY_ID:
       return {
         ...state,
-        currentUser: payload,
+        detailUser: payload,
       };
-    case UP_CLOUDINARY:
-      return {
-        ...state,
-        currentImagesCloudinary: payload,
-      };
+    case DETAIL_USER:
+      return { ...state, detailUser: payload };
+    case UPDATE_USER:
+      return { ...state, message: payload };
+
     default:
       return { ...state };
   }

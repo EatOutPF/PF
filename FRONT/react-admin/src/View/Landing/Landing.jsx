@@ -18,7 +18,7 @@ const Landing = () => {
         <Loading />
       ) : (
         <>
-          {user && (
+          {user?.role === "admin" || user?.role === "superadmin" ? (
             <div className={style.container}>
               <h1>Bienvenid@ {user?.name?.toLocaleUpperCase()}</h1>
               <h3>{user?.role}</h3>
@@ -40,6 +40,8 @@ const Landing = () => {
                 )}
               </div>
             </div>
+          ) : (
+            <div>Usuario no Autorizado</div>
           )}
         </>
       )}

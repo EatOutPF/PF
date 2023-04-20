@@ -29,8 +29,13 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+
     POST_FAVORITE,
     FETCH_FAVORITES,
+
+    POST_REVIEWS,
+    GET_USER_LOCATION,
+    UBICATION_BY_RESTORANT,
 
 } from "./type";
 import { log } from "react-native-reanimated";
@@ -320,11 +325,11 @@ export const getUserInfo = (token) => {
     console.log("GETUSERINFO: ", token);
     setUserToken(token)
     console.log("GETUSERINFO TOKEN: ", token?.stsTokenManager?.accessToken);
-    
+
     return async (dispatch) => {
         axios
             .get(`${DB_HOST}/users`, {
-                headers:{
+                headers: {
                     Authorization: "Bearer " + token?.stsTokenManager?.accessToken,
                 }
             })
@@ -344,6 +349,30 @@ export const getUserInfo = (token) => {
     };
 
 };
+export const postListReviews = (value) => {
+
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/reviews/${value?.resto}`, value)
+            .then((response) => {
+            
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log("Error axion post review: ", error.message);
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: error.message,
+                });
+            });
+    };
+};
+
+
+
 
 export const setUserInfo = (payload) => {
     return {
@@ -366,10 +395,8 @@ export const clearUserInfo = (payload) => {
         type: CLEAR_USER_INFO,
         payload: {},
     };
-    
+
 };
-
-
 
 export function fetchFavorites(_id) {
   return async dispatch => {
@@ -381,4 +408,20 @@ export function fetchFavorites(_id) {
     });
   };
 }
+
+
+export const getUserLocation = (payload) => {
+    return {
+        type: GET_USER_LOCATION,
+        payload,
+    }
+}
+
+export const getUbicationByRestorant = (payload) => {
+    return {
+        type: UBICATION_BY_RESTORANT,
+        payload,
+    }
+}
+
 
