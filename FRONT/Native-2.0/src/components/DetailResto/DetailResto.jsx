@@ -5,12 +5,12 @@ import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import {  PostsFavorite, PostsOptions } from '../../redux/actions.js'
+import { PostsFavorite, PostsOptions } from '../../redux/actions.js'
 import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
 
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import {auth} from "../../../firebase-config.js"
+import { auth } from "../../../firebase-config.js"
 import Loading from "../Loading/Loading"
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
@@ -30,10 +30,10 @@ const DetailResto = ({ route }) => {
   const resto = useSelector(state => state?.restorantsFound)
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
-  const [isFavorite ,setIsFavorite ]= useState(false)
-  const [userLogged, setuserLogged]= useState(false)
-  const userData = useSelector(state=>state?.userInfo)
-  
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [userLogged, setuserLogged] = useState(false)
+  const userData = useSelector(state => state?.userInfo)
+
   const [userId, setUserId] = useState(null);
 
 
@@ -65,9 +65,9 @@ const DetailResto = ({ route }) => {
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
     user: null,
-    date: "2023-04-18",
-    time: "17:30",
-    table: 1,
+    date: null,
+    time: null,
+    table: 0,
   })
   const handlePersons = (persons) => {
     const operation = Math.ceil(persons / 2);
@@ -122,9 +122,9 @@ const DetailResto = ({ route }) => {
   // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
 
 
-  
+
   const handleDate = (date) => {
-    console.log(date)
+    console.log('SOYLA FECHA',date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -164,6 +164,7 @@ const DetailResto = ({ route }) => {
   }
 
   const handleReserva = (date, item) => {
+    console.log({ date, item })
     if (!date || !item) {
       // console.log('DATE', date, 'HORA', item)
       alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
@@ -172,6 +173,7 @@ const DetailResto = ({ route }) => {
       setReserve({ ...reserve, date: date.dateString });
     }
   }
+  console.log('SOY LA RESERVA',reserve)
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
   //----------------------------------Header------------------------------
@@ -195,31 +197,31 @@ const DetailResto = ({ route }) => {
     }
     navigation.navigate("Checkout", { checkout: checkout })
   }
-//-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
+  //-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
   const handleAddFavorite = () => {
     if (!userLogged) {
       alert('Para agregar el restaurante debes estar logeado');
       return;
     }
-     
+
     dispatch(PostsFavorite(restaurant, user));
     dispatch(searchRestorantById(_id));
     alert('Restaurante agregado a favoritos');
     console.log(`Enviando restauran: ${restaurant}, user ${user}`);
 
   };
-const handleRemoveFavorite = () => {
-  if (!userLogged) {
-    return;
-  }
-  const restaurant = detail._id;
-  const user = userId; 
-  dispatch(PostsFavorite(restaurant, user));
-  dispatch(searchRestorantById(_id));
-  alert('eliminado');
-  console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+  const handleRemoveFavorite = () => {
+    if (!userLogged) {
+      return;
+    }
+    const restaurant = detail._id;
+    const user = userId;
+    dispatch(PostsFavorite(restaurant, user));
+    dispatch(searchRestorantById(_id));
+    alert('eliminado');
+    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
   };
-  
+
 
   function handleResenias() {
     navigation.navigate("Ranking-Reseñas", { resto: detail })
@@ -238,20 +240,20 @@ const handleRemoveFavorite = () => {
         ) : (
           detail &&
           <View>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} /> 
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
-          <View style={styles.viewFavortires}>
-          <Icon 
-            type= "material-community"
-            name= {isFavorite ? "heart-outline" : "heart"}
-            onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite }
-            color= { '#FF0000'}
-            size= {35}
-            underlayColor="tranparent">
+            <View style={styles.viewFavortires}>
+              <Icon
+                type="material-community"
+                name={isFavorite ? "heart-outline" : "heart"}
+                onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite}
+                color={'#FF0000'}
+                size={35}
+                underlayColor="tranparent">
 
-         </Icon>
-           
-       </View>
+              </Icon>
+
+            </View>
             <View style={styles.titleContainer}>
               <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
@@ -370,12 +372,13 @@ const handleRemoveFavorite = () => {
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
-                      markedDates={{ [isSelected]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedDotColor: 'orange',
-                      },
-                    }}
+                      markedDates={{
+                        [isSelected]: {
+                          selected: true,
+                          disableTouchEvent: true,
+                          selectedDotColor: 'orange',
+                        },
+                      }}
                     />
                   </Modal>
                 </View>
@@ -442,7 +445,7 @@ const handleRemoveFavorite = () => {
                   style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
                   disabled={!reserve.date && !reserve.time}
                   onPress={() => {
-                    handleReserva()
+                    handleReserva(reserve.date, reserve.time);
                     handleCheckOut()
                   }}>
                   <IonicIcon
@@ -459,12 +462,8 @@ const handleRemoveFavorite = () => {
                     size={20}
                     color={'white'}
                   />
-
-
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
                 </TouchableOpacity>
-
-
 
                 <TouchableOpacity style={styles.confirmButton}
                   onPress={() => handleReviews()}>
@@ -473,10 +472,7 @@ const handleRemoveFavorite = () => {
                     size={20}
                     color={'white'}
                   />
-
-
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
-
                 </TouchableOpacity>
 
               </View>
@@ -670,13 +666,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'grey',
   },
   viewFavortires: {
-    position:"absolute",
+    position: "absolute",
     top: 0,
-    right:0,
-    backgroundColor:"#fff",
-    borderBottomLeftRadius:100,
-    padding:5,
-    paddingLeft:15,
+    right: 0,
+    backgroundColor: "#fff",
+    borderBottomLeftRadius: 100,
+    padding: 5,
+    paddingLeft: 15,
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",

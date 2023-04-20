@@ -30,7 +30,6 @@ const RestosItem = (props) => {
 
   const navigation = useNavigation();
   function handlePress (value) {
-    console.log("SOY DETAILD DE FILER: ", value);
     const _id = value
     navigation.navigate("Detalle Restaurant", {_id})
     // dispatch(clearStateRestauranteById());
