@@ -93,9 +93,11 @@ async function webhook(reference) {
     if (data.status_detail === "accredited") {
       restaurant.balance += amount;
       restaurant.save();
+      
       let date = new Date().toISOString().slice(0,10)
       postPay = postPayment({idUser, idRestaurant: idResto, amount, idReserve: postReserva._id, date: date })
-
+      postReserva.payment = postPay
+      postReserva.save()
       let notificacionPago = await postNotification(messagePago, idUser);
 
       let emailRestoPago = await sendConfirmationEmail({
