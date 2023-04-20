@@ -57,23 +57,6 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       navigation.navigate('Crear Cuenta');
     }
 
-    async function miFuncion() {
-      // Esperar a que se complete el dispatch de Redux
-      setReadyToPay(true)
-      await new Promise(resolve => {
-        // dispatch(miAction());
-        dispatch(getUserInfo(user))
-        resolve();
-      });
-      navigation.navigate('Perfil de Usuario', {user});
-    
-      // // Esperar 10 segundos
-      // await new Promise(resolve => {
-      //   setTimeout(resolve, 10000);
-      // });
-    
-      // Código que quiero ejecutar después de esperar
-    }
 
     const handleSignIn = () => {
       
@@ -83,7 +66,6 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
         const user = userCredential.user;
         console.log(user)
         // dispatch(setUserToken(user))
-        // miFuncion()
         dispatch(getUserInfo(user))
         loadingLog ? navigation.navigate('Perfil de Usuario', {user}) : setLoadingLog(true)
       })
@@ -94,26 +76,27 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     }
 
     const onGoogleButtonPress = async() => { // ESTO ANDA PERO NO ES VALIDO EL TOKEN QUE LLEGA
-      // // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
+      // Check if your device supports Google Play
+      console.log("Google singin start");
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
+      console.log("Google IDTOKEN: ", idToken);
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     
-      // // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    
-      // // Sign-in the user with the credential
-      // // return auth().signInWithCredential(googleCredential);
-      // const user_sing_in = auth().signInWithCredential(googleCredential);
-      // user_sing_in
-      //   .then((user)=> {
-      //     console.log("user data: ", user);
-      //     navigation.navigate('Bienvenido', {user});
+      // Sign-in the user with the credential
+      // return auth().signInWithCredential(googleCredential);
+      const user_sing_in = auth().signInWithCredential(googleCredential);
+      user_sing_in
+        .then((user)=> {
+          console.log("user data: ", user);
+          navigation.navigate('Bienvenido', {user});
           
-      //   })
-      //   .catch((error)=>{
-      //     console.log("error >> : ", error);
-      //   })
+        })
+        .catch((error)=>{
+          console.log("error >> : ", error);
+        })
     }
 
     const handleLoginGoogle = async () => {

@@ -26,12 +26,12 @@ export default function Profile({route}) {
     console.log("PROFILE COMPONENT, keys user ------------- ", Object.keys(user));
 
     const logOut = () => {
-        console.log("FLOR");
-        // auth()
-        //     .singOut()
-        //     .then(()=> console.log("User sined out!"))
-        // dispatch(clearUser)
-        navigation.navigate("Login")
+      console.log("LogOut");
+        auth()
+            .singOut()
+            .then(()=> console.log("User sined out!"))
+        dispatch(clearUser)
+        navigation.navigate("Iniciar sesion")
         
     }
 
