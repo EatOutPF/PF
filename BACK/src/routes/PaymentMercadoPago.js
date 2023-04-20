@@ -35,7 +35,7 @@ router.post("/", (req, res) => {
       "email": user.email,
     },
     back_urls: {
-      success: "",
+      success: "eatout-lac.vercel.app/paymentstatus",
       failure: "",
       pending: "",
     },
