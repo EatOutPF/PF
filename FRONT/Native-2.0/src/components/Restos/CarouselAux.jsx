@@ -69,9 +69,7 @@ const CarouselAux = (props) => {
                 <Text style={[styles.itemStar]}>⭐{item?.ranking}</Text>
           
               </ImageBackground >
-            </TouchableOpacity>
-       
-          
+            </TouchableOpacity>    
         </View>
       );
     }
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    padding: 10
+    padding: 5
     
   },
   itemContainer: {
@@ -123,19 +121,20 @@ const styles = StyleSheet.create({
   },
 
   itemTitle: {
-    color: '#A81337',
-    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Inria-Sans-Regular',
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'transparent',
     width: '80%',
     
-    padding: 10,
+    padding: 5,
     position: "absolute",
     left: 21,
     bottom: 5,
-    borderRadius: 20,
-    backgroundColor: "#D9D9D9"
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
 
   },
 
