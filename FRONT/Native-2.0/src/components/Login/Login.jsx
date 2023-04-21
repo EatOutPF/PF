@@ -92,6 +92,8 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
         .then((user)=> {
           console.log("user data: ", user);
           // user.user.email
+          // dispatch(getUserInfo(idToken))
+          console.log("USER GOOGLE EMAOLÑ",user?.user?.email );
           dispatch( userGmail(user?.user?.email))
           navigation.navigate('Bienvenido', {user});
           
