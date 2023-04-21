@@ -27,7 +27,7 @@ import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 const DetailResto = ({ route }) => {
-  const resto = useSelector(state => state?.restorantsFound)
+
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const [isFavorite, setIsFavorite] = useState(false)
@@ -36,15 +36,21 @@ const DetailResto = ({ route }) => {
 
   const [userId, setUserId] = useState(null);
 
-
-
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      user ? setuserLogged(true) : setuserLogged(false);
-      setUserId(user.uid);
-      console.log(`ID del usuario: ${user.uid}`);
-    });
-  }, []);
+
+    userData?.login ? setuserLogged(true) : setuserLogged(false)
+    
+  }, [userData])
+
+
+
+  // useEffect(() => {
+  //   auth.onAuthStateChanged(user => {
+  //     user ? setuserLogged(true) : setuserLogged(false);
+  //     setUserId(user.uid);
+  //     console.log(`ID del usuario: ${user.uid}`);
+  //   });
+  // }, []);
 
   console.log("SOY DETAIL: ", _id);
   const user = useSelector(state => state?.userInfo)
@@ -226,7 +232,12 @@ const DetailResto = ({ route }) => {
 
 
   function handleResenias() {
-    navigation.navigate("Ranking-Reseñas", { resto: detail })
+    if(userLogged){
+      navigation.navigate("Ranking-Reseñas", { resto: detail })
+
+    } else {
+      alert("Para comentar Tenes que estar logueado")
+    }
   }
 
   function handleReviews() {
@@ -244,14 +255,14 @@ const DetailResto = ({ route }) => {
           <View>
             <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
-            <View style={styles.viewFavortires}>
-              <Icon
-                type="material-community"
-                name={isFavorite ? "heart-outline" : "heart"}
-                onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite}
-                color={'#FF0000'}
-                size={35}
-                underlayColor="tranparent">
+          <View style={styles.viewFavortires}>
+          <Icon 
+            type= "material-community"
+            name= {isFavorite ? "heart" : "heart-outline"}
+            onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite }
+            color= { isFavorite? '#FF0000' : "#442484"}
+            size= {35}
+            underlayColor="tranparent">
 
               </Icon>
 
