@@ -16,6 +16,7 @@ const RestosList = () => {
   const dispatch = useDispatch();
   const resto = useSelector(state => state.allRestorants);
   const restorantById = useSelector(state => state.restorantById);
+  const restorantByDistance = useSelector(state => state.allRestorantsDistance)
   const userLocation = useSelector(state => state.userLocation);
   const ubicationByRestorant = useSelector(state => state.ubicationByRestorant)
   // const restorantById = useSelector(state => state.restorantById);
@@ -23,7 +24,19 @@ const RestosList = () => {
   const [loading, setLoading] = useState(true)
   const [restorantes, setRestorantes] = useState([]);
 
+  // useEffect(() => {
+  //   setLoading(true)
+  //   dispatch(getAllRestorants());
+  //   if (resto?.length === 0) {
+  //     setLoading(true)
+  //   }
+  //   if (resto?.length !== 0) {
+  //     setRestorantes([...resto])
+  //     setLoading(false)
+  //   }
+  //   if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
 
+  // }, [])
 
   useEffect(() => {
 
@@ -64,7 +77,7 @@ const RestosList = () => {
 
 
         {/* <Text>mejores puntuados ⭐️</Text> */}
-        <StyledText style={styles.language}>Mejores Puntuados⭐️</StyledText>
+        <StyledText style={styles.language}> ⭐️Mejores Puntuados⭐️</StyledText>
         <CarouselAux
           data={
             // restorantes
@@ -73,47 +86,37 @@ const RestosList = () => {
           type={"extra"}
           title={"fumadores"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
 
         {/* <Text>Fumadores 🚬</Text> */}
-        <StyledText style={styles.language}>Mas cercanos 🚬</StyledText>
+        <StyledText style={styles.language}> 🗺️ Mas cercanos 🗺️</StyledText>
         <CarouselAux
           data={
             // restorantes
-            restorantes?.sort((a, b) => b.distanceToUser - a.distanceToUser)
+            restorantByDistance
+            // restorantes?.sort((a, b) => b.distanceToUser - a.distanceToUser)
           }
           type={"extra"}
           title={"fumadores"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
 
 
-        {/* <Text>Petfriendly 🐶 </Text> */}
-        <StyledText style={styles.language}>Petfriendly 🐶</StyledText>
-        <CarouselAux
-          data={
-            // restorantes
-            restorantes?.filter(item => item?.extras?.includes("petfriendly"))
-          }
-          type={"extra"}
-          title={"petFrienly"}>
-        </CarouselAux>
-        <Text></Text>
-
+       
 
         {/* <Text>Wi-fi Gratis 📡</Text> */}
-        <StyledText style={styles.language}>Wi-fi Gratis 📡</StyledText>
+        <StyledText style={styles.language}> 💲 Economicos 💲</StyledText>
         <CarouselAux
           data={
-            restorantes?.filter(item => item?.extras?.includes("wi-fi"))
+            restorantes?.sort((a, b) => a.advance - b.advance)
           }
           type={"room"}
           title={"wi-fi"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
         {/* 
       <Text>Bares 🍻</Text> */}
-        <StyledText style={styles.language}>Bares 🍻</StyledText>
+        <StyledText style={styles.language}> 🍻 Bares 🍻</StyledText>
         <CarouselAux
           data={
             // restorantes
@@ -123,7 +126,21 @@ const RestosList = () => {
           type={"room"}
           title={"wi-fi"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
+
+         {/* <Text>Petfriendly 🐶 </Text> */}
+         <StyledText style={styles.language}> 🐶 Petfriendly 🐶</StyledText>
+        <CarouselAux
+          data={
+            // restorantes
+            restorantes?.filter(item => item?.extras?.includes("petfriendly"))
+
+          }
+          type={"extra"}
+          title={"petFrienly"}>
+        </CarouselAux>
+        {/* <Text></Text> */}
+
       </View>}
     </ScrollView>
   )
