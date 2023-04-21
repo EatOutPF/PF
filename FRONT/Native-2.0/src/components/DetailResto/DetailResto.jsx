@@ -27,7 +27,7 @@ import ListReviews from '../Reviews/ListReviews.jsx'
 
 
 const DetailResto = ({ route }) => {
-  const resto = useSelector(state => state?.restorantsFound)
+
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
   const [isFavorite, setIsFavorite] = useState(false)
@@ -35,16 +35,28 @@ const DetailResto = ({ route }) => {
   const userData = useSelector(state => state?.userInfo)
 
   const [userId, setUserId] = useState(null);
-
-
+  const userLocation = useSelector(state => state?.userLocation)
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      user ? setuserLogged(true) : setuserLogged(false);
-      setUserId(user.uid);
-      console.log(`ID del usuario: ${user.uid}`);
-    });
-  }, []);
+
+    userData?.login ? setuserLogged(true) : setuserLogged(false)
+    
+  }, [userData])
+
+  const parseThousands = value => {
+    return value >= 1000
+      ? `${Math.round(value / 100) / 10}km`
+      : String(value+"km")
+  }
+
+
+  // useEffect(() => {
+  //   auth.onAuthStateChanged(user => {
+  //     user ? setuserLogged(true) : setuserLogged(false);
+  //     setUserId(user.uid);
+  //     console.log(`ID del usuario: ${user.uid}`);
+  //   });
+  // }, []);
 
   console.log("SOY DETAIL: ", _id);
   const user = useSelector(state => state?.userInfo)
@@ -100,7 +112,10 @@ const DetailResto = ({ route }) => {
           dispatch(searchRestorantById(_id));
           setLoading(true)
         }
-        else setLoading(false)
+        else {setLoading(false)
+          console.log("DISTANCIA AL USER:", detail?.distanceToUser);
+          
+        }
       }
 
   }, [detail, loading])
@@ -226,7 +241,12 @@ const DetailResto = ({ route }) => {
 
 
   function handleResenias() {
-    navigation.navigate("Ranking-Reseñas", { resto: detail })
+    if(userLogged){
+      navigation.navigate("Ranking-Reseñas", { resto: detail })
+
+    } else {
+      alert("Para comentar Tenes que estar logueado")
+    }
   }
 
   function handleReviews() {
@@ -244,14 +264,14 @@ const DetailResto = ({ route }) => {
           <View>
             <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
-            <View style={styles.viewFavortires}>
-              <Icon
-                type="material-community"
-                name={isFavorite ? "heart-outline" : "heart"}
-                onPress={isFavorite ? handleAddFavorite : handleRemoveFavorite}
-                color={'#FF0000'}
-                size={35}
-                underlayColor="tranparent">
+          <View style={styles.viewFavortires}>
+          <Icon 
+            type= "material-community"
+            name= {isFavorite ? "heart" : "heart-outline"}
+            onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite }
+            color= { isFavorite? '#FF0000' : "#442484"}
+            size= {35}
+            underlayColor="tranparent">
 
               </Icon>
 
@@ -279,7 +299,7 @@ const DetailResto = ({ route }) => {
                   name="pin-outline"
                   size={20}
                 />
-                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+                <Text style={styles.text1}>{detail?.address?.streetName} - {parseThousands(detail?.distanceToUser)}</Text>
               </View>
 
             </View>

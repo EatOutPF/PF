@@ -110,9 +110,6 @@ return (
             }}
             mapType="standard"
         >
-
-       
-
         {
             restos.map(item => (
                 <Marker 
@@ -140,7 +137,6 @@ return (
         >
             {/* <Text style={{fontSize:30}}>🏠</Text> */}
         </Marker>
-
       </MapView>
       </View>}
     </View>

@@ -1,4 +1,4 @@
-import React,{useState}from "react";
+import React,{useEffect, useState}from "react";
 import { StyleSheet, Text, View } from "react-native";
 import {AirbnbRating, Button, Input } from "react-native-elements";
 import { Value } from "react-native-reanimated";
@@ -10,15 +10,24 @@ import DetailResto from "../DetailResto/DetailResto";
 
 export default function AddReviews ({route})  {
   const {resto} = route?.params;
-  const user = useSelector( state => state?.userInfo)
+//   const user = useSelector( state => state?.userInfo)
 //  const resto = useSelector( state => state?.restorantsFound)
   const dispatch = useDispatch();
   const navigation = useNavigation()
+  const user = useSelector(state=>state?.userInfo)
 
   const[ranking, setRanking] = useState();
   const[review, setReview] = useState("")
   const[errorReview, setErrorReview] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [userLog, setUserLog] = useState(false);
+
+  useEffect(() => {
+
+    user?.login ? setUserLog(true) : setUserLog(false)
+    
+  }, [user])
+
+
 
  function handleAddReviews ()  {
     try {
@@ -32,6 +41,8 @@ export default function AddReviews ({route})  {
         dispatch(postListReviews(value))
         navigation.navigate("Ranking-Reseñas", {resto})
         
+
+    
     } catch (error) {
         
     }
