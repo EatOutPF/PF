@@ -7,7 +7,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import { setUserInfo } from '../../redux/actions';
-import {Linking} from "expo"
+//import {Linking} from "expo"
+import { Linking } from 'react-native';
 // import axios from 'axios';
 
 
@@ -21,7 +22,10 @@ const CheckoutState = ({route}) => {
     // const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
     // const [url,setUrl] = useState("https://www.google.com/");
     const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
-    
+    const { url } = Linking.getInitialURL()
+    if(url && url.includes("/paymentstatus")){
+        navigation.navigate("Eat Out")
+    }
 
 
     const styles = StyleSheet.create({
