@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { User } = require("../db");
 
 async function getUsers(props) {
+console.log(props.email)
   const users = await User.findOne({ email: { $regex: props.email } })
     .populate("restaurant")
     .populate({
