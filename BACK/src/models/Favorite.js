@@ -3,14 +3,14 @@ const { Schema } = mongoose;
 
 const favoriteSchema = new Schema({
   
-  restaurant: [{
+  restaurant: {
       type: Schema.Types.ObjectId,
       ref: "Restaurant"
-    }],
-  user: [{
+    },
+  user: {
       type: Schema.Types.ObjectId,
       ref: "User"
-    }],
+    },
 });
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
