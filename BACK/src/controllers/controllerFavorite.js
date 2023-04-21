@@ -5,12 +5,18 @@ async function favorite(restaurant, user) {
   const favorite = await Favorite.findOne({
     restaurant: restaurant,
     user: user,
+  }).populate({
+    path: "restaurant",
+    select: "_id name images menu diets atmosphere",
   });
 
   if (!favorite) {
     const newFavorite = new Favorite({
       restaurant,
       user,
+    }).populate({
+      path: "restaurant",
+      select: "_id name images menu diets atmosphere",
     });
 
     const fav = await newFavorite.save()
