@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Favorite, Restaurant, User } = require("../db");
 
 async function favorite(restaurant, user) {
+  console.log(restaurant, user)
   const favorite = await Favorite.findOne({
     restaurant: restaurant,
     user: user,
