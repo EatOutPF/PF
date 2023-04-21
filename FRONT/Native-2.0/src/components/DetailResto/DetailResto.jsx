@@ -35,6 +35,7 @@ const DetailResto = ({ route }) => {
   const userData = useSelector(state => state?.userInfo)
 
   const [userId, setUserId] = useState(null);
+  const userLocation = useSelector(state => state?.userLocation)
 
   useEffect(() => {
 
@@ -42,6 +43,11 @@ const DetailResto = ({ route }) => {
     
   }, [userData])
 
+  const parseThousands = value => {
+    return value >= 1000
+      ? `${Math.round(value / 100) / 10}km`
+      : String(value+"km")
+  }
 
 
   // useEffect(() => {
@@ -106,7 +112,10 @@ const DetailResto = ({ route }) => {
           dispatch(searchRestorantById(_id));
           setLoading(true)
         }
-        else setLoading(false)
+        else {setLoading(false)
+          console.log("DISTANCIA AL USER:", detail?.distanceToUser);
+          
+        }
       }
 
   }, [detail, loading])
@@ -290,7 +299,7 @@ const DetailResto = ({ route }) => {
                   name="pin-outline"
                   size={20}
                 />
-                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+                <Text style={styles.text1}>{detail?.address?.streetName} - {parseThousands(detail?.distanceToUser)}</Text>
               </View>
 
             </View>

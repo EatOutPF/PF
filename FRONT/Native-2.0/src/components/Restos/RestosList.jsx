@@ -5,7 +5,6 @@ import StyledText from "../../styles/StyledText/StyledText"
 import theme from '../../styles/theme';
 import { useDispatch, useSelector } from 'react-redux'
 // import AsyncStorage from "@react-native-async-storage/async-storage"
-import * as Location from "expo-location"
 import { getAllRestorants, clearStateResatorantById, getUserLocation, getUbicationByRestorant } from '../../redux/actions'
 import Loading from "../Loading/Loading"
 import CarouselAux from './CarouselAux';
@@ -23,42 +22,32 @@ const RestosList = () => {
 
   const [loading, setLoading] = useState(true)
   const [restorantes, setRestorantes] = useState([]);
-  const [restorantDistance, setRestoranteDistance] = useState([])
-  const [currentPosition, setCurrentPosition] = useState({})
 
-  const getCurrentPosition = async () => {
-    let location = await Location.getCurrentPositionAsync({});
-    const current = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude
-    }
-    setCurrentPosition(current)
-  }
+
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        if (resto?.length === 0) {
-          setLoading(true)
-          dispatch(getAllRestorants());
-        }
-        if (resto?.length !== 0) {
-          setRestorantes([...resto])
-          setLoading(false)
-          // setubicationByRestaurant()
-          // dispatch(getUserLocation(currentPosition))
-          // dispatch(getUbicationByRestorant({ restorantDistance, userLocation }))
-        }
-        if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
-        getCurrentPosition()
-        dispatch(getUserLocation(currentPosition))
-        dispatch(getUbicationByRestorant({ restorantes, currentPosition }))
-      } catch (error) {
-        console.log(error)
-      }
+
+    if (resto?.length === 0) {
+      setLoading(true)
+      dispatch(getAllRestorants());
     }
-    fetchData()
+    if (resto?.length !== 0) {
+      setRestorantes([...resto])
+      setLoading(false)
+
+    }
+    if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+
+
   }, [resto])
+
+  useEffect(() => {
+    if (resto?.length !== 0) {
+      dispatch(getUbicationByRestorant())
+
+    }
+
+  }, [])
 
   // ----Funcion que calcula distancia en metros----:
   //Latitud y longitud en metros de todos los restorants
@@ -68,14 +57,14 @@ const RestosList = () => {
   return (
     <ScrollView>
 
-    {loading ? <Loading text="Buscando los Restaurantes cercanos..."/> : <View>
-      {/* <Text>Rating</Text>
+      {loading ? <Loading text="Buscando los Restaurantes cercanos..." /> : <View>
+        {/* <Text>Rating</Text>
 
         <CarouselAux type={"ranking"} title={"fumadores"}></CarouselAux> */}
 
 
-        {/* <Text>Los mejorcitos ⭐️</Text> */}
-        <StyledText style={styles.language}>Los mejores ⭐️</StyledText>
+        {/* <Text>mejores puntuados ⭐️</Text> */}
+        <StyledText style={styles.language}>Mejores Puntuados⭐️</StyledText>
         <CarouselAux
           data={
             // restorantes
@@ -87,11 +76,11 @@ const RestosList = () => {
         <Text></Text>
 
         {/* <Text>Fumadores 🚬</Text> */}
-        <StyledText style={styles.language}>Fumadores 🚬</StyledText>
+        <StyledText style={styles.language}>Mas cercanos 🚬</StyledText>
         <CarouselAux
           data={
             // restorantes
-            restorantes?.filter(item => item?.extras?.includes("fumadores"))
+            restorantes?.sort((a, b) => b.distanceToUser - a.distanceToUser)
           }
           type={"extra"}
           title={"fumadores"}>
@@ -135,18 +124,8 @@ const RestosList = () => {
           title={"wi-fi"}>
         </CarouselAux>
         <Text></Text>
-
-
       </View>}
     </ScrollView>
-    // <FlatList 
-    //   data={restorantsJson} // de donde saca los datos para hacer la lista
-    //   ItemSeparatorComponent={() => <Text> </Text>} // separa cada card con un espacio "Text"
-    //   renderItem={({ item: repo }) => (
-    //     <RepositoryItem {...repo} />
-    //   )}
-    // />
-
   )
 }
 
@@ -164,10 +143,10 @@ const styles = StyleSheet.create({
     width: screenwidth,
   },
   language: {
-    fontSize: 16,
+    fontSize: 30,
+    color: 'black',
+    fontFamily: 'Inria-Sans-Bold',
     padding: 4,
-    color: theme.colors.white,
-    backgroundColor: theme.colors.primary,
     alignSelf: 'flex-start',
     marginVertical: 4,
     marginLeft: 10,

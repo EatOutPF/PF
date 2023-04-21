@@ -5,7 +5,6 @@ import RepositoryStats from './RestosStats.jsx'
 import theme from '../../styles/theme.js'
 
 const { width } = Dimensions.get('window');
-console.log("width screen", width);
 let imageWidth = 0.5 * width;
 let screenwidth = "100%"
 if (width >= 1000) {imageWidth = width * 0.3; screenwidth = "50%";}
