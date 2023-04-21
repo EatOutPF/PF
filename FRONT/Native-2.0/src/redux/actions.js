@@ -52,7 +52,7 @@ export function getAllRestorants() {
         await axios
             .get(`${DB_HOST}/restaurant`)
             .then((response) => {
-                // console.log("RESPONSE -> ", response);
+                 console.log("FLOR ACTION GETRESTOS-> ", response);
                 dispatch({
                     type: GET_ALL_RESTORANTS,
                     payload: response.data,

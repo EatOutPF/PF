@@ -12,6 +12,7 @@ import ListOfFiltered from '../ListOfFiltered/ListOfFiltered.jsx'
 import Login from "../Login/Login"
 // import LowerNavbar from "../NavBar/LowerNavBar"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as Location from "expo-location"
 
 
 
@@ -23,7 +24,7 @@ import DetailResto from '../DetailResto/DetailResto.jsx';
 import { Redirect, Route, Routes } from 'react-router-native'
 // import Filters from '../Filters/Filters.jsx';
 import { useSelector, useDispatch, } from 'react-redux';
-import { filterCards, getAllRestorants, orderCards } from '../../redux/actions';
+import { filterCards, getAllRestorants, getUserLocation, orderCards, getUbicationByRestorant } from '../../redux/actions';
 import SearchBar from '../NavBar/SearchBar.jsx';
 import { searchRestorantByString } from '../../redux/actions';
 
@@ -35,6 +36,24 @@ const Home = () => {
   const userInfo = useSelector(state => state.userInfo);
   const [searchText, setSearchText] = useState("");
 
+  async function getLocationPermission(){ // esto se puede aplicar en un useEffect para hcerlo en tiempo real
+    let { status } = await Location.requestForegroundPermissionsAsync(); 
+    // pide permiso para acceder a la ubicacion del usuario
+    if(status !== "granted"){
+        alert("Permision denied")
+        return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const current = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+    }
+    dispatch(getUserLocation(current))
+    //console.log('CURRENT', current)
+  }
+  getLocationPermission() 
+  
+
   const handleSearch = (text) => {
     setSearchText(text);
   }
@@ -42,6 +61,7 @@ const Home = () => {
   useEffect(() => {
     if (restorantes?.length === 0) {
       setSearchText("");
+      
     }
   }, [restorantes]);
 
@@ -68,7 +88,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1, width: '100%', backgroundColor: "#efe4dc" }}>
-      <Text>Descrubre con EatOut</Text>
+      <Text style={styles.language}>Descrubre con EatOut</Text>
       <View style={styles.searchBar}>
       <TextInput
           style={styles.input}
@@ -84,27 +104,6 @@ const Home = () => {
 
   )
 }
-
-{/*Flor*/ }
-
-// export function FilterButton() {
-
-
-// return (
-//     <View styles={styles.container}>
-//       <TouchableOpacity style={styles.buttonLocation} onPress={() => setIsVisible(true)}
-//         buttonStyle={styles.button}>
-//         <View style={styles.buttonColor}>
-//           <Text style={styles.buttonText}>Filtros</Text>
-//         </View>
-//       </TouchableOpacity>
-//       <IonicIcon
-//         name="filter"
-//         size={22}
-//       />
-//     </View>
-//   ) 
-// }
 
 
 
@@ -146,6 +145,17 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     paddingHorizontal: 10,
+  },
+  language: {
+    fontSize: 30,
+    color: 'black',
+    fontFamily: 'Inria-Sans-Bold',
+    padding: 4,
+    alignSelf: 'flex-start',
+    marginVertical: 4,
+    marginLeft: 10,
+    borderRadius: 4,
+    overflow: 'hidden'
   },
 })
 
