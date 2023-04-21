@@ -15,10 +15,11 @@ async function favorite(restaurant, user) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
       user: user,
-    }).populate({
-      path: "restaurant",
-      select: "_id name images menu diets atmosphere",
-    });
+    })
+//     .populate({
+//       path: "restaurant",
+//       select: "_id name images menu diets atmosphere",
+//     });
 
     const fav = await newFavorite.save()
     console.log("fav " + fav)
