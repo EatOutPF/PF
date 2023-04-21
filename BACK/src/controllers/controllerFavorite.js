@@ -9,7 +9,7 @@ async function favorite(restaurant, user) {
   }).populate({
     path: "restaurant",
     select: "_id name images menu diets atmosphere",
-  });
+  }).exec();
   console.log("favorite " + favorites)
   if (!favorites) {
     const newFavorite = new Favorite({
