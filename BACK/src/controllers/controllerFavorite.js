@@ -21,6 +21,7 @@ async function favorite(restaurant, user) {
     });
 
     const fav = await newFavorite.save()
+    console.log(fav)
     const favuser = await User.findById(user);
 
     favuser.favorite.push(newFavorite._id);
@@ -33,6 +34,7 @@ async function favorite(restaurant, user) {
     return userfav
 
   } else {
+    console.log(favorite)
     const favdelete = await Favorite.findByIdAndDelete(favorite._id);
 
     const favuser = await User.findById(user);
