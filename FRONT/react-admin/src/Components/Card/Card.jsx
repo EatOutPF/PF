@@ -44,7 +44,11 @@ const Card = (props) => {
     } */
   };
 
-  /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
+
+  /* --.----MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
   /* const handlerPayment = () => {
     axios

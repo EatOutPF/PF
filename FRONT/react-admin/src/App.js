@@ -19,9 +19,8 @@ import AddUser from "./Components/Users/AddUser.jsx";
 /* import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js"; */
 /* import { setUser } from "./Redux/Actions.js"; */
 
-axios.defaults.baseURL =
-  /*   "https://eatout.onrender.com/" */
-  "http://localhost:5001/";
+axios.defaults.baseURL = "https://eatout.onrender.com/";
+/*  "http://localhost:5001/" */
 
 function App() {
   const location = useLocation().pathname;
