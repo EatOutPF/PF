@@ -64,7 +64,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log({user});
+    console.log({ user });
   });
 
   useEffect(() => {
@@ -109,12 +109,10 @@ const Home = () => {
           </div>
 
           <div className={style.containterTable}>
-            {currentRestaurants && (
-              <Cards
-                restaurants={searchResults || restaurants}
-                currentRestaurants={currentRestaurants}
-              />
-            )}
+            <Cards
+              restaurants={searchResults || restaurants}
+              currentRestaurants={currentRestaurants}
+            />
           </div>
         </>
       )}

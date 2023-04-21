@@ -5,7 +5,6 @@ import StyledText from "../../styles/StyledText/StyledText"
 import theme from '../../styles/theme';
 import { useDispatch, useSelector } from 'react-redux'
 // import AsyncStorage from "@react-native-async-storage/async-storage"
-import * as Location from "expo-location"
 import { getAllRestorants, clearStateResatorantById, getUserLocation, getUbicationByRestorant } from '../../redux/actions'
 import Loading from "../Loading/Loading"
 import CarouselAux from './CarouselAux';
@@ -17,53 +16,51 @@ const RestosList = () => {
   const dispatch = useDispatch();
   const resto = useSelector(state => state.allRestorants);
   const restorantById = useSelector(state => state.restorantById);
+  const restorantByDistance = useSelector(state => state.allRestorantsDistance)
   const userLocation = useSelector(state => state.userLocation);
   const ubicationByRestorant = useSelector(state => state.ubicationByRestorant)
   // const restorantById = useSelector(state => state.restorantById);
 
   const [loading, setLoading] = useState(true)
   const [restorantes, setRestorantes] = useState([]);
-  const [restorantDistance, setRestoranteDistance] = useState([])
-  const [currentPosition, setCurrentPosition] = useState({})
-
-  const getCurrentPosition = async () => {
-    let location = await Location.getCurrentPositionAsync({});
-    const current = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude
-    }
-    setCurrentPosition(current)
-  }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        if (resto?.length === 0) {
-          setLoading(true)
-          dispatch(getAllRestorants());
-        }
-        if (resto?.length !== 0) {
-          setRestorantes([...resto])
-          setLoading(false)
-          // setubicationByRestaurant()
-          // dispatch(getUserLocation(currentPosition))
-          // dispatch(getUbicationByRestorant({ restorantDistance, userLocation }))
-        }
-        if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
-        console.log('me ejecuto', 1)
-        getCurrentPosition()
-        console.log('me ejecuto', 2)
-        dispatch(getUserLocation(currentPosition))
-        console.log('me ejecuto', 3)
-        dispatch(getUbicationByRestorant({ restorantes, currentPosition }))
-        console.log('me ejecuto', 4)
-        console.log('me ejecuto', 5)
-      } catch (error) {
-        console.log(error)
-      }
+    setLoading(true)
+    dispatch(getAllRestorants());
+    if (resto?.length === 0) {
+      setLoading(true)
     }
-    fetchData()
+    if (resto?.length !== 0) {
+      setRestorantes([...resto])
+      setLoading(false)
+    }
+    if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+
+  }, [])
+
+  useEffect(() => {
+
+    if (resto?.length === 0) {
+      setLoading(true)
+      dispatch(getAllRestorants());
+    }
+    if (resto?.length !== 0) {
+      setRestorantes([...resto])
+      setLoading(false)
+
+    }
+    if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+
+
   }, [resto])
+
+  useEffect(() => {
+    if (resto?.length !== 0) {
+      dispatch(getUbicationByRestorant())
+
+    }
+
+  }, [])
 
   // ----Funcion que calcula distancia en metros----:
   //Latitud y longitud en metros de todos los restorants
@@ -72,13 +69,15 @@ const RestosList = () => {
 
   return (
     <ScrollView>
-      {loading ? <Loading /> : <View>
+
+      {loading ? <Loading text="Buscando los Restaurantes cercanos..." /> : <View>
         {/* <Text>Rating</Text>
+
         <CarouselAux type={"ranking"} title={"fumadores"}></CarouselAux> */}
 
 
-        {/* <Text>Los mejorcitos ⭐️</Text> */}
-        <StyledText style={styles.language}>Los mejores ⭐️</StyledText>
+        {/* <Text>mejores puntuados ⭐️</Text> */}
+        <StyledText style={styles.language}> ⭐️Mejores Puntuados⭐️</StyledText>
         <CarouselAux
           data={
             // restorantes
@@ -87,47 +86,37 @@ const RestosList = () => {
           type={"extra"}
           title={"fumadores"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
 
         {/* <Text>Fumadores 🚬</Text> */}
-        <StyledText style={styles.language}>Fumadores 🚬</StyledText>
+        <StyledText style={styles.language}> 🗺️ Mas cercanos 🗺️</StyledText>
         <CarouselAux
           data={
             // restorantes
-            restorantes?.filter(item => item?.extras?.includes("fumadores"))
+            restorantByDistance
+            // restorantes?.sort((a, b) => b.distanceToUser - a.distanceToUser)
           }
           type={"extra"}
           title={"fumadores"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
 
 
-        {/* <Text>Petfriendly 🐶 </Text> */}
-        <StyledText style={styles.language}>Petfriendly 🐶</StyledText>
-        <CarouselAux
-          data={
-            // restorantes
-            restorantes?.filter(item => item?.extras?.includes("petfriendly"))
-          }
-          type={"extra"}
-          title={"petFrienly"}>
-        </CarouselAux>
-        <Text></Text>
-
+       
 
         {/* <Text>Wi-fi Gratis 📡</Text> */}
-        <StyledText style={styles.language}>Wi-fi Gratis 📡</StyledText>
+        <StyledText style={styles.language}> 💲 Economicos 💲</StyledText>
         <CarouselAux
           data={
-            restorantes?.filter(item => item?.extras?.includes("wi-fi"))
+            restorantes?.sort((a, b) => a.advance - b.advance)
           }
           type={"room"}
           title={"wi-fi"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
         {/* 
       <Text>Bares 🍻</Text> */}
-        <StyledText style={styles.language}>Bares 🍻</StyledText>
+        <StyledText style={styles.language}> 🍻 Bares 🍻</StyledText>
         <CarouselAux
           data={
             // restorantes
@@ -137,19 +126,23 @@ const RestosList = () => {
           type={"room"}
           title={"wi-fi"}>
         </CarouselAux>
-        <Text></Text>
+        {/* <Text></Text> */}
 
+         {/* <Text>Petfriendly 🐶 </Text> */}
+         <StyledText style={styles.language}> 🐶 Petfriendly 🐶</StyledText>
+        <CarouselAux
+          data={
+            // restorantes
+            restorantes?.filter(item => item?.extras?.includes("petfriendly"))
+
+          }
+          type={"extra"}
+          title={"petFrienly"}>
+        </CarouselAux>
+        {/* <Text></Text> */}
 
       </View>}
     </ScrollView>
-    // <FlatList 
-    //   data={restorantsJson} // de donde saca los datos para hacer la lista
-    //   ItemSeparatorComponent={() => <Text> </Text>} // separa cada card con un espacio "Text"
-    //   renderItem={({ item: repo }) => (
-    //     <RepositoryItem {...repo} />
-    //   )}
-    // />
-
   )
 }
 
@@ -167,15 +160,16 @@ const styles = StyleSheet.create({
     width: screenwidth,
   },
   language: {
-    fontSize: 16,
+    fontSize: 25,
+    color: 'black',
+    fontFamily: 'Inria-Sans-Regular',
     padding: 4,
-    color: theme.colors.white,
-    backgroundColor: theme.colors.primary,
     alignSelf: 'flex-start',
     marginVertical: 4,
     marginLeft: 10,
     borderRadius: 4,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginTop: 20,
   },
   image: {
     width: imageWidth,

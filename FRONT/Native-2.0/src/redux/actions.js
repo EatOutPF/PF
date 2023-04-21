@@ -13,11 +13,15 @@ import {
     CLEAR_LINK_MERCADOPAGO,
 
     CREATE_USER,
+    USER_GMAIL,
 
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
 
+    SET_NOTIFICATION_NUMBER,
+
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -26,15 +30,21 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+
+    POST_FAVORITE,
+    FETCH_FAVORITES,
+
+    POST_REVIEWS,
     GET_USER_LOCATION,
     UBICATION_BY_RESTORANT,
+
 } from "./type";
 import { log } from "react-native-reanimated";
 
 // esto hay que cambiarlo a la IP que tiene el servidor
 // ya que es diferente a la IP del Celular
 const DB_HOST = "https://eatout.onrender.com"// ip de la pc con el server corriendo
-// const DB_HOST = "http://192.168.3.206:5001/"// ip de la pc con el server corriendo
+//const DB_HOST = "http://localhost:5001/"// ip de la pc con el server corriendo
 
 
 // ACTION CREATORS
@@ -43,7 +53,7 @@ export function getAllRestorants() {
         await axios
             .get(`${DB_HOST}/restaurant`)
             .then((response) => {
-                // console.log("RESPONSE -> ", response);
+                 console.log("FLOR ACTION GETRESTOS-> ", response);
                 dispatch({
                     type: GET_ALL_RESTORANTS,
                     payload: response.data,
@@ -126,7 +136,7 @@ export function searchRestorantByString(string) {
         axios
             .get(`${DB_HOST}/restaurant?name=${string}`)
             .then((response) => {
-                // console.log("RESPONSE del action -> ", response);
+                //console.log("RESPONSE del action -> ", response);
                 dispatch({
                     type: GET_RESTORANT_BY_STRING,
                     payload: response.data,
@@ -140,6 +150,7 @@ export function searchRestorantByString(string) {
             });
     };
 }
+
 
 export function getLinkMercadoPago(value) {
     // console.log("soy el action:", value);
@@ -262,13 +273,41 @@ export const filterRestorant = (payload) => {
         payload: payload,
     };
 };
-
+//-----------POST DE FAVORITES-----------------------------
+export const PostsFavorite = (restaurant, user) => {
+    return async dispatch => {
+      try {
+        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant, user});
+        
+        dispatch({ type: POST_FAVORITE, payload: response.data });
+      } catch (error) {
+    
+      }
+    };
+  };
+  
+// export const getAsmosphere = () => {
+//     return async function (dispatch) {
+//         try {
+//             let response = await axios.get(`${DB_HOST}/menu`);
+//             return dispatch ({
+//                 type: GET_TYPES_FOODS,
+//                 payload: response.data,
+//             });
+//         } catch (error) {
+//             return {
+//                 error: 'No se encontraron tipos de comida',
+//                 originalError: error,
+//             }
+//         }
+//     }
+// }
 export const createUser = (payload) => {
 
 }
 
 export const setUserToken = (payload) => {
-    console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
+    // console.log("setUserToken: ", payload?.stsTokenManager?.accessToken);
     // getUserInfo(payload?.stsTokenManager?.accessToken)
     return {
         type: SET_USER_TOKEN,
@@ -287,7 +326,7 @@ export const clearUserToken = (payload) => {
 export const getUserInfo = (token) => {
     console.log("GETUSERINFO: ", token);
     setUserToken(token)
-    console.log("GETUSERINFO2222: ", token?.stsTokenManager?.accessToken);
+    console.log("GETUSERINFO TOKEN: ", token?.stsTokenManager?.accessToken);
 
     return async (dispatch) => {
         axios
@@ -312,6 +351,46 @@ export const getUserInfo = (token) => {
     };
 
 };
+export const postListReviews = (value) => {
+
+    return async (dispatch) => {
+        axios
+            .post(`${DB_HOST}/reviews/${value?.resto}`, value)
+            .then((response) => {
+            
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log("Error axion post review: ", error.message);
+                dispatch({
+                    type: POST_REVIEWS,
+                    payload: error.message,
+                });
+            });
+    };
+};
+
+
+
+
+export const setUserInfo = (payload) => {
+    return {
+        type: SET_USER_INFO,
+        payload: payload,
+    };
+    
+};
+
+export const setNotificationNumber = (payload) => {
+    return {
+        type: SET_NOTIFICATION_NUMBER,
+        payload: payload,
+    };
+    
+};
 
 export const clearUserInfo = (payload) => {
     return {
@@ -320,6 +399,18 @@ export const clearUserInfo = (payload) => {
     };
 
 };
+
+export function fetchFavorites(_id) {
+  return async dispatch => {
+    const response = await axios.get(`${DB_HOST}/users/${_id}`);
+    const favorites = response.restaurant;
+    dispatch({
+      type: FETCH_FAVORITES,
+      payload:favorites,
+    });
+  };
+}
+
 
 export const getUserLocation = (payload) => {
     return {
@@ -335,4 +426,14 @@ export const getUbicationByRestorant = (payload) => {
     }
 }
 
+export const userGmail = (payload) => {
+    return async dispatch => {
+        const response = await axios.post(`${DB_HOST}/gmail`, payload);
+        console.log("RSEPONSE DEL GHMAIL", response?.data);
+        dispatch({
+          type: USER_GMAIL,
+          payload: response?.data,
+        });
+      };
+}
 

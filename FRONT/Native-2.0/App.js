@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { LowerNavbar } from './src/components/NavBar/LowerNavBar';
 // import LowerNavBar from "../Native/src/components/NavBar/SearchBar"
 import { useFonts } from "expo-font";
+import Loading from './src/components/Loading/Loading';
 
 //Fuentes 
 const fontConfig = {
@@ -21,7 +22,8 @@ const fontConfig = {
   "Inria-Sans-Light-Italic": require("./assets/Inria_Sans/InriaSans-LightItalic.ttf"),
 };
 
-
+console.disableYellowBox = true;
+console.disableRedBox = true;
 export default function App() {
 
   const [loaded] = useFonts(fontConfig);
@@ -31,7 +33,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+      <PersistGate loading={<Loading text="Cargando datos de la aplicacion..."/>} persistor={persistor}>
         <NavigationContainer>
           <BottomSheetModalProvider>
             <LowerNavbar/>

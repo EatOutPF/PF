@@ -18,6 +18,7 @@ const reserveRouter =  require("./Reserve")
 const paymentRouter = require("./Payment")
 const paymentstatusRouter = require("./PaymentStatus")
 const notificationRouter = require("./Notification")
+const gmailRouter = require("./Gmail")
 
 
 /* --------MERCADOPAGO------- */
@@ -49,6 +50,7 @@ router.use("/reserve", reserveRouter)
 router.use("/payment", paymentRouter)
 router.use("/paymentstatus", paymentstatusRouter)
 router.use("/notification", notificationRouter)
+router.use("/gmail", gmailRouter)
 
 /* --------MERCADOPAGO------- */
 router.use("/mercadopago", paymentMercadoPagoRouter);

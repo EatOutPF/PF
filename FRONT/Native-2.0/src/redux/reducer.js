@@ -14,11 +14,15 @@ import {
     CLEAR_LINK_MERCADOPAGO,
 
     CREATE_USER,
+    USER_GMAIL,
+
+    SET_NOTIFICATION_NUMBER,
 
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
 
     GET_USER_INFO,
+    SET_USER_INFO,
     CLEAR_USER_INFO,
 
     GET_TYPES_FOODS,
@@ -27,15 +31,23 @@ import {
     GET_DIET,
     GET_EXTRA,
     FILTER_RESTORANTS,
+
+    POST_FAVORITE,
+    FETCH_FAVORITES,
+
+    POST_REVIEWS,
     GET_USER_LOCATION,
     UBICATION_BY_RESTORANT
+
 } from "./type";
 
 // import restorantsJson from '../../data/restaurants.json'
 
 const initialState = {
     allRestorants: [],
+    allRestorantsDistance: [],
     allRestorantsCopy: [],
+    addReviews: [],
 
     restorantsFound: [],
     restorantsFiltered: [],
@@ -43,14 +55,17 @@ const initialState = {
     userInfo: {},
     userToken: {},
     userLocation: {},
-    ubicationByRestorant: [],
+    ubicationByRestorant: {},
+
+    notificationsUser: [],
+    notificationCounter: 0,
 
     restorantById: {},
     restorantByString: [],
 
     checkoutLinkMP: "",
+    checkoutExternalReferenceMP: "",
     checkoutLinkMPResponse: {},
-
 
     searchText: "",
 
@@ -61,6 +76,8 @@ const initialState = {
     typesOfExtras: [],
 
     orderState: "az",
+
+    favorites: [],
 }
 
 // ---------- REDUCER ----------
@@ -70,17 +87,30 @@ export default function rootReducer(state = initialState, action) {
         //------------------------------------------------------------------------- 
         case GET_ALL_RESTORANTS: {
             // console.log("HOLAA : ", action.payload);
+            // const originalObj = action.payload
+            // const newObj = {...originalObj}
+            // newObj.distanceToUser = "FLORENCIA LAS MAS BVELLAS DE LAS FLORES"
+            // calculoCoordenasMts(userLocation?.latitude, userLocation?.longitude, 
+            //     originalObj?.address.coordinate.latitude, originalObj?.address.coordinate.longitude)
+            // console.log("REDUCER distance to user: ",newObj?.distanceToUser);   
             return {
                 ...state,
-                allRestorants: action?.payload,
-                allRestorantsCopy: action?.payload,
-                restorantsFound: action?.payload,
+                allRestorants: action.payload,
+                allRestorantsCopy: action.payload,
+                restorantsFound: action.payload,
             }
         }
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_ID: {
             // console.log(restorantsJson);
-            return { ...state, restorantById: action?.payload, }
+
+            const allRestorantsCopy = action.payload
+                    
+            allRestorantsCopy.distanceToUser = calculoCoordenasMts(state.userLocation?.latitude, state.userLocation?.longitude, 
+                allRestorantsCopy.address.coordinate.latitude, allRestorantsCopy.address.coordinate.longitude) // Agrega el nuevo atributo distanceToUser a cada objeto
+                
+            
+            return { ...state, restorantById: allRestorantsCopy }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_ID: {
@@ -90,7 +120,11 @@ export default function rootReducer(state = initialState, action) {
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return { ...state, restorantsFound: action?.payload }
+            return {
+                ...state,
+                restorantsFound: action?.payload,
+                allRestorants: state.allRestorantsCopy,
+            }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
@@ -108,12 +142,24 @@ export default function rootReducer(state = initialState, action) {
             return { ...state, searchText: action?.payload }
         }
         //-------------------------------------------------------------------------    
+        //------------------------------------------------------------------------- 
+        case POST_REVIEWS: {
+            //console.log("reducer: ", action.payload);
+            return { ...state, addReviews: action?.payload }
+        }
+        //-------------------------------------------------------------------------   
         case GET_LINK_MERCADOPAGO: {
             // console.log("reducer: ", action.payload);
-            // console.log("soy el reducer de mp: ", action.payload);
+            console.log("soy el reducer de mp: ", action.payload);
+            console.log("ID PAYMENT: ", action?.payload?.body?.external_reference);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, checkoutLinkMPResponse: action?.payload, checkoutLinkMP: action?.payload?.body?.init_point }
+            return {
+                ...state,
+                checkoutLinkMPResponse: action?.payload,
+                checkoutLinkMP: action?.payload?.body?.init_point,
+                checkoutExternalReferenceMP: action?.payload?.body?.external_reference,
+            }
 
         }
         //------------------------------------------------------------------------- 
@@ -279,13 +325,26 @@ export default function rootReducer(state = initialState, action) {
                 // allRestorants: arrayFiltered,
             }
         }
+        //-----------------------------------------------------------------------------------------------//
 
+        case POST_FAVORITE:
+            return {
+                ...state,
+                favorites: [...state.favorites, action?.payload]
+            };
+        //----------------------------------------------------------------------------------------------//
+
+        case FETCH_FAVORITES:
+            return {
+                ...state,
+                favorites: action.favorites
+            };
 
 
         //-----------------------------------------------------------------------------------------
         case SET_USER_TOKEN: {
             console.log("*************************************");
-            console.log("token user: ", action.payload);
+            console.log("SET_USER_TOKEN REDUCER ", action.payload);
             return {
                 ...state,
                 userToken: action?.payload,
@@ -301,10 +360,29 @@ export default function rootReducer(state = initialState, action) {
         //-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            console.log(" user INFO: ", action.payload);
+            console.log("GET_USER_INFO REDUCER: ", action.payload);
             return {
                 ...state,
                 userInfo: action?.payload,
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        case SET_NOTIFICATION_NUMBER: {
+            // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            // console.log("GET_USER_INFO REDUCER: ", action.payload);
+            return {
+                ...state,
+                notificationCounter: action?.payload,
+            }
+        }
+        //-----------------------------------------------------------------------------------------
+        case SET_USER_INFO: {
+
+            return {
+                ...state,
+                userInfo: action?.payload,
+                notificationsUser: action?.payload?.notificacion,
+                // notificationCounter: action?.payload?.notificacion?.length(),
             }
         }
         //-----------------------------------------------------------------------------------------
@@ -314,6 +392,7 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: {},
             }
         }
+
         case GET_USER_LOCATION: {
             return {
                 ...state,
@@ -321,75 +400,37 @@ export default function rootReducer(state = initialState, action) {
             }
         }
 
-        case UBICATION_BY_RESTORANT: {
-            let { restorantes, userLocation } = action.payload;
-
-            const setubicationByRestaurant = () => {
-                let ubicationByRestaurant = restorantes?.map(el => {
-                    return {
-                        id: el._id,
-                        latitud: el.address.coordinate.latitude,
-                        longitud: el.address.coordinate.longitude,
-                    }
-                })
-                return ubicationByRestaurant;
+        case USER_GMAIL: {
+            return {
+                ...state,
+                userInfo: action?.payload,
+                notificationsUser: action?.payload?.notificacion,
+                // notificationCounter: action?.payload?.notificacion?.length(),
             }
-
-            console.log('soy el userLocation', userLocation)
-
-            // const calcularDistancia = (latUser, lonUser, latResto, lonResto) => {
-            //     const radioTierra = 6371; // Radio de la Tierra en km
-            //     const dLat = ((latResto - latUser) * Math.PI) / 180;
-            //     const dLon = ((lonResto - lonUser) * Math.PI) / 180;
-            //     const a =
-            //         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            //         Math.cos((latUser * Math.PI) / 180) *
-            //         Math.cos((latResto * Math.PI) / 180) *
-            //         Math.sin(dLon / 2) *
-            //         Math.sin(dLon / 2);
-            //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            //     const distancia = radioTierra * c;
-            //     return distancia; // Devuelve la distancia en km
-            // }
-
-
-            // console.log(userLocation.latitude,
-            //     userLocation.longitude,
-            //     restorantDistance[0].latitude,
-            //     restorantDistance[0].longitude)
-
-            // let ubicacionMasCercana = restorantDistance[0]; // Empieza con la primera ubicación de la lista
-            // let distanciaMasCercana = calcularDistancia(
-            //     userLocation.latitude,
-            //     userLocation.longitude,
-            //     restorantDistance[0].latitude,
-            //     restorantDistance[0].longitude
-            // );
-            // console.log(distanciaMasCercana)
-            // console.log({distanciaMasCercana, ubicacionMasCercana})
-
-
-            // for (let i = 1; i < restorantDistance.length; i++) {
-            //     console.log(restorantDistance[i])
-            //     const distancia = calcularDistancia(
-            //         userLocation.latitude,
-            //         userLocation.longitude,
-            //         restorantDistance[i].latitude,
-            //         restorantDistance[i].longitude
-            //     ); // Calcula la distancia a esta ubicación
-            //     if (distancia < distanciaMasCercana) {
-            //         ubicacionMasCercana = restorantDistance[i];
-            //         distanciaMasCercana = distancia;
-            //     }
-            // }
-
-            // return {
-            //     ...state,
-            //     ubicationByRestorant: {
-            //         ubicacionMasCercana,
-            //         distanciaMasCercana
-            //     }
-            // }
+        }
+        
+        case UBICATION_BY_RESTORANT: {
+            console.log("UBICVATION BY RSETORANT");            
+            console.log("UBICACION user", state.userLocation);
+            // console.log("REDUCER distance to user: ",newObj?.distanceToUser); 
+            const allRestorantsCopy = state.allRestorants.map(restorant => { // Recorre el array utilizando map() y crea una copia de cada objeto
+                return {
+                    ...restorant,
+                    distanceToUser: calculoCoordenasMts(state.userLocation?.latitude, state.userLocation?.longitude, 
+                        restorant.address.coordinate.latitude, restorant.address.coordinate.longitude), // Agrega el nuevo atributo distanceToUser a cada objeto
+                };
+            });
+            // console.log("UBICACION resto", allRestorantsCopy?.[0]?.address.coordinate.latitude)
+            const allRestrantsByDistance = allRestorantsCopy?.sort((a, b) => a.distanceToUser - b.distanceToUser)
+            return {
+                ...state,
+                allRestorants: allRestorantsCopy,
+                allRestorantsCopy: allRestorantsCopy,
+                restorantsFound: allRestorantsCopy,
+                allRestorantsDistance : allRestrantsByDistance,
+                
+            }  
+        
         }
 
         //-----------------------------------------------------------------------------------------
@@ -397,7 +438,15 @@ export default function rootReducer(state = initialState, action) {
             return state;
     }
 
-
+    function calculoCoordenasMts(latUser,longUser,latResto,longResto){
+        const difLat = Math.abs(latUser - latResto)
+        const difLong = Math.abs(longUser - longResto)
+        const distCordPlanas = ( Math.sqrt( (Math.pow(difLat, 2)) + (Math.pow(difLong, 2)) ) )
+        const unMetro = 0.000011
+        const resultadoMts = (distCordPlanas/unMetro)
+        // console.log("resultados calculo: ", resultadoMts);
+        return Math.trunc(resultadoMts)
+    }
 
     function sortAsc(aux) {
         return aux.sort((a, b) => {
@@ -429,4 +478,6 @@ export default function rootReducer(state = initialState, action) {
         });
     }
 };
+//-------------------------------------------------------------------------------------------//
+
 

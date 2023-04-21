@@ -34,53 +34,57 @@ const User = (props) => {
 
   return (
     <>
-      {props && (
-        <tr key={props._id} className={!props.active ? style.disable : null}>
-          <td style={{ textAlign: "initial" }}>{props.name}</td>
-          <td style={{ textAlign: "initial" }}>{props.email}</td>
-          <td>{props.role}</td>
-          <td>{props.active ? "Activo" : "Inactivo"}</td>
-          <td className={style.rows}>
-            {props.active ? (
-              <>
-                <NavLink to={`/modifyUser/${props.id}`}>
-                  <button onClick={handlerClick}>
-                    <div title="editar">
-                      <img src={pen} alt="editar" />
-                    </div>
-                  </button>
-                </NavLink>
-              </>
-            ) : (
-              <></>
-            )}
-
-            {loading ? (
-              <Loading />
-            ) : (
-              <>
-                <button
-                  onClick={handlerDelete}
-                  className={
-                    props.active ? style.rowsActive : style.rowsInactive
-                  }
-                >
-                  {props.active ? (
-                    <>
-                      <div title="Desactivar">
-                        <img src={papelera} alt="desactivar" />
+      {loading ? (
+        <Loading />
+      ) : (
+        props && (
+          <tr key={props._id} className={!props.active ? style.disable : null}>
+            <td style={{ textAlign: "initial" }}>{props.name}</td>
+            <td style={{ textAlign: "initial" }}>{props.email}</td>
+            <td>{props.role}</td>
+            <td>{props.active ? "Activo" : "Inactivo"}</td>
+            <td className={style.rows}>
+              {props.active ? (
+                <>
+                  <NavLink to={`/modifyUser/${props.id}`}>
+                    <button onClick={handlerClick}>
+                      <div title="editar">
+                        <img src={pen} alt="editar" />
                       </div>
-                    </>
-                  ) : (
-                    <div title="Activar">
-                      <img src={recuperar} alt="desactivar" />
-                    </div>
-                  )}
-                </button>
-              </>
-            )}
-          </td>
-        </tr>
+                    </button>
+                  </NavLink>
+                </>
+              ) : (
+                <></>
+              )}
+
+              {loading ? (
+                <Loading />
+              ) : (
+                <>
+                  <button
+                    onClick={handlerDelete}
+                    className={
+                      props.active ? style.rowsActive : style.rowsInactive
+                    }
+                  >
+                    {props.active ? (
+                      <>
+                        <div title="Desactivar">
+                          <img src={papelera} alt="desactivar" />
+                        </div>
+                      </>
+                    ) : (
+                      <div title="Activar">
+                        <img src={recuperar} alt="desactivar" />
+                      </div>
+                    )}
+                  </button>
+                </>
+              )}
+            </td>
+          </tr>
+        )
       )}
     </>
   );

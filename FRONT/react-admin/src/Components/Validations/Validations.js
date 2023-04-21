@@ -32,8 +32,8 @@ export default function Validation(data) {
 
   !data?.streetName && (errors.streetName = "Diligencie el nombre de la calle");
   data?.streetName &&
-    /*  data?.streetName?.length < 4 &&
-    (errors.streetName = "El nombre debe contener mas de 5 caracteres"); */
+     data?.streetName?.length <= 5 &&
+    (errors.streetName = "El nombre debe contener mas de 5 caracteres");
 
     !data?.streetNumber &&
     (errors.streetNumber = "Diligencie el numero de la calle");

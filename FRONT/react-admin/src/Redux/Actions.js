@@ -27,6 +27,7 @@ export const SEARCH_BY_RESTAURANT_BY_USER = "SEARCH_BY_RESTAURANT_BY_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
 export const DETAIL_USER = "DETAIL_USER";
 export const UPDATE_USER = "UPDATE_USER";
+export const ADD_ADMIN = "ADD_ADMIN";
 
 export const getAllRestaurants = () => {
   return (dispatch) => {
@@ -222,6 +223,8 @@ export const setToken = (token) => {
       dispatch({ type: SET_USER, payload: response.data });
     } catch (error) {
       console.error("Error setting token:", error);
+
+      error.response?.data?.error && sweetAlert(error.response?.data?.error);
     }
   };
 };
@@ -306,7 +309,7 @@ export const getAllRestaurantsByUser = (user) => {
       .catch((error) => {
         return dispatch({
           type: GET_USER_BY_ID,
-          payload: error.response.data.error,
+          payload: error?.response?.data?.error,
         });
       });
   };
@@ -376,5 +379,23 @@ export const updateUser = (user) => {
         console.log(error);
         return sweetAlert(error);
       });
+  };
+};
+
+export const addAdmin = (idRestaurant, user) => {
+  return (dispatch) => {
+    axios
+      .put(`/restaurant/${idRestaurant}`, { user })
+      .then((result) => {
+        console.log(result.data);
+        result?.data && sweetAlert(result?.data);
+
+        dispatch({
+          type: ADD_ADMIN,
+          payload: result.data,
+        });
+        dispatch(getAllUsers());
+      })
+      .catch((error) => alert(error?.response?.data?.error));
   };
 };

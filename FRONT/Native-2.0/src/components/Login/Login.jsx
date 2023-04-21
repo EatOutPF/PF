@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert, ActivityIndicator } from 'react-native';
 import { BlurView } from 'expo-blur';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import Logo from "../../img/logo-eatout.jpeg"
 import Profile from '../Profile/Profile';
 import CreateAccountFirebase from './CreateAccountFirebase';
-import { getUserInfo, setUserToken } from '../../redux/actions';
+import { getUserInfo, setUserToken, userGmail } from '../../redux/actions';
 import ProfileFirebase from '../Profile/ProfileFirebase';
 
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
@@ -38,13 +38,15 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     const [log, setLogin] = useState({})
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loadingLog, setLoadingLog] = useState(false)
     const navigation = useNavigation();
     // const utoken = useSelector(state => state.userToken?.stsTokenManager?.accessToken)
     const dispatch = useDispatch();
     const logUser = useSelector(state => state?.userInfo)
-    console.log("LOGIN, user lof ??: ", logUser);
+    console.log("LOGIN, user logeado ??: ", logUser);
     const app = initializeApp(firebaseConfig);
     const authF = getAuth(app);
+    const [readyToPay, setReadyToPay] = useState(false);
 
     GoogleSignin.configure({
       webClientId: "716033457346-uiqt23knlrpkkcp12d8da9qmp4pptfja.apps.googleusercontent.com",
@@ -52,19 +54,9 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
 
 
     const handleCreateAccount = () => {
-      // createUserWithEmailAndPassword(authF, email, password)
-      // .then((userCredential) => {
-      //   console.log('Account created!')
-      //   Alert.alert('Account created!')
-      //   const user = userCredential.user;
-      //   console.log(user)
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      //   Alert.alert(error.message)
-      // })
       navigation.navigate('Crear Cuenta');
     }
+
 
     const handleSignIn = () => {
       
@@ -75,7 +67,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
         console.log(user)
         // dispatch(setUserToken(user))
         dispatch(getUserInfo(user))
-        navigation.navigate('Perfil de Usuario', {user});
+        loadingLog ? navigation.navigate('Perfil de Usuario', {user}) : setLoadingLog(true)
       })
       .catch(error => {
         Alert.alert("Error",error.message)
@@ -84,26 +76,30 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     }
 
     const onGoogleButtonPress = async() => { // ESTO ANDA PERO NO ES VALIDO EL TOKEN QUE LLEGA
-      // // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
+      // Check if your device supports Google Play
+      console.log("Google singin start");
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
+      console.log("Google IDTOKEN: ", idToken);
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     
-      // // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    
-      // // Sign-in the user with the credential
-      // // return auth().signInWithCredential(googleCredential);
-      // const user_sing_in = auth().signInWithCredential(googleCredential);
-      // user_sing_in
-      //   .then((user)=> {
-      //     console.log("user data: ", user);
-      //     navigation.navigate('Bienvenido', {user});
+      // Sign-in the user with the credential
+      // return auth().signInWithCredential(googleCredential);
+      const user_sing_in = auth().signInWithCredential(googleCredential);
+      user_sing_in
+        .then((user)=> {
+          console.log("user data: ", user);
+          // user.user.email
+          dispatch( userGmail(user?.user?.email))
+          navigation.navigate('Bienvenido', {user});
           
-      //   })
-      //   .catch((error)=>{
-      //     console.log("error >> : ", error);
-      //   })
+        })
+        .catch((error)=>{
+          console.log("error >> : ", error);
+        })
+        console.log("GOOGLEEEEE: ", user_sing_in);
     }
 
     const handleLoginGoogle = async () => {
@@ -120,9 +116,6 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
         
         <View style={styles.container}>
         <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
-        {/* <View style={{width: 100, height: 100, backgroundColor: 'purple', position: 'absolute' }}></View>
-        // <View style={{width: 100, height: 100, backgroundColor: 'blue', top: 120, position: 'absolute', transform: [{rotate: '25deg'}] }}></View>
-        // <View style={{width: 100, height: 100, backgroundColor: 'red', bottom: 120 ,position: 'absolute', borderRadius: 50, transform: [{rotate: '50deg'}] }}></View> */}
         <ScrollView contentContainerStyle= {{
           flex: 1,
           width: '100%',
@@ -144,7 +137,10 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Password</Text>
                 <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="password" secureTextEntry={true}/>
               </View>
-              <TouchableOpacity onPress={handleSignIn} style={[styles.button, {backgroundColor: '#ff9383'}]}>
+              <TouchableOpacity onPress={handleSignIn} style={[styles.button, {backgroundColor: '#ff9383', flexDirection: "row"}]}>
+                {loadingLog &&  
+                <ActivityIndicator style={styles.loading} size="small" color="white" /> 
+                }
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Iniciar sesion</Text>
               </TouchableOpacity>
               
@@ -181,8 +177,13 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
   export default function Login() {
   return (
     
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Navigator initialRouteName="Iniciar Sesion"
+        screenOptions={({ route }) => ({
+          headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+          headerTintColor: '#fff',
+        })}
+      >
+        <Stack.Screen name="Iniciar Sesion" component={LoginScreen} />
         <Stack.Screen name="Bienvenido" component={Profile} />
         <Stack.Screen name="Perfil de Usuario" component={ProfileFirebase} />
         <Stack.Screen name="Crear Cuenta" component={CreateAccountFirebase} />

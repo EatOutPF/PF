@@ -1,4 +1,3 @@
-
 const express = require("express");
 const axios = require("axios");
 const dotenv = require("dotenv");
@@ -23,7 +22,7 @@ async function webhook(reference) {
     let idUser = data?.metadata?.user;
     let reserve = data?.metadata?.reserve;
     let amount = data?.transaction_amount;
-   // console.log(idResto, idUser, reserve, amount);
+    // console.log(idResto, idUser, reserve, amount);
     let postReserva;
     let postPay;
     let restaurant = await getRestaurant(idResto);
@@ -93,11 +92,17 @@ async function webhook(reference) {
     if (data.status_detail === "accredited") {
       restaurant.balance += amount;
       restaurant.save();
-      
-      let date = new Date().toISOString().slice(0,10)
-      postPay = await postPayment({idUser, idRestaurant: idResto, amount, idReserve: postReserva._id, date: date })
-      postReserva.payment = postPay._id
-      postReserva.save()
+
+      let date = new Date().toISOString().slice(0, 10);
+      postPay = await postPayment({
+        idUser,
+        idRestaurant: idResto,
+        amount,
+        idReserve: postReserva._id,
+        date: date,
+      });
+      postReserva.payment = postPay._id;
+      postReserva.save();
       let notificacionPago = await postNotification(messagePago, idUser);
 
       let emailRestoPago = await sendConfirmationEmail({
@@ -112,14 +117,9 @@ async function webhook(reference) {
       });
     }
     let useract = await getUsers(idUser);
-   // console.log(postPay)
-   // console.log(postReserva)
-   // console.log(useract)
-  return [data?.status, useract];
-    
+    return [data.status, useract];
   } catch (err) {
-    return ["pendiente",{}];
+    return ["pendiente", {}];
   }
 }
 module.exports = webhook;
-

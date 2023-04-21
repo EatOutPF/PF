@@ -12,6 +12,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUserInfo } from '../../redux/actions';
+import CapitalizeString from '../CapitalizeString/CapitalizeString';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 
@@ -21,8 +22,12 @@ export default function ProfileFirebase() {
     const user = useSelector(state => state?.userInfo)
     // const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
-    console.log("USER DE PROFILE: ", user);
-    console.log("keys user, ", Object.keys(user));
+    console.log("ProfileFirebase COMPONENT -------------", user);
+    console.log(typeof(user));
+    console.log("ProfileFirebase COMPONENT keys -------------", Object?.keys(user));
+    console.log("ProfileFirebase COMPONENT RESERVE-------------", user?.reserve);
+    console.log("ProfileFirebase COMPONENT RESERVE restaurant-------------", user?.reserve?.[0]?.restaurant);
+
 
     const imageSources = [
       require('../../img/profile-pic/0.png'),
@@ -33,7 +38,7 @@ export default function ProfileFirebase() {
       require('../../img/profile-pic/5.png')
     ];
     const randomIndex = Math.floor(Math.random() * imageSources.length);
-    const randomImageSource = imageSources[randomIndex];
+    const randomImageSource = imageSources?.[0];
 
     const logOut = () => {
         console.log("FLOR");
@@ -42,7 +47,7 @@ export default function ProfileFirebase() {
         //     .then(()=> console.log("User sined out!"))
         // dispatch(clearUser)
         dispatch(clearUserInfo())
-        navigation.navigate("Login")
+        navigation.navigate("Perfil")
         
     }
 
@@ -65,19 +70,24 @@ export default function ProfileFirebase() {
                 source={randomImageSource}
             ></Image>
               <View>
-                <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>
-                  Bienvenido {user?.name}</Text>
+                {/* <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>
+                    Bienvenido {user?.name}</Text> */}
+                <View style={styles.input}>
+                  <Text style={styles.title}>NOMBRE COMPLETO</Text>
+                  <Text style={styles.subtitle}>{CapitalizeString(user?.name)} </Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Text style={styles.title}>E-MAIL</Text>
+                  <Text style={styles.subtitle}>{CapitalizeString(user?.email)} </Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Text style={styles.title}>TELEFONO</Text>
+                  <Text style={styles.subtitle}>{user?.phone} </Text>
+                </View>
               </View>
-              {/* <View>
-                <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Password</Text>
-                <TextInput onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="password" secureTextEntry={true}/>
-              </View>
-              <TouchableOpacity onPress={handleSignIn} style={[styles.button, {backgroundColor: '#ff5b4f'}]}>
-                <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Login</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleCreateAccount} style={[styles.button, {backgroundColor: '#512e2e'}]}>
-                <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Create Account</Text>
-              </TouchableOpacity> */}
+            
               <TouchableOpacity onPress={() => logOut()} style={[styles.button, {backgroundColor: '#512e2e'}]}>
                 <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Cerrar sesion</Text>
               </TouchableOpacity>
@@ -119,14 +129,26 @@ const styles = StyleSheet.create({
     },
     input: {
       width: 250,
-      height: 40,
+      height: 60,
       borderColor: '#fff',
       borderWidth: 2,
       borderRadius: 10,
       padding: 10,
       marginVertical: 10,
       backgroundColor: '#ffffff90',
-      marginBottom: 20
+      marginBottom: 10
+    },
+    title:{
+      fontSize: 10, 
+      fontWeight: '400', 
+      color: 'gray'
+    },
+    subtitle:{
+      paddingLeft: 20,
+      fontSize: 15, 
+      fontWeight: 'bold',
+      fontWeight: '400', 
+      color: 'black'
     },
     button: {
       width: 250,

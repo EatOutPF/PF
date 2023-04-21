@@ -12,6 +12,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import { CLEAR_USER_INFO } from '../../redux/type';
+import { clearUserInfo } from '../../redux/actions';
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
 
 
@@ -21,16 +22,17 @@ export default function Profile({route}) {
 
     const { user } = route?.params;
     const profilePicture = user?.user?.photoURL
-    console.log("USER DE PROFILE: ", user?.user?.photoURL);
-    console.log("keys user, ", Object.keys(user));
+    console.log("PROFILE COMPONENt: ------------- ", user);
+    console.log(typeof(user));
+    console.log("PROFILE COMPONENT, keys user ------------- ", Object.keys(user));
 
     const logOut = () => {
-        console.log("FLOR");
+      console.log("LogOut");
         // auth()
         //     .singOut()
         //     .then(()=> console.log("User sined out!"))
-        // dispatch(clearUser)
-        navigation.navigate("Login")
+        dispatch(clearUserInfo())
+        // navigation.navigate("Perfil")
         
     }
 
