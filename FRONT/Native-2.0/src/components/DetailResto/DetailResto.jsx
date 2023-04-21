@@ -39,6 +39,10 @@ const DetailResto = ({ route }) => {
   useEffect(() => {
 
     userData?.login ? setuserLogged(true) : setuserLogged(false)
+    if (userData?.login) {
+    userData?.favorites?.forEach(fav =>{ 
+      console.log(fav[0])
+      if(fav?.restaurant[0]?._id === detail?._id) setIsFavorite(true)})}
     
   }, [userData])
 
@@ -81,13 +85,13 @@ const DetailResto = ({ route }) => {
     console.log('Operacion sobre contador:', operation)
     setReserve({ ...reserve, table: operation });
   }
-  useEffect(() => {
-    // Comprobar si el restaurante ya está en favoritos
-    console.log(userData)
-    if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
-      setIsFavorite(true);
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   // Comprobar si el restaurante ya está en favoritos
+  //   console.log(userData)
+  //   if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
+  //     setIsFavorite(true);
+  //   }
+  // }, [userData]);
 
   //-----Que dia?---------------
   const expandir = () => {
@@ -211,24 +215,25 @@ const DetailResto = ({ route }) => {
       alert('Para agregar el restaurante debes estar logeado');
       return;
     }
+    const restaurant = detail
+     dispatch(PostsFavorite(restaurant._id, user._id));
+    // dispatch(searchRestorantById(_id));
+    // alert('Restaurante agregado a favoritos');
+    //console.log(`Enviando restauran: ${restaurant}, user ${user}`);
 
-    dispatch(PostsFavorite(restaurant, user));
-    dispatch(searchRestorantById(_id));
-    alert('Restaurante agregado a favoritos');
-    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
 
   };
-  const handleRemoveFavorite = () => {
-    if (!userLogged) {
-      return;
-    }
-    const restaurant = detail._id;
-    const user = userId;
-    dispatch(PostsFavorite(restaurant, user));
-    dispatch(searchRestorantById(_id));
-    alert('eliminado');
-    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
-  };
+  // const handleRemoveFavorite = () => {
+  //   if (!userLogged) {
+  //     return;
+  //   }
+  //   const restaurant = detail._id;
+  //   const user = userId;
+  //   dispatch(PostsFavorite(restaurant, user));
+  //   dispatch(searchRestorantById(_id));
+  //   alert('eliminado');
+  //   console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+  // };
 
 
   function handleResenias() {
@@ -259,7 +264,7 @@ const DetailResto = ({ route }) => {
           <Icon 
             type= "material-community"
             name= {isFavorite ? "heart" : "heart-outline"}
-            onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite }
+            onPress={handleAddFavorite}
             color= { isFavorite? '#FF0000' : "#442484"}
             size= {35}
             underlayColor="tranparent">

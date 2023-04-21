@@ -56,7 +56,7 @@ async function getUsers(props) {
           path: "favorite",
           populate: {
             path: "restaurant",
-            select: "name _id",
+            select: "_id name images menu diets atmosphere",
           },
         })
         .populate({

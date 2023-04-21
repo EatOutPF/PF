@@ -30,9 +30,9 @@ function FavoritesScreen() {
 
   useEffect(() => {
     userData?.login ? setUserLog(true) : setUserLog(false)
-    console.log(userData)
+   // console.log(userData)
    // let favs = userData?.favorites?.forEach(fav => setFavorites(fav?.favorite[0].restaurant[0].name))
-    if (favs) console.log(favs)
+   // if (favs) console.log(favs)
   }, [userData])
 
 
@@ -52,7 +52,7 @@ function FavoritesScreen() {
       <FlatList
         data={favs}
         renderItem={renderItem}
-        keyExtractor={item => item.restaurant[0].name}
+       // keyExtractor={item => item?._id}
       />)
 }
 </View>
