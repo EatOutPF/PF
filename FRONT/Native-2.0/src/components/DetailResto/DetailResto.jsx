@@ -34,6 +34,7 @@ const DetailResto = ({ route }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const [userLogged, setuserLogged] = useState(false)
   const userData = useSelector(state => state?.userInfo)
+  
 
   const [userId, setUserId] = useState(null);
   const userLocation = useSelector(state => state?.userLocation)
@@ -41,7 +42,7 @@ const DetailResto = ({ route }) => {
   useEffect(() => {
 
     userData?.login ? setuserLogged(true) : setuserLogged(false)
-    
+
   }, [userData])
 
   const parseThousands = value => {
@@ -50,16 +51,7 @@ const DetailResto = ({ route }) => {
       : `${String(value)}mts`
   }
 
-
-  // useEffect(() => {
-  //   auth.onAuthStateChanged(user => {
-  //     user ? setuserLogged(true) : setuserLogged(false);
-  //     setUserId(user.uid);
-  //     console.log(`ID del usuario: ${user.uid}`);
-  //   });
-  // }, []);
-
-  console.log("SOY DETAIL: ", _id);
+  // console.log("SOY DETAIL: ", _id);
   const user = useSelector(state => state?.userInfo)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
@@ -113,9 +105,10 @@ const DetailResto = ({ route }) => {
           dispatch(searchRestorantById(_id));
           setLoading(true)
         }
-        else {setLoading(false)
+        else {
+          setLoading(false)
           console.log("DISTANCIA AL USER:", detail?.distanceToUser);
-          
+
         }
       }
 
@@ -142,7 +135,7 @@ const DetailResto = ({ route }) => {
 
 
   const handleDate = (date) => {
-    console.log('SOY LA FECHA', date)
+    // console.log('SOY LA FECHA', date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -182,6 +175,7 @@ const DetailResto = ({ route }) => {
   }
 
   const handleReserva = (date, item) => {
+
     console.log('DATE', date)
     if (!date || !item ) {
         Alert.alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
@@ -194,8 +188,9 @@ const DetailResto = ({ route }) => {
           console.log('RESERVE', reserve)
           handleCheckOut(reserve)
       }
+
   }
-  console.log('SOY LA RESERVA', reserve)
+  // console.log('SOY LA RESERVA', reserve)
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
   //----------------------------------Header------------------------------
@@ -246,7 +241,7 @@ const DetailResto = ({ route }) => {
 
 
   function handleResenias() {
-    if(userLogged){
+    if (userLogged) {
       navigation.navigate("Ranking-Reseñas", { resto: detail })
 
     } else {
@@ -269,14 +264,14 @@ const DetailResto = ({ route }) => {
           <View>
             <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
-          <View style={styles.viewFavortires}>
-          <Icon 
-            type= "material-community"
-            name= {isFavorite ? "heart" : "heart-outline"}
-            onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite }
-            color= { isFavorite? '#FF0000' : "#442484"}
-            size= {35}
-            underlayColor="tranparent">
+            <View style={styles.viewFavortires}>
+              <Icon
+                type="material-community"
+                name={isFavorite ? "heart" : "heart-outline"}
+                onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite}
+                color={isFavorite ? '#FF0000' : "#442484"}
+                size={35}
+                underlayColor="tranparent">
 
               </Icon>
 
@@ -305,11 +300,16 @@ const DetailResto = ({ route }) => {
                   name="pin-outline"
                   size={20}
                 /> */}
-                <Text style={styles.text1}>📍{detail?.address?.streetName} - {parseThousands(detail?.distanceToUser)}</Text>
+                <Text style={styles.text1}>📍{detail?.address?.streetName} -
+                </Text>
+
+                <Text style={styles.text1}>
+                  🚶🏻{parseThousands(detail?.distanceToUser)}
+                </Text>
               </View>
 
             </View>
-  
+
 
             {/* --------------------------------------------------------------- */}
 
@@ -393,9 +393,14 @@ const DetailResto = ({ route }) => {
                       onPress={() => setShowModal(true)}
                     />
                   </TouchableOpacity>
-                  <Modal visible={showModal} animationType='fade'>
+                  <Modal
+                    // style={styles.modal}
+                    visible={showModal}
+                    animationType="slide"
+                    
+                  >
                     <Calendar
-                      // style=
+                      style={styles.customTheme}
                       minDate={minDate}
                       onDayPress={date => {
                         handleDate(date)
@@ -450,7 +455,7 @@ const DetailResto = ({ route }) => {
                         <ScrollView >
                           {hours?.map((item) => (
                             <TouchableOpacity
-                            
+
                               onPress={() => {
                                 handleHorario(item);
                                 closeBottomSheet();
@@ -474,7 +479,9 @@ const DetailResto = ({ route }) => {
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
                 <TouchableOpacity
-                  style={[styles.confirmButton, (reserve.date && reserve.time ) ? null : styles.disabledConfirmButton]}
+
+                  style={[styles.confirmButton, (reserve.date && reserve.time) ? null : styles.disabledConfirmButton]}
+
                   disabled={!reserve.date || !reserve.time}
                   onPress={() => {
                     handleReserva(reserve.date, reserve.time);
@@ -491,46 +498,14 @@ const DetailResto = ({ route }) => {
             </View>
             {/* ---------- Scroll Horizontal ------------ */}
             <View style={{ margin: 8, }}>
-              <ScrollView
-                horizontal={true}
-                ref={scrollViewRef}>
-
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={() => handleReviews()}>
-                  <Text style={styles.textButtonHorizontalScroll}>REVIEWS</Text>
-                </TouchableOpacity>
-
-                
-
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={handlePress}>
-                  <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
-                </TouchableOpacity>
-
-              </ScrollView>
+              <TouchableOpacity
+                style={styles.buttonHorizontalScroll}
+                onPress={() => handleReviews()}>
+                <Text style={styles.textButtonHorizontalScroll}>Ver Reviews del Restaurante</Text>
+              </TouchableOpacity>
             </View>
+
+
 
             {/*------------------ Sobre Nosotros------------------- */}
             <View style={styles.containerTitle}>
@@ -542,7 +517,7 @@ const DetailResto = ({ route }) => {
             {/* ---------------- menu --> link a la carta del resto ----- */}
             <View style={styles.containerTitle}>
               <Text style={styles.title}> Menú</Text>
-              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline', marginLeft:15 }}>Link a la carta.</Text>
+              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline', marginLeft: 15 }}>Link a la carta.</Text>
             </View>
 
             {/*-------------- categorias ------------------------------ */}
@@ -659,7 +634,7 @@ const DetailResto = ({ route }) => {
             <Text></Text>
 
           </View>
-          
+
         )
         }
       </ScrollView >
@@ -698,7 +673,7 @@ const styles = StyleSheet.create({
   superTitle: {
     fontFamily: "Inria-Sans-Bold",
     fontSize: 35,
-    marginLeft:10,
+    marginLeft: 10,
 
   },
   containerReservValue: {
@@ -707,14 +682,14 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontFamily: "Inria-Sans-Regular",
-    marginLeft:10,
+    marginLeft: 10,
     fontSize: 20,
   },
   container2: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: 5,
-    marginBottom:6,
+    marginBottom: 6,
     // backgroundColor: 'blue',
     margin: 0,
   },
@@ -776,8 +751,8 @@ const styles = StyleSheet.create({
   textReserv2: {
     fontFamily: "Inria-Sans-Regular",
     fontSize: 20,
-    marginLeft:15 ,
-    marginRight:15 
+    marginLeft: 15,
+    marginRight: 15
     // backgroundColor: 'yellow',
   },
   reservDetail: {
@@ -830,7 +805,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: 5,
     borderRadius: 10,
-    width: 110,
+    width: 200,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
@@ -841,6 +816,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inria-Sans-Bold',
     fontWeight: 'bold',
     fontSize: 15,
+    color: 'white'
   },
   //----------Titulos e informacion---------------------
   containerTitle: {
@@ -884,7 +860,7 @@ const styles = StyleSheet.create({
   },
   containerCategoriasHorarios: {
     alignItems: 'flex-start',
-    marginLeft:10,
+    marginLeft: 10,
   },
   containerHorarios: {
     alignItems: 'center',
@@ -898,8 +874,37 @@ const styles = StyleSheet.create({
   },
   hora: {
     fontSize: 20,
+  },
+  //Estilo del calendario
+  customTheme: {
+    backgroundColor: 'white',
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: 'white',
+    selectedDayBackgroundColor: '#00adf5',
+    selectedDayTextColor: '#FA6B6B',
+    todayTextColor: '#FA6B6B',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#d9e1e8',
+    dotColor: '#00adf5',
+    selectedDotColor: '#ffffff',
+    arrowColor: 'orange',
+    disabledArrowColor: '#d9e1e8',
+    monthTextColor: 'blue',
+    indicatorColor: 'blue',
+    textDayFontFamily: 'Inria-Sans-Light',
+    textMonthFontFamily: 'monospace',
+    textDayHeaderFontFamily: 'monospace',
+    textDayFontWeight: '300',
+    textMonthFontWeight: 'bold',
+    textDayHeaderFontWeight: '300',
+    textDayFontSize: 16,
+    textMonthFontSize: 20,
+    textDayHeaderFontSize: 16
+  },
+  modal: {
+    justifyContent: 'center',
 
-  }
+  },
 
 });
 export default DetailResto

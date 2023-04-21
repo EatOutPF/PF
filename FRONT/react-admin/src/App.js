@@ -15,10 +15,12 @@ import { /* useDispatch, */ useSelector } from "react-redux";
 import Reserves from "./Components/Reserves/Reserves.jsx";
 import Successful from "./Components/Successful/Successful.jsx";
 import ModifyUsers from "./Components/Users/ModifyUsers.jsx";
+import AddUser from "./Components/Users/AddUser.jsx";
 /* import { getLocalStorage, saveLocalStorage } from "./Redux/utils.js"; */
 /* import { setUser } from "./Redux/Actions.js"; */
 
 axios.defaults.baseURL =
+
   "https://eatout.onrender.com/" 
   // "http://localhost:5001/";
 
@@ -93,6 +95,7 @@ function App() {
                   path="/reserves/:id"
                   element={<Reserves />}
                 ></Route>
+                <Route exact path="/addUser/:id" element={<AddUser />}></Route>
               </>
             )}
             <Route

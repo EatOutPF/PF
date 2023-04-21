@@ -8,7 +8,7 @@ router.use(express.json());
 router.post("/", async (req, res) => {
     console.log(req.body)
 const {restaurant, user} = req.body
-
+console.log(restaurant, user)
 try {
     const resultado = await favorite(restaurant,user)
     res.status(200).json(resultado)

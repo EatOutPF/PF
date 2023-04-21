@@ -160,15 +160,16 @@ const styles = StyleSheet.create({
     width: screenwidth,
   },
   language: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'black',
-    fontFamily: 'Inria-Sans-Bold',
+    fontFamily: 'Inria-Sans-Regular',
     padding: 4,
     alignSelf: 'flex-start',
     marginVertical: 4,
     marginLeft: 10,
     borderRadius: 4,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginTop: 20,
   },
   image: {
     width: imageWidth,

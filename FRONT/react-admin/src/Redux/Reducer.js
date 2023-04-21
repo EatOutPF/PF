@@ -23,6 +23,7 @@ import {
   GET_USER_BY_ID,
   DETAIL_USER,
   UPDATE_USER,
+  ADD_ADMIN,
 } from "./Actions";
 // import { filterOptions } from "./utils";
 
@@ -256,6 +257,8 @@ const Reducer = (state = initialState, { type, payload }) => {
     case DETAIL_USER:
       return { ...state, detailUser: payload };
     case UPDATE_USER:
+      return { ...state, message: payload };
+    case ADD_ADMIN:
       return { ...state, message: payload };
 
     default:
