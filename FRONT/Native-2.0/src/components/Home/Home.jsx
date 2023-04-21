@@ -75,6 +75,10 @@ const Home = () => {
 
   }, [searchText]);
 
+  const resto = useSelector(state => state.allRestorants);
+
+
+
   // dispatch(clearStateResatorantById())
   // console.log("HOME USER INFO: ", userInfo?.name);
   // useEffect(() => {
@@ -88,15 +92,15 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1, width: '100%', backgroundColor: "#efe4dc" }}>
-      <Text style={styles.language}>Descrubre con EatOut</Text>
-      <View style={styles.searchBar}>
+      <Text style={styles.language}>Descrubre los mejores restaurants...</Text>
+      {/* <View style={styles.searchBar}>
       <TextInput
           style={styles.input}
           placeholder="Buscar..."
           value={searchText}
           onChangeText={handleSearch}
         />
-      </View>
+      </View> */}
       <RestosList />
       <BottonSheetFilters />
     </View>
@@ -147,12 +151,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   language: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'black',
     fontFamily: 'Inria-Sans-Bold',
     padding: 4,
     alignSelf: 'flex-start',
-    marginVertical: 4,
+    // marginVertical: 4,
     marginLeft: 10,
     borderRadius: 4,
     overflow: 'hidden'

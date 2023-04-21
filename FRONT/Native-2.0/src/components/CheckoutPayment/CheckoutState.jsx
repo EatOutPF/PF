@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
 // import { WebView } from 'react-native-webview';
@@ -15,7 +15,11 @@ import {Linking} from "expo"
 const CheckoutState = ({route}) => {  
     const { resto, reserve } = route.params;
     const [readyToPay, setReadyToPay] = useState(false);
-    const [result, setResult] = useState("Pendiente");
+    const [result, setResult] = useState("pendiente");
+    const [loadingToHome, setLoadingToHome] = useState(false);
+    const [operationSuccess, setOperationSuccess] = useState(false);
+
+
     const dispatch = useDispatch();
     const external_reference = useSelector(state=> state?.checkoutExternalReferenceMP)
     // const linkMercadoPago = useSelector(state => state?.checkoutLinkMP)
@@ -35,7 +39,22 @@ const CheckoutState = ({route}) => {
         },
         confirmButton: {
             flexDirection: 'row',
-            backgroundColor: "gray",
+            backgroundColor: loadingToHome ? "green": "gray",
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 20,
+            height: 40,
+            width: 300,
+            marginTop: 5,
+            elevation: 5,
+            shadowOffset: { width: 3, height: 3 },
+            shadowColor: 'black',
+            shadowOpacity: 0.3,
+            shadowRadius: 10,
+        },
+        claudio: {
+            flexDirection: 'row',
+            backgroundColor: operationSuccess ? "green": (loadingToHome ? "grey" : "orange"),
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 20,
@@ -55,59 +74,18 @@ const CheckoutState = ({route}) => {
     });
 
 
-
-    useEffect(()=>{
-        // Hola()
-        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
-        //     // Lógica a ejecutar después de 3 segundos
-        //     checkoutLinkMP = "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
-        //     setReadyToPay(true)
-        // }, 3000);
-
-        // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
-
-        // axios
-        //     .get(
-        //     "https://eatout.onrender.com/paymentstatus",
-        //     )
-        //     .then((res) => console.log("PAYMENT STATUS:", res))
-        //     // .catch(error){ console.log();}
-        // }, 15000);
-
-    }, [result])
-
-    // console.log("Soy el checkout, ", resto);
     console.log("Soy el checkout-reserve, ", reserve);
 
     const navigation = useNavigation();
     const handleBackToHome = async () => {
+        Alert.alert("Gracias por confiar en EatOut")
         navigation.navigate("Eat Out")
-
     };
 
-    // CLAUDIO 
-    // async function Hola(){
-    //     const {url} = await Linking.getInitialURL()
-    //     if(url && url.includes("/statuspayment")){
-    //         let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
-    //         .then(res => {console.log('RES ' + (res))
-    //             // console.log("res.data-status: ", res?.data[0]);
-    //             // console.log("res.data-user: ", res?.data[1]);
-    //             if(Array.isArray(res?.data)){
-    //                 setResult(res?.data?.[0])
-    //                 dispatch(setUserInfo(res?.data?.[1]))
-    //             }
-    //             // console.log("res.status: ", res?.status);
-    //             // console.log("res.statustext: ", res?.statusText);
-    //             // console.log("res.keys: ", Object?.keys(res));
-    //             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-    //             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-    //             setResult(res?.data?.[0])})
-    //         .then(error => console.log('ERROR boton claudio ' + error))
-    //     }
-    // }
 
     const claudio = async () => {
+        setLoadingToHome(true)
+        setTextBotton("Procesando tu reserva")
         console.log("SOY CLAUDIO");
         console.log("ESTERNAL REFERENCE", external_reference);
         let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
@@ -117,16 +95,53 @@ const CheckoutState = ({route}) => {
             if(Array.isArray(res?.data)){
                 setResult(res?.data?.[0])
                 dispatch(setUserInfo(res?.data?.[1]))
+                setLoadingToHome(false)
+                setOperationSuccess(true)
+                handleBackToHome()
             }
-            // console.log("res.status: ", res?.status);
-            // console.log("res.statustext: ", res?.statusText);
-            // console.log("res.keys: ", Object?.keys(res));
-            // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-            // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-            setResult(res?.data?.[0])})
-        .then(error => console.log('ERROR boton claudio ' + error))
+        })
+        .then(error => {
+            console.log('ERROR boton claudio ' + error) 
+            setResult(error)
+        })
             
     }
+
+    // const [result, setResult] = useState(undefined);
+    const claudito = async () => {
+        console.log("SOY CLAUDIO");
+        console.log("ESTERNAL REFERENCE", external_reference);
+        if(result !== "approved"){
+        let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
+            .then(res => {
+                console.log('RES ' + (res))
+                console.log("res.data-status: ", res?.data[0]);
+                // console.log("res.data-user: ", res?.data[1]);
+                if(Array.isArray(res?.data)){
+                    if(res?.data?.[0] === "approved"){
+                        setResult(res?.data?.[0])
+                        setLoadingToHome(true)
+                        dispatch(setUserInfo(res?.data?.[1]))
+                    }
+                    else 
+                        setResult(res?.data?.[0])
+
+                }
+            })
+            .then(error => {
+                console.log('ERROR boton claudio ' + error) 
+                // setResult("pendiente")
+            })
+        }
+      };
+    
+    //   useEffect(() => {
+    //     if (result === "pendiente") {
+    //         claudito();
+    //     }
+    //   }, [result]);
+
+    const [textBotton, setTextBotton] = useState(`Confirmar reserva con el ${resto?.name?.substring(0, 15)}`)
 
     return (
         <View style={styles.container}>
@@ -139,18 +154,41 @@ const CheckoutState = ({route}) => {
             <TouchableOpacity 
                 style={styles.confirmButton} 
                 title="Open WebBrowser" 
-                // disabled={!readyToPay}
+                disabled={!loadingToHome}
                 onPress={handleBackToHome}>
-            
-                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Volver a Inicio </Text>
+                {!loadingToHome ?  <ActivityIndicator style={styles.loading} size="small" color="white" /> 
+                    : 
+                    <IonicIcon
+                        name={"checkmark-outline"}
+                        size={20}
+                        color={'white'}   
+                    />}
+                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}
+                    >Volver a Inicio </Text>
 
             </TouchableOpacity>
-            <TouchableOpacity   style={styles.confirmButton} 
+
+            <TouchableOpacity   
+                style={styles.claudio} 
                 title="claudio" 
-                
+                disabled={loadingToHome}
                 onPress={claudio}>
-            
-                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Claudio </Text>
+                {loadingToHome ?  
+                    <ActivityIndicator style={styles.loading} size="small" color="white" /> 
+                    : 
+                        (operationSuccess ? 
+                            <IonicIcon
+                                name={"checkmark-outline"}
+                                size={20}
+                                color={'white'}   
+                            />: 
+                            <IonicIcon
+                            name={"contract-sharp"}
+                            size={20}
+                            color={'white'}/>
+                        )
+                }
+                <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}> {textBotton} </Text>
                 </TouchableOpacity>
                         {/* <Text>{result && JSON.stringify(result)}</Text> */}
                         {/* <View style={css.container}> */}

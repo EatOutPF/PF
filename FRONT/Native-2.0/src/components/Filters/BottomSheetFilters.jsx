@@ -34,7 +34,7 @@ export default function BottonSheetFilters() {
             {/* <Text>Esta al es de prueba en React Native 12.</Text> */}
 
             <View style={styles.buttons}>
-            <TouchableOpacity>
+            <TouchableOpacity style={{flexDirection:"row",  alignItems:"center"}}>
                 <IonicIcon
                     name="filter-outline"
                     size={30}
@@ -62,7 +62,7 @@ export default function BottonSheetFilters() {
                 </View>
             </BottomSheetModal>
 
-            <TouchableOpacity>
+            <TouchableOpacity style={{flexDirection:"row", alignItems:"center"}}>
                 <IonicIcon
                     name="map-outline"
                     size={30}

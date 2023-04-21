@@ -1,17 +1,28 @@
 {
   "devices": [
     {
-<<<<<<< Updated upstream
-      "installationId": "beb5e132-f63d-4b60-938f-aabe373d508c",
-      "lastUsed": 1682055362354
-=======
-      "installationId": "51473acd-d803-42fe-b5f0-cb3dcbe1cfc5",
-      "lastUsed": 1682059593041
+      "installationId": "c1f4c4be-ee83-4677-a6fe-ef1de3d580d4",
+      "lastUsed": 1682105218217
     },
     {
-      "installationId": "2ec25a22-eea4-40fa-af23-368dabb002ac",
-      "lastUsed": 1682038120589
->>>>>>> Stashed changes
+      "installationId": "22676dd3-1d66-4c77-8d14-fac7c6ddecd9",
+      "lastUsed": 1682103858407
+    },
+    {
+      "installationId": "15166351-2256-4263-ac74-724533eaf506",
+      "lastUsed": 1682098774602
+    },
+    {
+      "installationId": "9ac9f8c0-36fe-4e8b-8f55-e231b7336b54",
+      "lastUsed": 1682079440928
+    },
+    {
+      "installationId": "023c7ee6-388e-4ea5-9fcc-f77506cf141a",
+      "lastUsed": 1682079098607
+    },
+    {
+      "installationId": "414b69bb-caf6-4854-9586-b29540deec85",
+      "lastUsed": 1682078014853
     }
   ]
 }

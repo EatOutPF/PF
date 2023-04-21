@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import { postListReviews, searchRestorantById } from "../../redux/actions";
 import { reauthenticateWithCredential } from "firebase/auth";
+import RenderReviews from "./RenderReviews";
 
 
 
@@ -17,34 +18,46 @@ export default function ListReviews() {
   const dispatch = useDispatch();
   const restoData = useSelector(state => state?.restorantById)
   const reviewsResto = restoData?.review && [...restoData?.review]?.reverse();
-
+  const renderItem = ({ item }) => (
+    <RenderReviews item={item} />
+  );
 
   useEffect(() => {
     if(restoData){
       dispatch(searchRestorantById(restoData._id))
     }
-  }, [restoData])
+  }, [])
 
 
-  return (
-    <View>
-      <FlatList
+  // return (
+  //   <View>
+  //     <FlatList
       
-        data={reviewsResto}
-        renderItem={({ item }) => (
-          <View style={styles.container}>
-          <View key={item?.key}>
-            <Text>{item?.review}</Text>
-            <Text>{item?.score}</Text>
-            <Text> {item?.user?.name}</Text>
-          </View>
-          </View>
-        )}
-      />
-    </View>
+  //       data={reviewsResto}
+  //       renderItem={({ item }) => (
+  //         <View style={styles.container}>
+  //         <View key={item?.key}>
+  //           <Text>{item?.review}</Text>
+  //           <Text>{item?.score}</Text>
+  //           <Text> {item?.user?.name}</Text>
+  //         </View>
+  //         </View>
+  //       )}
+  //     />
+  //   </View>
 
-
-  )
+  // )
+  
+  return(
+    <View style={{ backgroundColor: "#efe4dc", height:"100%"}}>
+        <FlatList
+          style={{marginBottom: 28}}
+          data={reviewsResto}
+          keyExtractor={(item) => item?._id?.toString()}
+          renderItem={renderItem}
+        />
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({

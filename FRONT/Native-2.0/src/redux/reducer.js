@@ -44,6 +44,7 @@ import {
 
 const initialState = {
     allRestorants: [],
+    allRestorantsDistance: [],
     allRestorantsCopy: [],
     addReviews: [],
 
@@ -93,9 +94,9 @@ export default function rootReducer(state = initialState, action) {
             // console.log("REDUCER distance to user: ",newObj?.distanceToUser);   
             return {
                 ...state,
-                allRestorants: newObj,
-                allRestorantsCopy: newObj,
-                restorantsFound: newObj,
+                allRestorants: action.payload,
+                allRestorantsCopy: action.payload,
+                restorantsFound: action.payload,
             }
         }
         //------------------------------------------------------------------------- 
@@ -375,9 +376,6 @@ export default function rootReducer(state = initialState, action) {
         }
         //-----------------------------------------------------------------------------------------
         case SET_USER_INFO: {
-            console.log("SET_USER_INFO - REDUCER", action.payload);
-            console.log("SET_USER_INFO - REDUCER reserve", action?.payload?.reserve);
-            console.log("SET_USER_INFO - REDUCER not leng", action?.payload?.notificacion);
 
             return {
                 ...state,
@@ -412,12 +410,13 @@ export default function rootReducer(state = initialState, action) {
                 };
             });
             // console.log("UBICACION resto", allRestorantsCopy?.[0]?.address.coordinate.latitude)
-
+            const allRestrantsByDistance = allRestorantsCopy?.sort((a, b) => a.distanceToUser - b.distanceToUser)
             return {
                 ...state,
                 allRestorants: allRestorantsCopy,
                 allRestorantsCopy: allRestorantsCopy,
                 restorantsFound: allRestorantsCopy,
+                allRestorantsDistance : allRestrantsByDistance,
                 
             }  
         
