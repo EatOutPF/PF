@@ -82,12 +82,14 @@ function Login() {
 
   useEffect(() => {
     console.log(loggedUser);
-    if (loggedUser) {
-      if (loggedUser?.role === "admin" || loggedUser.role === "superadmin") {
+
+    if (loggedUser?.role) {
+      if (loggedUser?.role === "admin" || loggedUser?.role === "superadmin") {
         navigate("/landing");
-      } /* else {
-        sweetAlert("usuario no autorizado");
-      } */
+      } else {
+        sweetAlert("usuario no autorizado", "comuniquese con su administrador");
+        navigate("/");
+      }
     }
   }, [loggedUser]);
 

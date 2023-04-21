@@ -61,7 +61,7 @@ const CheckoutState = ({route}) => {
 
 
     useEffect(()=>{
-        Hola()
+        // Hola()
         // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
         //     // Lógica a ejecutar después de 3 segundos
         //     checkoutLinkMP = "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
