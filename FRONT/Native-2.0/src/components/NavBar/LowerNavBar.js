@@ -75,12 +75,12 @@ function HomeScreenStack(){
         component={Map}
       />
     <HomeStackNavigator.Screen
-        name="Reviews-Resto"
+        name="Resenias del restaurant"
         component={ListReviews} 
       
       />
         <HomeStackNavigator.Screen
-        name="Ranking-Reseñas"
+        name="Comentar resenia"
         component={AddReviews} 
       
       />

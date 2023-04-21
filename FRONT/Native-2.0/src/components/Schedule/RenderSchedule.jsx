@@ -69,6 +69,9 @@ const RenderSchedule = ({ item }) => {
         const _id = value
         navigation.navigate("Detalle Restaurant", {_id})
     }
+    function handleResenias() {
+        navigation.navigate("Comentar resenia", { resto: item?.restaurant })
+    }
     
     return (
       <TouchableOpacity
@@ -108,7 +111,20 @@ const RenderSchedule = ({ item }) => {
           <Text style={styles.notificationTitle}>    {item?.restaurant?.name} </Text>
           <Text style={styles.notificationSubtitle}>Cantidad de mesas reservadas: {item?.table} </Text>
           <Text style={styles.notificationSubtitle}>{item?.restaurant?.address?.streetName} - N°: {item?.restaurant?.address?.streetNumber} </Text>
-          <Text></Text>
+          <View style={{alignItems:"center"}}>
+            <TouchableOpacity
+                    style={{flexDirection:"row",alignItems: "center", marginRight: 5, marginVertical:5, 
+                    backgroundColor: "#ff5b4f", padding: 5, paddingRight: 10, borderRadius: 10, width:150}}
+                    onPress={() => handleResenias()}>
+                      <IonicIcon
+                        style={{ marginRight: 5 }}
+                        name={'book'}
+                        size={22}
+                        color={'#efe4dc'}
+                      />
+                    <Text style={{color:"#efe4dc"}}>Comentar resenia</Text>
+            </TouchableOpacity>
+          </View>
           <View style={{flexDirection: "row",}}>
             
             <TouchableOpacity 
@@ -142,7 +158,7 @@ const RenderSchedule = ({ item }) => {
           </View>
         </View>
         ) : (
-        <Text style={styles.notificationTitle}>| {item?.date} | {item?.time} | {item?.restaurant?.name.substring(0, 10)}... |</Text>
+        <Text style={styles.notificationTitle}>| {item?.date} | {item?.time} | {item?.restaurant?.name?.substring(0, 10)}... |</Text>
 
         ) }
 

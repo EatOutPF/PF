@@ -23,6 +23,7 @@ import 'moment-timezone';
 
 import RBSheet from "react-native-raw-bottom-sheet";
 import ListReviews from '../Reviews/ListReviews.jsx'
+import CapitalizeString from '../CapitalizeString/CapitalizeString.js'
 
 
 
@@ -46,7 +47,7 @@ const DetailResto = ({ route }) => {
   const parseThousands = value => {
     return value >= 1000
       ? `${Math.round(value / 100) / 10}km`
-      : String(value+"km")
+      : `${String(value)}mts`
   }
 
 
@@ -79,7 +80,7 @@ const DetailResto = ({ route }) => {
     user: null,
     date: null,
     time: null,
-    table: 0,
+    table: 1,
   })
   const handlePersons = (contador) => {
     console.log('CONTADOR', contador)
@@ -187,7 +188,7 @@ const DetailResto = ({ route }) => {
     } else {
       // setReserve({ ...reserve, date: date.dateString });
       console.log('RESERVE', reserve)
-      dispatch(handleCheckOut(reserve))
+      handleCheckOut(reserve)
     }
   }
   console.log('SOY LA RESERVA', reserve)
@@ -250,7 +251,7 @@ const DetailResto = ({ route }) => {
   }
 
   function handleReviews() {
-    navigation.navigate("Reviews-Resto", { resto: _id })
+    navigation.navigate("Resenias del restaurant", { resto: detail })
   }
 
 
@@ -288,22 +289,23 @@ const DetailResto = ({ route }) => {
             <View style={styles.container2}>
 
               <View style={styles.iconText}>
-                <IonicIcon
-                  name="star-outline"
-                  size={20} />
-                <Text style={styles.text1}>{detail?.ranking}</Text>
+                {/* <IonicIcon
+                  name="star"
+                  color="#BABD06"
+                  size={20} /> */}
+                <Text style={styles.text1}>⭐️{detail?.ranking}</Text>
               </View>
 
               <View style={styles.iconText}>
-                <IonicIcon
+                {/* <IonicIcon
                   name="pin-outline"
                   size={20}
-                />
-                <Text style={styles.text1}>{detail?.address?.streetName} - {parseThousands(detail?.distanceToUser)}</Text>
+                /> */}
+                <Text style={styles.text1}>📍{detail?.address?.streetName} - {parseThousands(detail?.distanceToUser)}</Text>
               </View>
 
             </View>
-
+  
 
             {/* --------------------------------------------------------------- */}
 
@@ -441,9 +443,10 @@ const DetailResto = ({ route }) => {
                         }
                       }}>
                       <View style={styles.containerHorarios}>
-                        <ScrollView>
+                        <ScrollView >
                           {hours?.map((item) => (
                             <TouchableOpacity
+                            
                               onPress={() => {
                                 handleHorario(item);
                                 closeBottomSheet();
@@ -467,11 +470,11 @@ const DetailResto = ({ route }) => {
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
                 <TouchableOpacity
-                  style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
-                  disabled={!reserve.date || !reserve.time}
+                  style={[styles.confirmButton, (reserve.date && reserve.time ) ? null : styles.disabledConfirmButton]}
+                  disabled={!reserve.date || !reserve.time || userData}
                   onPress={() => {
                     handleReserva(reserve.date, reserve.time);
-                    handleCheckOut()
+                    // handleCheckOut()
                   }}>
                   <IonicIcon
                     name="checkmark-outline"
@@ -494,11 +497,7 @@ const DetailResto = ({ route }) => {
                   <Text style={styles.textButtonHorizontalScroll}>REVIEWS</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={() => handleResenias()}>
-                  <Text style={styles.textButtonHorizontalScroll}>RESENIAS</Text>
-                </TouchableOpacity>
+                
 
                 <TouchableOpacity
                   style={styles.buttonHorizontalScroll}
@@ -539,7 +538,7 @@ const DetailResto = ({ route }) => {
             {/* ---------------- menu --> link a la carta del resto ----- */}
             <View style={styles.containerTitle}>
               <Text style={styles.title}> Menú</Text>
-              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>link a la carta</Text>
+              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline', marginLeft:15 }}>Link a la carta.</Text>
             </View>
 
             {/*-------------- categorias ------------------------------ */}
@@ -552,7 +551,7 @@ const DetailResto = ({ route }) => {
                 <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Tipo de comida: </Text>
                 {detail?.menu.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                  <Text style={styles.aboutCategories} key={index}>{CapitalizeString(el)} -</Text>
                 ))}
               </View>
 
@@ -561,7 +560,7 @@ const DetailResto = ({ route }) => {
                 <IonicIcon name="beer-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Ambiente: </Text>
                 {detail?.atmosphere.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                  <Text style={styles.aboutCategories} key={index}>{CapitalizeString(el)} -</Text>
                 ))}
               </View>
 
@@ -569,7 +568,7 @@ const DetailResto = ({ route }) => {
                 <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Espacios: </Text>
                 {detail?.section.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                  <Text style={styles.aboutCategories} key={index}>{CapitalizeString(el)} -</Text>
                 ))}
               </View>
 
@@ -577,7 +576,7 @@ const DetailResto = ({ route }) => {
                 <IonicIcon name="leaf-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Cuenta con: </Text>
                 {detail?.diets.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                  <Text style={styles.aboutCategories} key={index}>{CapitalizeString(el)} -</Text>
                 ))}
               </View>
 
@@ -585,7 +584,7 @@ const DetailResto = ({ route }) => {
                 <IonicIcon name="paw-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Otros: </Text>
                 {detail?.extras.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
+                  <Text style={styles.aboutCategories} key={index}>{CapitalizeString(el)} -</Text>
                 ))}
               </View>
 
@@ -633,9 +632,9 @@ const DetailResto = ({ route }) => {
             </View>
 
             {/*--------------- sobre nosotros -------------------- */}
-            <View style={styles.containerTitle}>
+            {/* <View style={styles.containerTitle}>
               <Text style={styles.title}>Sobre Nosotros</Text>
-            </View>
+            </View> */}
 
             {/* ------------Medios de pago ------------- */}
             <View style={styles.containerTitle}>
@@ -643,13 +642,20 @@ const DetailResto = ({ route }) => {
             </View>
 
             <View>
-              <Text>
-                {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-                {detail?.paymentMethods[2]}
+              <Text>      {CapitalizeString(detail?.paymentMethods?.[0])}, {CapitalizeString(detail?.paymentMethods?.[1])},{" "}
+                {CapitalizeString(detail?.paymentMethods?.[2])}.
               </Text>
             </View>
-          </View>
+            <Text></Text>
+            <Text></Text>
 
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+
+          </View>
+          
         )
         }
       </ScrollView >
@@ -663,7 +669,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#efe4dc',
   },
   header: {
     alignItems: 'center',
@@ -688,6 +694,8 @@ const styles = StyleSheet.create({
   superTitle: {
     fontFamily: "Inria-Sans-Bold",
     fontSize: 35,
+    marginLeft:10,
+
   },
   containerReservValue: {
     // padding: 3,
@@ -695,12 +703,14 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontFamily: "Inria-Sans-Regular",
+    marginLeft:10,
     fontSize: 20,
   },
   container2: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: 5,
+    marginBottom:6,
     // backgroundColor: 'blue',
     margin: 0,
   },
@@ -715,14 +725,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   containerReserva: {
-    backgroundColor: '#fff',
+    backgroundColor: '#efe4dc',
     paddingHorizontal: 16,
     // backgroundColor: 'orange',
   },
   containerConfigReserva: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '20%',
+    height: '17%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
@@ -762,6 +772,8 @@ const styles = StyleSheet.create({
   textReserv2: {
     fontFamily: "Inria-Sans-Regular",
     fontSize: 20,
+    marginLeft:15 ,
+    marginRight:15 
     // backgroundColor: 'yellow',
   },
   reservDetail: {
@@ -811,9 +823,10 @@ const styles = StyleSheet.create({
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
     backgroundColor: '#FA6B6B',
-    margin: 10,
+    marginVertical: 15,
+    marginHorizontal: 5,
     borderRadius: 10,
-    width: 100,
+    width: 110,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
@@ -867,13 +880,15 @@ const styles = StyleSheet.create({
   },
   containerCategoriasHorarios: {
     alignItems: 'flex-start',
+    marginLeft:10,
   },
   containerHorarios: {
     alignItems: 'center',
+    // width:50,
   },
   horariosButtons: {
     height: 26,
-    width: 50,
+    width: 70,
     alignItems: 'center',
 
   },

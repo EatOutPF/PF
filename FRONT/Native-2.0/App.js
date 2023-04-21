@@ -22,7 +22,8 @@ const fontConfig = {
   "Inria-Sans-Light-Italic": require("./assets/Inria_Sans/InriaSans-LightItalic.ttf"),
 };
 
-
+console.disableYellowBox = true;
+console.disableRedBox = true;
 export default function App() {
 
   const [loaded] = useFonts(fontConfig);
