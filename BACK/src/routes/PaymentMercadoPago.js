@@ -39,7 +39,7 @@ router.post("/", (req, res) => {
       failure: "",
       pending: "",
     },
-   auto_return: "approved",
+  // auto_return: "approved",
     binary_mode: true,
     metadata : {user: user._id, restaurant: restaurant._id, reserve},
     external_reference : `${restaurant._id}__${user._id}__${Date.now()}`
