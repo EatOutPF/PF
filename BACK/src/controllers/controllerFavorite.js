@@ -12,7 +12,7 @@ async function favorite(restaurant, user) {
   }).exec();
   
   let busqueda;
-  favorites && busqueda = favorites
+  favorites ? busqueda = favorites : console.log('aaaaaaaaa')
   
   console.log("favorite " + busqueda)
   if (!favorites) {
