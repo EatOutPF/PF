@@ -3,7 +3,7 @@ const { Favorite, Restaurant, User } = require("../db");
 
 async function favorite(restaurant, user) {
   console.log(restaurant, user)
-  const favorite = await Favorite.findOne({
+  const favorites = await Favorite.findOne({
     restaurant: restaurant,
     user: user,
   }).populate({
@@ -11,7 +11,7 @@ async function favorite(restaurant, user) {
     select: "_id name images menu diets atmosphere",
   });
 
-  if (!favorite) {
+  if (!favorites) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
       user: user,
@@ -24,26 +24,26 @@ async function favorite(restaurant, user) {
     console.log(fav)
     const favuser = await User.findById(user);
 
-    favuser.favorite.push(newFavorite._id);
+    favuser.favorites.push(newFavorite._id);
     const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
-    rest.favorite.push(newFavorite._id);
+    rest.favorites.push(newFavorite._id);
     const restfav = await rest.save()
 
     return userfav
 
   } else {
-    console.log(favorite)
-    const favdelete = await Favorite.findByIdAndDelete(favorite._id);
+    console.log(favorites)
+    const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
     const favuser = await User.findById(user);
-    const userfilter = favuser.favorite.filter(favs => favs.toString() !== favorite._id.toString())
+    const userfilter = favuser.favorite.filter(favs => favs.toString() !== favorites._id.toString())
     favuser.favorite = userfilter
     const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
-    const restfilter = rest.favorite.filter(favs => favs.toString() !== favorite._id.toString())
+    const restfilter = rest.favorite.filter(favs => favs.toString() !== favorites._id.toString())
     rest.favorite = restfilter
     const restfav = await rest.save()
 
