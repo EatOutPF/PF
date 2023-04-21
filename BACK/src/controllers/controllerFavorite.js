@@ -2,28 +2,33 @@ const mongoose = require("mongoose");
 const { Favorite, Restaurant, User } = require("../db");
 
 async function favorite(restaurant, user) {
-  console.log(restaurant, user)
+  console.log("controller favorite " + restaurant, user)
   const favorites = await Favorite.findOne({
     restaurant: restaurant,
     user: user,
   }).populate({
     path: "restaurant",
     select: "_id name images menu diets atmosphere",
-  });
-
+  }).exec();
+  
   if (!favorites) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
       user: user,
-    }).populate({
+    })
+//     .populate({
+//       path: "restaurant",
+//       select: "_id name images menu diets atmosphere",
+//     });
+
+    const fav = await newFavorite.save()
+    console.log("fav " + fav)
+    const favuser = await User.findById(user)
+        .populate({
       path: "restaurant",
       select: "_id name images menu diets atmosphere",
     });
-
-    const fav = await newFavorite.save()
-    console.log(fav)
-    const favuser = await User.findById(user);
-
+    console.log("favuser " + favuser)
     favuser.favorites.push(newFavorite._id);
     const userfav = await favuser.save()
 
@@ -34,16 +39,16 @@ async function favorite(restaurant, user) {
     return userfav
 
   } else {
-    console.log(favorites)
+    console.log("else " + favorites)
     const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
     const favuser = await User.findById(user);
-    const userfilter = favuser.favorite.filter(favs => favs.toString() !== favorites._id.toString())
+    const userfilter = favuser.favorite.filter(favs => favs._id !== favorites._id)
     favuser.favorite = userfilter
     const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
-    const restfilter = rest.favorite.filter(favs => favs.toString() !== favorites._id.toString())
+    const restfilter = rest.favorite.filter(favs => favs._id !== favorites._id)
     rest.favorite = restfilter
     const restfav = await rest.save()
 
