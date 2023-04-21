@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { deleteRestaurant } from "../../Redux/Actions";
+import { addAdmin, deleteRestaurant } from "../../Redux/Actions";
 import style from "./Card.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import pen from "../../assets/boligrafo-rosa.png";
@@ -9,19 +9,27 @@ import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
 import schedule from "../../assets/schedule.png";
 /* import sweetAlert from "sweetalert"; */
-import axios from "axios";
+/* import axios from "axios"; */
 import Loading from "../Loading/Loading";
+import { FaUserAlt } from "react-icons/fa";
+import AddUser from "../Users/AddUser";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
   const [closeEdit, setClose] = useState(true);
   const { message, user } = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
+
+  const [hide, setHide] = useState(true);
   const dispatch = useDispatch();
 
   const handlerClick = () => {
     setOpen(!openEdit);
     setClose(!closeEdit);
+  };
+
+  const handlerVisibility = () => {
+    setHide(!hide);
   };
 
   const handlerDelete = () => {
@@ -36,7 +44,11 @@ const Card = (props) => {
     } */
   };
 
-  /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
+
+  /* --.----MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
   /* const handlerPayment = () => {
     axios
@@ -89,7 +101,6 @@ const Card = (props) => {
                       </div>
                     </button>
                   </NavLink>
-
                   <NavLink to={`/reserves/${props.id}`}>
                     <button
                       onClick={handlerClick}
@@ -100,6 +111,24 @@ const Card = (props) => {
                       </div>
                     </button>
                   </NavLink>
+
+                  {/*  <NavLink to={`/addUser/${props.id}`}> */}
+                  <button
+                    onClick={handlerVisibility}
+                    className={style.rowsSchedule}
+                    style={{ backgroundColor: "#282c34" }}
+                  >
+                    <div title="Agregar un usuario">
+                      <FaUserAlt size={15} />
+                    </div>
+                  </button>
+                  {/* </NavLink> */}
+                  {!hide && props.id && (
+                    <AddUser
+                      id={props.id}
+                      handlerVisibility={handlerVisibility}
+                    />
+                  )}
                 </>
               )}
 

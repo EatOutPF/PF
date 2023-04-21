@@ -242,10 +242,26 @@ async function activeRestaurant(id, active) {
   restaurant.save();
 
   if (active) {
-    return `Se ha deshabilitado el restaurant ${restaurant.name}`;
+    return `Se ha modificado el estado del restaurant ${restaurant.name}`;
   } else {
-    return `Se ha habilitado el restaurant ${restaurant.name}`;
+    return `Se ha modificado el estado del  restaurant ${restaurant.name}`;
   }
+}
+
+async function userRestaurant(id, user) {
+  if (!id || !user) throw new Error("Hay datos obligatorios sin completar");
+
+  const restaurant = await Restaurant.findById(id);
+  if (!restaurant)
+    throw new Error(`No se encuentran restaurant con el id ${id}`);
+  const users = await User.findOne({ email: { $regex: user } });
+  if (users === null)
+    throw new Error("No existen usuarios con ese E-Mail registrado");
+
+  users.restaurant.push(id);
+  users.save();
+
+  return `Se ha incorporado un admin al restaurant ${restaurant.name}`;
 }
 
 module.exports = {
@@ -253,4 +269,5 @@ module.exports = {
   getRestaurant,
   putRestaurant,
   activeRestaurant,
+  userRestaurant,
 };
