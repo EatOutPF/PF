@@ -10,7 +10,11 @@ async function favorite(restaurant, user) {
     path: "restaurant",
     select: "_id name images menu diets atmosphere",
   }).exec();
-  console.log("favorite " + favorites)
+  
+  const busqueda;
+  favorites && busqueda = favorites
+  
+  console.log("favorite " + busqueda)
   if (!favorites) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
