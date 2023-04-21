@@ -13,8 +13,8 @@ async function favorite(restaurant, user) {
   console.log("favorite " + favorites)
   if (favorites === null) {
     const newFavorite = new Favorite({
-      [restaurant]: restaurant,
-      [user]: user,
+      restaurant: [restaurant],
+      user: [user],
     }).populate({
       path: "restaurant",
       select: "_id name images menu diets atmosphere",
