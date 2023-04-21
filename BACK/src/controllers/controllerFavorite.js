@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Favorite, Restaurant, User } = require("../db");
 
 async function favorite(restaurant, user) {
-  console.log(restaurant, user)
+  console.log("controller favorite " + restaurant, user)
   const favorites = await Favorite.findOne({
     restaurant: restaurant,
     user: user,
@@ -10,7 +10,7 @@ async function favorite(restaurant, user) {
     path: "restaurant",
     select: "_id name images menu diets atmosphere",
   });
-
+  console.log("favorite " + favorites)
   if (!favorites) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
@@ -21,9 +21,9 @@ async function favorite(restaurant, user) {
     });
 
     const fav = await newFavorite.save()
-    console.log(fav)
+    console.log("fav " + fav)
     const favuser = await User.findById(user);
-
+    console.log("favuser " + favuser)
     favuser.favorites.push(newFavorite._id);
     const userfav = await favuser.save()
 
@@ -34,7 +34,7 @@ async function favorite(restaurant, user) {
     return userfav
 
   } else {
-    console.log(favorites)
+    console.log("else " + favorites)
     const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
     const favuser = await User.findById(user);
