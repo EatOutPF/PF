@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated, SafeAreaView } from 'react-native'
+import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated, SafeAreaView, Alert } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -175,14 +175,20 @@ const DetailResto = ({ route }) => {
   }
 
   const handleReserva = (date, item) => {
-    // console.log('DATE', date)
-    if (!date || !item) {
-      alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
-    } else {
-      // setReserve({ ...reserve, date: date.dateString });
-      // console.log('RESERVE', reserve)
-      handleCheckOut(reserve)
-    }
+
+    console.log('DATE', date)
+    if (!date || !item ) {
+        Alert.alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
+      
+    } 
+    if(!userLogged)
+        Alert.alert('Debe iniciar sesion antes de realizar la reserva')
+    else {
+          // setReserve({ ...reserve, date: date.dateString });
+          console.log('RESERVE', reserve)
+          handleCheckOut(reserve)
+      }
+
   }
   // console.log('SOY LA RESERVA', reserve)
 
@@ -286,7 +292,7 @@ const DetailResto = ({ route }) => {
                   name="star"
                   color="#BABD06"
                   size={20} /> */}
-                <Text style={styles.text1}>⭐️{detail?.ranking}</Text>
+                <Text style={styles.text1}>⭐️{detail?.ranking?.toFixed(1)}</Text>
               </View>
 
               <View style={styles.iconText}>
@@ -473,7 +479,9 @@ const DetailResto = ({ route }) => {
               {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
               <View>
                 <TouchableOpacity
+
                   style={[styles.confirmButton, (reserve.date && reserve.time) ? null : styles.disabledConfirmButton]}
+
                   disabled={!reserve.date || !reserve.time}
                   onPress={() => {
                     handleReserva(reserve.date, reserve.time);

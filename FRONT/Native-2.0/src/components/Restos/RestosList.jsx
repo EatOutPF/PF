@@ -24,19 +24,19 @@ const RestosList = () => {
   const [loading, setLoading] = useState(true)
   const [restorantes, setRestorantes] = useState([]);
 
-  // useEffect(() => {
-  //   setLoading(true)
-  //   dispatch(getAllRestorants());
-  //   if (resto?.length === 0) {
-  //     setLoading(true)
-  //   }
-  //   if (resto?.length !== 0) {
-  //     setRestorantes([...resto])
-  //     setLoading(false)
-  //   }
-  //   if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
+  useEffect(() => {
+    setLoading(true)
+    dispatch(getAllRestorants());
+    if (resto?.length === 0) {
+      setLoading(true)
+    }
+    if (resto?.length !== 0) {
+      setRestorantes([...resto])
+      setLoading(false)
+    }
+    if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
 
-  // }, [])
+  }, [])
 
   useEffect(() => {
 

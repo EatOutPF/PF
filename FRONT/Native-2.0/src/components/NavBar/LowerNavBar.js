@@ -177,7 +177,8 @@ function FavoriteScreenNavigator(){
 const Tab = createBottomTabNavigator();
 export const LowerNavbar = () => {
   const userData = useSelector(state=>state?.userInfo)
-  const notificationCounter= useSelector(state => state?.notificationCounter)
+  const dataNotificationsReversed = userData?.notificacion && [...userData?.notificacion]?.reverse();
+  const notificationCounter = dataNotificationsReversed?.length
   return (
     <Tab.Navigator    
     //  -------------------- CSS Tab Navigator --------------------

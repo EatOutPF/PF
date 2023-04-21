@@ -13,6 +13,7 @@ import {
     CLEAR_LINK_MERCADOPAGO,
 
     CREATE_USER,
+    USER_GMAIL,
 
     SET_USER_TOKEN,
     CLEAR_USER_TOKEN,
@@ -425,4 +426,14 @@ export const getUbicationByRestorant = (payload) => {
     }
 }
 
+export const userGmail = (payload) => {
+    return async dispatch => {
+        const response = await axios.post(`${DB_HOST}/gmail`, payload);
+        console.log("RSEPONSE DEL GHMAIL", response?.data);
+        dispatch({
+          type: USER_GMAIL,
+          payload: response?.data,
+        });
+      };
+}
 
