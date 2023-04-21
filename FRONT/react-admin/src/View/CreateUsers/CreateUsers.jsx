@@ -13,7 +13,7 @@ const CreateUserForm = () => {
     phone: "",
     email: "",
     password: "",
-    role: "",
+    role: "user",
   });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});

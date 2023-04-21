@@ -9,12 +9,14 @@ import recuperar from "../../assets/desarchivar.png";
 import showReviews from "../../assets/customer-review.png";
 import schedule from "../../assets/schedule.png";
 /* import sweetAlert from "sweetalert"; */
-import axios from "axios"
+import axios from "axios";
+import Loading from "../Loading/Loading";
 
 const Card = (props) => {
   const [openEdit, setOpen] = useState(false);
   const [closeEdit, setClose] = useState(true);
   const { message, user } = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handlerClick = () => {
@@ -23,8 +25,9 @@ const Card = (props) => {
   };
 
   const handlerDelete = () => {
+    setLoading(true);
     dispatch(deleteRestaurant(props));
-    console.log(message);
+    setLoading(false);
 
     /* if (message) {
       return props?.active
@@ -35,85 +38,97 @@ const Card = (props) => {
 
   /* ------MERCADOPAGO-------- DEBER IR EN LA ACTION DE REDUX*/
 
-    const handlerPayment = () => {
+  /* const handlerPayment = () => {
     axios
       .post("/mercadopago", props)
       .then((res) => (window.location.href = res.data.response.init_point));
   };
-
+ */
   return (
     <>
-      {props && (
-        <tr key={props._id} className={!props.active ? style.disable : null}>
-          <td>{props.name}</td>
-          <td>{props.menu}</td>
-          <td>{props?.diets?.map((d) => `${d} `)}</td>
-          <td>
-            {props.address?.streetName} - {props.address?.streetNumber}
-          </td>
-          <td>{props.address?.city}</td>
-          <td>{props.address?.country}</td>
-          <td>{props.balance}</td>
-          <td>{props.ranking}</td>
-          <td>{props.active ? "Activo" : "Inactivo"}</td>
-          <td className={style.rows}>
-            {props.active && user?.role === "admin" ? (
-              <>
-                <NavLink to={`/modify/${props.id}`}>
-                  <button onClick={handlerClick}>
-                    <div title="editar">
-                      <img src={pen} alt="editar" />
-                    </div>
-                  </button>
-                </NavLink>
-              </>
-            ) : (
-              <></>
-            )}
+      {loading ? (
+        <Loading />
+      ) : (
+        props && (
+          <tr key={props._id} className={!props.active ? style.disable : null}>
+            <td>{props.name}</td>
+            <td>{props.menu}</td>
+            <td>{props?.diets?.map((d) => `${d} `)}</td>
+            <td>
+              {props.address?.streetName} - {props.address?.streetNumber}
+            </td>
+            <td>{props.address?.city}</td>
+            <td>{props.address?.country}</td>
+            <td>{props.balance}</td>
+            <td>{props.ranking}</td>
+            <td>{props.active ? "Activo" : "Inactivo"}</td>
+            <td className={style.rows}>
+              {props.active && user?.role === "admin" ? (
+                <>
+                  <NavLink to={`/modify/${props.id}`}>
+                    <button onClick={handlerClick}>
+                      <div title="editar">
+                        <img src={pen} alt="editar" />
+                      </div>
+                    </button>
+                  </NavLink>
+                </>
+              ) : (
+                <></>
+              )}
 
-            {props.active && (
-              <>
-                <NavLink to={`/reviews/${props.id}`}>
-                  <button onClick={handlerClick} className={style.rowsInactive}>
-                    <div title="Ver Reviews">
-                      <img src={showReviews} alt="reviews" />
-                    </div>
-                  </button>
-                </NavLink>
+              {props.active && (
+                <>
+                  <NavLink to={`/reviews/${props.id}`}>
+                    <button
+                      onClick={handlerClick}
+                      className={style.rowsInactive}
+                    >
+                      <div title="Ver Reviews">
+                        <img src={showReviews} alt="reviews" />
+                      </div>
+                    </button>
+                  </NavLink>
 
-                <NavLink to={`/reserves/${props.id}`}>
-                  <button onClick={handlerClick} className={style.rowsSchedule}>
-                    <div title="Ver Reservas">
-                      <img src={schedule} alt="reserve" />
-                    </div>
-                  </button>
-                </NavLink>
-              </>
-            )}
+                  <NavLink to={`/reserves/${props.id}`}>
+                    <button
+                      onClick={handlerClick}
+                      className={style.rowsSchedule}
+                    >
+                      <div title="Ver Reservas">
+                        <img src={schedule} alt="reserve" />
+                      </div>
+                    </button>
+                  </NavLink>
+                </>
+              )}
 
-            {user.role === "superadmin" && (
-              <button
-                onClick={handlerDelete}
-                className={props.active ? style.rowsActive : style.rowsSchedule}
-              >
-                {props.active ? (
-                  <>
-                    <div title="Desactivar">
-                      <img src={papelera} alt="desactivar" />
+              {user.role === "superadmin" && (
+                <button
+                  onClick={handlerDelete}
+                  className={
+                    props.active ? style.rowsActive : style.rowsSchedule
+                  }
+                >
+                  {props.active ? (
+                    <>
+                      <div title="Desactivar">
+                        <img src={papelera} alt="desactivar" />
+                      </div>
+                    </>
+                  ) : (
+                    <div title="Activar">
+                      <img src={recuperar} alt="desactivar" />
                     </div>
-                  </>
-                ) : (
-                  <div title="Activar">
-                    <img src={recuperar} alt="desactivar" />
-                  </div>
-                )}
-              </button>
-            )}
+                  )}
+                </button>
+              )}
 
-            {/* -----------MERCADOPAGO--------- */}
-            <button onClick={handlerPayment}> Pagar Reserva </button>
-          </td>
-        </tr>
+              {/* -----------MERCADOPAGO--------- */}
+              {/*  <button onClick={handlerPayment}> Pagar Reserva </button> */}
+            </td>
+          </tr>
+        )
       )}
     </>
   );
