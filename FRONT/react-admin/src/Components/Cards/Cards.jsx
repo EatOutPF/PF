@@ -5,7 +5,7 @@ import style from "./Cards.module.css";
 const Cards = ({ currentRestaurants }) => {
   return (
     <div className={style.containerCards}>
-      {!currentRestaurants?.length > 0 ? (
+      {!currentRestaurants?.length ? (
         <div>No se encontraron resultados</div>
       ) : (
         <table>
@@ -24,28 +24,29 @@ const Cards = ({ currentRestaurants }) => {
             </tr>
           </thead>
           <tbody className={style.containerBodyTable}>
-            {currentRestaurants?.map(
-              (r) =>
-                r && (
-                  <Card
-                    key={r._id}
-                    id={r._id}
-                    name={r.name}
-                    address={r.address}
-                    contact={r.contact}
-                    tables={r.tables}
-                    schedule={r.schedule}
-                    menu={r.menu}
-                    diets={r.diets}
-                    atmosphere={r.atmosphere}
-                    extras={r.extras}
-                    ranking={r.ranking}
-                    active={r.active}
-                    advance={r.advance ? r.advance : 0}
-                    balance={r.balance ? r.balance : 0}
-                  />
-                )
-            )}
+            {currentRestaurants?.length &&
+              currentRestaurants?.map(
+                (r) =>
+                  r && (
+                    <Card
+                      key={r._id}
+                      id={r._id}
+                      name={r.name}
+                      address={r.address}
+                      contact={r.contact}
+                      tables={r.tables}
+                      schedule={r.schedule}
+                      menu={r.menu}
+                      diets={r.diets}
+                      atmosphere={r.atmosphere}
+                      extras={r.extras}
+                      ranking={r.ranking}
+                      active={r.active}
+                      advance={r.advance ? r.advance : 0}
+                      balance={r.balance ? r.balance : 0}
+                    />
+                  )
+              )}
           </tbody>
         </table>
       )}
