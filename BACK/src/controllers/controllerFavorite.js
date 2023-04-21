@@ -4,8 +4,8 @@ const { Favorite, Restaurant, User } = require("../db");
 async function favorite(restaurant, user) {
   console.log("controller favorite " + restaurant, user)
   const favorites = await Favorite.findOne({
-    restaurant: restaurant,
-    user: user,
+    restaurant[0]: restaurant,
+    user[0]: user,
   }).populate({
     path: "restaurant",
     select: "_id name images menu diets atmosphere",
@@ -13,8 +13,8 @@ async function favorite(restaurant, user) {
   console.log("favorite " + favorites)
   if (favorites === null) {
     const newFavorite = new Favorite({
-      restaurant: restaurant,
-      user: user,
+      restaurant[0]: restaurant,
+      user[0]: user,
     }).populate({
       path: "restaurant",
       select: "_id name images menu diets atmosphere",
