@@ -12,6 +12,7 @@ router.use(express.json());
 router.use(cors(corsOptions));
 
 router.post("/", async (req, res) => {
+console.log(req.body)
     try {
       let resultado = await getUsers(req.body);
       res.status(200).json(resultado);
