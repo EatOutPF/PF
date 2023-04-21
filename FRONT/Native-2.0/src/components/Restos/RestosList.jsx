@@ -50,14 +50,9 @@ const RestosList = () => {
           // dispatch(getUbicationByRestorant({ restorantDistance, userLocation }))
         }
         if (Object?.keys(restorantById)?.length !== 0) dispatch(clearStateResatorantById())
-        console.log('me ejecuto', 1)
         getCurrentPosition()
-        console.log('me ejecuto', 2)
         dispatch(getUserLocation(currentPosition))
-        console.log('me ejecuto', 3)
         dispatch(getUbicationByRestorant({ restorantes, currentPosition }))
-        console.log('me ejecuto', 4)
-        console.log('me ejecuto', 5)
       } catch (error) {
         console.log(error)
       }

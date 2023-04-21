@@ -5,12 +5,12 @@ import StyledText from '../../styles/StyledText/StyledText.jsx'
 import { useParams } from 'react-router-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import {  PostsFavorite, PostsOptions } from '../../redux/actions.js'
+import { PostsFavorite, PostsOptions } from '../../redux/actions.js'
 import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
 
 import { useNavigation } from '@react-navigation/native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import {auth} from "../../../firebase-config.js"
+import { auth } from "../../../firebase-config.js"
 import Loading from "../Loading/Loading"
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
@@ -30,10 +30,10 @@ const DetailResto = ({ route }) => {
 
   const { _id } = route.params;
   const detail = useSelector(state => state?.restorantById)
-  const [isFavorite ,setIsFavorite ]= useState(false)
-  const [userLogged, setuserLogged]= useState(false)
-  const userData = useSelector(state=>state?.userInfo)
-  
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [userLogged, setuserLogged] = useState(false)
+  const userData = useSelector(state => state?.userInfo)
+
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
@@ -71,12 +71,14 @@ const DetailResto = ({ route }) => {
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
     user: null,
-    date: "2023-04-18",
-    time: "17:30",
-    table: 1,
+    date: null,
+    time: null,
+    table: 0,
   })
-  const handlePersons = (persons) => {
-    const operation = Math.ceil(persons / 2);
+  const handlePersons = (contador) => {
+    console.log('CONTADOR', contador)
+    const operation = Math.ceil(contador / 2);
+    console.log('Operacion sobre contador:', operation)
     setReserve({ ...reserve, table: operation });
   }
   useEffect(() => {
@@ -128,9 +130,9 @@ const DetailResto = ({ route }) => {
   // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
 
 
-  
+
   const handleDate = (date) => {
-    console.log(date)
+    console.log('SOY LA FECHA', date)
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
@@ -148,13 +150,13 @@ const DetailResto = ({ route }) => {
     // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
     const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
     setShowDate(newDate)
-    // setReserve({ ...reserve, date: date.dateString });
+    setReserve({ ...reserve, date: date.dateString });
     setHours(horarios)
     setIsSelected(false)
   }
   //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
-  const minDate = new Date()
+  const minDate = new Date().toISOString().slice(0, 10)
 
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
@@ -170,14 +172,16 @@ const DetailResto = ({ route }) => {
   }
 
   const handleReserva = (date, item) => {
+    console.log('DATE', date)
     if (!date || !item) {
-      // console.log('DATE', date, 'HORA', item)
       alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
     } else {
+      // setReserve({ ...reserve, date: date.dateString });
+      console.log('RESERVE', reserve)
       dispatch(handleCheckOut(reserve))
-      setReserve({ ...reserve, date: date.dateString });
     }
   }
+  console.log('SOY LA RESERVA', reserve)
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
   //----------------------------------Header------------------------------
@@ -201,31 +205,31 @@ const DetailResto = ({ route }) => {
     }
     navigation.navigate("Checkout", { checkout: checkout })
   }
-//-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
+  //-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
   const handleAddFavorite = () => {
     if (!userLogged) {
       alert('Para agregar el restaurante debes estar logeado');
       return;
     }
-     
+
     dispatch(PostsFavorite(restaurant, user));
     dispatch(searchRestorantById(_id));
     alert('Restaurante agregado a favoritos');
     console.log(`Enviando restauran: ${restaurant}, user ${user}`);
 
   };
-const handleRemoveFavorite = () => {
-  if (!userLogged) {
-    return;
-  }
-  const restaurant = detail._id;
-  const user = userId; 
-  dispatch(PostsFavorite(restaurant, user));
-  dispatch(searchRestorantById(_id));
-  alert('eliminado');
-  console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+  const handleRemoveFavorite = () => {
+    if (!userLogged) {
+      return;
+    }
+    const restaurant = detail._id;
+    const user = userId;
+    dispatch(PostsFavorite(restaurant, user));
+    dispatch(searchRestorantById(_id));
+    alert('eliminado');
+    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
   };
-  
+
 
   function handleResenias() {
     if(userLogged){
@@ -249,7 +253,7 @@ const handleRemoveFavorite = () => {
         ) : (
           detail &&
           <View>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} /> 
+            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
             {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
           <View style={styles.viewFavortires}>
           <Icon 
@@ -260,9 +264,9 @@ const handleRemoveFavorite = () => {
             size= {35}
             underlayColor="tranparent">
 
-         </Icon>
-           
-       </View>
+              </Icon>
+
+            </View>
             <View style={styles.titleContainer}>
               <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
@@ -314,23 +318,25 @@ const handleRemoveFavorite = () => {
                 </View>
 
                 <View style={styles.containerButtonsPerson}>
-                  <TouchableOpacity>
+                  <TouchableOpacity >
                     <IonicIcon
                       style={styles.buttonPersons}
                       name="remove-circle-outline"
                       size={37}
                       onPress={() => {
                         if (contador === 2) {
-                          setContador(2)
-                          handlePersons(contador)
+                          setContador(2);
+                          handlePersons(2)
+                          console.log('Contador actualizado a 2');
+                          // handlePersons(contador)
                         } else {
-                          setContador(contador - 1)
-                          handlePersons(contador)
+                          const newContador = contador - 1;
+                          setContador(newContador);
+                          handlePersons(newContador);
                         }
                       }}
                     />
                   </TouchableOpacity>
-
                   <TouchableOpacity>
                     <IonicIcon
                       style={styles.buttonPersons}
@@ -339,10 +345,13 @@ const handleRemoveFavorite = () => {
                       onPress={() => {
                         if (contador === 30) {
                           setContador(30)
-                          handlePersons(contador)
+                          handlePersons(30)
+                          console.log('Contador actualizado a 30');
+                          // handlePersons(contador)
                         } else {
-                          setContador(contador + 1)
-                          handlePersons(contador)
+                          const newContador = contador + 1;
+                          setContador(newContador);
+                          handlePersons(newContador);
                         }
                       }}
                     />
@@ -356,12 +365,10 @@ const handleRemoveFavorite = () => {
                   size={45}
                   margin={15}
                 />
-
                 <View style={styles.reservDetail}>
                   <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
                   <Text style={styles.textReservDetail}>{showDate}</Text>
                 </View>
-
                 <View style={styles.containerButtonsPerson}>
                   <TouchableOpacity>
                     <IonicIcon
@@ -381,12 +388,13 @@ const handleRemoveFavorite = () => {
                         setIsSelected(false)
                       }}
                       initialDate={formattedDate}
-                      markedDates={{ [isSelected]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedDotColor: 'orange',
-                      },
-                    }}
+                      markedDates={{
+                        [isSelected]: {
+                          selected: true,
+                          disableTouchEvent: true,
+                          selectedDotColor: 'orange',
+                        },
+                      }}
                     />
                   </Modal>
                 </View>
@@ -451,9 +459,9 @@ const handleRemoveFavorite = () => {
               <View>
                 <TouchableOpacity
                   style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
-                  disabled={!reserve.date && !reserve.time}
+                  disabled={!reserve.date || !reserve.time}
                   onPress={() => {
-                    handleReserva()
+                    handleReserva(reserve.date, reserve.time);
                     handleCheckOut()
                   }}>
                   <IonicIcon
@@ -463,44 +471,25 @@ const handleRemoveFavorite = () => {
                   <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
                 </TouchableOpacity>
                 {/* --------------Boton 'REVIEWS'------------------------ */}
-                <TouchableOpacity style={styles.confirmButton}
-                  onPress={() => handleResenias()}>
-                  <IonicIcon
-                    name="checkmark-outline"
-                    size={20}
-                    color={'white'}
-                  />
-
-
-                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Resenias</Text>
-                </TouchableOpacity>
-
-
-
-                <TouchableOpacity style={styles.confirmButton}
-                  onPress={() => handleReviews()}>
-                  <IonicIcon
-                    name="checkmark-outline"
-                    size={20}
-                    color={'white'}
-                  />
-
-
-                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Ver Opiniones</Text>
-
-                </TouchableOpacity>
-
               </View>
             </View>
-
-
-
-
             {/* ---------- Scroll Horizontal ------------ */}
             <View style={{ margin: 8, }}>
               <ScrollView
                 horizontal={true}
                 ref={scrollViewRef}>
+
+                <TouchableOpacity
+                  style={styles.buttonHorizontalScroll}
+                  onPress={() => handleReviews()}>
+                  <Text style={styles.textButtonHorizontalScroll}>REVIEWS</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.buttonHorizontalScroll}
+                  onPress={() => handleResenias()}>
+                  <Text style={styles.textButtonHorizontalScroll}>RESENIAS</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity
                   style={styles.buttonHorizontalScroll}
@@ -549,9 +538,7 @@ const handleRemoveFavorite = () => {
             <View style={styles.containerTitle}>
               <Text style={styles.title}> Categorías</Text>
             </View>
-
             <View>
-
               <View style={styles.containerTypesCategories}>
                 <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
                 <Text style={styles.textCategories}>Tipo de comida: </Text>
@@ -681,13 +668,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'grey',
   },
   viewFavortires: {
-    position:"absolute",
+    position: "absolute",
     top: 0,
-    right:0,
-    backgroundColor:"#fff",
-    borderBottomLeftRadius:100,
-    padding:5,
-    paddingLeft:15,
+    right: 0,
+    backgroundColor: "#fff",
+    borderBottomLeftRadius: 100,
+    padding: 5,
+    paddingLeft: 15,
   },
   superTitle: {
     fontFamily: "Inria-Sans-Bold",

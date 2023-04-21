@@ -57,7 +57,7 @@ const CheckoutState = ({route}) => {
 
 
     useEffect(()=>{
-        Hola()
+        // Hola()
         // const timer = setTimeout(() => {    //  ESTO SIMULA EL BACK LO QUE TARDA EN RESPONDER
         //     // Lógica a ejecutar después de 3 segundos
         //     checkoutLinkMP = "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1333194536-1d8d2b23-3a56-4fa7-93f8-5a52a97c05c0"
@@ -85,26 +85,27 @@ const CheckoutState = ({route}) => {
 
     };
 
-    async function Hola(){
-        const {url} = await Linking.getInitialURL()
-        if(url && url.includes("/statuspayment")){
-            let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
-            .then(res => {console.log('RES ' + (res))
-                // console.log("res.data-status: ", res?.data[0]);
-                // console.log("res.data-user: ", res?.data[1]);
-                if(Array.isArray(res?.data)){
-                    setResult(res?.data?.[0])
-                    dispatch(setUserInfo(res?.data?.[1]))
-                }
-                // console.log("res.status: ", res?.status);
-                // console.log("res.statustext: ", res?.statusText);
-                // console.log("res.keys: ", Object?.keys(res));
-                // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-                // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
-                setResult(res?.data?.[0])})
-            .then(error => console.log('ERROR boton claudio ' + error))
-        }
-    }
+    // CLAUDIO 
+    // async function Hola(){
+    //     const {url} = await Linking.getInitialURL()
+    //     if(url && url.includes("/statuspayment")){
+    //         let algo = await axios.get(`https://eatout.onrender.com/paymentstatus/${external_reference}`)
+    //         .then(res => {console.log('RES ' + (res))
+    //             // console.log("res.data-status: ", res?.data[0]);
+    //             // console.log("res.data-user: ", res?.data[1]);
+    //             if(Array.isArray(res?.data)){
+    //                 setResult(res?.data?.[0])
+    //                 dispatch(setUserInfo(res?.data?.[1]))
+    //             }
+    //             // console.log("res.status: ", res?.status);
+    //             // console.log("res.statustext: ", res?.statusText);
+    //             // console.log("res.keys: ", Object?.keys(res));
+    //             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
+    //             // console.log("RESULTADO AXIOS CLAUDIO: ", res?.data?.results[0]);
+    //             setResult(res?.data?.[0])})
+    //         .then(error => console.log('ERROR boton claudio ' + error))
+    //     }
+    // }
 
     const claudio = async () => {
         console.log("SOY CLAUDIO");

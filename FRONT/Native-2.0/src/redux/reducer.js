@@ -45,7 +45,7 @@ import {
 const initialState = {
     allRestorants: [],
     allRestorantsCopy: [],
-    addReviews:[],
+    addReviews: [],
 
     restorantsFound: [],
     restorantsFiltered: [],
@@ -75,7 +75,7 @@ const initialState = {
 
     orderState: "az",
 
-    favorites:[],
+    favorites: [],
 }
 
 // ---------- REDUCER ----------
@@ -105,7 +105,11 @@ export default function rootReducer(state = initialState, action) {
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
-            return { ...state, restorantsFound: action?.payload }
+            return {
+                ...state,
+                restorantsFound: action?.payload,
+                allRestorants: action?.payload,
+            }
         }
         //------------------------------------------------------------------------- 
         case CLEAR_STATE_RESTORANT_BY_STRING: {
@@ -123,8 +127,8 @@ export default function rootReducer(state = initialState, action) {
             return { ...state, searchText: action?.payload }
         }
         //-------------------------------------------------------------------------    
-         //------------------------------------------------------------------------- 
-         case POST_REVIEWS: {
+        //------------------------------------------------------------------------- 
+        case POST_REVIEWS: {
             //console.log("reducer: ", action.payload);
             return { ...state, addReviews: action?.payload }
         }
@@ -135,8 +139,9 @@ export default function rootReducer(state = initialState, action) {
             console.log("ID PAYMENT: ", action?.payload?.body?.external_reference);
             console.log("soy el reducer de mp link: ", action?.payload?.body?.sandbox_init_point);
             //   return () => clearTimeout(timer);
-            return { ...state, 
-                checkoutLinkMPResponse: action?.payload, 
+            return {
+                ...state,
+                checkoutLinkMPResponse: action?.payload,
                 checkoutLinkMP: action?.payload?.body?.init_point,
                 checkoutExternalReferenceMP: action?.payload?.body?.external_reference,
             }
@@ -305,20 +310,20 @@ export default function rootReducer(state = initialState, action) {
                 // allRestorants: arrayFiltered,
             }
         }
-//-----------------------------------------------------------------------------------------------//
-        
-         case POST_FAVORITE:
+        //-----------------------------------------------------------------------------------------------//
+
+        case POST_FAVORITE:
             return {
                 ...state,
-                favorites: [... state.favorites, action?.payload]
-    };
-  //----------------------------------------------------------------------------------------------//
- 
-      case FETCH_FAVORITES:
-        return {
-          ...state,
-          favorites: action.favorites
-        };
+                favorites: [...state.favorites, action?.payload]
+            };
+        //----------------------------------------------------------------------------------------------//
+
+        case FETCH_FAVORITES:
+            return {
+                ...state,
+                favorites: action.favorites
+            };
 
 
         //-----------------------------------------------------------------------------------------
@@ -337,7 +342,7 @@ export default function rootReducer(state = initialState, action) {
                 userToken: {},
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case GET_USER_INFO: {
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             console.log("GET_USER_INFO REDUCER: ", action.payload);
@@ -346,7 +351,7 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case SET_NOTIFICATION_NUMBER: {
             // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             // console.log("GET_USER_INFO REDUCER: ", action.payload);
@@ -355,11 +360,11 @@ export default function rootReducer(state = initialState, action) {
                 notificationCounter: action?.payload,
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case SET_USER_INFO: {
-            console.log("SET_USER_INFO - REDUCER" , action.payload);
-            console.log("SET_USER_INFO - REDUCER reserve" , action?.payload?.reserve);
-            console.log("SET_USER_INFO - REDUCER not leng" , action?.payload?.notificacion);
+            console.log("SET_USER_INFO - REDUCER", action.payload);
+            console.log("SET_USER_INFO - REDUCER reserve", action?.payload?.reserve);
+            console.log("SET_USER_INFO - REDUCER not leng", action?.payload?.notificacion);
 
             return {
                 ...state,
@@ -368,7 +373,7 @@ export default function rootReducer(state = initialState, action) {
                 // notificationCounter: action?.payload?.notificacion?.length(),
             }
         }
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         case CLEAR_USER_INFO: {
             return {
                 ...state,
@@ -396,7 +401,7 @@ export default function rootReducer(state = initialState, action) {
                 return ubicationByRestaurant;
             }
 
-            console.log('soy el userLocation', userLocation)
+            // console.log('soy el userLocation', userLocation)
 
             // const calcularDistancia = (latUser, lonUser, latResto, lonResto) => {
             //     const radioTierra = 6371; // Radio de la Tierra en km
@@ -453,7 +458,7 @@ export default function rootReducer(state = initialState, action) {
             // }
         }
 
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
         default:
             return state;
     }

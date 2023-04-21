@@ -12,7 +12,7 @@ async function getUsers(props) {
           path: "favorite",
           populate: {
             path: "restaurant",
-            select: "name _id",
+             select: "name _id images menu diets atmosphere",
           },
         })
         .populate({
