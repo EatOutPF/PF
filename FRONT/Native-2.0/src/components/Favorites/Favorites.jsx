@@ -14,7 +14,7 @@ function FavoritesScreen() {
   const userData = useSelector(state=>state?.userInfo)
   const [userLog, setUserLog] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [favorites, setFavorites] = useState()
+  const [favorites, setFavorites] = useState(false)
 
   // useEffect(() => {
   //   auth.onAuthStateChanged(user => {
@@ -26,13 +26,17 @@ function FavoritesScreen() {
 
   useEffect(() => {
     userData?.login ? setUserLog(true) : setUserLog(false)
-    setFavorites(userData?.favorites)
+    // setFavorites(userData?.favorites)
   }, [userData])
+
+  
 
 
   // useEffect(() => {
   //   dispatch(fetchFavorites(userId));
   // }, [dispatch, userId]);
+
+  
   console.log(favorites)
   return (
     <View style={{ backgroundColor: "#efe4dc", width: width, height: height}}>
