@@ -48,17 +48,15 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id?", async (req, res) => {
 
   const { id } = req.params;
-  console.log(mongoose.Types.ObjectId.isValid(id))
+  //console.log(mongoose.Types.ObjectId.isValid(id))
   const { active } = req.body;
-  console.log(active)
+  //console.log(active)
   if (active !== undefined) {
    
     try {
-
-  
       let resultado = await activeUsers(id, active);
       console.log(resultado)
       res.status(200).json(resultado);

@@ -6,6 +6,7 @@ const {
   postRestaurant,
   putRestaurant,
   activeRestaurant,
+  userRestaurant
 } = require("../controllers/controllerRestaurant");
 
 const router = Router();
@@ -47,11 +48,19 @@ router.get("/:id?", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   let { id } = req.params;
-  let { active } = req.body;
+  let { active, user } = req.body;
 
   if (active !== undefined) {
     try {
       let resultado = await activeRestaurant(id, active);
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  } 
+  if (user !== undefined) {
+    try {
+      let resultado = await userRestaurant(id, user);
       res.status(200).json(resultado);
     } catch (error) {
       res.status(404).json({ error: error.message });

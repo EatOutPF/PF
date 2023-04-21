@@ -248,9 +248,26 @@ async function activeRestaurant(id, active) {
   }
 }
 
+async function userRestaurant(id, user) {
+  if (!id || !user) throw new Error("Hay datos obligatorios sin completar");
+
+  const restaurant = await Restaurant.findById(id);
+  if (!restaurant)
+    throw new Error(`No se encuentran restaurant con el id ${id}`);
+  const users = await User.findOne({ email: { $regex: user } });
+  if (users === null)
+    throw new Error("No existen usuarios con ese E-Mail registrado");
+
+  users.restaurant.push(id);
+  users.save();
+
+  return `Se ha incorporado un admin al restaurant ${restaurant.name}`;
+}
+
 module.exports = {
   postRestaurant,
   getRestaurant,
   putRestaurant,
   activeRestaurant,
+  userRestaurant,
 };

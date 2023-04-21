@@ -76,27 +76,30 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     }
 
     const onGoogleButtonPress = async() => { // ESTO ANDA PERO NO ES VALIDO EL TOKEN QUE LLEGA
-      // // Check if your device supports Google Play
-      // console.log("Google singin start");
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
-      // console.log("Google IDTOKEN: ", idToken);
-      // // Create a Google credential with the token
+      // Check if your device supports Google Play
+      console.log("Google singin start");
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // Get the users ID token
+      //const { idToken } = await GoogleSignin.signIn();
+      const token = await GoogleSignin.signIn();
+      //console.log("Google IDTOKEN: ", idToken);
+      console.log("Google IDTOKEN: ", token);
+      // Create a Google credential with the token
       // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    
-      // // Sign-in the user with the credential
-      // // return auth().signInWithCredential(googleCredential);
-      // const user_sing_in = auth().signInWithCredential(googleCredential);
-      // user_sing_in
-      //   .then((user)=> {
-      //     console.log("user data: ", user);
-      //     navigation.navigate('Bienvenido', {user});
+      const googleCredential = auth.GoogleAuthProvider.credential(Token);
+
+      // Sign-in the user with the credential
+      // return auth().signInWithCredential(googleCredential);
+      const user_sing_in = auth().signInWithCredential(googleCredential);
+      user_sing_in
+        .then((user)=> {
+          console.log("user data: ", user);
+          navigation.navigate('Bienvenido', {user});
           
-      //   })
-      //   .catch((error)=>{
-      //     console.log("error >> : ", error);
-      //   })
+        })
+        .catch((error)=>{
+          console.log("error >> : ", error);
+        })
     }
 
     const handleLoginGoogle = async () => {
