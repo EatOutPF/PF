@@ -11,7 +11,7 @@ async function favorite(restaurant, user) {
     select: "_id name images menu diets atmosphere",
   });
   console.log("favorite " + favorites)
-  if (!favorites) {
+  if (favorites === null) {
     const newFavorite = new Favorite({
       restaurant: restaurant,
       user: user,
