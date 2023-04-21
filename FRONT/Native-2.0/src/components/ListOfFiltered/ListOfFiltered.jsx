@@ -18,7 +18,7 @@ const ListOfFiltered = () => {
   useEffect(() => {
     if(restorantes?.length === 0){
       dispatch(clearStateResatorantByString()); 
-      setRestorantes([0]);
+      setRestorantes([...resto]);
       dispatch(clearSearchText());
       Alert.alert("Nada para mostrar.", "", [
         {text: "OK", 
@@ -26,7 +26,7 @@ const ListOfFiltered = () => {
           }
         } 
       ]);
-
+     
     } else if(restorantes?.length !== resto?.length) {
       setRestorantes([...resto]);
     }

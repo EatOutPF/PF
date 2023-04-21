@@ -1,5 +1,5 @@
 import React,{useEffect, useState}from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput,Alert } from "react-native";
 import {AirbnbRating, Button, Input } from "react-native-elements";
 import { Value, color } from "react-native-reanimated";
 import { getAllRestorants, postListReviews } from "../../redux/actions";
@@ -210,7 +210,8 @@ export default function AddReviews ({route})  {
         }
     
         dispatch(postListReviews(value))
-        navigation.navigate("Ranking-Reseñas", {resto})
+        Alert.alert("Resenia agregada con exito.")
+        navigation.navigate("📅 Calendario", {resto})
         
 
     

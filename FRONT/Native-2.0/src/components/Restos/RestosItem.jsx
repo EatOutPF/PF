@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, View, StyleSheet, Dimensions, Button } from 'react-native'
 import StyledText from '../../styles/StyledText/StyledText.jsx'
-import RepositoryStats from './RestosStats.jsx'
+// import RepositoryStats from './RestosStats.jsx'
 import theme from '../../styles/theme.js'
 
 const { width } = Dimensions.get('window');

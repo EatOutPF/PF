@@ -113,7 +113,7 @@ export default Filters = (props) => {
     //Renderizado
     return (
         // <NavigationContainer>
-        <View>
+        <ScrollView>
             <View style={styles.cont}>
                 <Text style={styles.title}>Ordenar Por</Text>
                 <IonicIcon
@@ -285,7 +285,7 @@ export default Filters = (props) => {
 
 
             </View>
-        </View >
+        </ScrollView >
         // </NavigationContainer>
     )
 }

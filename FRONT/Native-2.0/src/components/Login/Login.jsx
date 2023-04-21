@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import Logo from "../../img/logo-eatout.jpeg"
 import Profile from '../Profile/Profile';
 import CreateAccountFirebase from './CreateAccountFirebase';
-import { getUserInfo, setUserToken } from '../../redux/actions';
+import { getUserInfo, setUserToken, userGmail } from '../../redux/actions';
 import ProfileFirebase from '../Profile/ProfileFirebase';
 
 const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/light-salmon-abstract-low-polygon-background-aloysius-patrimonio.jpg'
@@ -91,12 +91,15 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       user_sing_in
         .then((user)=> {
           console.log("user data: ", user);
+          // user.user.email
+          dispatch( userGmail(user?.user?.email))
           navigation.navigate('Bienvenido', {user});
           
         })
         .catch((error)=>{
           console.log("error >> : ", error);
         })
+        console.log("GOOGLEEEEE: ", user_sing_in);
     }
 
     const handleLoginGoogle = async () => {

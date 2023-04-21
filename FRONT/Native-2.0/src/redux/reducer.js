@@ -14,6 +14,7 @@ import {
     CLEAR_LINK_MERCADOPAGO,
 
     CREATE_USER,
+    USER_GMAIL,
 
     SET_NOTIFICATION_NUMBER,
 
@@ -122,7 +123,7 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 restorantsFound: action?.payload,
-                allRestorants: action?.payload,
+                allRestorants: state.allRestorantsCopy,
             }
         }
         //------------------------------------------------------------------------- 
@@ -391,6 +392,7 @@ export default function rootReducer(state = initialState, action) {
                 userInfo: {},
             }
         }
+
         case GET_USER_LOCATION: {
             return {
                 ...state,
@@ -398,6 +400,15 @@ export default function rootReducer(state = initialState, action) {
             }
         }
 
+        case USER_GMAIL: {
+            return {
+                ...state,
+                userInfo: action?.payload,
+                notificationsUser: action?.payload?.notificacion,
+                // notificationCounter: action?.payload?.notificacion?.length(),
+            }
+        }
+        
         case UBICATION_BY_RESTORANT: {
             console.log("UBICVATION BY RSETORANT");            
             console.log("UBICACION user", state.userLocation);
