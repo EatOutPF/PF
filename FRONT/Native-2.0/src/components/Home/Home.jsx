@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   language: {
-    fontSize: 35,
+    fontSize: 22,
     color: 'black',
     fontFamily: 'Inria-Sans-Bold',
     padding: 4,

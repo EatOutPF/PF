@@ -1,7 +1,18 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Button, Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+
+import { useNavigation } from '@react-navigation/native';
+
 
 import { getHeaderTitle } from '@react-navigation/elements';
 import { Ionicons } from '@expo/vector-icons'; //importamos los iconos de Ionicons
@@ -45,13 +56,15 @@ function HomeScreenStack(){
     <HomeStackNavigator.Navigator
       initialRouteName='Eat Out'
       screenOptions={{
+        headerShown: false,
         screenBackground: 'transparent',
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
         headerTintColor: '#fff'
+
       }}
     >
       <HomeStackNavigator.Screen
-        name="Eat Out"
+        name="Eat Out viejo"
         component={Home}
       />
       <HomeStackNavigator.Screen
@@ -129,6 +142,7 @@ function ScheduleScreenNavigator(){
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
         headerTintColor: '#fff',
       }}
+      
     >
       
       <ScheduleStackNavigator.Screen
@@ -157,6 +171,7 @@ function FavoriteScreenNavigator(){
         screenBackground: 'transparent',
         headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
         headerTintColor: '#fff',
+
       }}
     >
       
@@ -172,120 +187,284 @@ function FavoriteScreenNavigator(){
 }
 // ----------------- FavoriteStackNavigator -----------------
 
+// ----------------- DrawerAboutNavigator -----------------
+// const Drawer = createDrawerNavigator();
+
+// function HomeScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>Home Screen</Text>
+//     </View>
+//   );
+// }
+
+// function AboutScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>About Screen</Text>
+//     </View>
+//   );
+// }
+
+// function DrawerContent({ navigation }) {
+//   const goToHome = () => {
+//     navigation.navigate('Home');
+//     navigation.closeDrawer();
+//   };
+
+//   const goToAbout = () => {
+//     navigation.navigate('About');
+//     navigation.closeDrawer();
+//   };
+
+//   return (
+//     <View style={{ flex: 1, paddingTop: 50 }}>
+//       <Text style={{ margin: 10, fontWeight: 'bold' }}>Menu</Text>
+//       <Text style={{ margin: 10 }} onPress={goToHome}>
+//         Home
+//       </Text>
+//       <Text style={{ margin: 10 }} onPress={goToAbout}>
+//         About
+//       </Text>
+//     </View>
+//   );
+// }
+
+// function DrawerAboutNavigator() {
+//   return (
+//     <NavigationContainer>
+//       <Drawer.Navigator
+//         initialRouteName="Home"
+//         drawerContent={(props) => <DrawerContent {...props} />}
+//       >
+//         <Drawer.Screen name="Home" component={HomeScreen} />
+//         <Drawer.Screen name="About" component={AboutScreen} />
+//       </Drawer.Navigator>
+//     </NavigationContainer>
+//   );
+// }
+
+// ----------------- DrawerAboutNavigator -----------------
+
+// ----------------- HeaderStackNavigator -----------------
+
+function LogoTitle() {
+  return (
+    <View style={{ flexDirection:"row", justifyContent:"center", alignItems:"center", alignSelf:"center" }}>
+      <Image
+        style={{ width: 50, height: 50 }}
+        source={require('../../img/png/eatout-logo.png')}
+      />
+      <Text style={{ color: "white", fontSize:20}}>EatOut</Text>
+    </View>
+  );
+}
+
+const HeaderStack = createNativeStackNavigator();
+function HeaderStackNavigator() {
+
+  const navigation = useNavigation();
+
+const openDrawer = () => {
+  navigation.openDrawer();
+};
+
+  return (
+    
+      <HeaderStack.Navigator
+        screenOptions={{
+          // headerShown: false,
+          screenBackground: 'transparent',
+          headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+          headerTintColor: '#fff'
+
+        }}
+      >
+        <HeaderStack.Screen
+          name="Home"
+          component={HomeScreenStack}
+          
+          options={{
+            headerTitle: (props) => <LogoTitle {...props} />,
+            headerRight: () => (
+              <TouchableOpacity
+              // onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+
+              >
+                <IonicIcon
+                        style={{ marginRight: 5 }}
+                        name={'menu'}
+                        size={40}
+                        color={'#efe4dc'}
+                  />
+                {/* <Button
+                  onPress={() => alert('This is a button!')}
+                  title="Info"
+                  color="#00cc00"
+                /> */}
+              </TouchableOpacity>
+            ),
+          }}
+          
+        />
+      </HeaderStack.Navigator>
+     
+  );
+}
+// ----------------- HeaderStack -----------------
+
+
+
+
 
 // -------------------- Tab Navigator --------------------
+const Drawer = createDrawerNavigator();
+
 const Tab = createBottomTabNavigator();
 export const LowerNavbar = () => {
   const userData = useSelector(state=>state?.userInfo)
   const dataNotificationsReversed = userData?.notificacion && [...userData?.notificacion]?.reverse();
   const notificationCounter = dataNotificationsReversed?.length
-  return (
-    <Tab.Navigator    
-    //  -------------------- CSS Tab Navigator --------------------
-      tabBarOptions={{
-        style: {
-          backgroundColor: 'red',
-          borderTopWidth: 0,
-        },
-        activeTintColor: '#512e2e', 
-        inactiveTintColor: '#efe4dc', 
-        showIcon: false,
-        showLabel: false, 
-        pressColor: 'green', 
-        tabStyle: {width: 82}, 
-        allowFontScaling: true, 
-      }}
-      screenOptions={({ route }) => ({
-        // style: {
-        //   backgroundColor: 'red',
-        //   borderTopWidth: 0,
-        // },
-        // activeTintColor: '#512e2e', 
-        // inactiveTintColor: '#efe4dc', 
-        // showIcon: false,
-        // showLabel: false, 
-        // pressColor: 'green', 
-        // tabStyle: {width: 82}, 
-        //tabBarActiveTintColor": "#512e2e",
-        tabBarInactiveTintColor: "#efe4dc",
-        tabBarAllowFontScaling: true,
-        tabBarShowLabel: false,
-        tabBarItemStyle: {
-          "width": 82
-        },        
-        tabBarStyle: [{ 
-            backgroundColor: "#FA6B6B",
-            // borderTopLeftRadius: 35,
-            display: "flex"
-            
-          },    
-          null
-        ],
-        screenBackground: 'transparent',
-        headerShown: false,
-        headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
-        headerTintColor: '#fff',
-        tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Inicio') {
-              iconName = focused ? 'home' : 'home-outline';
-            } 
-            else if (route.name === 'Favoritos') {
-              iconName = focused ? 'heart' : "heart-outline";
-            }
-            else if (route.name === 'Calendario') {
-              iconName = focused ? 'calendar' : "calendar-outline";
-            }
-            else if (route.name === 'Notificaciones') {
-              iconName = focused ? 'notifications' : 'notifications-outline';
-            }
-            else if (route.name === 'Perfil') {
-              iconName = focused ? 'person' : 'person-outline';
-            } 
-
-            return( 
-              <Ionicons name={iconName} size={size} color={color} />
-            )
+  const navigation = useNavigation();
+  return ( 
+  // <Drawer.Navigator>
+    
+  //   <Drawer.Screen name="TabStack">
+  //     {() => (    
+      <Tab.Navigator    
+      //  -------------------- CSS Tab Navigator --------------------
+        tabBarOptions={{
+          style: {
+            backgroundColor: 'red',
+            borderTopWidth: 0,
           },
+          activeTintColor: '#512e2e', 
+          inactiveTintColor: '#efe4dc', 
+          showIcon: false,
+          showLabel: false, 
+          pressColor: 'green', 
+          tabStyle: {width: 82}, 
+          allowFontScaling: true, 
+        }}
+        screenOptions={({ route }) => ({
+          tabBarInactiveTintColor: "#efe4dc",
+          tabBarAllowFontScaling: true,
+          tabBarShowLabel: false,
+          tabBarItemStyle: {
+            "width": 82
+          },        
+          tabBarStyle: [{ 
+              backgroundColor: "#FA6B6B",
+              // borderTopLeftRadius: 35,
+              display: "flex"
+              
+            },    
+            null
+          ],
+          screenBackground: 'transparent',
+          headerShown: false,
+          headerStyle: { backgroundColor: '#FA6B6B', height: 90  },
+          headerTintColor: '#fff',
+          tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === 'Inicio') {
+                iconName = focused ? 'home' : 'home-outline';
+              } 
+              else if (route.name === 'Favoritos') {
+                iconName = focused ? 'heart' : "heart-outline";
+              }
+              else if (route.name === 'Calendario') {
+                iconName = focused ? 'calendar' : "calendar-outline";
+              }
+              else if (route.name === 'Notificaciones') {
+                iconName = focused ? 'notifications' : 'notifications-outline';
+              }
+              else if (route.name === 'Perfil') {
+                iconName = focused ? 'person' : 'person-outline';
+              } 
+
+              return( 
+                <Ionicons name={iconName} size={size} color={color} />
+              )
+            },
+          }
+          )
+          
         }
-        )
-        
-      }
-    //  -------------------- CSS Tab Navigator --------------------
+      //  -------------------- CSS Tab Navigator --------------------
 
+      //  -------------------- BODY Tab Navigator --------------------      
+      >
+        <Tab.Screen 
+            name="Inicio" 
+            // component={HeaderStackNavigator} 
+        >
+          {() => (
+          <Drawer.Navigator
+            screenOptions={{
+              // headerShown: false,
+              drawerPosition:"rigth",
+              screenBackground: 'transparent',
+              headerStyle: { backgroundColor: '#FA6B6B', height: 60  },
+              headerTintColor: '#fff'
+            }}
+          >
+            <Drawer.Screen name="HomeDrawer" component={HeaderStackNavigator} 
+              options={{
+                headerTitle: (props) => <LogoTitle {...props} />,
+                headerShown: false,
+                  
+                headerRight: () => (
+                    <TouchableOpacity
+                    onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                    >
+                      <IonicIcon
+                              style={{ marginRight: 5 }}
+                              name={'menu'}
+                              size={40}
+                              color={'#efe4dc'}
+                        />
+                    </TouchableOpacity>
+                  ),
+                drawerIcon: null,
+              }}
+              
+            />
+            <Drawer.Screen name="HomeDrawer1" component={HomeChiquito} />
+
+          </Drawer.Navigator>
+        )}
+        </Tab.Screen>
+
+        <Tab.Screen 
+            name="Favoritos" 
+            component={FavoriteScreenNavigator} 
+        />
+        <Tab.Screen 
+            name="Calendario" 
+            component={ScheduleScreenNavigator} 
+        />
+        <Tab.Screen 
+            name="Notificaciones" 
+            component={NotificationsScreenStack} 
+            options={{
+              tabBarBadge: notificationCounter,
+            }}
+        />
+        <Tab.Screen 
+            name="Perfil" 
+            component={userData?.login ? ProfileFirebase : Login} 
+        />
+
+      </Tab.Navigator>
     //  -------------------- BODY Tab Navigator --------------------      
-    >
-      <Tab.Screen 
-          name="Inicio" 
-          component={HomeScreenStack} 
-          options={{
-            //tabBarBadge: 3,
-          }}
-      />
-      <Tab.Screen 
-          name="Favoritos" 
-          component={FavoriteScreenNavigator} 
-      />
-      <Tab.Screen 
-          name="Calendario" 
-          component={ScheduleScreenNavigator} 
-      />
-      <Tab.Screen 
-          name="Notificaciones" 
-          component={NotificationsScreenStack} 
-          options={{
-            tabBarBadge: notificationCounter,
-          }}
-      />
-      <Tab.Screen 
-          name="Perfil" 
-          component={userData?.login ? ProfileFirebase : Login} 
-      />
-
-    </Tab.Navigator>
-    //  -------------------- BODY Tab Navigator --------------------      
-
+  //  )}
+  //   </Drawer.Screen>
+  //   <Drawer.Screen name="Home" component={HomeChiquito} />
+  //   <Drawer.Screen name="Settings" component={HomeChiquito} />
+  // </Drawer.Navigator>
   );
 };
 // -------------------- Tab Navigator --------------------

@@ -93,11 +93,13 @@ export default function rootReducer(state = initialState, action) {
             // calculoCoordenasMts(userLocation?.latitude, userLocation?.longitude, 
             //     originalObj?.address.coordinate.latitude, originalObj?.address.coordinate.longitude)
             // console.log("REDUCER distance to user: ",newObj?.distanceToUser);   
+            const resto= action.payload.filter(objeto => objeto.active)
+
             return {
                 ...state,
-                allRestorants: action.payload,
-                allRestorantsCopy: action.payload,
-                restorantsFound: action.payload,
+                allRestorants: resto,
+                allRestorantsCopy: resto,
+                restorantsFound: resto,
             }
         }
         //------------------------------------------------------------------------- 
@@ -120,9 +122,11 @@ export default function rootReducer(state = initialState, action) {
         //------------------------------------------------------------------------- 
         case GET_RESTORANT_BY_STRING: {
             //console.log("reducer: ", action.payload);
+            const resto= action.payload.filter(objeto => objeto.active)
+
             return {
                 ...state,
-                restorantsFound: action?.payload,
+                restorantsFound: resto,
                 allRestorants: state.allRestorantsCopy,
             }
         }
