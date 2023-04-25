@@ -17,24 +17,25 @@ async function favorite(restaurant, user) {
       restaurant: restaurant,
       user: user,
     })
-    .populate({
-      path: "restaurant",
-      select: "_id name images menu diets atmosphere",
-    });
+//     .populate({
+//       path: "restaurant",
+//       select: "_id name images menu diets atmosphere",
+//     });
 
     const fav = await newFavorite.save()
    // console.log("fav " + fav)
     const favuser = await User.findById(user)
-    .populate({
+    //console.log("favuser " + favuser)
+    favuser.favorite.push(newFavorite);
+    await favuser.save()
+   const userfav = await User.findById(user)
+     .populate({
     path: "favorite",
     populate: {
         path: "restaurant",
         select: "_id name images menu diets atmosphere",
       }
     })
-    //console.log("favuser " + favuser)
-    favuser.favorite.push(newFavorite);
-    const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
     rest.favorite.push(newFavorite);
@@ -42,20 +43,13 @@ async function favorite(restaurant, user) {
     
     console.log("add fav" + favuser.favorite)
    console.log("add user" + favuser.favorite)
-    return favuser
+    return userfav
 
   } else {
     //console.log("else " + favorites)
     const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
     const favuser = await User.findById(user)
-    .populate({
-    path: "favorite",
-    populate: {
-        path: "restaurant",
-        select: "_id name images menu diets atmosphere",
-      }
-    })
     const userfilter = favuser.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     favuser.favorite = userfilter
     const userfav = await favuser.save()
