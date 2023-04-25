@@ -24,10 +24,13 @@ async function favorite(restaurant, user) {
     const fav = await newFavorite.save()
    // console.log("fav " + fav)
     const favuser = await User.findById(user)
-        .populate({
-      path: "restaurant",
-      select: "_id name images menu diets atmosphere",
-    });
+    .populate({
+    path: "favorite",
+    populate: [{
+        path: "restaurant",
+        select: "_id name images menu diets atmosphere",
+      }]
+    })
     //console.log("favuser " + favuser)
     favuser.favorite.push(newFavorite._id);
     const userfav = await favuser.save()
