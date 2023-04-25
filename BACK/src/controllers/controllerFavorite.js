@@ -38,7 +38,9 @@ async function favorite(restaurant, user) {
     const rest = await Restaurant.findById(restaurant);
     rest.favorite.push(newFavorite);
     const restfav = await rest.save()
-    console.log("add " + favuser)
+    
+    console.log("add fav" + favuser.favorite)
+   console.log("add user" + favuser.favorite)
     return favuser
 
   } else {
