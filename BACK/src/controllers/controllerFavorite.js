@@ -42,7 +42,15 @@ async function favorite(restaurant, user) {
     console.log("else " + favorites)
     const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
-    const favuser = await User.findById(user);
+    const favuser = await User.findById(user)
+    .populate({
+    path: "favorite",
+    populate: [
+      {
+        path: "restaurant",
+        select: "_id name images menu diets atmosphere",
+      }
+      ]
     const userfilter = favuser.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     favuser.favorite = userfilter
     const userfav = await favuser.save()
