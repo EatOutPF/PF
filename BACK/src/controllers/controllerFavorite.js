@@ -43,12 +43,12 @@ async function favorite(restaurant, user) {
     const favdelete = await Favorite.findByIdAndDelete(favorites._id);
 
     const favuser = await User.findById(user);
-    const userfilter = favuser.favorite.filter(favs => favs._id !== favorites._id)
+    const userfilter = favuser.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     favuser.favorite = userfilter
     const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
-    const restfilter = rest.favorite.filter(favs => favs._id !== favorites._id)
+    const restfilter = rest.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     rest.favorite = restfilter
     const restfav = await rest.save()
 
