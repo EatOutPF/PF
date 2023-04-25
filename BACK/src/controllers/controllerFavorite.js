@@ -29,11 +29,11 @@ async function favorite(restaurant, user) {
       select: "_id name images menu diets atmosphere",
     });
     console.log("favuser " + favuser)
-    favuser.favorites.push(newFavorite._id);
+    favuser.favorite.push(newFavorite._id);
     const userfav = await favuser.save()
 
     const rest = await Restaurant.findById(restaurant);
-    rest.favorites.push(newFavorite._id);
+    rest.favorite.push(newFavorite._id);
     const restfav = await rest.save()
 
     return userfav
