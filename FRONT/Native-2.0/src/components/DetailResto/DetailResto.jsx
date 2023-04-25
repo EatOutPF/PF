@@ -1,52 +1,59 @@
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Image,
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Modal,
+  Animated,
+  SafeAreaView,
+} from "react-native";
+import StyledText from "../../styles/StyledText/StyledText.jsx";
+import { useParams } from "react-router-native";
+import { useDispatch, useSelector } from "react-redux";
 
-import React, { useState, useEffect, useRef } from 'react'
-import { Image, View, StyleSheet, ScrollView, Text, TouchableOpacity, Modal, Animated, SafeAreaView } from 'react-native'
-import StyledText from '../../styles/StyledText/StyledText.jsx'
-import { useParams } from 'react-router-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { PostsFavorite, PostsOptions } from "../../redux/actions.js";
+import {
+  searchRestorantById,
+  clearStateResatorantById,
+  clearLinkMercadoPago,
+  postListReviews,
+} from "../../redux/actions.js";
 
-import { PostsFavorite, PostsOptions } from '../../redux/actions.js'
-import { searchRestorantById, clearStateResatorantById, clearLinkMercadoPago, postListReviews } from '../../redux/actions.js'
+import { useNavigation } from "@react-navigation/native";
+import IonicIcon from "react-native-vector-icons/Ionicons";
+import { auth } from "../../../firebase-config.js";
+import Loading from "../Loading/Loading";
+import { Calendar } from "react-native-calendars";
+import moment from "moment";
+import "moment/locale/es"; // Importa el idioma español
 
-import { useNavigation } from '@react-navigation/native';
-import IonicIcon from 'react-native-vector-icons/Ionicons';
-import { auth } from "../../../firebase-config.js"
-import Loading from "../Loading/Loading"
-import { Calendar } from 'react-native-calendars';
-import moment from 'moment';
-import 'moment/locale/es'; // Importa el idioma español
+import { Icon } from "react-native-elements";
+import { removeFavorite } from "../../redux/actions.js";
 
-import { Icon } from 'react-native-elements'
-import { removeFavorite } from '../../redux/actions.js'
-
-import 'moment-timezone';
+import "moment-timezone";
 
 import RBSheet from "react-native-raw-bottom-sheet";
-import ListReviews from '../Reviews/ListReviews.jsx'
-
-
+import ListReviews from "../Reviews/ListReviews.jsx";
 
 const DetailResto = ({ route }) => {
-
   const { _id } = route.params;
-  const detail = useSelector(state => state?.restorantById)
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [userLogged, setuserLogged] = useState(false)
-  const userData = useSelector(state => state?.userInfo)
+  const detail = useSelector((state) => state?.restorantById);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [userLogged, setuserLogged] = useState(false);
+  const userData = useSelector((state) => state?.userInfo);
 
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-
-    userData?.login ? setuserLogged(true) : setuserLogged(false)
-    if (userData?.login) {
-    userData?.favorites?.forEach(fav =>{ 
-      console.log(fav[0])
-      if(fav?.restaurant[0]?._id === detail?._id) setIsFavorite(true)})}
-    
-  }, [userData])
-
-
+    console.log(userData.favorite);
+    userData?.login ? setuserLogged(true) : setuserLogged(false);
+    //if (userData?.login) {
+    setIsFavorite(userData?.favorite?.some((fav) => (fav?.restaurant?._id.toString() === detail?._id.toString()
+    )))    //}
+  }, [userData]);
 
   // useEffect(() => {
   //   auth.onAuthStateChanged(user => {
@@ -57,20 +64,22 @@ const DetailResto = ({ route }) => {
   // }, []);
 
   console.log("SOY DETAIL: ", _id);
-  const user = useSelector(state => state?.userInfo)
-  const [loading, setLoading] = useState(true)
+  const user = useSelector((state) => state?.userInfo);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   // --------Cuantas personas?--------
-  const [contador, setContador] = useState(2)
+  const [contador, setContador] = useState(2);
 
   //--------------Que dia?---------------
   const [calendarioVisible, setCalendarioVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const currentDate = new Date();
-  const formattedDate = currentDate.toISOString().split('T')[0];
-  const dateToString = moment(currentDate).locale('es').format('ddd, D [de] MMM');
-  const [showDate, setShowDate] = useState('Elige el día')
+  const formattedDate = currentDate.toISOString().split("T")[0];
+  const dateToString = moment(currentDate)
+    .locale("es")
+    .format("ddd, D [de] MMM");
+  const [showDate, setShowDate] = useState("Elige el día");
   const [isSelected, setIsSelected] = useState(true);
   // ------------reserva-----------
   const [reserve, setReserve] = useState({
@@ -78,13 +87,13 @@ const DetailResto = ({ route }) => {
     date: null,
     time: null,
     table: 0,
-  })
+  });
   const handlePersons = (contador) => {
-    console.log('CONTADOR', contador)
+    console.log("CONTADOR", contador);
     const operation = Math.ceil(contador / 2);
-    console.log('Operacion sobre contador:', operation)
+    console.log("Operacion sobre contador:", operation);
     setReserve({ ...reserve, table: operation });
-  }
+  };
   // useEffect(() => {
   //   // Comprobar si el restaurante ya está en favoritos
   //   console.log(userData)
@@ -96,55 +105,51 @@ const DetailResto = ({ route }) => {
   //-----Que dia?---------------
   const expandir = () => {
     setCalendarioVisible(false);
-  }
-  //----------------------------------------------------- 
+  };
+  //-----------------------------------------------------
   useEffect(() => {
     dispatch(clearLinkMercadoPago());
     if (Object?.keys(detail)?.length === 0) {
       dispatch(searchRestorantById(_id));
+    } else if (Object?.keys(detail)?.length !== 0) {
+      if (detail?._id !== _id) {
+        // dispatch(clearStateResatorantById())
+        dispatch(searchRestorantById(_id));
+        setLoading(true);
+      } else setLoading(false);
     }
-    else
-      if (Object?.keys(detail)?.length !== 0) {
-        if (detail?._id !== _id) {
-          // dispatch(clearStateResatorantById())
-          dispatch(searchRestorantById(_id));
-          setLoading(true)
-        }
-        else setLoading(false)
-      }
-
-  }, [detail, loading])
-
+  }, [detail, loading]);
 
   //--------------A que hora ? -Horarios-----------------
   const [hours, setHours] = useState([]);
-  const [showHours, setShowHours] = useState('Elegir horario');
+  const [showHours, setShowHours] = useState("Elegir horario");
 
-
-  const generateHorarios = (openTime, closeTime) => { //genero horarios cada 30 min
+  const generateHorarios = (openTime, closeTime) => {
+    //genero horarios cada 30 min
     const horarios = [];
     let current = new Date(openTime);
     while (current <= closeTime) {
-      const time = moment(current).format('HH:mm')
+      const time = moment(current).format("HH:mm");
       horarios.push(time);
       current.setMinutes(current.getMinutes() + 30);
     }
     return horarios;
-  }
+  };
   // const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
 
-
-
   const handleDate = (date) => {
-    console.log('SOY LA FECHA', date)
+    console.log("SOY LA FECHA", date);
     //Obtengo el año, mes y día
     const selectedDate = new Date(date.dateString);
     const day = selectedDate.getDate();
     const month = selectedDate.getMonth() + 1;
     const year = selectedDate.getFullYear();
 
-    //la siguiente linea guarda el nombre del dia selcccionado en inglés    
-    const today = new Date(`${year}-${month + 1}-${day}`).toLocaleString('en-US', { weekday: 'long' }).toLowerCase().split(',')[0];
+    //la siguiente linea guarda el nombre del dia selcccionado en inglés
+    const today = new Date(`${year}-${month + 1}-${day}`)
+      .toLocaleString("en-US", { weekday: "long" })
+      .toLowerCase()
+      .split(",")[0];
     const restoHorarios = detail?.schedule; //horarios semanales del restaurant
     const result = restoHorarios[today]; // Esto selcciona el dia del restaurante dentro del restaurante
     const openTime = new Date(`${year}-${month}-${day}T${result.open}`); // Este es el horario de apertura del restaurante
@@ -152,15 +157,21 @@ const DetailResto = ({ route }) => {
     const horarios = generateHorarios(openTime, closeTime);
     //  convierte la fecha en un texto en español y setea la fecha de la reserva
     // const newDate = moment(date).locale('es').format('ddd, D [de] MMM');
-    const newDate = moment.tz(new Date(date.year, date.month - 1, date.day), "America/Argentina/Buenos_Aires").locale('es').format('dddd, D [de] MMMM');
-    setShowDate(newDate)
+    const newDate = moment
+      .tz(
+        new Date(date.year, date.month - 1, date.day),
+        "America/Argentina/Buenos_Aires"
+      )
+      .locale("es")
+      .format("dddd, D [de] MMMM");
+    setShowDate(newDate);
     setReserve({ ...reserve, date: date.dateString });
-    setHours(horarios)
-    setIsSelected(false)
-  }
+    setHours(horarios);
+    setIsSelected(false);
+  };
   //----------------------------------------------------------------------------
   const bottomSheetRef = useRef();
-  const minDate = new Date().toISOString().slice(0, 10)
+  const minDate = new Date().toISOString().slice(0, 10);
 
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
@@ -172,20 +183,22 @@ const DetailResto = ({ route }) => {
 
   const handleHorario = (item) => {
     setReserve({ ...reserve, time: item });
-    setShowHours(item)
-  }
+    setShowHours(item);
+  };
 
   const handleReserva = (date, item) => {
-    console.log('DATE', date)
+    console.log("DATE", date);
     if (!date || !item) {
-      alert('Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva')
+      alert(
+        "Por favor asegurese de  seleccionar una fecha y un horario antes de realizar la reserva"
+      );
     } else {
       // setReserve({ ...reserve, date: date.dateString });
-      console.log('RESERVE', reserve)
-      dispatch(handleCheckOut(reserve))
+      console.log("RESERVE", reserve);
+      dispatch(handleCheckOut(reserve));
     }
-  }
-  console.log('SOY LA RESERVA', reserve)
+  };
+  console.log("SOY LA RESERVA", reserve);
 
   //Menú, Categorias, Horarios, Medios de Pago, reviews
   //----------------------------------Header------------------------------
@@ -205,23 +218,21 @@ const DetailResto = ({ route }) => {
         date: reserve.date,
         time: reserve.time,
         table: reserve.table,
-      }
-    }
-    navigation.navigate("Checkout", { checkout: checkout })
+      },
+    };
+    navigation.navigate("Checkout", { checkout: checkout });
   }
   //-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
   const handleAddFavorite = () => {
     if (!userLogged) {
-      alert('Para agregar el restaurante debes estar logeado');
+      alert("Para agregar el restaurante debes estar logeado");
       return;
     }
-    const restaurant = detail
-     dispatch(PostsFavorite(restaurant._id, user._id));
+    const restaurant = detail;
+    dispatch(PostsFavorite(restaurant._id, user._id));
     // dispatch(searchRestorantById(_id));
     // alert('Restaurante agregado a favoritos');
     //console.log(`Enviando restauran: ${restaurant}, user ${user}`);
-
-
   };
   // const handleRemoveFavorite = () => {
   //   if (!userLogged) {
@@ -235,20 +246,17 @@ const DetailResto = ({ route }) => {
   //   console.log(`Enviando restauran: ${restaurant}, user ${user}`);
   // };
 
-
   function handleResenias() {
-    if(userLogged){
-      navigation.navigate("Ranking-Reseñas", { resto: detail })
-
+    if (userLogged) {
+      navigation.navigate("Ranking-Reseñas", { resto: detail });
     } else {
-      alert("Para comentar Tenes que estar logueado")
+      alert("Para comentar Tenes que estar logueado");
     }
   }
 
   function handleReviews() {
-    navigation.navigate("Reviews-Resto", { resto: _id })
+    navigation.navigate("Reviews-Resto", { resto: _id });
   }
-
 
   return (
     <View style={styles.container}>
@@ -256,418 +264,468 @@ const DetailResto = ({ route }) => {
         {loading ? (
           <Loading />
         ) : (
-          detail &&
-          <View>
-            <Image style={styles?.image} source={{ uri: detail?.images[0] }} />
-            {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
-          <View style={styles.viewFavortires}>
-          <Icon 
-            type= "material-community"
-            name= {isFavorite ? "heart" : "heart-outline"}
-            onPress={handleAddFavorite}
-            color= { isFavorite? '#FF0000' : "#442484"}
-            size= {35}
-            underlayColor="tranparent">
-
-              </Icon>
-
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.superTitle}>{detail?.name}</Text>
-            </View>
-
-
+          detail && (
             <View>
-              <Text style={styles.text1}>Restaurant - Valor de la reserva: $ {detail?.advance}</Text>
-            </View>
-
-            <View style={styles.container2}>
-
-              <View style={styles.iconText}>
-                <IonicIcon
-                  name="star-outline"
-                  size={20} />
-                <Text style={styles.text1}>{detail?.ranking}</Text>
+              <Image
+                style={styles?.image}
+                source={{ uri: detail?.images[0] }}
+              />
+              {/*ESTE VIEW ES DONDE ESTA EL CORAZON */}
+              <View style={styles.viewFavortires}>
+                <Icon
+                  type="material-community"
+                  name={isFavorite ? "heart" : "heart-outline"}
+                  onPress={handleAddFavorite}
+                  color={isFavorite ? "#FF0000" : "#442484"}
+                  size={35}
+                  underlayColor="tranparent"
+                ></Icon>
+              </View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.superTitle}>{detail?.name}</Text>
               </View>
 
-              <View style={styles.iconText}>
-                <IonicIcon
-                  name="pin-outline"
-                  size={20}
-                />
-                <Text style={styles.text1}>{detail?.address?.streetName}</Text>
+              <View>
+                <Text style={styles.text1}>
+                  Restaurant - Valor de la reserva: $ {detail?.advance}
+                </Text>
               </View>
 
-            </View>
-
-
-            {/* --------------------------------------------------------------- */}
-
-            <View style={styles.containerReserva}>
-              <Text style={styles.subTitle}> Hacé tu reserva</Text>
-            </View>
-
-            <View style={styles.containerConfigReserva}>
-
-              {/* ----------------------Cuantas personas ----------------------*/}
-              <View style={styles.containerPersons}>
-
-                <IonicIcon
-                  name="people-outline"
-                  size={50}
-                  margin={10}
-                />
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
-                  <Text style={styles.textReservDetail}> {contador} personas</Text>
+              <View style={styles.container2}>
+                <View style={styles.iconText}>
+                  <IonicIcon name="star-outline" size={20} />
+                  <Text style={styles.text1}>{detail?.ranking}</Text>
                 </View>
 
-                <View style={styles.containerButtonsPerson}>
-                  <TouchableOpacity >
-                    <IonicIcon
-                      style={styles.buttonPersons}
-                      name="remove-circle-outline"
-                      size={37}
-                      onPress={() => {
-                        if (contador === 2) {
-                          setContador(2);
-                          handlePersons(2)
-                          console.log('Contador actualizado a 2');
-                          // handlePersons(contador)
-                        } else {
-                          const newContador = contador - 1;
-                          setContador(newContador);
-                          handlePersons(newContador);
-                        }
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={styles.buttonPersons}
-                      name="add-circle-outline"
-                      size={37}
-                      onPress={() => {
-                        if (contador === 30) {
-                          setContador(30)
-                          handlePersons(30)
-                          console.log('Contador actualizado a 30');
-                          // handlePersons(contador)
-                        } else {
-                          const newContador = contador + 1;
-                          setContador(newContador);
-                          handlePersons(newContador);
-                        }
-                      }}
-                    />
-                  </TouchableOpacity>
+                <View style={styles.iconText}>
+                  <IonicIcon name="pin-outline" size={20} />
+                  <Text style={styles.text1}>
+                    {detail?.address?.streetName}
+                  </Text>
                 </View>
               </View>
-              {/* ------------------------¿Que dia ?------------------------ */}
-              <View style={styles.containerPersons}>
-                <IonicIcon
-                  name="calendar-outline"
-                  size={45}
-                  margin={15}
-                />
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
-                  <Text style={styles.textReservDetail}>{showDate}</Text>
-                </View>
-                <View style={styles.containerButtonsPerson}>
-                  <TouchableOpacity>
-                    <IonicIcon
-                      style={{ marginLeft: 70, }}
-                      name="chevron-down-circle-outline"
-                      size={37}
-                      onPress={() => setShowModal(true)}
-                    />
-                  </TouchableOpacity>
-                  <Modal visible={showModal} animationType='fade'>
-                    <Calendar
-                      // style=
-                      minDate={minDate}
-                      onDayPress={date => {
-                        handleDate(date)
-                        setShowModal(false)
-                        setIsSelected(false)
-                      }}
-                      initialDate={formattedDate}
-                      markedDates={{
-                        [isSelected]: {
-                          selected: true,
-                          disableTouchEvent: true,
-                          selectedDotColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Modal>
-                </View>
+
+              {/* --------------------------------------------------------------- */}
+
+              <View style={styles.containerReserva}>
+                <Text style={styles.subTitle}> Hacé tu reserva</Text>
               </View>
-              {/*----------------- Qué horario?------------------------ */}
-              <View style={styles.containerPersons}>
-                <IonicIcon
-                  name="time-outline"
-                  size={50}
-                  margin={10}
-                />
-                <View style={styles.reservDetail}>
-                  <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
-                  <Text style={styles.textReservDetail}>{showHours}</Text>
+
+              <View style={styles.containerConfigReserva}>
+                {/* ----------------------Cuantas personas ----------------------*/}
+                <View style={styles.containerPersons}>
+                  <IonicIcon name="people-outline" size={50} margin={10} />
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿CUÁNTAS PERSONAS?</Text>
+                    <Text style={styles.textReservDetail}>
+                      {" "}
+                      {contador} personas
+                    </Text>
+                  </View>
+
+                  <View style={styles.containerButtonsPerson}>
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={styles.buttonPersons}
+                        name="remove-circle-outline"
+                        size={37}
+                        onPress={() => {
+                          if (contador === 2) {
+                            setContador(2);
+                            handlePersons(2);
+                            console.log("Contador actualizado a 2");
+                            // handlePersons(contador)
+                          } else {
+                            const newContador = contador - 1;
+                            setContador(newContador);
+                            handlePersons(newContador);
+                          }
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={styles.buttonPersons}
+                        name="add-circle-outline"
+                        size={37}
+                        onPress={() => {
+                          if (contador === 30) {
+                            setContador(30);
+                            handlePersons(30);
+                            console.log("Contador actualizado a 30");
+                            // handlePersons(contador)
+                          } else {
+                            const newContador = contador + 1;
+                            setContador(newContador);
+                            handlePersons(newContador);
+                          }
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                {/* ------------------------¿Que dia ?------------------------ */}
+                <View style={styles.containerPersons}>
+                  <IonicIcon name="calendar-outline" size={45} margin={15} />
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿QUÉ DÍA?</Text>
+                    <Text style={styles.textReservDetail}>{showDate}</Text>
+                  </View>
+                  <View style={styles.containerButtonsPerson}>
+                    <TouchableOpacity>
+                      <IonicIcon
+                        style={{ marginLeft: 70 }}
+                        name="chevron-down-circle-outline"
+                        size={37}
+                        onPress={() => setShowModal(true)}
+                      />
+                    </TouchableOpacity>
+                    <Modal visible={showModal} animationType="fade">
+                      <Calendar
+                        // style=
+                        minDate={minDate}
+                        onDayPress={(date) => {
+                          handleDate(date);
+                          setShowModal(false);
+                          setIsSelected(false);
+                        }}
+                        initialDate={formattedDate}
+                        markedDates={{
+                          [isSelected]: {
+                            selected: true,
+                            disableTouchEvent: true,
+                            selectedDotColor: "orange",
+                          },
+                        }}
+                      />
+                    </Modal>
+                  </View>
+                </View>
+                {/*----------------- Qué horario?------------------------ */}
+                <View style={styles.containerPersons}>
+                  <IonicIcon name="time-outline" size={50} margin={10} />
+                  <View style={styles.reservDetail}>
+                    <Text style={styles.textReserv2}>¿QUÉ HORARIO?</Text>
+                    <Text style={styles.textReservDetail}>{showHours}</Text>
+                  </View>
+
+                  <View style={styles.buttonPersons}>
+                    <TouchableOpacity
+                      onPress={openBottomSheet}
+                      disabled={isSelected}
+                    >
+                      <IonicIcon
+                        style={{
+                          marginLeft: 70,
+                          color: isSelected ? "grey" : "black",
+                        }}
+                        name="chevron-down-circle-outline"
+                        size={37}
+                      />
+                      <RBSheet
+                        ref={bottomSheetRef}
+                        closeOnDragDown={true}
+                        closeOnPressMask={true}
+                        customStyles={{
+                          wrapper: {
+                            backgroundColor: "transparent",
+                          },
+                          draggableIcon: {
+                            backgroundColor: "#000",
+                          },
+                        }}
+                      >
+                        <View style={styles.containerHorarios}>
+                          <ScrollView>
+                            {hours?.map((item) => (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  handleHorario(item);
+                                  closeBottomSheet();
+                                }}
+                              >
+                                <View style={styles.horariosButtons}>
+                                  <Text style={styles.hora} key={item}>
+                                    {item}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            ))}
+                          </ScrollView>
+                        </View>
+                      </RBSheet>
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
-                <View style={styles.buttonPersons}>
+                {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
+                <View>
                   <TouchableOpacity
-                    onPress={openBottomSheet}
-                    disabled={isSelected}>
+                    style={[
+                      styles.confirmButton,
+                      reserve.date || reserve.time
+                        ? null
+                        : styles.disabledConfirmButton,
+                    ]}
+                    disabled={!reserve.date || !reserve.time}
+                    onPress={() => {
+                      handleReserva(reserve.date, reserve.time);
+                      handleCheckOut();
+                    }}
+                  >
                     <IonicIcon
-                      style={{ marginLeft: 70, color: isSelected ? 'grey' : 'black' }}
-                      name="chevron-down-circle-outline"
-                      size={37} />
-                    <RBSheet
-                      ref={bottomSheetRef}
-                      closeOnDragDown={true}
-                      closeOnPressMask={true}
-                      customStyles={{
-                        wrapper: {
-                          backgroundColor: "transparent"
-                        },
-                        draggableIcon: {
-                          backgroundColor: "#000"
-                        }
-                      }}>
-                      <View style={styles.containerHorarios}>
-                        <ScrollView>
-                          {hours?.map((item) => (
-                            <TouchableOpacity
-                              onPress={() => {
-                                handleHorario(item);
-                                closeBottomSheet();
-                              }}>
-                              <View style={styles.horariosButtons}>
-                                <Text
-                                  style={styles.hora}
-                                  key={item}>{item}
-                                </Text>
-                              </View>
-                            </TouchableOpacity>
-
-                          ))}
-                        </ScrollView>
-                      </View>
-                    </RBSheet>
+                      name="checkmark-outline"
+                      size={20}
+                      color={"white"}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: "Inria-Sans-Bold",
+                        fontSize: 15,
+                        color: "white",
+                      }}
+                    >
+                      Confimar Reserva
+                    </Text>
                   </TouchableOpacity>
+                  {/* --------------Boton 'REVIEWS'------------------------ */}
+                </View>
+              </View>
+              {/* ---------- Scroll Horizontal ------------ */}
+              <View style={{ margin: 8 }}>
+                <ScrollView horizontal={true} ref={scrollViewRef}>
+                  <TouchableOpacity
+                    style={styles.buttonHorizontalScroll}
+                    onPress={() => handleReviews()}
+                  >
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      REVIEWS
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.buttonHorizontalScroll}
+                    onPress={() => handleResenias()}
+                  >
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      RESENIAS
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.buttonHorizontalScroll}
+                    onPress={handlePress}
+                  >
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      INFORMACIÓN
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      CATEGRORÍAS
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      HORARIOS
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      SOBRE NOSOTROS
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.buttonHorizontalScroll}>
+                    <Text style={styles.textButtonHorizontalScroll}>
+                      MEDIOS DE PAGO
+                    </Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+
+              {/*------------------ Sobre Nosotros------------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Sobre Nosotros</Text>
+              </View>
+              <View style={styles.textAbout}>
+                <Text style={styles.textReserv2}> {detail?.about} </Text>
+              </View>
+              {/* ---------------- menu --> link a la carta del resto ----- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Menú</Text>
+                <Text
+                  style={{
+                    color: "blue",
+                    fontSize: 18,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  link a la carta
+                </Text>
+              </View>
+
+              {/*-------------- categorias ------------------------------ */}
+
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Categorías</Text>
+              </View>
+              <View>
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon
+                    name="fast-food-outline"
+                    style={styles.iconCategories}
+                  />
+                  <Text style={styles.textCategories}>Tipo de comida: </Text>
+                  {detail?.menu.map((el, index) => (
+                    <Text style={styles.aboutCategories} key={index}>
+                      {el} -
+                    </Text>
+                  ))}
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon
+                    name="beer-outline"
+                    style={styles.iconCategories}
+                  />
+                  <Text style={styles.textCategories}>Ambiente: </Text>
+                  {detail?.atmosphere.map((el, index) => (
+                    <Text style={styles.aboutCategories} key={index}>
+                      {el} -
+                    </Text>
+                  ))}
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon
+                    name="partly-sunny-outline"
+                    style={styles.iconCategories}
+                  />
+                  <Text style={styles.textCategories}>Espacios: </Text>
+                  {detail?.section.map((el, index) => (
+                    <Text style={styles.aboutCategories} key={index}>
+                      {el} -
+                    </Text>
+                  ))}
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon
+                    name="leaf-outline"
+                    style={styles.iconCategories}
+                  />
+                  <Text style={styles.textCategories}>Cuenta con: </Text>
+                  {detail?.diets.map((el, index) => (
+                    <Text style={styles.aboutCategories} key={index}>
+                      {el} -
+                    </Text>
+                  ))}
+                </View>
+
+                <View style={styles.containerTypesCategories}>
+                  <IonicIcon name="paw-outline" style={styles.iconCategories} />
+                  <Text style={styles.textCategories}>Otros: </Text>
+                  {detail?.extras.map((el, index) => (
+                    <Text style={styles.aboutCategories} key={index}>
+                      {el} -
+                    </Text>
+                  ))}
                 </View>
               </View>
 
-              {/* --------------Boton 'CONFIRMAR RESERVA'------------------------ */}
-              <View>
-                <TouchableOpacity
-                  style={[styles.confirmButton, (reserve.date || reserve.time) ? null : styles.disabledConfirmButton]}
-                  disabled={!reserve.date || !reserve.time}
-                  onPress={() => {
-                    handleReserva(reserve.date, reserve.time);
-                    handleCheckOut()
-                  }}>
-                  <IonicIcon
-                    name="checkmark-outline"
-                    size={20}
-                    color={'white'} />
-                  <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva</Text>
-                </TouchableOpacity>
-                {/* --------------Boton 'REVIEWS'------------------------ */}
-              </View>
-            </View>
-            {/* ---------- Scroll Horizontal ------------ */}
-            <View style={{ margin: 8, }}>
-              <ScrollView
-                horizontal={true}
-                ref={scrollViewRef}>
+              {/*-------------------- Horarios -------------- */}
+              <View style={styles.containerCategoriasHorarios}>
+                <View style={styles.containerTitle}>
+                  <Text style={styles.title}>Horarios</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Inria-Sans-Regular",
+                      fontWeight: "bold",
+                      fontSize: 15,
+                    }}
+                  >
+                    Horarios de apertura y cierre
+                  </Text>
+                </View>
 
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={() => handleReviews()}>
-                  <Text style={styles.textButtonHorizontalScroll}>REVIEWS</Text>
-                </TouchableOpacity>
+                <View>
+                  <Text style={styles.aboutCategories}>
+                    ---- Lunes --- {detail?.schedule?.monday?.open}hs a{" "}
+                    {detail?.schedule?.monday?.close}hs
+                  </Text>
 
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={() => handleResenias()}>
-                  <Text style={styles.textButtonHorizontalScroll}>RESENIAS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.buttonHorizontalScroll}
-                  onPress={handlePress}>
-                  <Text style={styles.textButtonHorizontalScroll}>INFORMACIÓN</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MENÚ</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>CATEGRORÍAS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>HORARIOS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>SOBRE NOSOTROS</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonHorizontalScroll}>
-                  <Text style={styles.textButtonHorizontalScroll}>MEDIOS DE PAGO</Text>
-                </TouchableOpacity>
-
-              </ScrollView>
-            </View>
-
-            {/*------------------ Sobre Nosotros------------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Sobre Nosotros</Text>
-            </View>
-            <View style={styles.textAbout}>
-              <Text style={styles.textReserv2}> {detail?.about} </Text>
-            </View>
-            {/* ---------------- menu --> link a la carta del resto ----- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Menú</Text>
-              <Text style={{ color: 'blue', fontSize: 18, textDecorationLine: 'underline' }}>link a la carta</Text>
-            </View>
-
-            {/*-------------- categorias ------------------------------ */}
-
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Categorías</Text>
-            </View>
-            <View>
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="fast-food-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Tipo de comida: </Text>
-                {detail?.menu.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
-                ))}
+                  <Text style={styles.aboutCategories}>
+                    ---- Martes --- {detail?.schedule?.tuesday?.open}hs a{" "}
+                    {detail?.schedule?.tuesday?.close}hs
+                  </Text>
+                  <Text style={styles.aboutCategories}>
+                    ---- Miercoles --- {detail?.schedule?.wednesday?.open}hs a{" "}
+                    {detail?.schedule?.wednesday?.close}hs
+                  </Text>
+                  <Text style={styles.aboutCategories}>
+                    ---- Jueves --- {detail?.schedule?.thursday?.open}hs a{" "}
+                    {detail?.schedule?.thursday?.close}hs
+                  </Text>
+                  <Text style={styles.aboutCategories}>
+                    ---- Viernes --- {detail?.schedule?.friday?.open}hs a{" "}
+                    {detail?.schedule?.friday?.close}hs
+                  </Text>
+                  <Text style={styles.aboutCategories}>
+                    ---- Sabado --- {detail?.schedule?.saturday?.open}hs a{" "}
+                    {detail?.schedule?.saturday?.close}hs
+                  </Text>
+                  <Text style={styles.aboutCategories}>
+                    ---- Domingo --- {detail?.schedule?.sunday?.open}hs a{" "}
+                    {detail?.schedule?.sunday?.close}hs
+                  </Text>
+                </View>
               </View>
 
-
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="beer-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Ambiente: </Text>
-                {detail?.atmosphere.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
-                ))}
-              </View>
-
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="partly-sunny-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Espacios: </Text>
-                {detail?.section.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
-                ))}
-              </View>
-
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="leaf-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Cuenta con: </Text>
-                {detail?.diets.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
-                ))}
-              </View>
-
-              <View style={styles.containerTypesCategories}>
-                <IonicIcon name="paw-outline" style={styles.iconCategories} />
-                <Text style={styles.textCategories}>Otros: </Text>
-                {detail?.extras.map((el, index) => (
-                  <Text style={styles.aboutCategories} key={index}>{el} -</Text>
-                ))}
-              </View>
-
-            </View>
-
-            {/*-------------------- Horarios -------------- */}
-            <View style={styles.containerCategoriasHorarios}>
+              {/*--------------- sobre nosotros -------------------- */}
               <View style={styles.containerTitle}>
-                <Text style={styles.title}>Horarios</Text>
-                <Text style={{ fontFamily: 'Inria-Sans-Regular', fontWeight: 'bold', fontSize: 15 }}>
-                  Horarios de apertura y cierre</Text>
+                <Text style={styles.title}>Sobre Nosotros</Text>
+              </View>
+
+              {/* ------------Medios de pago ------------- */}
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}> Metodos de Pago </Text>
               </View>
 
               <View>
-                <Text style={styles.aboutCategories}>
-                  ---- Lunes --- {detail?.schedule?.monday?.open}hs a{" "}
-                  {detail?.schedule?.monday?.close}hs
-                </Text>
-
-                <Text style={styles.aboutCategories}>
-                  ---- Martes --- {detail?.schedule?.tuesday?.open}hs a{" "}
-                  {detail?.schedule?.tuesday?.close}hs
-                </Text>
-                <Text style={styles.aboutCategories}>
-                  ---- Miercoles --- {detail?.schedule?.wednesday?.open}hs a{" "}
-                  {detail?.schedule?.wednesday?.close}hs
-                </Text>
-                <Text style={styles.aboutCategories}>
-                  ---- Jueves --- {detail?.schedule?.thursday?.open}hs a{" "}
-                  {detail?.schedule?.thursday?.close}hs
-                </Text>
-                <Text style={styles.aboutCategories}>
-                  ---- Viernes --- {detail?.schedule?.friday?.open}hs a{" "}
-                  {detail?.schedule?.friday?.close}hs
-                </Text>
-                <Text style={styles.aboutCategories}>
-                  ---- Sabado --- {detail?.schedule?.saturday?.open}hs a{" "}
-                  {detail?.schedule?.saturday?.close}hs
-                </Text>
-                <Text style={styles.aboutCategories}>
-                  ---- Domingo --- {detail?.schedule?.sunday?.open}hs a{" "}
-                  {detail?.schedule?.sunday?.close}hs
+                <Text>
+                  {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
+                  {detail?.paymentMethods[2]}
                 </Text>
               </View>
             </View>
-
-            {/*--------------- sobre nosotros -------------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}>Sobre Nosotros</Text>
-            </View>
-
-            {/* ------------Medios de pago ------------- */}
-            <View style={styles.containerTitle}>
-              <Text style={styles.title}> Metodos de Pago </Text>
-            </View>
-
-            <View>
-              <Text>
-                {detail?.paymentMethods[0]}, {detail?.paymentMethods[1]},{" "}
-                {detail?.paymentMethods[2]}
-              </Text>
-            </View>
-          </View>
-
-        )
-        }
-      </ScrollView >
-    </View >
-
+          )
+        )}
+      </ScrollView>
+    </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 0,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
+    borderBottomColor: "#ddd",
   },
   titleContainer: {
     // backgroundColor: 'grey',
@@ -694,15 +752,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   container2: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "flex-start",
     padding: 5,
     // backgroundColor: 'blue',
     margin: 0,
   },
   iconText: {
-    flexDirection: 'row',
-    alignSelf: 'center',
+    flexDirection: "row",
+    alignSelf: "center",
     marginLeft: 20,
   },
 
@@ -711,47 +769,47 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   containerReserva: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 16,
     // backgroundColor: 'orange',
   },
   containerConfigReserva: {
     // backgroundColor: 'blue',
-    width: '100%',
-    height: '20%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    height: "20%",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 2,
     borderRadius: 20,
     borderWidth: 0.2,
-    borderColor: 'black',
-    borderStyle: 'dotted',
+    borderColor: "black",
+    borderStyle: "dotted",
   },
   containerPersons: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: '#EBE9E9',
-    width: '99%',
-    height: '22%',
+    flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: "#EBE9E9",
+    width: "99%",
+    height: "22%",
     borderRadius: 20,
     margin: 5,
 
     elevation: 5, // sombreado en Android
     shadowOffset: { width: 2, height: 2 }, // sombreado en iOS
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.1,
     shadowRadius: 10,
   },
   containerButtonsPerson: {
     // backgroundColor: 'green',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 15,
     marginLeft: 12,
   },
   buttonPersons: {
-    alignSelf: 'center',
+    alignSelf: "center",
     margin: 8,
     // backgroundColor: 'orange',
   },
@@ -762,19 +820,19 @@ const styles = StyleSheet.create({
   },
   reservDetail: {
     // backgroundColor: 'green',
-    alignItems: 'center',
-    alignSelf: 'center',
+    alignItems: "center",
+    alignSelf: "center",
   },
   textReservDetail: {
-    fontFamily: 'Inria-Sans-Bold',
+    fontFamily: "Inria-Sans-Bold",
     fontSize: 20,
     marginLeft: 5,
     marginTop: 5,
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 250,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   tinyLetter: {
     fontFamily: "Inria-Sans-Light",
@@ -785,10 +843,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   confirmButton: {
-    flexDirection: 'row',
-    backgroundColor: '#ff5b4f',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    backgroundColor: "#ff5b4f",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 20,
     height: 40,
     width: 160,
@@ -796,43 +854,40 @@ const styles = StyleSheet.create({
 
     elevation: 5,
     shadowOffset: { width: 3, height: 3 },
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.3,
     shadowRadius: 10,
   },
   disabledConfirmButton: {
-    backgroundColor: 'grey'
+    backgroundColor: "grey",
   },
 
   //----------- botones del scroll horizontal--------
   buttonHorizontalScroll: {
-    backgroundColor: '#FA6B6B',
+    backgroundColor: "#FA6B6B",
     margin: 10,
     borderRadius: 10,
     width: 100,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     elevation: 5,
     shadowOffset: { width: 3, height: 3 },
   },
   textButtonHorizontalScroll: {
-    fontFamily: 'Inria-Sans-Bold',
-    fontWeight: 'bold',
+    fontFamily: "Inria-Sans-Bold",
+    fontWeight: "bold",
     fontSize: 15,
   },
   //----------Titulos e informacion---------------------
   containerTitle: {
-
     margin: 10,
   },
-  textAbout: {
-
-  },
+  textAbout: {},
   //----------Categorias-----------------
   containerTypesCategories: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   iconCategories: {
     fontSize: 25,
@@ -840,20 +895,20 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   textCategories: {
-    fontFamily: 'Inria-Sans-Italic',
+    fontFamily: "Inria-Sans-Italic",
     fontSize: 18,
   },
   aboutCategories: {
-    fontFamily: 'Inria-Sans-Light',
+    fontFamily: "Inria-Sans-Light",
     fontSize: 18,
     marginLeft: 10,
   },
   //Horarios
 
   horarioModal: {
-    width: '50%',
-    height: '80%',
-    backgroundColor: 'red',
+    width: "50%",
+    height: "80%",
+    backgroundColor: "red",
     borderRadius: 10,
     margin: 10,
     padding: 10,
@@ -862,21 +917,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   containerCategoriasHorarios: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   containerHorarios: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   horariosButtons: {
     height: 26,
     width: 50,
-    alignItems: 'center',
-
+    alignItems: "center",
   },
   hora: {
     fontSize: 20,
-
-  }
-
+  },
 });
-export default DetailResto
+export default DetailResto;

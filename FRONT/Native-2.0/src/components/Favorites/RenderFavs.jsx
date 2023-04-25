@@ -5,13 +5,14 @@ import IonicIcon from 'react-native-vector-icons/Ionicons';
 import CapitalizeString from '../CapitalizeString/CapitalizeString'
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements'
+import { PostsFavorite } from '../../redux/actions';
 
 
 
 const RenderFavs = ({ item }) => {
   const user = useSelector(state => state?.userInfo)
   const dispatch = useDispatch()
-    
+    console.log(item)
     const styles = StyleSheet.create({
         title: {
           fontSize: 24,
@@ -63,7 +64,7 @@ const RenderFavs = ({ item }) => {
     const handleAddFavorite = () => {
 
       
-       dispatch(PostsFavorite(item?.restaurant[0]?._id, user._id));
+       dispatch(PostsFavorite(item?.restaurant?._id, user._id));
       // dispatch(searchRestorantById(_id));
       // alert('Restaurante agregado a favoritos');
       //console.log(`Enviando restauran: ${restaurant}, user ${user}`);
@@ -79,11 +80,11 @@ const RenderFavs = ({ item }) => {
   >
   { isDone ? (
     <View>
-      <Image style={styles?.image} source={{ uri: item?.restaurant[0]?.images[0]}}/>
-      <Text style={styles.notificationSubtitle}>{item?.restaurant[0]?.name} </Text>
-      {item?.restaurant[0]?.menu[0]?.length !== 0 &&<Text style={styles.notificationText}>Menu: {item?.restaurant[0]?.menu[0]} </Text>}
-      {item?.restaurant[0]?.diets[0]?.length !== 0 && <Text style={styles.notificationText}>Dieta: {item?.restaurant[0]?.diets[0]}</Text>}
-      {item?.restaurant[0]?.atmosphere[0]?.length !== 0 &&<Text>Atmósfera: {item?.restaurant[0]?.atmosphere[0]}</Text>}
+      <Image style={styles?.image} source={{ uri: item?.restaurant?.images[0]}}/>
+      <Text style={styles.notificationSubtitle}>{item?.restaurant?.name} </Text>
+      {item?.restaurant?.menu[0]?.length !== 0 &&<Text style={styles.notificationText}>Menu: {item?.restaurant?.menu[0]} </Text>}
+      {item?.restaurant?.diets[0]?.length !== 0 && <Text style={styles.notificationText}>Dieta: {item?.restaurant?.diets[0]}</Text>}
+      {item?.restaurant?.atmosphere[0]?.length !== 0 &&<Text>Atmósfera: {item?.restaurant?.atmosphere[0]}</Text>}
       <View style={{flexDirection: "row",}}>
         
         <TouchableOpacity 
@@ -104,8 +105,8 @@ const RenderFavs = ({ item }) => {
     </View>
     ) : (
       <View>
-      <Image style={styles?.image} source={{ uri: item?.restaurant[0]?.images[0]}}/>
-    <Text style={styles.title}>{item?.restaurant[0]?.name?.substring(0, 10)}... |</Text>
+      <Image style={styles?.image} source={{ uri: item?.restaurant?.images[0]}}/>
+    <Text style={styles.title}>{item?.restaurant?.name?.substring(0, 10)}... |</Text>
     <View style={styles.viewFavortires}>
           <Icon 
             type= "material-community"
