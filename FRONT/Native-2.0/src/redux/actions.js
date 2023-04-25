@@ -277,7 +277,7 @@ export const filterRestorant = (payload) => {
 export const PostsFavorite = (restaurant, user) => {
     return async dispatch => {
       try {
-        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant, user});
+        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant: restaurant, user: user});
         
         dispatch({ type: POST_FAVORITE, payload: response.data });
       } catch (error) {

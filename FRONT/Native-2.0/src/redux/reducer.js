@@ -334,7 +334,7 @@ export default function rootReducer(state = initialState, action) {
         case POST_FAVORITE:
             return {
                 ...state,
-                favorites: [...state.favorites, action?.payload]
+                userInfo: action?.payload
             };
         //----------------------------------------------------------------------------------------------//
 

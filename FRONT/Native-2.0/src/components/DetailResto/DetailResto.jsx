@@ -16,6 +16,7 @@ import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español
 
+
 import { Icon } from 'react-native-elements'
 import { removeFavorite } from '../../redux/actions.js'
 
@@ -38,12 +39,11 @@ const DetailResto = ({ route }) => {
 
   const [userId, setUserId] = useState(null);
   const userLocation = useSelector(state => state?.userLocation)
-
+  
   useEffect(() => {
-
-    userData?.login ? setuserLogged(true) : setuserLogged(false)
-
-  }, [userData])
+    userData?.login ? setuserLogged(true) : setuserLogged(false);
+    setIsFavorite(userData?.favorite?.some((fav) => (fav?.restaurant?._id?.toString() === detail?._id?.toString())) )
+  }, [detail, userData]);
 
   const parseThousands = value => {
     return value >= 1000
@@ -80,13 +80,13 @@ const DetailResto = ({ route }) => {
     console.log('Operacion sobre contador:', operation)
     setReserve({ ...reserve, table: operation });
   }
-  useEffect(() => {
-    // Comprobar si el restaurante ya está en favoritos
-    console.log(userData)
-    if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
-      setIsFavorite(true);
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   // Comprobar si el restaurante ya está en favoritos
+  //   console.log(userData)
+  //   if (userData && userData?.favorite?.[0]?.restaurant[0]?._id === _id) {
+  //     setIsFavorite(true);
+  //   }
+  // }, [userData]);
 
   //-----Que dia?---------------
   const expandir = () => {
@@ -217,26 +217,11 @@ const DetailResto = ({ route }) => {
   //-----------------AQUI ESTA LA FUNCION PARA AGREGAR A FAVORITOS---------------------//
   const handleAddFavorite = () => {
     if (!userLogged) {
-      alert('Para agregar el restaurante debes estar logeado');
+      alert("Para agregar el restaurante debes estar logeado");
       return;
     }
-
-    dispatch(PostsFavorite(restaurant, user));
-    dispatch(searchRestorantById(_id));
-    alert('Restaurante agregado a favoritos');
-    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
-
-  };
-  const handleRemoveFavorite = () => {
-    if (!userLogged) {
-      return;
-    }
-    const restaurant = detail._id;
-    const user = userId;
-    dispatch(PostsFavorite(restaurant, user));
-    dispatch(searchRestorantById(_id));
-    alert('eliminado');
-    console.log(`Enviando restauran: ${restaurant}, user ${user}`);
+    const restaurant = detail;
+    dispatch(PostsFavorite(restaurant._id, user._id));
   };
 
 
@@ -268,14 +253,13 @@ const DetailResto = ({ route }) => {
               <Icon
                 type="material-community"
                 name={isFavorite ? "heart" : "heart-outline"}
-                onPress={isFavorite ? handleRemoveFavorite : handleAddFavorite}
-                color={isFavorite ? '#FF0000' : "#442484"}
+                onPress={handleAddFavorite}
+                color={isFavorite ? "#ff5b4f" : "#ff5b4f"}
                 size={35}
-                underlayColor="tranparent">
-
-              </Icon>
-
+                underlayColor="tranparent"
+              ></Icon>
             </View>
+
             <View style={styles.titleContainer}>
               <Text style={styles.superTitle}>{detail?.name}</Text>
             </View>
@@ -745,7 +729,7 @@ const styles = StyleSheet.create({
   },
   buttonPersons: {
     alignSelf: 'center',
-    margin: 8,
+    marginVertical: 8,
     // backgroundColor: 'orange',
   },
   textReserv2: {
