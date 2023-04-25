@@ -36,6 +36,36 @@ async function favorite(restaurant, user) {
         select: "_id name images menu diets atmosphere",
       }
     })
+     .populate("restaurant")
+        .populate({
+          path: "reserve",
+          populate: {
+            path: "restaurant",
+            select: "_id name address contact",
+          },
+        })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+              path: "restaurant",
+              select: "_id name",
+            },
+            {
+              path: "reserve",
+              select: "_id date",
+            },
+          ],
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "restaurant",
+            select: "_id name",
+          },
+        })
+        .populate("notificacion");
+    
 
     const rest = await Restaurant.findById(restaurant);
     rest.favorite.push(newFavorite);
@@ -59,6 +89,35 @@ async function favorite(restaurant, user) {
         select: "_id name images menu diets atmosphere",
       }
     })
+     .populate("restaurant")
+        .populate({
+          path: "reserve",
+          populate: {
+            path: "restaurant",
+            select: "_id name address contact",
+          },
+        })
+        .populate({
+          path: "payment",
+          populate: [
+            {
+              path: "restaurant",
+              select: "_id name",
+            },
+            {
+              path: "reserve",
+              select: "_id date",
+            },
+          ],
+        })
+        .populate({
+          path: "review",
+          populate: {
+            path: "restaurant",
+            select: "_id name",
+          },
+        })
+        .populate("notificacion");
 
     const rest = await Restaurant.findById(restaurant);
     const restfilter = rest.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
