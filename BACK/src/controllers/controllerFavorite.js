@@ -40,9 +40,7 @@ async function favorite(restaurant, user) {
     const rest = await Restaurant.findById(restaurant);
     rest.favorite.push(newFavorite);
     const restfav = await rest.save()
-    
-    console.log("add fav" + favuser.favorite)
-   console.log("add user" + favuser.favorite)
+
     return userfav
 
   } else {
@@ -52,14 +50,22 @@ async function favorite(restaurant, user) {
     const favuser = await User.findById(user)
     const userfilter = favuser.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     favuser.favorite = userfilter
-    const userfav = await favuser.save()
+    await favuser.save()
+      const userfav = await User.findById(user)
+     .populate({
+    path: "favorite",
+    populate: {
+        path: "restaurant",
+        select: "_id name images menu diets atmosphere",
+      }
+    })
 
     const rest = await Restaurant.findById(restaurant);
     const restfilter = rest.favorite.filter(favs => favs._id.toString() !== favorites._id.toString())
     rest.favorite = restfilter
     const restfav = await rest.save()
-    console.log("delete " + favuser)
-    return favuser
+
+    return userfav
   }
 }
 
