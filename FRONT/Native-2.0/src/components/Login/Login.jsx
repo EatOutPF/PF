@@ -3,6 +3,7 @@ import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput,
 import { BlurView } from 'expo-blur';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios"
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
   } from 'firebase/auth';
@@ -75,6 +76,35 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       })
     }
 
+  const handleCreateAccount1 = async(name,email) => {
+  
+      const user = {
+        name: name,
+        phone: 1234567891,
+        email: email,
+        password: 654321,
+      }
+      console.log("USER CREATE" , user);
+      // createAccount(user)
+  
+      let algo = await axios.post(`https://eatout.onrender.com/users`, user)
+            .then((response) => {
+                console.log("RESPONSE CREATE USER -> ", response?.data);
+                Alert.alert("Usuario creado con exito")
+                // dispatch({
+                //     type: GET_LINK_MERCADOPAGO,
+                //     payload: response.data,
+                // });
+            })
+            .catch((error) => {
+                console.log("Error axion: ", error.message);
+                // Alert.alert("Error al crear el usuario")
+                // dispatch({
+                //     type: GET_LINK_MERCADOPAGO,
+                //     payload: error.message,
+                // });
+            });
+    };
     const onGoogleButtonPress = async() => { // ESTO ANDA PERO NO ES VALIDO EL TOKEN QUE LLEGA
       // Check if your device supports Google Play
       console.log("Google singin start");
@@ -89,9 +119,12 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
       // return auth().signInWithCredential(googleCredential);
       const user_sing_in = auth().signInWithCredential(googleCredential);
       user_sing_in
-        .then((user)=> {
+        .then(async(user)=> {
           console.log("user data: ", user);
           // user.user.email
+          // dispatch(getUserInfo(idToken))
+          console.log("USER GOOGLE EMAOLÑ",user?.user?.email );
+          await handleCreateAccount1(user?.profile?.name, user?.user?.email)
           dispatch( userGmail(user?.user?.email))
           navigation.navigate('Bienvenido', {user});
           
@@ -111,7 +144,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     return (
       <>
       {
-       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Perfil de Usuario', {logUser})
+       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Bienvenido', {logUser})
        : (
         
         <View style={styles.container}>
@@ -149,14 +182,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
                   <Image
                     style={{height:26, width:26, marginRight:5}}
                     source={require('../../img/png/google-logo.png')}
-
                   />
-                  {/* <IonicIcon      
-                        style={{marginRight:5}}            
-                        name={"logo-google"}
-                        size={20}
-                        color={'white'}   
-                    /> */}
                   <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Iniciar sesion con Google</Text>
                 </View>
               </TouchableOpacity>

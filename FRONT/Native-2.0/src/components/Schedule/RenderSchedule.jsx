@@ -66,8 +66,8 @@ const RenderSchedule = ({ item }) => {
 
     function handleToDetail(value){
         // Alert.alert("aca se borra la noti")
-        const _id = value
-        navigation.navigate("Detalle Restaurant", {_id})
+        // const _id = value
+        navigation.navigate("Detalle Restaurant", { _id: item?.restaurant?._id})
     }
     function handleResenias() {
         navigation.navigate("Comentar resenia", { resto: item?.restaurant })

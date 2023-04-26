@@ -277,7 +277,7 @@ export const filterRestorant = (payload) => {
 export const PostsFavorite = (restaurant, user) => {
     return async dispatch => {
       try {
-        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant, user});
+        const response = await axios.post(`${DB_HOST}/favorite`,  {restaurant: restaurant, user: user});
         
         dispatch({ type: POST_FAVORITE, payload: response.data });
       } catch (error) {
@@ -427,9 +427,13 @@ export const getUbicationByRestorant = (payload) => {
 }
 
 export const userGmail = (payload) => {
+
+    
     return async dispatch => {
-        const response = await axios.post(`${DB_HOST}/gmail`, payload);
-        console.log("RSEPONSE DEL GHMAIL", response?.data);
+        const response = await axios.post(`${DB_HOST}/gmail`, {email:payload});
+        // console.log("RSEPONSE DEL GHMAIL", response?.data);
+        // console.log("RSEPONSE DEL GHMAIL", response?.data?.user);
+
         dispatch({
           type: USER_GMAIL,
           payload: response?.data,

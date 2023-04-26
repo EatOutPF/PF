@@ -235,31 +235,6 @@ const CheckoutPayment = ({route}) => {
       </View>
     );
 
-    return (
-        <View style={styles.container}>
-            <Text>Reservar en: {checkout?.resto?.name}</Text>
-            <Text>Cantidad de Personas: {checkout?.reserve?.cantPersons}</Text>
-            <Text>Cantidad de mesas: {checkout?.reserve?.table}</Text>
-            <Text>Fecha / Hora : {checkout?.reserve?.date} / {checkout?.reserve?.time}</Text>
-            <Text>Monto a Pagar: {checkout?.resto?.advance}</Text>
-            <TouchableOpacity 
-                style={styles.confirmButton} 
-                title="Open WebBrowser" 
-                disabled={!readyToPay}
-                onPress={handleBackMercadoPago}>
-                    {!readyToPay ?  <ActivityIndicator style={styles.loading} size="small" color="white" /> 
-                    : 
-                    <IonicIcon
-                        name={"checkmark-outline"}
-                        size={20}
-                        color={'white'}   
-                    />}
-                    <Text style={{ fontFamily: "Inria-Sans-Bold", fontSize: 15, color: 'white' }}>Confimar Reserva con Mercado Pago </Text>
-
-            </TouchableOpacity>
-                        <Text>{result && JSON?.stringify(result)}</Text>
-        </View>
-    );
 };
 
 
