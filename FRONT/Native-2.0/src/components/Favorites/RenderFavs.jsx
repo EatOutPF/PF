@@ -69,7 +69,7 @@ const RenderFavs = ({ item }) => {
     const handleAddFavorite = () => {
 
       
-       dispatch(PostsFavorite(item?.restaurant?._id, user._id));
+       dispatch(PostsFavorite(item?.restaurant?._id, user?._id));
       // dispatch(searchRestorantById(_id));
       // alert('Restaurante agregado a favoritos');
       //console.log(`Enviando restauran: ${restaurant}, user ${user}`);

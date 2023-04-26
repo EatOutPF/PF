@@ -50,7 +50,7 @@ export default function ProfileFirebase() {
         navigation.navigate("Perfil")
         
     }
-
+    const googleProfilePicture = user?.user?.photoURL
     return(
         <View style={styles.container}>
         <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />

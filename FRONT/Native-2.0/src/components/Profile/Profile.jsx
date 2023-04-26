@@ -32,7 +32,7 @@ export default function Profile({route}) {
         //     .singOut()
         //     .then(()=> console.log("User sined out!"))
         // dispatch(clearUserInfo())
-        navigation.navigate("Login")
+        navigation.navigate("Iniciar Sesion")
         
     }
 

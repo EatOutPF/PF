@@ -144,7 +144,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
     return (
       <>
       {
-       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Perfil de Usuario', {logUser})
+       Object?.keys(logUser)?.length !== 0 ? navigation.navigate('Bienvenido', {logUser})
        : (
         
         <View style={styles.container}>
@@ -182,14 +182,7 @@ const uri = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/
                   <Image
                     style={{height:26, width:26, marginRight:5}}
                     source={require('../../img/png/google-logo.png')}
-
                   />
-                  {/* <IonicIcon      
-                        style={{marginRight:5}}            
-                        name={"logo-google"}
-                        size={20}
-                        color={'white'}   
-                    /> */}
                   <Text style={{fontSize: 17, fontWeight: '400', color: 'white'}}>Iniciar sesion con Google</Text>
                 </View>
               </TouchableOpacity>
