@@ -13,7 +13,6 @@ import { BlurView } from 'expo-blur';
 // import { WebView } from 'react-native-webview';
 
 
-
 const About = () => {  
 
     // console.log("TODAY: ", checkout);
@@ -169,28 +168,31 @@ const About = () => {
                     Bienvenido {user?.name}</Text> */}
                   <View style={{flexDirection:"row", justifyContent: "space-between", marginHorizontal: 20, marginBottom: 5}}>
                     <View style={styles.profile}>
-                      <Image style={styles.profilePicture} 
-                        source={ require("../../img/develop-profile-pic/barbara.png")}
-                      />
-                      <View style={styles.nameLabel}>
-                        <Text style={styles.title}>Barbara Miranda</Text>
-                        <Text style={styles.subtitle}>Back-MongoDB</Text>
-                      </View>
-
+                      <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/Barbi16")}}>
+                        <Image style={styles.profilePicture} 
+                          source={ require("../../img/develop-profile-pic/barbara.png")}
+                        />
+                        <View style={styles.nameLabel}>
+                          <Text style={styles.title}>Barbara Miranda</Text>
+                          <Text style={styles.subtitle}>Back-MongoDB</Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                    <Image style={styles.profilePicture} 
-                      source={ require("../../img/develop-profile-pic/diana.png")}
-                    />
-                    <View style={styles.nameLabelDer}>
-                        <Text style={styles.title}>Diana Cañon</Text>
-                        <Text style={styles.subtitle}>Front-React</Text>
-                      </View>
+                    <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/DianaCanon")}}>
+                      <Image style={styles.profilePicture} 
+                        source={ require("../../img/develop-profile-pic/diana.png")}
+                      />
+                      <View style={styles.nameLabelDer}>
+                          <Text style={styles.title}>Diana Cañon</Text>
+                          <Text style={styles.subtitle}>Front-React</Text>
+                        </View>
+                    </TouchableOpacity>
                   </View>
-                
 
 
                   <View style={{flexDirection:"row", justifyContent: "space-between", marginHorizontal: 20, marginBottom: 5}}>
                     <View style={styles.profile}>
+                    <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/FlorMarchion")}}>
                       <Image style={styles.profilePicture} 
                         source={ require("../../img/develop-profile-pic/florencia.png")}
                       />
@@ -198,49 +200,57 @@ const About = () => {
                         <Text style={styles.title}>Flor Marchiondelli</Text>
                         <Text style={styles.subtitle}>Front-Native</Text>
                       </View>
+                    </TouchableOpacity>
 
-                    </View>
-                    <Image style={styles.profilePicture} 
-                      source={ require("../../img/develop-profile-pic/wilfredo.png")}
-                    />
-                    <View style={styles.nameLabelDer}>
-                        <Text style={styles.title}>Wilfedo Morillo</Text>
-                        <Text style={styles.subtitle}>Front-React</Text>
-                      </View>
+                  </View>
+                    <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/wilfredomorillo")}}>
+                      <Image style={styles.profilePicture} 
+                        source={ require("../../img/develop-profile-pic/wilfredo.png")}
+                      />
+                      <View style={styles.nameLabelDer}>
+                          <Text style={styles.title}>Wilfedo Morillo</Text>
+                          <Text style={styles.subtitle}>Front-React</Text>
+                        </View>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={{flexDirection:"row", justifyContent: "space-between", marginHorizontal: 20, marginBottom: 5}}>
                     <View style={styles.profile}>
-                      <Image style={styles.profilePicture} 
-                        source={ require("../../img/develop-profile-pic/milton.png")}
-                      />
-                      <View style={styles.nameLabel}>
-                        <Text style={styles.title}>Milton Sosa</Text>
-                        <Text style={styles.subtitle}>Front-React</Text>
-                      </View>
+                      <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/Miltons97")}}>
+                        <Image style={styles.profilePicture} 
+                          source={ require("../../img/develop-profile-pic/milton.png")}
+                        />
+                        <View style={styles.nameLabel}>
+                          <Text style={styles.title}>Milton Sosa</Text>
+                          <Text style={styles.subtitle}>Front-Native-React</Text>
+                        </View>
+                      </TouchableOpacity>
 
                     </View>
-                    <Image style={styles.profilePicture} 
-                      source={ require("../../img/develop-profile-pic/claudio.png")}
-                    />
-                    <View style={styles.nameLabelDer}>
-                        <Text style={styles.title}>Claudi Di Toro</Text>
-                        <Text style={styles.subtitle}>Back-MongoDB</Text>
-                      </View>
+                    <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/LordPock")}}>
+                      <Image style={styles.profilePicture} 
+                        source={ require("../../img/develop-profile-pic/claudio.png")}
+                      />
+                      <View style={styles.nameLabelDer}>
+                          <Text style={styles.title}>Claudi Di Toro</Text>
+                          <Text style={styles.subtitle}>Back-MongoDB</Text>
+                        </View>
+                    </TouchableOpacity>
                   </View>
                   
                   <View style={{flexDirection:"row", justifyContent: "center", marginHorizontal: 20 }}>
-                    <View style={styles.profile}>
-                      <Image style={styles.profilePicture} 
-                        source={ require("../../img/develop-profile-pic/santiago.png")}
-                      />
-                      <View style={styles.nameLabel}>
-                        <Text style={styles.title}>Santiago Bavaresco</Text>
-                        <Text style={styles.subtitle}>Front-Native</Text>
+                    <TouchableOpacity onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/SantiBavaresco")}}>
+                      <View style={styles.profile}>
+                        <Image style={styles.profilePicture} 
+                          source={ require("../../img/develop-profile-pic/santiago.png")}
+                        />
+                        <View style={styles.nameLabel}>
+                          <Text style={styles.title}>Santiago Bavaresco</Text>
+                          <Text style={styles.subtitle}>Front-Native</Text>
+                        </View>
+
                       </View>
-
-                    </View>
-
+                    </TouchableOpacity>
                   </View>
 
 
@@ -249,8 +259,7 @@ const About = () => {
               <TouchableOpacity 
                 style={styles.confirmButton} 
                 title="Open WebBrowser" 
-                // disabled={!readyToPay}
-                // onPress={handleBackMercadoPago}
+                onPress={async()=>{let result = await WebBrowser.openBrowserAsync("https://github.com/EatOutPF/PF/")}}
                 >
                     <IonicIcon
                         name={"logo-github"}

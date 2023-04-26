@@ -133,19 +133,6 @@ function CreateAccountFirebase({ navigation }) {
               //     payload: error.message,
               // });
           });
-  
-    // createUserWithEmailAndPassword(authF, email, password)
-    //   .then((userCredential) => {
-    //     console.log('Account created!');
-    //     Alert.alert('Account created!');
-    //     const user = userCredential.user;
-    //     console.log(user);
-    //     navigation.navigate('Inicio');
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     Alert.alert(error.message);
-    //   });
   };
 
     return (
