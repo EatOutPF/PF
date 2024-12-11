@@ -104,7 +104,7 @@ return (
         <MapViewDirections 
             origin={origin}
             destination={destination}
-            apikey={"AIzaSyA8wHVl7x6tJiALwmMYUL5h_l14X74f_A8"} // apikey de googlemaps de santi
+            apikey={""} // apikey de googlemaps de santi
             strokeColor="blue"
             strokeWidth={5}
         />
